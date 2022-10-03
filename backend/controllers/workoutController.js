@@ -8,7 +8,7 @@ const workouts = await Workout.find({}).sort({createdAt: -1});
 
 const getItem = async (req, res) => {
  const { id } = req.params;
- const workout = Workout.findById(id);
+ const workout = await Workout.findById(id);
  if(!workout){
      return res.status(404).json({error: 'no such thing, sorry!'})
  }
