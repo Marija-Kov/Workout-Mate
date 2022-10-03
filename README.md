@@ -1,18 +1,6 @@
 # MERN stack app
-
-## Folder structure
-- frontend
-- backend - .env
-          - controllers - workoutController.js
-          - models - Workout.js
-          - node_modules
-          - package.json 
-          - package-lock.json
-          - routes - workouts.js
-          - server.js
-          
-
-##### package.json 
+## Backend
+##### backend/package.json 
 "script":{
     ...
     "dev": nodemon server.js (--> npm run dev --> to start the app)
@@ -60,3 +48,28 @@ Because create() is asynchronous, we can make sure that the documents are create
 ## Controllers
 
 Creating controllers is all about migrating route handlers into a separate file. 
+Controllers/route handlers reqire the Model and use APIs to return desired response. ( https://mongoosejs.com/docs/api/model.html )
+These methods are asynchronous so in order for the route handler to work correctly, it needs to be async as well. Plus it only makes sense to display the result once the method is called on the Model.
+
+It's worth noting that all the data from the Model is passed on the request body so we can extract the properties we want to use from req.body. So a controller would look something like this:
+
+- const getItem = async (req, res) => {
+    const { id } = req.body;
+    const item = await Model.findById(id);
+    res.json(item);
+};
+
+
+# Frontend
+
+Written in React using create-react-app.
+
+## Fetching data from the backend
+
+A page file needs to fetch data from the backend in order to show it to the client. 
+Fetch method takes in the path (string) of the page and once it succeeds, the data is set as the earlier created state.
+This state has access to the properties that have been defined in the Model and passed to the req.body on the backend.
+
+Because frontend and backend of the app are running on two different servers, CORS policy will block the front from accessing the resources on the back by default for security reasons.
+This can be overcome (in development phase) by adding: "proxy" : "http://localhost:<backend port number>" to package.json on the frontend.
+
