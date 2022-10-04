@@ -1,5 +1,6 @@
 import React from 'react';
 import WorkoutDetails from '../components/WorkoutDetails'
+import WorkoutForm from '../components/WorkoutForm'
 
 export default function Home() {
     const [workouts, setWorkouts] = React.useState(null); 
@@ -23,6 +24,7 @@ export default function Home() {
                   )
                 )}
             </div>
+            <WorkoutForm />
         </div>
     )
 };
