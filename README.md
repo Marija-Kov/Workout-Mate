@@ -73,3 +73,29 @@ This state has access to the properties that have been defined in the Model and 
 Because frontend and backend of the app are running on two different servers, CORS policy will block the front from accessing the resources on the back by default for security reasons.
 This can be overcome (in development phase) by adding: "proxy" : "http://localhost:<backend port number>" to package.json on the frontend.
 
+## Adding components to the page
+
+Home page renders instances of WorkoutDetails component and passes all the workout model/request body properties to it as props.
+
+### Input Form
+
+Input form maintains a state for each input name that corresponds to a request body property.
+
+The states are reset on every input change and once handleSubmit is triggered:
+1) all states are stored inside workout object;
+2) the existing data/workouts are fetched, the interaction with the backend happens; 
+3) workout object is turned into JSON and stored as the request body;
+4) POST method is used to add the new object to the array of existing objects;
+5) The new workout can be logged in the console;
+
+At the moment, new workout only appears on the page after refresh.
+
+## Context
+
+The context is provided by WorkoutsContext to the whole App component.
+
+The reducer is used in place of multiple functions changing multiple states.
+
+## Custom hook
+
+Creating useWorkoutsContext hook.
