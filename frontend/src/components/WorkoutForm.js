@@ -9,7 +9,6 @@ export default function WorkoutForm(){
  const handleSubmit = async (e) => {
    e.preventDefault();
    const workout = {title, load, reps};
-   React.useEffect(async()=>{
    const response = await fetch('/api/workouts', {
        method: 'POST',
        body: JSON.stringify(workout), // request body is an OBJECT that needs to be turned into JSON string
@@ -29,8 +28,6 @@ export default function WorkoutForm(){
         setError(null);
         console.log('new workout added', json)
     }
-   }, [title, load, reps])
-   
  }
 
     return (
