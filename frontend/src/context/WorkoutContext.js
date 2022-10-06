@@ -21,11 +21,10 @@ export const workoutsReducer = (state, action) => { // state === previous state
 export const WorkoutsContextProvider  = (props) => {  
    const [state, dispatch] = React.useReducer(workoutsReducer, {
        workouts: null
-   }) 
+   }) // ...state === state.workouts ; the state object can be conveniently destructured within the context provider object; 
    
-   dispatch({type: 'SET_WORKOUTS', payload: [{},{}]})
     return (
-        <WorkoutsContext.Provider value={{state, dispatch}}>
+        <WorkoutsContext.Provider value={{...state, dispatch}}> 
             { props.children } 
         </WorkoutsContext.Provider>
     )
