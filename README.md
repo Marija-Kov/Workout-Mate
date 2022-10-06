@@ -82,20 +82,32 @@ Home page renders instances of WorkoutDetails component and passes all the worko
 Input form maintains a state for each input name that corresponds to a request body property.
 
 The states are reset on every input change and once handleSubmit is triggered:
+
 1) all states are stored inside workout object;
 2) the existing data/workouts are fetched, the interaction with the backend happens; 
 3) workout object is turned into JSON and stored as the request body;
 4) POST method is used to add the new object to the array of existing objects;
 5) The new workout can be logged in the console;
 
-At the moment, new workout only appears on the page after refresh.
-
+At the moment, the UI is not in sync with the database, new workout only appears on the page after refresh.
+The function containing fetch request can't be wrapped inside useEffect because the form needs access to the function.
+This can be solved using context.
 ## Context
 
-The context is provided by WorkoutsContext to the whole App component.
+The context is provided by WorkoutsContext to the whole App component by wrapping the App component where it's renderd in index.js.
 
 The reducer is used in place of multiple functions changing multiple states.
 
 ## Custom hook
 
-Creating useWorkoutsContext hook.
+Creating useWorkoutsContext hook as a clean way to use context across components.
+
+## Syncing UI with the database
+
+1) Import useWorkoutsContext hook to the page where the content that needs to be synced with the DB lives.
+
+2) Replace the local state with the global state, which is the hook destructured.
+- * - remember that, since the hook returns the context, it has access to its structure/data.
+- const { state, dispatch } = theHook();
+
+3) Consequentially, replace setState() with dispatch({type:.., payload:..});
