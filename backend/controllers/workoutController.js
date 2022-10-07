@@ -20,6 +20,19 @@ const getItem = async (req, res) => {
 
 const addItem = async (req, res) => {
     const {title, reps, load} = req.body;
+    let emptyFields = [];
+    if(!title){
+      emptyFields.push('title')
+    };
+    if(!reps){
+      emptyFields.push('reps')
+    };
+    if(!load){
+      emptyFields.push('load')
+    };
+    if(emptyFields.length > 0){
+      res.status(400).json({error: 'Please fill in all the fields.', emptyFields})
+    };
   try {
    const workouts = await Workout.create({title, reps, load});
    res.status(200).json(workouts);
@@ -27,7 +40,7 @@ const addItem = async (req, res) => {
    res.status(400).json({error: error.message})
   }
 };
-// UPDATE an item
+
 const updateItem = async (req, res) => {
   const { id } = req.params;
  if(!mongoose.Types.ObjectId.isValid(id)){
@@ -41,7 +54,7 @@ const workout = await Workout.findOneAndUpdate({_id: id}, {
  };
  res.status(200).json(workout);
 };
-// DELETE an item
+
 const deleteItem = async (req, res) => {
  const { id } = req.params;
  if(!mongoose.Types.ObjectId.isValid(id)){
