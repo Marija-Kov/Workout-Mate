@@ -10,6 +10,7 @@ export default function WorkoutForm(){
   const [error, setError] = React.useState(null);
 
  const handleSubmit = async (e) => {
+  const [emptyFields, setEmptyFields] = React.useState([]);
    e.preventDefault();
    const workout = {title, load, reps};
    const response = await fetch('/api/workouts', {
@@ -23,6 +24,8 @@ export default function WorkoutForm(){
     
     if (!response.ok) {
       setError(json.error)
+      setError(json.error);
+      setEmptyFields(json.emptyFields)
     }
     if (response.ok){
         setTitle('');
