@@ -24,9 +24,19 @@ export default function WorkoutForm(){
     
     if (!response.ok) {
       setError(json.error)
+      // setError('Please fill out the empty fields')
       setError(json.error);
       setEmptyFields(json.emptyFields)
     }
+    // if (!title){
+    //   setEmptyFields(prev => ['title', ...prev])
+    // }
+    // if (!reps){
+    //   setEmptyFields(prev => ['reps', ...prev])
+    // }
+    // if (!load){
+    //   setEmptyFields(prev => ['load', ...prev])
+    // }
     if (response.ok){
         setTitle('');
         setLoad('');
