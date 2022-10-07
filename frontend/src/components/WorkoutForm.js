@@ -42,6 +42,7 @@ export default function WorkoutForm(){
         setLoad('');
         setReps('');
         setError(null);
+        setEmptyFields([]);
         console.log('new workout added', json)
         dispatch({type: 'CREATE_WORKOUT', payload: json})
     }
@@ -57,6 +58,8 @@ export default function WorkoutForm(){
             id="title" 
             onChange={e=> setTitle(e.target.value)}
             value={title}
+            className={emptyFields.includes('title') ?
+                   'error' : ''}
             />
         <label>Number of reps:</label>
           <input 
@@ -65,6 +68,8 @@ export default function WorkoutForm(){
             id="reps" 
             onChange={e=> setReps(e.target.value)}
             value={reps}
+            className={emptyFields.includes('reps') ?
+                   'error' : ''}
             />
         <label>Load (kg):</label>
           <input 
@@ -73,6 +78,8 @@ export default function WorkoutForm(){
             id="load" 
             onChange={e=> setLoad(e.target.value)}
             value={load}
+            className={emptyFields.includes('load') ?
+                   'error' : ''}
             />
        <button>Add Workout</button>  
        {error && <div className="error">{error}</div>}   
