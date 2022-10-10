@@ -4,7 +4,7 @@ import WorkoutForm from '../components/WorkoutForm'
 import { useWorkoutsContext } from '../hooks/useWorkoutContext'
 
 export default function Home() {
-
+    const [addWorkoutForm, setAddWorkoutForm] = React.useState(false);
     const { workouts, dispatch } = useWorkoutsContext(); // replacing local state
     React.useEffect(()=> {
         fetch('/api/workouts')
@@ -14,7 +14,9 @@ export default function Home() {
         })
         .catch(err => console.log(`ERROR: ${err}`));
     }, []);
-   
+   function hideForm(){
+       setAddWorkoutForm(false)
+   }
     return(
         <div className='home'>
             <div className="workouts">
@@ -30,7 +32,9 @@ export default function Home() {
                   )
                 )}
             </div>
-            <WorkoutForm />
+            {addWorkoutForm && <WorkoutForm 
+                                 hideForm={()=> hideForm()}/>}
+           {!addWorkoutForm && <button className='add--workout' onClick={()=> setAddWorkoutForm(true)}>+ Add workout</button>}   
         </div>
     )
 };

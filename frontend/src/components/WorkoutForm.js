@@ -1,7 +1,7 @@
 import React from 'react';
 import { useWorkoutsContext } from '../hooks/useWorkoutContext';
 
-export default function WorkoutForm(){
+export default function WorkoutForm(props){
 
   const { dispatch } = useWorkoutsContext();
   const [title, setTitle] = React.useState('');
@@ -44,6 +44,7 @@ export default function WorkoutForm(){
         setEmptyFields([]);
         console.log('new workout added', json)
         dispatch({type: 'CREATE_WORKOUT', payload: json})
+        props.hideForm();
     }
  }
 
