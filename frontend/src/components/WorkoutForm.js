@@ -49,8 +49,8 @@ export default function WorkoutForm(){
 
     return (
       <form className="create" onSubmit={handleSubmit}>
-          <h3>Add a new workout</h3>
-          <label>Exercise title:</label>
+          <h4>Add a new workout</h4>
+          <label>exercise title:</label>
           <input 
             type="text" 
             name="title" 
@@ -60,7 +60,7 @@ export default function WorkoutForm(){
             className={emptyFields.includes('title') ?
                    'error' : ''}
             />
-        <label>Number of reps:</label>
+        <label>number of reps:</label>
           <input 
             type="number" 
             name="reps" 
@@ -70,7 +70,7 @@ export default function WorkoutForm(){
             className={emptyFields.includes('reps') ?
                    'error' : ''}
             />
-        <label>Load (kg):</label>
+        <label>load (kg):</label>
           <input 
             type="number" 
             name="load" 
@@ -80,7 +80,11 @@ export default function WorkoutForm(){
             className={emptyFields.includes('load') ?
                    'error' : ''}
             />
-       <button>Add Workout</button>  
+       <p className="checky">
+       <input type="checkbox" />
+       <label>I am not making this up</label>
+       </p>
+       <button>Add workout</button>  
        {error && <div className="error">{error}</div>}   
       </form>
       

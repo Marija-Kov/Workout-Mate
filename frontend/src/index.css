@@ -3,18 +3,15 @@
 
 /* layout */
 :root {
-  --primary: #1aac83;
+  --primary: #373737;
   --error: #e7195a;
 }
 
 body {
-  background: #f1f1f1;
+  background: #ededed;
   margin: 0;
   font-family: "Poppins";
-}
-
-header {
-  background: #fff;
+  align-content: center;
 }
 
 header .container {
@@ -29,6 +26,7 @@ header .container {
 header a {
   color: #333;
   text-decoration: none;
+  font-size: 0.6em;
 }
 
 .pages {
@@ -39,41 +37,50 @@ header a {
 
 /* homepage */
 .home {
-  display: grid;
-  grid-template-columns: 3fr 1fr;
-  gap: 100px;
+  padding: 0 50px;
 }
 
 .workout-details {
   background: #fff;
-  border-radius: 4px;
   margin: 20px auto;
   padding: 20px;
+  max-width: 500px;
   position: relative;
-  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.05);
+  box-shadow: 0px 5px 22px -2px rgba(142, 142, 142, 0.5);
 }
 
 .workout-details h4 {
   margin: 0 0 10px 0;
+  font-weight: 500;
+  text-transform: capitalize;
   font-size: 1.2em;
+  padding-bottom: 10px;
+  padding-left: 20px;
+  border-bottom: solid 1px #a1a1a1;
   color: var(--primary);
 }
 
 .workout-details p {
+  min-width: 300px;
   margin: 0;
   font-size: 0.9em;
-  color: #555;
+  padding: 5px 20px;
 }
 
 .workout-details span {
   position: absolute;
-  top: 20px;
-  right: 20px;
+  top: 130px;
+  right: 15px;
   cursor: pointer;
-  background: #f1f1f1;
-  padding: 6px;
+  padding: 5px;
   border-radius: 50%;
-  color: #333;
+  color: #a1a1a1;
+}
+.workout-details .edit {
+  right: 45px;
+}
+.date {
+  color: #565656;
 }
 
 /* new workout form */
@@ -84,22 +91,62 @@ input {
 
 input {
   padding: 10px;
-  margin-top: 10px;
+  max-width: 274px;
+  margin: 0 auto;
+  margin-top: 8px;
   margin-bottom: 20px;
   width: 100%;
   border: 1px solid #ddd;
   border-radius: 4px;
   box-sizing: border-box;
 }
+form {
+  background: #dad5e5;
+  min-width: 300px; 
+  max-width: 400px;
+  height: 500px;
+  text-align: center;
+  padding: 20px;
+  box-shadow: 7px 6px 189px 186px rgba(86, 90, 109, 0.64);
+  z-index: 10;
+  position: fixed;
+  top: 100px;
+  left: 30%;
+}
 
-form button {
+.checky {
+display: grid;
+height: 30px;
+width: 200px;
+grid-template-columns: 1fr 5fr;
+padding: 20px;
+font-size: 14px;
+margin: 0 auto;
+}
+
+form h4 {
+  font-weight: 400;
+  padding-bottom: 10px;
+  border-bottom: solid 1px #c9b9eb;
+}
+
+form button,
+.add--workout {
   background: var(--primary);
   border: 0;
   color: #fff;
-  padding: 10px;
+  padding: 10px 30px;
   font-family: "Poppins";
-  border-radius: 4px;
+  border-radius: 50px;
   cursor: pointer;
+}
+
+.add--workout {
+position: sticky;
+bottom: 20px;
+z-index: 5;
+width: 100%;
+max-width: 320px;
 }
 
 div.error {
