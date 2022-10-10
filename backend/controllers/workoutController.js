@@ -44,7 +44,7 @@ const addItem = async (req, res) => {
 const updateItem = async (req, res) => {
   const { id } = req.params;
  if(!mongoose.Types.ObjectId.isValid(id)){
-     return res.status(404).json({error: `You're trying to delete something that doesn't exist in the database. Please double-triple check the id of the item that you want to delete.`})
+     return res.status(404).json({error: `You're trying to get something that doesn't exist in the database. Please double-triple check the id of the item that you want to update.`})
  };
 const workout = await Workout.findOneAndUpdate({_id: id}, {
 ...req.body
