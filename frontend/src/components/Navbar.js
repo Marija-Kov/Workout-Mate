@@ -7,8 +7,11 @@ export default function Navbar(){
         <header>
             <div className="container">
                 <Link to="/">
-                    <h1>Workout Mate</h1>
+                    <h1>WorkoutMate</h1>
                 </Link>
+                <span className='material-symbols-outlined ham'>
+                    menu
+                </span>
             </div>
         </header>
     )
