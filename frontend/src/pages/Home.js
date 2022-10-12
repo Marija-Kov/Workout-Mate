@@ -6,6 +6,7 @@ import { useWorkoutsContext } from '../hooks/useWorkoutContext'
 export default function Home() {
     const [addWorkoutForm, setAddWorkoutForm] = React.useState(false);
     const { workouts, dispatch } = useWorkoutsContext(); // replacing local state
+   console.log('home page rendered')
     React.useEffect(()=> {
         fetch('/api/workouts')
         .then(response => response.json())
@@ -13,6 +14,9 @@ export default function Home() {
              dispatch({type: 'SET_WORKOUTS', payload: data});       
         })
         .catch(err => console.log(`ERROR: ${err}`));
+
+        return ()=>{console.log('cleanup here')}
+
     }, []);
    function hideForm(){
        setAddWorkoutForm(false)
