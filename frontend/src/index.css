@@ -114,6 +114,10 @@ form {
   left: 30%;
 }
 
+.update {
+  background: #E0E1DB;
+}
+
 .checky {
 display: grid;
 height: 30px;
@@ -147,6 +151,17 @@ bottom: 20px;
 z-index: 5;
 width: 100%;
 max-width: 320px;
+}
+
+.btns {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  gap: 20px;
+  padding: 10px 30px;
+}
+
+.discard{
+  background: grey;
 }
 
 div.error {
