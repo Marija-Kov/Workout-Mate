@@ -23,19 +23,19 @@ export default function WorkoutForm(props){
     const json = await response.json(); // turns JSON into object and reads it
  
     if (!response.ok) {
-      // setError('Please fill out the empty fields')
-      setError(json.error);
-      setEmptyFields(json.emptyFields)
+      setError('Please fill out the empty fields')
+      // setError(json.error);
+      // setEmptyFields(json.emptyFields)
     }
-    // if (!title){
-    //   setEmptyFields(prev => ['title', ...prev])
-    // }
-    // if (!reps){
-    //   setEmptyFields(prev => ['reps', ...prev])
-    // }
-    // if (!load){
-    //   setEmptyFields(prev => ['load', ...prev])
-    // }
+    if (!title){
+      setEmptyFields(prev => ['title', ...prev])
+    }
+    if (!reps){
+      setEmptyFields(prev => ['reps', ...prev])
+    }
+    if (!load){
+      setEmptyFields(prev => ['load', ...prev])
+    }
     if (response.ok){
         setTitle('');
         setLoad('');

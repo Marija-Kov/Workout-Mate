@@ -20,19 +20,19 @@ const getItem = async (req, res) => {
 
 const addItem = async (req, res) => {
     const {title, reps, load} = req.body;
-    let emptyFields = [];
-    if(!title){
-      emptyFields.push('title')
-    };
-    if(!reps){
-      emptyFields.push('reps')
-    };
-    if(!load){
-      emptyFields.push('load')
-    };
-    if(emptyFields.length > 0){
-      res.status(400).json({error: 'Please fill in all the fields.', emptyFields})
-    };
+    // let emptyFields = [];
+    // if(!title){
+    //   emptyFields.push('title')
+    // };
+    // if(!reps){
+    //   emptyFields.push('reps')
+    // };
+    // if(!load){
+    //   emptyFields.push('load')
+    // };
+    // if(emptyFields.length > 0){
+    //   res.status(400).json({error: 'Please fill in all the fields.', emptyFields})
+    // };
   try {
    const workouts = await Workout.create({title, reps, load});
    res.status(200).json(workouts);
@@ -46,9 +46,8 @@ const updateItem = async (req, res) => {
  if(!mongoose.Types.ObjectId.isValid(id)){
      return res.status(404).json({error: `You're trying to get something that doesn't exist in the database. Please double-triple check the id of the item that you want to update.`})
  };
-const workout = await Workout.findOneAndUpdate({_id: id}, {
-...req.body
-});
+const workout = await Workout.findOneAndUpdate({_id: id}, req.body, {new: true, runValidators: true}
+);
   if(!workout){
      return res.status(404).json({error: 'no such thing, sorry!'})
  };
