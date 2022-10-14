@@ -9,7 +9,7 @@ const app = express();
 
 
 
-app.use(express.json());
+app.use(express.json()); 
 
 app.use((req, res, next)=>{
     console.log(req.path, req.method);
@@ -27,7 +27,7 @@ mongoose.connect(process.env.MONGO_URI, {useNewUrlParser: true, useUnifiedTopolo
 
 
 
-app.use('/api/workouts/', routes);
+app.use('/', routes);
 
 
 

@@ -7,15 +7,15 @@ const { getAllItems,
        updateItem } = require('../controllers/workoutController')
 const authController = require('../controllers/authController')
 
-router.get('/', getAllItems);
+router.get('/api/workouts', getAllItems);
 
-router.get('/:id', getItem);
+router.get('/api/workouts/:id', getItem);
 
-router.post('/', addItem);
+router.post('/api/workouts/', addItem);
 
-router.delete('/:id', deleteItem);
+router.delete('/api/workouts/:id', deleteItem);
 
-router.patch('/:id', updateItem);
+router.patch('/api/workouts/:id', updateItem);
 
 // AUTH ROUTES 
 
