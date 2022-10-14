@@ -29,12 +29,65 @@ header a {
   font-size: 0.6em;
 }
 
+.ham {
+  cursor: pointer;
+}
+.menu {
+  display: flex;
+  gap: 20px;
+  height: fit-content;
+  padding: 30px;
+  background: #fff;
+  width: 200px;
+  z-index: 10;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+.close {
+  margin-left: 40px;
+  cursor: pointer;
+}
 .pages {
   max-width: 1400px;
   padding: 20px;
   margin: 0 auto;
 }
+/* landing page */
+.landing {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.signup,
+.login {
+  background: #dad5e5;
+  height: 350px;
+  width: 250px;
+  box-shadow: none;
+  top: 200px;
+}
 
+.login {
+background-color: #E0E1DB;
+}
+
+.landing--btns {
+  display: flex;
+  gap: 20px;
+}
+
+.login--btn,
+.signup--btn {
+  background: #dad5e5;
+  padding: 10px 20px;
+  cursor: pointer;
+  width: 100px;
+  text-align: center;
+}
+.login--btn {
+  background-color: #E0E1DB;
+}
 /* homepage */
 .home {
   padding: 0 50px;
