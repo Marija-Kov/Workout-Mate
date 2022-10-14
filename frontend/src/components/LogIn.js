@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
 
 export default function LogIn(props){
 
@@ -21,7 +22,7 @@ export default function LogIn(props){
             />
             <button>Log me in</button>
             <br></br>
-            <button onClick={()=>props.showLogin()}>Not right now.</button>
+            <Link to="/"><button>Not right now.</button></Link>
         </form>
 
     )

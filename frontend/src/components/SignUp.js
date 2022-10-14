@@ -1,7 +1,8 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
 
 export default function SignUp(props){
-
+  console.log('signup rendered')
     return (
         <form className="signup">
           <h4>Sign up form</h4>
@@ -21,7 +22,7 @@ export default function SignUp(props){
             />
             <button>Sign me up!</button>
             <br></br>
-            <button onClick={()=>props.showSignup()}>No, thanks.</button>
+            <Link to="/"><button>No, thanks.</button></Link>
         </form>
 
     )

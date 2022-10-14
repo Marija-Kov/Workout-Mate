@@ -1,35 +1,25 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
-import SignUp from '../components/SignUp'
-import LogIn from '../components/LogIn'
+import Welcome from '../components/Welcome';
+
 
 export default function LandingPage(){
     console.log('landing page rendered')
-    const [signup, setSignup] = React.useState(false);
-    const [login, setLogin] = React.useState(false);
-    function showSignup(){
-        setSignup(prev => !prev)
-    }
-    function showLogin(){
-        setLogin(prev => !prev)
-    }
 
     return(
-        <div className='landing'>
-            <h1>Welcome to WorkoutMate</h1>
+        <div className='landing'>  
+            <Welcome />
             <Link to="/home">
                     <p>home page</p>
                 </Link>
             <div className="landing--btns">
-                <span className="login--btn" onClick={()=>showLogin()}>Log In</span>
-                <span className="signup--btn" onClick={()=>showSignup()}>Sign Up</span>
+            <Link to="/login">
+                <span className="login--btn">Log In</span>
+            </Link>
+            <Link to="/signup">
+                <span className="signup--btn">Sign Up</span>
+            </Link>
             </div>
-            {signup && <SignUp
-                         showSignup={()=>showSignup()} 
-                         />}
-            {login && <LogIn 
-                       showLogin={()=>showLogin()} 
-                      />}
         </div>
     )
 }
