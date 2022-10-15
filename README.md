@@ -68,7 +68,7 @@ Written in React using create-react-app.
 
 ## React router
 
-- What do I know about React router except how to set it up?
+- What do I know about React router except how to set it up? This readme section is a stub.
 ## Fetching data from the backend
 
 The page needs to fetch data from the backend in order to show it to the client. 
@@ -143,9 +143,9 @@ Creating useWorkoutsContext hook as a clean way to use context across components
 ### Process
 
 1. DONE: Build edit React component
-- * - discard button needs to be outside the form tag or it will trigger the update event.
+- * - discard button needs to be outside the form tag or it will trigger the update event?...
 
-2. Make it pop up on edit icon click and disappear on save click.
+2. DONE: Make it pop up on edit icon click and disappear on save click.
 
 - ISSUE "Cannot update a component (`Home`) while rendering a different component (`WorkoutDetails`)."
  SOLVED by wrapping props.showEdit() inside a function;
@@ -158,8 +158,9 @@ Or find a way to pass single workout data to just one?
 Import EditWorkout to WorkoutDetails.
 This would create an edit form for every workout that will have immediate access to all the existing workout data.
 
+##### How it went
 - PROBLEM: any details component sets showEditForm to true for all edit components.
-- There either needs to be a way for a details component to identify the corresponding edit component or the approach needs to be changed.
+- There needs to be a way for a details component to single out the corresponding edit component.
 
 #### Approach 2:
 
@@ -167,16 +168,17 @@ Import EditWorkout to Home page.
 
 Every time edit button is clicked on detail card with _id: X, EditWorkout fetches _id: X;
 
+##### How it went
 Before coming up with how to pass the correct document data to EditWorkout component, I tested the fetch method by adding any existing document _id to the fetch url.
 
 Although it shows in the console that the file has been fetched, I get an error: "workouts.map is not a function", as if .map() was running before the workouts were fetched on the home page.
 
 I suspect this could be prevented by preventing the rerendering of the Home page on the click of edit.
 
-Does the parent _have to_ rerender just so the child could render/mount? Seems so
-
 More detailed observation: when edit is clicked, home and details are rerendered, edit is rendered, document is logged in console, but then home rerenders again - twice - and that's when it throws the error.
 *
+#### Approach 1.1:
+
 Let's reconsider the edit component being rendered in the details component *and* the details component managing showEditForm state *unique to each details/form component*.
 This worked.
 
@@ -188,11 +190,41 @@ The edit component doesn't need to rerender with every input change either.
 
 The user should be able to discard a new workout as well.
 
+
+## User authentication feature - Stage I
+### Overview
+
+The user should first see a landing page where they can choose log in or sign up. 
+Upon signing up, the user should be able to log in and see the home page.
+### Process
+#### Step 1: Build the landing page for the app
+
+The page contains the link to Home page for easy access while the work is in progress.
+Built Signup and Login form that can be accessed from the landing page.
+
+- Signup and Login need to have paths to be in sync with the backend.
+- 'Welcome' heading should show both on signup and login.
+
+#### Step 2: Build user model, auth controller and routes
+
+##### Hash the passwords 
+ using a mongoose hook and bcrypt inside the userModel file.
+
+The following function fires right before the document is saved to the DB:
+
+userSchema.pre('save', async function (next) {
+  const salt = await bcrypt.genSalt();
+  this.password = await bcrypt.hash(this.password, salt) 
+  next();
+})
+
+________________________
+- Using MVC pattern.
+- Building auth routes.
+- Testing routes with postman.
+
  
 
-
-
-3. Update the context/reducer with update workouts option.
 
 
 
