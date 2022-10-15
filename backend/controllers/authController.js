@@ -2,7 +2,6 @@ const User = require('../models/userModel');
 const mongoose = require('mongoose');
 
 const handleErrors = (err) => {
-  console.log(err.message, err.code);
   let errors = { username: '', password:'' };
 
   if(err.message.includes('User validation failed')){
@@ -29,7 +28,6 @@ module.exports.signup_post = async (req, res) => {
      try {
  const user = await User.create({username, password});
    res.status(200).json(user);
-   console.log(user)
   } catch(err){
    const errors = handleErrors(err);
    res.status(400).json({errors});
