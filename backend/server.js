@@ -3,11 +3,10 @@ require('dotenv').config();
 
 const mongoose = require('mongoose');
 
-const routes = require('./routes/workouts');
+const workoutRoutes = require('./routes/workouts');
+const userRoutes = require('./routes/users');
 
 const app = express();
-
-
 
 app.use(express.json()); 
 
@@ -27,7 +26,8 @@ mongoose.connect(process.env.MONGO_URI, {useNewUrlParser: true, useUnifiedTopolo
 
 
 
-app.use('/', routes);
+app.use('/api/workouts', workoutRoutes);
+app.use('/api/users', userRoutes);
 
 
 
