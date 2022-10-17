@@ -10,8 +10,8 @@ export default function EditWorkout(props){
   const [emptyFields, setEmptyFields] = React.useState([]);
    console.log('edit workout rendered')
 
- const handleUpdate = async () => {    
-  //e.preventDefault();
+ const handleUpdate = async (e) => {    
+   e.preventDefault();
    const response = await fetch('/api/workouts/'+ props.id, {
        method: 'PATCH',
        body: JSON.stringify({
@@ -27,8 +27,7 @@ export default function EditWorkout(props){
    console.log(json)
     if (!response.ok) {
       setError('Please fill out the empty fields')
-    }
-    if (!title){
+      if (!title){
       setEmptyFields(prev => ['title', ...prev])
     }
     if (!reps){
@@ -37,11 +36,14 @@ export default function EditWorkout(props){
     if (!load){
       setEmptyFields(prev => ['load', ...prev])
     }
+    }
+    
     if (response.ok){
         setEmptyFields([]);
         console.log('workout updated', json)
-        props.showEdit()
-        //dispatch({type: 'UPDATE_ONE', payload: json})
+        props.showEdit();
+        props.wasEdited();
+        dispatch({type: 'UPDATE_ONE', payload: json})
     }
  }
     return(
@@ -79,7 +81,7 @@ export default function EditWorkout(props){
                    'error' : ''}
             />
         <div className="btns">
-       <button onClick={()=>handleUpdate()}>Save changes</button> 
+       <button onClick={(e)=>handleUpdate(e)}>Save changes</button> 
         <button className="discard" onClick={()=>props.showEdit()}>Discard changes</button>
        </div>
        {error && <div className="error">{error}</div>}   
