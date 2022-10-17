@@ -6,7 +6,7 @@ router.get('/signup', authController.signup_get);
 
 router.post('/', authController.signup_post);
 
-router.get('/login', authController.login_get);
+router.get('/', authController.login_get);
 
 router.post('/login', authController.login_post);
 
