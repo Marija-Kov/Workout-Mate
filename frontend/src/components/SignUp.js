@@ -10,6 +10,7 @@ export default function SignUp(props){
   const [error, setError] = React.useState(null);
   const [invalidFields, setInvalidFields] = React.useState([]);
   const [success, setSuccess]=React.useState(false);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const user = {username, password};
@@ -25,14 +26,13 @@ export default function SignUp(props){
     if (!response.ok) {
       setError([json.errors.username, json.errors.password])
       setSuccess(false);
-    if (!username || json.errors.username){
-      setInvalidFields(prev => ['username', ...prev])
+      if (!username || json.errors.username){
+        setInvalidFields(prev => ['username', ...prev])
+      }
+      if (!password || json.errors.password){
+        setInvalidFields(prev => ['password', ...prev])
+      }  
     }
-    if (!password || json.errors.password){
-      setInvalidFields(prev => ['password', ...prev])
-    }  
-    }
-    
     
     if (response.ok) {
       setUsername('');
@@ -49,7 +49,7 @@ export default function SignUp(props){
       <>
         <form className="signup">
           <h4>Sign up form</h4>
-          <label>username</label>
+          <label>username:</label>
           <input 
             type="text" 
             name="username" 
@@ -60,7 +60,7 @@ export default function SignUp(props){
             className={invalidFields.includes('username') ?
                    'error' : ''}
             />
-        <label>password</label>
+        <label>password:</label>
           <input 
             type="password" 
             name="password" 
@@ -71,7 +71,10 @@ export default function SignUp(props){
             className={invalidFields.includes('password') ?
                    'error' : ''}
             />
+           <div className="btns">
             <button onClick={(e)=>handleSubmit(e)}>Sign me up!</button>
+            <Link to="/"><button className="nothanks">No, thanks.</button></Link>
+            </div>
             {error && <div className="error">{error}</div>} 
             {success &&
         <div className="success">
@@ -82,10 +85,8 @@ export default function SignUp(props){
           with your account.
         </div>
         }
-            <br></br>
-            <Link to="/"><button>No, thanks.</button></Link>
         </form>
-        
+                
         </>
 
     )
