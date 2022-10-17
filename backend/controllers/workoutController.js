@@ -46,12 +46,12 @@ const updateItem = async (req, res) => {
  if(!mongoose.Types.ObjectId.isValid(id)){
      return res.status(404).json({error: `You're trying to get something that doesn't exist in the database. Please double-triple check the id of the item that you want to update.`})
  };
-const workout = await Workout.findOneAndUpdate({_id: id}, req.body, {new: true, runValidators: true}
-);
-  if(!workout){
-     return res.status(404).json({error: 'no such thing, sorry!'})
- };
- res.status(200).json(workout);
+try {
+const workout = await Workout.findOneAndUpdate({_id: id}, req.body, {new: true, runValidators: true}); 
+res.status(200).json(workout);
+} catch (error) {
+  res.status(400).json({error: error.message})
+ }
 };
 
 const deleteItem = async (req, res) => {
