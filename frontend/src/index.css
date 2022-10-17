@@ -5,6 +5,7 @@
 :root {
   --primary: #373737;
   --error: #e7195a;
+  --success: #16644a;
 }
 
 body {
@@ -69,7 +70,7 @@ header a {
 }
 
 .login {
-background-color: #E0E1DB;
+background-color: #bbebec;
 }
 
 .landing--btns {
@@ -88,6 +89,7 @@ background-color: #E0E1DB;
 .login--btn {
   background-color: #E0E1DB;
 }
+
 /* homepage */
 .home {
   padding: 0 50px;
@@ -133,20 +135,25 @@ background-color: #E0E1DB;
   right: 45px;
 }
 .date {
-  color: #565656;
+  color: #797979;
 }
 
 /* new workout form */
 label,
 input {
   display: block;
+  color: var(--primary);
+}
+
+label {
+  font-size: 14px;
 }
 
 input {
   padding: 10px;
   max-width: 274px;
   margin: 0 auto;
-  margin-top: 8px;
+  margin-top: 6px;
   margin-bottom: 20px;
   width: 100%;
   border: 1px solid #ddd;
@@ -167,6 +174,13 @@ form {
   left: 30%;
 }
 
+.login,
+.signup {
+  padding-top: 5px;
+  position: relative;
+  top: 80px;
+}
+
 .update {
   background: #E0E1DB;
 }
@@ -182,6 +196,7 @@ margin: 0 auto;
 }
 
 form h4 {
+  color: var(--primary);
   font-weight: 400;
   padding-bottom: 10px;
   border-bottom: solid 1px #c9b9eb;
@@ -190,12 +205,19 @@ form h4 {
 form button,
 .add--workout {
   background: var(--primary);
-  border: 0;
+  border: solid 1px var(--primary);
   color: #fff;
   padding: 10px 30px;
   font-family: "Poppins";
   border-radius: 50px;
   cursor: pointer;
+  transition: 0.3s;
+}
+
+form button:hover,
+.add--workout:hover {
+  background:#ddd;
+  color: var(--primary);
 }
 
 .add--workout {
@@ -206,6 +228,32 @@ width: 100%;
 max-width: 320px;
 }
 
+.nothanks {
+  border: none;
+  font-size: x-small;
+  padding: 5px 30px;
+  background: gray;
+}
+.nothanks:hover {
+  background: var(--primary);
+  color: #fff;
+}
+
+.success {
+  color: var(--success);
+  border: solid 1px var(--success);
+  font-size: 14px;
+  background: #b2e6d4;
+  padding: 5px;
+  position: relative;
+  top: -45px;
+}
+
+.success > a {
+  font-weight: 600;
+  color: var(--success);
+}
+
 .btns {
   display: grid;
   grid-template-rows: 1fr 1fr;
@@ -213,17 +261,17 @@ max-width: 320px;
   padding: 10px 30px;
 }
 
-.discard{
+.btns > .discard{
   background: grey;
+  border: solid 1px transparent;
 }
 
 div.error {
-  padding: 10px;
-  background: #ffefef;
+  padding: 5px;
+  background: #fcd7d7;
   border: 1px solid var(--error);
   color: var(--error);
-  border-radius: 4px;
-  margin: 20px 0;
+  font-size: 14px;
 }
 
 input.error {
