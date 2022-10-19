@@ -1,5 +1,10 @@
 const User = require('../models/userModel');
 const mongoose = require('mongoose');
+const jwt = require('jsonwebtoken');
+
+const createToken = (_id) => {
+return jwt.sign({_id}, process.env.SECRET, {expiresIn: '3d'})
+}
 
 const handleErrors = (err) => {
   let errors = { username: '', password:'' };
@@ -15,15 +20,12 @@ const handleErrors = (err) => {
   return errors
 }
 
-module.exports.signup_get = (req, res) => {
-    res.json({render: "signup get"})
-}
 
 module.exports.login_get = async (req, res) => {
     const {username, password} = req.body;
     //find document by username
      try {
-       const user = await User.find({username: username});
+       const user = await User.findOne({username});
     res.status(200).json(user);  
      } catch (err) {
     const errors = handleErrors(err);
@@ -34,14 +36,32 @@ module.exports.login_get = async (req, res) => {
 module.exports.signup_post = async (req, res) => {
  const {username, password} = req.body;
      try {
- const user = await User.create({username, password});
-   res.status(200).json(user);
+ //  const user = await User.create({username, password});
+ //---or with static signup method:
+ const user = await User.signup(username, password);
+ //--- create a webtoken:
+ const token = createToken(user._id);
+ res.status(200).json({username, token});
   } catch(err){
-   const errors = handleErrors(err);
-   res.status(400).json({errors});
+   //  const errors = handleErrors(err);
+   //  res.status(400).json({errors});
+   //---or with static signup method:
+  res.status(400).json({err: err.message});
   }
 }
 
-module.exports.login_post = (req, res) => {
-    res.send('user login')
+module.exports.login_post = async (req, res) => {
+    const {username, password} = req.body;
+    try{
+      //const user = await User.findOne({username, password});
+      //---or with static login method:
+      const user = await User.login(username, password);
+      const token = createToken(user._id);
+       res.status(200).json({username, token});
+    } catch(err){
+     //  const errors = handleErrors(err);
+     //  res.status(400).json({errors});
+      //---with static login method:
+      res.status(400).json({err: err.message});
+    }
 }
