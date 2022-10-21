@@ -1,10 +1,12 @@
 import React from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Home from './pages/Home'
-import LandingPage from './pages/LandingPage'
+// import LandingPage from './pages/LandingPage'
 import Navbar from './components/Navbar'
-import SignUp from './components/SignUp'
-import LogIn from './components/LogIn'
+// import SignUp from './components/SignUp'
+// import LogIn from './components/LogIn'
+import Login from './pages/Login'
+import Signup from './pages/Signup'
 
 function App() {
   return (
@@ -13,13 +15,10 @@ function App() {
     <Navbar />
     <div className="pages">
       <Routes>
-         <Route
-        path="/"
-        element={<LandingPage/>}/>
-        <Route path="/login" element={<LogIn />} /> 
-        <Route path="/signup" element={<SignUp />} />   
+        <Route path="/login" element={<Login />} /> 
+        <Route path="/signup" element={<Signup />} />   
         <Route
-        path="/home"
+        path="/"
         element={<Home />}
         />
       </Routes>
