@@ -46,7 +46,7 @@ module.exports.signup_post = async (req, res) => {
    //  const errors = handleErrors(err);
    //  res.status(400).json({errors});
    //---or with static signup method:
-  res.status(400).json({err: err.message});
+  res.status(400).json({error: err.message});
   }
 }
 
@@ -62,6 +62,6 @@ module.exports.login_post = async (req, res) => {
      //  const errors = handleErrors(err);
      //  res.status(400).json({errors});
       //---with static login method:
-      res.status(400).json({err: err.message});
+      res.status(400).json({error: err.message});
     }
 }
