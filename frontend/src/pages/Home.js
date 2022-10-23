@@ -2,22 +2,30 @@ import React from 'react';
 import WorkoutDetails from '../components/WorkoutDetails'
 import WorkoutForm from '../components/WorkoutForm'
 import { useWorkoutsContext } from '../hooks/useWorkoutContext'
+import { useAuthContext } from '../hooks/useAuthContext';
 
 export default function Home() {
     const [addWorkoutForm, setAddWorkoutForm] = React.useState(false);
     const { workouts, dispatch } = useWorkoutsContext(); // replacing local state
+    const { user } = useAuthContext();
    console.log('home page rendered')
     React.useEffect(()=> {
-        fetch('/api/workouts')
+      if(user){
+        fetch('/api/workouts', {
+         headers: {
+             'Authorization': `Bearer ${user.token}`
+         }
+        })
         .then(response => response.json())
         .then(data => {
-             dispatch({type: 'SET_WORKOUTS', payload: data});       
+             dispatch({type: 'SET_WORKOUTS', payload: data});            
         })
-        .catch(err => console.log(`ERROR: ${err}`));
-
+        .catch(err => console.log(`ERROR: ${err}`));  
+       }
         return ()=>{console.log('cleanup here')}
 
-    }, []);
+    }, [dispatch, user]);
+
    function hideForm(){
        setAddWorkoutForm(false)
    }
@@ -32,6 +40,7 @@ export default function Home() {
                         reps={workout.reps}
                         load={workout.load}
                         createdAt={workout.createdAt}
+                        updatedAt={workout.updatedAt}
                         />
                   )
                 )}

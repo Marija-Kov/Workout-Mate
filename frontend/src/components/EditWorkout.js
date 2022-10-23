@@ -1,8 +1,10 @@
 import React from 'react';
 import { useWorkoutsContext } from '../hooks/useWorkoutContext';
+import { useAuthContext } from '../hooks/useAuthContext';
 
 export default function EditWorkout(props){
   const { dispatch } = useWorkoutsContext();
+  const { user } = useAuthContext();
   const [title, setTitle] = React.useState(props.title);
   const [reps, setReps] = React.useState(props.reps);
   const [load, setLoad] = React.useState(props.load);
@@ -12,6 +14,10 @@ export default function EditWorkout(props){
 
  const handleUpdate = async (e) => {    
    e.preventDefault();
+   if(!user){
+      setError('You must be logged in to do that')
+      return
+    }
    const response = await fetch('/api/workouts/'+ props.id, {
        method: 'PATCH',
        body: JSON.stringify({
@@ -20,7 +26,8 @@ export default function EditWorkout(props){
            load: load
        }), 
        headers: {
-        'Content-Type': 'application/json' 
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${user.token}` 
        } 
     });
     const json = await response.json(); 
@@ -42,7 +49,6 @@ export default function EditWorkout(props){
         setEmptyFields([]);
         console.log('workout updated', json)
         props.showEdit();
-        props.wasEdited();
         dispatch({type: 'UPDATE_ONE', payload: json})
     }
  }
