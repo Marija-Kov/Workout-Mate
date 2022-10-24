@@ -54,7 +54,7 @@ export default function EditWorkout(props){
  }
     return(
 
-        <form className="update" >
+        <form className="edit--form" >
           <h4>Edit workout</h4>
           <label>exercise title:</label>
           <input 
