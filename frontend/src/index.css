@@ -100,7 +100,14 @@ background-color: var(--login);
 .home {
   margin: 0;
   padding-top: 80px;
-  background: pink;
+  background: rgb(209, 255, 240);
+  background-image: url('./assets/gym-pattern.png');
+  width: 100vw;
+  height: 170%;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position-y: 40%;
   position: absolute;
   width: 100%;
   left: 0;
@@ -280,9 +287,13 @@ form.signup h4 {
   padding: 0;
   margin: 20px 0;
 }
-
+.edit--form,
+.workout--form {
+  height: 480px;
+}
 .edit--form {
   background: #E0E1DB;
+  height: 440px;
 }
 form button,
 .add--workout {
@@ -346,4 +357,16 @@ div.error {
 
 input.error {
   border: 1px solid var(--error);
+}
+
+@media screen and (max-width: 1000px){
+  /* header should change style only on home page */
+ .header--blur {
+   background: rgba(255, 255, 255, 0);
+   backdrop-filter: blur(10px);
+   box-shadow: 2px 2px 20px rgba(160, 160, 160, 0.616);
+ }
+ .workouts {
+   margin-top: 40px;
+ }
 }
