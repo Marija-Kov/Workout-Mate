@@ -1,27 +1,46 @@
-/* google font */
+/* Fonts */
+
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;800&family=VT323&display=swap');
 
-/* layout */
+/* Layout */
+
 :root {
   --primary: #373737;
   --error: #e7195a;
   --success: #16644a;
+  --login: #5fcfca;
+  --signup: #b995e7;
+  --light-text: #a1a1a1;
 }
 
 body {
   background: #ededed;
+  overflow-x: hidden;
   margin: 0;
+  padding: 0;
   font-family: "Poppins";
-  align-content: center;
 }
 
-header .container {
-  max-width: 1400px;
+/* Header / Navbar */
+
+header {
+  position: fixed;
+  z-index: 5;
+  top: 0;
+  width: 100vw;
+}
+
+header > .container {
   margin: 0 auto;
-  padding: 10px 20px;
+  padding: 5px 30px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+
+header > .container > div {
+ display: flex;
+ gap: 20px;
 }
 
 header a {
@@ -30,70 +49,81 @@ header a {
   font-size: 0.6em;
 }
 
-.ham {
+
+.logout {
   cursor: pointer;
 }
-.menu {
-  display: flex;
-  gap: 20px;
-  height: fit-content;
-  padding: 30px;
-  background: #fff;
-  width: 200px;
-  z-index: 10;
-  position: absolute;
-  right: 0;
-  top: 0;
-}
-.close {
-  margin-left: 40px;
-  cursor: pointer;
-}
+
 .pages {
   max-width: 1400px;
   padding: 20px;
-  margin: 0 auto;
 }
-/* landing page */
-.landing {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
+
+/* Logged-out Navbar */
+
 .signup,
 .login {
-  background: #dad5e5;
-  height: 350px;
+  background: var(--signup);
   width: 250px;
   box-shadow: none;
-  top: 200px;
 }
 
 .login {
-background-color: #bbebec;
-}
-
-.landing--btns {
-  display: flex;
-  gap: 20px;
+background-color: var(--login);
 }
 
 .login--btn,
 .signup--btn {
-  background: #dad5e5;
-  padding: 10px 20px;
+  padding: 0px 4px;
+  padding-bottom: 5px;
   cursor: pointer;
-  width: 100px;
+  width: 50px;
   text-align: center;
+  font-size: 20px;
+  font-weight: 500;
+  border: solid 1px var(--primary);
+  border-radius: 20px;
+  transition: 0.3s;
 }
 .login--btn {
-  background-color: #E0E1DB;
+  border: solid 1px transparent;
+}
+.signup--btn:hover{
+  background: var(--signup);
+}
+.login--btn:hover {
+ background: var(--login);
 }
 
 /* homepage */
+
 .home {
-  padding: 0 50px;
+  margin: 0;
+  padding-top: 80px;
+  background: pink;
+  position: absolute;
+  width: 100%;
+  left: 0;
+  top: 0;
 }
+
+/* Logged-in Navbar */
+
+.hello--user {
+  color: var(--primary);
+}
+
+.logout--btn {
+ font-size: 14px;
+ color: var(--light-text);
+ cursor: pointer;
+ transition: 0.3s;
+}
+.logout--btn:hover{
+  color: var(--primary);
+}
+
+/* Workout details component */
 
 .workout-details {
   background: #fff;
@@ -138,7 +168,8 @@ background-color: #bbebec;
   color: #797979;
 }
 
-/* new workout form */
+/* All forms */
+
 label,
 input {
   display: block;
@@ -156,7 +187,7 @@ input {
   margin-top: 6px;
   margin-bottom: 20px;
   width: 100%;
-  border: 1px solid #ddd;
+  border: none;
   border-radius: 4px;
   box-sizing: border-box;
 }
@@ -174,34 +205,85 @@ form {
   left: 30%;
 }
 
+/* Login & Signup form */
+
+.form--container {
+    position:absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    width: 100vw;
+    height: 100%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+.form--container:has(.login){
+  background-image: url("./assets/pastel-gym-1.jpeg");
+}
+.form--container:has(.signup) {
+  background-image: url("./assets/pastel-gym-2.jpeg");
+}
+
+.form--container > h1 {
+  position: relative;
+  width: 300px;
+  left: 500px;
+  top: 150px;
+  font-size: 60px;
+  color: #ff61b8;
+}
+.form--container:has(.signup) > h1 {
+  color: #fd922e;
+  top: 190px;
+}
+.form--container:has(.signup) > h1 > p {
+  color: #b75fff;
+}
+.form--container > h1 > p {
+  font-size: 22px;
+  color: #fff;
+}
 .login,
 .signup {
   padding-top: 5px;
-  position: relative;
-  top: 80px;
+  position: absolute;
+  z-index: 0;
+  top: 0;
+  padding: 0 50px;
+  min-width: unset;
+  left: 0;
+  height: 100%;
+}
+.login > label,
+.signup > label {
+color: white;
+font-size: 16px;
 }
 
-.update {
+form.login h4,
+form.signup h4 {
+ margin-top: 200px;
+ color: #fff;
+ font-weight: 500;
+ font-size: 20px;
+ border-bottom: solid 1px #fff;
+}
+
+/* Add & Edit workout forms */
+
+.workout--form > h4,
+.edit--form > h4 {
+  font-size: 24px;
+  font-weight: 500;
+  padding: 0;
+  margin: 20px 0;
+}
+
+.edit--form {
   background: #E0E1DB;
 }
-
-.checky {
-display: grid;
-height: 30px;
-width: 200px;
-grid-template-columns: 1fr 5fr;
-padding: 20px;
-font-size: 14px;
-margin: 0 auto;
-}
-
-form h4 {
-  color: var(--primary);
-  font-weight: 400;
-  padding-bottom: 10px;
-  border-bottom: solid 1px #c9b9eb;
-}
-
 form button,
 .add--workout {
   background: var(--primary);
@@ -225,48 +307,36 @@ position: sticky;
 bottom: 20px;
 z-index: 5;
 width: 100%;
+margin: 0 35%;
 max-width: 320px;
 }
 
-.nothanks {
-  border: none;
-  font-size: x-small;
-  padding: 5px 30px;
-  background: gray;
-}
-.nothanks:hover {
-  background: var(--primary);
-  color: #fff;
-}
-
-.success {
-  color: var(--success);
-  border: solid 1px var(--success);
+.checky {
+  display: grid;
+  height: 30px;
+  width: 200px;
+  grid-template-columns: 1fr 5fr;
+  padding: 10px;
   font-size: 14px;
-  background: #b2e6d4;
-  padding: 5px;
-  position: relative;
-  top: -45px;
-}
-
-.success > a {
-  font-weight: 600;
-  color: var(--success);
+  margin: 0 auto;
 }
 
 .btns {
   display: grid;
   grid-template-rows: 1fr 1fr;
-  gap: 20px;
-  padding: 10px 30px;
+  gap: 10px;
+  padding: 0 30px;
 }
 
-.btns > .discard{
-  background: grey;
-  border: solid 1px transparent;
+button.discard {
+  background: rgb(170, 170, 170);
+  border: solid 1px rgb(170, 170, 170);
+  padding: 0;
+  margin: 0 50px;
 }
 
 div.error {
+  margin-top: 20px;;
   padding: 5px;
   background: #fcd7d7;
   border: 1px solid var(--error);
