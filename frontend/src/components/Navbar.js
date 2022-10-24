@@ -14,14 +14,14 @@ export default function Navbar(){
       logout()
    }
     return (
-        <header>
+        <header className={user ? "header--blur" : ""}>
             <div className="container">
-                <Link to="/">
-                    <h1>WorkoutMate</h1>
-                </Link>
+                 <h1>
+                <Link to="/">WorkoutMate</Link>
+                </h1>
                 {user && <div>
-                    <span>Hello, {user.username}!</span>
-                    <span className='logout' onClick={handleClick}>Log Out</span>
+                    <span className="hello--user">Hello, <strong>{user.username}</strong> !</span>
+                    <span className='logout--btn' onClick={handleClick}>Log Out</span>
                           </div>}
                 {!user && <div>
                      <span className="login--btn"><Link to="/login">Log In</Link></span>
