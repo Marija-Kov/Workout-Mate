@@ -12,8 +12,12 @@ const Signup = () => {
     }
 
     return (
+       <div className='form--container'>
+         <h1>
+          Meet your mate. 
+          <p>Flex some fiber.</p></h1>
         <form className='signup' onSubmit={handleSubmit}>
-          <h4>Sign up form</h4>
+          <h4>Create an account</h4>
           <label>username:</label>
           <input 
             type="text" 
@@ -31,6 +35,7 @@ const Signup = () => {
             <button disabled={isLoading}>Sign up</button>
             {error && <div className="error">{error}</div>} 
         </form>
+      </div>  
     )
 
 }
