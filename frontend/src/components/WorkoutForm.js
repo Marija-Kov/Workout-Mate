@@ -56,13 +56,14 @@ export default function WorkoutForm(props){
  }
 
     return (
-      <form className="create" onSubmit={handleSubmit}>
-          <h4>Add a new workout</h4>
+      <form className="workout--form" onSubmit={handleSubmit}>
+          <h4>New workout</h4>
           <label>exercise title:</label>
           <input 
             type="text" 
             name="title" 
             id="title" 
+            placeholder="ex: bench press"
             onChange={e=> setTitle(e.target.value)}
             value={title}
             className={emptyFields.includes('title') ?
@@ -92,7 +93,10 @@ export default function WorkoutForm(props){
        <input type="checkbox" />
        <label>I am not making this up</label>
        </p>
+       <div className="btns">
        <button>Add workout</button>  
+        <button className="discard" onClick={()=> props.hideForm()}>Not now</button>
+       </div>
        {error && <div className="error">{error}</div>}   
       </form>
       
