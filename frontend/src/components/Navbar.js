@@ -2,6 +2,7 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import { useLogout } from '../hooks/useLogout';
 import { useAuthContext } from '../hooks/useAuthContext';
+import Search from './Search';
 
 export default function Navbar(){
     const { user } = useAuthContext();
@@ -19,6 +20,7 @@ export default function Navbar(){
                  <h1>
                 <Link to="/">WorkoutMate</Link>
                 </h1>
+                {user && <Search />}
                 {user && <div>
                     <span className="hello--user">Hello, <strong>{user.username}</strong> !</span>
                     <span className='logout--btn' onClick={handleClick}>Log Out</span>

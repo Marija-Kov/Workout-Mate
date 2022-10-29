@@ -110,6 +110,7 @@ background-color: var(--login);
   background-position-y: 40%;
   position: absolute;
   width: 100%;
+  height: 100%;
   left: 0;
   top: 0;
 }
@@ -128,6 +129,30 @@ background-color: var(--login);
 }
 .logout--btn:hover{
   color: var(--primary);
+}
+
+/* Search bar */
+.search--bar {
+  margin-top: 20px;
+}
+.search--bar > button {
+ height:fit-content;
+ padding: 2px 3.5px;
+ margin: 5px 0;
+ position: relative;
+ left: -15px;
+ border: none;
+ border: solid 1px transparent;
+ background:var(--primary) ;
+ color: white;
+ border-radius: 100%;
+ cursor: pointer;
+}
+
+.search--bar > input{
+  height: 30px;
+  border-radius: 20px;
+  border: solid 1px var(--light-text);
 }
 
 /* Workout details component */
