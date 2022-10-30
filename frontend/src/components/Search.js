@@ -1,28 +1,13 @@
 import React from 'react'
-import { useWorkoutsContext } from "../hooks/useWorkoutContext";
-import { useAuthContext } from "../hooks/useAuthContext";
+import { useSearch } from '../hooks/useSearch';
 
-export default function Search(){
-      const { dispatch } = useWorkoutsContext();
-      const { user } = useAuthContext();
+export default function Search() {
+    const {search} = useSearch();
     const [query, setQuery] = React.useState('');
-    const handleSubmit = (e) =>{
+    
+    const handleSubmit = async (e) =>{
         e.preventDefault();
-          if (user) {
-            fetch("/api/workouts", {
-              headers: {
-                'Authorization': `Bearer ${user.token}`,
-              },
-            })
-              .then((response) => response.json())
-              .then((data) => {
-                let queried = query ? 
-                data.filter(e=>e.title.toLowerCase().includes(query.toLowerCase())) :
-                data;
-                dispatch({ type: "SET_WORKOUTS", payload: queried });
-              })
-              .catch((err) => console.log(`ERROR: ${err}`));
-          }
+        await search(query)
     }
     return (
       <form className="search--bar" onSubmit={handleSubmit}>
@@ -32,7 +17,7 @@ export default function Search(){
                onChange={e=>setQuery(e.target.value)}
                ></input>
         <button>
-          <span class="material-symbols-outlined">search</span>
+          <span className="material-symbols-outlined">search</span>
         </button>
       </form>
     );
