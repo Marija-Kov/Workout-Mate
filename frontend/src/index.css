@@ -132,17 +132,23 @@ background-color: var(--login);
 }
 
 /* Search bar */
+
 .search--bar {
   margin-top: 20px;
+  display: flex;
+  box-shadow: none;
+  height: unset;
+  min-width: unset;
+  top: unset;
+  padding: unset;
+  background: none;
 }
 .search--bar > button {
  height:fit-content;
- padding: 2px 3.5px;
- margin: 5px 0;
+ padding: 4px 4px 0 6px;
+ margin: 3px 0;
  position: relative;
- left: -15px;
- border: none;
- border: solid 1px transparent;
+ left: 5px;
  background:var(--primary) ;
  color: white;
  border-radius: 100%;
@@ -223,6 +229,11 @@ input {
   border-radius: 4px;
   box-sizing: border-box;
 }
+
+::placeholder {
+ color: var(--light-text);
+}
+
 form {
   background: #dad5e5;
   min-width: 300px; 
