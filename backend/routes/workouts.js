@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const { getAllItems,
-       getItem,
        addItem,
        deleteItem,
        updateItem } = require('../controllers/workoutController');
@@ -14,8 +13,6 @@ router.use(requireAuth);
 // that the workout methods can only be executed if there is an authorized user 
 // i.e. a 'user' property inside the request object.
 router.get('/', getAllItems);
-
-router.get('/:id', getItem);
 
 router.post('/', addItem);
 
