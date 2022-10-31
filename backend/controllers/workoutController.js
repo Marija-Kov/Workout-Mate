@@ -2,21 +2,14 @@ const Workout = require('../models/workoutModel');
 const mongoose = require('mongoose');
 
 const getAllItems = async (req, res) => {
+ const page = req.query.p || 0;
+ const itemsPerPage = 3;
  const user_id = req.user._id;
- const workouts = await Workout.find({user_id}).sort({createdAt: -1});
+ const workouts = await Workout.find({user_id})
+                               .sort({createdAt: -1})
+                               .skip(page * itemsPerPage)
+                               .limit(itemsPerPage);
   res.status(200).json(workouts)
-};
-
-const getItem = async (req, res) => {
- const { id } = req.params;
- const workout = await Workout.findById(id);
- if(!workout){
-     return res.status(404).json({error: 'no such thing, sorry!'})
- }
- if(!mongoose.Types.ObjectId.isValid(id)){
-     return res.status(404).json({error: 'No such workout'})
- }
- res.status(200).json(workout);
 };
 
 const addItem = async (req, res) => {
@@ -46,7 +39,7 @@ const addItem = async (req, res) => {
 const updateItem = async (req, res) => {
   const { id } = req.params;
  if(!mongoose.Types.ObjectId.isValid(id)){
-     return res.status(404).json({error: `You're trying to get something that doesn't exist in the database. Please double-triple check the id of the item that you want to update.`})
+     return res.status(404).json({error: `Invalid user id.`})
  };
 try {
 const workout = await Workout.findOneAndUpdate({_id: id}, req.body, {new: true, runValidators: true}); 
@@ -69,8 +62,8 @@ const deleteItem = async (req, res) => {
  res.status(200).json(workout);
 };
 
-module.exports = {getAllItems,
-       getItem,
+module.exports = {
+       getAllItems,
        addItem,
        deleteItem,
        updateItem}
