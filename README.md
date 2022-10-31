@@ -191,37 +191,18 @@ The edit component doesn't need to rerender with every input change either.
 The user should be able to discard a new workout as well.
 
 
-## User authentication feature - Stage I
+## User authentication feature
 ### Overview
 
-The user should first see a landing page where they can choose log in or sign up. 
-Upon signing up, the user should be able to log in and see the home page.
-### Process
-#### Step 1: Build the landing page for the app
+The user should see the login/sign up page when logged out and should only see the items they posted on the home page.
+Signing up would automatically log the user in and redirect to the home page.
+Logging out should take the user to the login form.
 
-The page contains the link to Home page for easy access while the work is in progress.
-Built Signup and Login form that can be accessed from the landing page.
+JWT should be created with every login for extra security.
 
-- Signup and Login need to have paths to be in sync with the backend.
-- 'Welcome' heading should show both on signup and login.
+## Search and pagination
 
-#### Step 2: Build user model, auth controller and routes
-
-##### Hash the passwords 
- using a mongoose hook and bcrypt inside the userModel file.
-
-The following function fires right before the document is saved to the DB:
-
-userSchema.pre('save', async function (next) {
-  const salt = await bcrypt.genSalt();
-  this.password = await bcrypt.hash(this.password, salt) 
-  next();
-})
-
-________________________
-- Using MVC pattern.
-- Building auth routes.
-- Testing routes with postman.
+Implemented a simple search filter on the frontend that works, but since implementing the pagination on the backend, only search results from the current page are displayed;
 
  
 
