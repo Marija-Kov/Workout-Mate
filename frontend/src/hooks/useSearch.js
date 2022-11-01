@@ -7,23 +7,28 @@ export const useSearch = () => {
     const { user } = useAuthContext();
 
     const search = async (query) => {
-      const response = await fetch("api/workouts", {
+        console.log(`searched ${query}`)
+      const response = await fetch(`api/workouts`, {
         headers: {
-          Authorization: `Bearer ${user.token}`,
+          "Authorization": `Bearer ${user.token}`,
+          "Content-Type": "application/json",
         },
       });
+
       const json = await response.json();
-      const data = query
-        ? json.filter((e) =>
-            e.title.toLowerCase().includes(query.toLowerCase())
-          )
-        : json;
+      console.log(json)
+
+      if(response.ok){
+        dispatch({type: "SET_WORKOUTS_BY_QUERY", payload: json})
+        // it should dispatch SET_WORKOUTS and the payload should be the workouts filtered by query on the backend.
+      }
+
+      
+      
       if(!response.ok){
         console.log(json.error)
       }
-      if(response.ok){
-        dispatch({type: "SET_WORKOUTS", payload: data})
-      }
+      
     }
     return { search }
 }
