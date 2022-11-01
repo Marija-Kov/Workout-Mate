@@ -12,6 +12,17 @@ const getAllItems = async (req, res) => {
   res.status(200).json(workouts)
 };
 
+const getItemsByTitle = async (req, res) => {
+   const page = req.query.p || 0;
+   const itemsPerPage = 3;
+   const {title} = req.body;
+ const workouts = await Workout.find({ title })
+                               .sort({ createdAt: -1 })
+                               .skip(page * itemsPerPage)
+                               .limit(itemsPerPage);
+ res.status(200).json(workouts);
+};
+
 const addItem = async (req, res) => {
     const {title, reps, load} = req.body;
     // let emptyFields = [];
@@ -64,6 +75,7 @@ const deleteItem = async (req, res) => {
 
 module.exports = {
        getAllItems,
+       getItemsByTitle,
        addItem,
        deleteItem,
        updateItem}
