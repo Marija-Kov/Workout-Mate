@@ -20,19 +20,6 @@ const handleErrors = (err) => {
   return errors
 }
 
-
-module.exports.login_get = async (req, res) => {
-    const {username, password} = req.body;
-    //find document by username
-     try {
-       const user = await User.findOne({username});
-    res.status(200).json(user);  
-     } catch (err) {
-    const errors = handleErrors(err);
-    res.status(400).json({errors});
-     }
-}
-
 module.exports.signup_post = async (req, res) => {
  const {username, password} = req.body;
      try {
