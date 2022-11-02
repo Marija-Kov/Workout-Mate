@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const { getAllItems,
-       getItemsByTitle,
        addItem,
        deleteItem,
        updateItem } = require('../controllers/workoutController');
@@ -15,8 +14,6 @@ router.use(requireAuth);
 // i.e. a 'user' property inside the request object.
 
 router.get('/', getAllItems);
-
-router.get('/:title', getItemsByTitle);
 
 router.post('/', addItem);
 

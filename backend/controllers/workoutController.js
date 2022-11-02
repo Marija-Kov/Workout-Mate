@@ -4,27 +4,24 @@ const mongoose = require('mongoose');
 const getAllItems = async (req, res) => {
  const page = req.query.p || 0;
  const itemsPerPage = 3;
+ const search = req.query.search || null;
  const user_id = req.user._id;
- const workouts = await Workout.find({user_id})
-                               .sort({createdAt: -1})
-                               .skip(page * itemsPerPage)
-                               .limit(itemsPerPage);
-  res.status(200).json(workouts)
-};
-
-const getItemsByTitle = async (req, res) => {
-   const page = req.query.p || 0;
-   const itemsPerPage = 3;
-   const {title} = req.body;
- const workouts = await Workout.find({ title })
-                               .sort({ createdAt: -1 })
-                               .skip(page * itemsPerPage)
-                               .limit(itemsPerPage);
- res.status(200).json(workouts);
+ try {
+   const workouts = await Workout.find(
+     search ? { user_id, title: search.toLowerCase() } : { user_id }
+   )
+     .sort({ createdAt: -1 })
+     .skip(page * itemsPerPage)
+     .limit(itemsPerPage);
+   res.status(200).json(workouts);
+ } catch (error) {
+   res.status(400).json({ error: error.message });
+ }
 };
 
 const addItem = async (req, res) => {
     const {title, reps, load} = req.body;
+    const user_id = req.user._id;
     // let emptyFields = [];
     // if(!title){
     //   emptyFields.push('title')
@@ -39,8 +36,7 @@ const addItem = async (req, res) => {
     //   res.status(400).json({error: 'Please fill in all the fields.', emptyFields})
     // };
   try {
-   const user_id = req.user._id;
-   const workouts = await Workout.create({title, reps, load, user_id});
+   const workouts = await Workout.create({title: title.trim().toLowerCase(), reps, load, user_id});
    res.status(200).json(workouts);
   } catch(error){
    res.status(400).json({error: error.message})
@@ -75,7 +71,6 @@ const deleteItem = async (req, res) => {
 
 module.exports = {
        getAllItems,
-       getItemsByTitle,
        addItem,
        deleteItem,
        updateItem}
