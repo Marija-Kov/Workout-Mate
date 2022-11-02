@@ -6,9 +6,10 @@ const getAllItems = async (req, res) => {
  const itemsPerPage = 3;
  const search = req.query.search || null;
  const user_id = req.user._id;
+
  try {
    const workouts = await Workout.find(
-     search ? { user_id, title: search.toLowerCase() } : { user_id }
+     search ? { user_id, title: new RegExp(`^${search.toLowerCase()}`)} : { user_id }
    )
      .sort({ createdAt: -1 })
      .skip(page * itemsPerPage)
