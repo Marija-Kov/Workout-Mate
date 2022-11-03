@@ -9,7 +9,6 @@ export default function WorkoutDetails(props){
     const [error, setError] = React.useState(null);
     const {dispatch} = useWorkoutsContext();
     const { user } = useAuthContext();
-    console.log(`details ${props.id} rendered`)
     const handleClick = ()=>{
          if(!user){
           setError('You must be logged in to do that')

@@ -1,30 +1,19 @@
 import React from 'react';
 import WorkoutDetails from '../components/WorkoutDetails'
 import WorkoutForm from '../components/WorkoutForm'
+import Pagination from '../components/Pagination'
 import { useWorkoutsContext } from '../hooks/useWorkoutContext'
-import { useAuthContext } from '../hooks/useAuthContext';
+// import { useAuthContext } from '../hooks/useAuthContext';
 
 export default function Home() {
     const [addWorkoutForm, setAddWorkoutForm] = React.useState(false);
-    const { workouts, dispatch } = useWorkoutsContext(); // replacing local state
-    const { user } = useAuthContext();
-   console.log('home page rendered')
-    React.useEffect(()=> {
-      if(user){
-        fetch('/api/workouts', {
-         headers: {
-             'Authorization': `Bearer ${user.token}`
-         }
-        })
-        .then(response => response.json())
-        .then(data => {
-             dispatch({type: 'SET_WORKOUTS', payload: data});            
-        })
-        .catch(err => console.log(`ERROR: ${err}`));  
-       }
-        return ()=>{console.log('cleanup here')}
-
-    }, [dispatch, user]);
+    const { workouts } = useWorkoutsContext(); 
+    console.log(workouts)
+    // const { user } = useAuthContext();
+    // React.useEffect(()=> {
+    //     fetchAPI(user, dispatch)
+    //     return ()=>{console.log('cleanup here')}  
+    // }, [dispatch, user]);
 
    function hideForm(){
        setAddWorkoutForm(false)
@@ -45,10 +34,27 @@ export default function Home() {
                   )
                 )}
             </div>
+            <Pagination />
             {addWorkoutForm && <WorkoutForm 
                                  hideForm={()=> hideForm()}/>}
            {!addWorkoutForm && <button className='add--workout' onClick={()=> setAddWorkoutForm(true)}>+ Add workout</button>}   
         </div>
     )
 };
+
+// function fetchAPI(user, dispatch) {
+//    if (user) {
+//      fetch("/api/workouts", {
+//        headers: {
+//          Authorization: `Bearer ${user.token}`,
+//        },
+//      })
+//        .then((response) => response.json())
+//        .then((data) => {
+//          dispatch({ type: "SET_WORKOUTS", payload: data });
+//          console.log(`HOME ${data.length}`)
+//        })
+//        .catch((err) => console.log(`ERROR: ${err}`));
+//    }
+// }
 
