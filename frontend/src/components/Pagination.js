@@ -10,7 +10,7 @@ export default function Pagination({page, limit, currPageItemsNum, flipPage}){
           disabled={page <= 0}
           onClick={() => flipPage(-1)}
         >
-          <span class="material-symbols-outlined">chevron_left</span>
+          <span className="material-symbols-outlined">chevron_left</span>
         </button>
         <button
           type="button"
@@ -18,7 +18,7 @@ export default function Pagination({page, limit, currPageItemsNum, flipPage}){
           disabled={currPageItemsNum < limit}
           onClick={() => flipPage(1)}
         >
-          <span class="material-symbols-outlined">chevron_right</span>
+          <span className="material-symbols-outlined">chevron_right</span>
         </button>
       </div>
     );
