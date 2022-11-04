@@ -10,11 +10,11 @@ const getAllItems = async (req, res) => {
  try {
    const workouts = await Workout.find(
      search ? { user_id, title: new RegExp(`^${search.toLowerCase()}`)} : { user_id }
-   )
+   ) // would be cool if i could get total number of items found
      .sort({ createdAt: -1 })
      .skip(page * itemsPerPage)
      .limit(itemsPerPage);
-   res.status(200).json(workouts);
+   res.status(200).json({workouts: workouts, limit: itemsPerPage});
  } catch (error) {
    res.status(400).json({ error: error.message });
  }
