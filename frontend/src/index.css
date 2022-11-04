@@ -395,6 +395,24 @@ input.error {
   border: 1px solid var(--error);
 }
 
+.material-symbols-outlined {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 48
+}
+
+.page--btn--container {
+  position: relative;
+  top: 50px;
+  display: flex;
+
+}
+.page--btn--container > button {
+  cursor: pointer;
+}
+
 @media screen and (max-width: 1000px){
   /* header should change style only on home page */
  .header--blur {
