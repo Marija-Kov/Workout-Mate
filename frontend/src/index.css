@@ -350,11 +350,11 @@ form button:hover,
 }
 
 .add--workout {
-position: sticky;
-bottom: 20px;
+position: fixed;
 z-index: 5;
 width: 100%;
 margin: 0 35%;
+bottom: 30px;
 max-width: 320px;
 }
 
