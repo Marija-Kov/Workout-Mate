@@ -4,19 +4,21 @@ export default function Pagination({page, limit, currPageItemsNum, flipPage}){
 
     return (
       <div className="page--btn--container">
-        <button 
-        type="button" 
-        className="prev--page" 
-        disabled={page <= 0}
-        onClick={() => flipPage(-1)}>
-          prev
+        <button
+          type="button"
+          className="prev--page"
+          disabled={page <= 0}
+          onClick={() => flipPage(-1)}
+        >
+          <span class="material-symbols-outlined">chevron_left</span>
         </button>
-        <button 
-        type="button" 
-        className="next--page"
-        disabled={currPageItemsNum<limit} 
-        onClick={() => flipPage(1)}>
-          next
+        <button
+          type="button"
+          className="next--page"
+          disabled={currPageItemsNum < limit}
+          onClick={() => flipPage(1)}
+        >
+          <span class="material-symbols-outlined">chevron_right</span>
         </button>
       </div>
     );

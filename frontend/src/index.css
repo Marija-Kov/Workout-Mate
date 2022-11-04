@@ -411,6 +411,23 @@ input.error {
 }
 .page--btn--container > button {
   cursor: pointer;
+  border: solid 1px var(--primary);
+  border-radius: 4px;
+  padding: 0 ;
+  color: var(--primary);
+  background: transparent;
+  transition: 0.3s;
+  height: 27px;
+}
+
+.page--btn--container > button:hover {
+  background: var(--primary);
+  color: white;
+}
+.page--btn--container > button:disabled {
+  border: solid 1px var(--light-text);
+  color: var(--light-text);
+  background: transparent;
 }
 
 @media screen and (max-width: 1000px){
