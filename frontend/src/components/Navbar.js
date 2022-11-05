@@ -27,8 +27,8 @@ export default function Navbar({page, setPage}){
                     <span className='logout--btn' onClick={handleClick}>Log Out</span>
                           </div>}
                 {!user && <div>
-                     <span className="login--btn"><Link to="/login">Log In</Link></span>
-                     <span className="signup--btn"><Link to="/signup">Sign Up</Link></span>
+                     <Link to="/login"><span className="login--btn">Log In</span></Link>
+                     <Link to="/signup"><span className="signup--btn">Sign Up</span></Link>
                           </div>}
                 {/* <span className='material-symbols-outlined ham'
                       onClick={()=>setDrop()}>

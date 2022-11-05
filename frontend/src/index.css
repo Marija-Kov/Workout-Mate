@@ -76,12 +76,11 @@ background-color: var(--login);
 
 .login--btn,
 .signup--btn {
-  padding: 0px 4px;
-  padding-bottom: 5px;
+  padding: 6px 8px;
   cursor: pointer;
   width: 50px;
   text-align: center;
-  font-size: 20px;
+  font-size: 14px;
   font-weight: 500;
   border: solid 1px var(--primary);
   border-radius: 20px;
