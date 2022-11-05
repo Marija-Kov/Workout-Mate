@@ -25,13 +25,14 @@ body {
 
 header {
   position: fixed;
+  left: 0;
   z-index: 5;
   top: 0;
   width: 100vw;
 }
 
 header > .container {
-  margin: 0 auto;
+  position: relative;
   padding: 5px 30px;
   display: flex;
   align-items: center;
@@ -41,6 +42,7 @@ header > .container {
 header > .container > div {
  display: flex;
  gap: 20px;
+ padding-right: 20px;
 }
 
 header a {
