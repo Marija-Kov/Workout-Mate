@@ -2,10 +2,10 @@ import React from 'react'
 import { useSearch } from '../hooks/useSearch';
 import Pagination from "./Pagination";
 
-export default function Search() {
+export default function Search({page, setPage}) {
     const {search, isLoading, limit, currPageItemsNum} = useSearch();
     const [query, setQuery] = React.useState('');
-    const [page, setPage] = React.useState(0)
+    
   
     React.useEffect(()=>{
       const fetchItems = async () => {

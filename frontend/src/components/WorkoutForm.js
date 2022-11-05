@@ -52,6 +52,7 @@ export default function WorkoutForm(props){
         console.log('new workout added', json)
         dispatch({type: 'CREATE_WORKOUT', payload: json})
         props.hideForm();
+        props.goToPageOne();
     }
  }
 

@@ -1,5 +1,6 @@
 import React from 'react';
 import { useLogin } from '../hooks/useLogin';
+import Navbar from "../components/Navbar";
 
 const Login = () => {
     const [username, setUsername] = React.useState('');
@@ -12,6 +13,8 @@ const Login = () => {
     }
 
     return (
+      <>
+      <Navbar />
       <div className='form--container'>
         <h1>
           We got your back. 
@@ -36,6 +39,7 @@ const Login = () => {
             {error && <div className="error">{error}</div>} 
         </form>
       </div>
+      </>
     )
 
 }
