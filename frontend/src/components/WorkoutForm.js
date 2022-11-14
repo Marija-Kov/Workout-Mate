@@ -11,23 +11,23 @@ export default function WorkoutForm(props){
   const [load, setLoad] = React.useState('');
   const [error, setError] = React.useState(null);
   const [emptyFields, setEmptyFields] = React.useState([]);
-// When you're overwhelmed with new info you can (temporarily) forget what you already know. This is a natural defense mechanism.
+
  const handleSubmit = async (e) => {    
    e.preventDefault();
    if(!user){
     setError('You must be logged in to do that')
     return
    }
-   const workout = {title, load, reps};  // because workouts is an array of objects with title, reps and load properties;
+   const workout = {title, load, reps};  
    const response = await fetch('/api/workouts', {
        method: 'POST',
-       body: JSON.stringify(workout), // request body is an OBJECT that needs to be turned into JSON string
+       body: JSON.stringify(workout), 
        headers: {
-        'Content-Type': 'application/json', // here we state that the content type is going to be JSON
+        'Content-Type': 'application/json', 
         'Authorization': `Bearer ${user.token}`
       } 
     });
-    const json = await response.json(); // turns JSON into object and reads it
+    const json = await response.json(); 
  
     if (!response.ok) {
       setError('Please fill out the empty fields')

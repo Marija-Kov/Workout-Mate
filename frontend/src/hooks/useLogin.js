@@ -1,9 +1,6 @@
 import React from 'react';
 import { useAuthContext } from './useAuthContext';
 
-// this should be like signup, but has to throw error when 
-// the entered username does not exist in the database
-
 export const useLogin = () => {
  const [error, setError] = React.useState(null);
  const [isLoading, setIsLoading] = React.useState(null); 

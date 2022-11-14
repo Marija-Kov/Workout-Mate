@@ -32,7 +32,7 @@ export const AuthContextProvider = (props) => {
     }, []);
     
 
-    console.log('AuthContext ', state);
+    //console.log('AuthContext ', state);
     return (
         <AuthContext.Provider value={{...state, dispatch}}>
             {props.children}

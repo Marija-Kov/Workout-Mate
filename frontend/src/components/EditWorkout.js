@@ -10,7 +10,6 @@ export default function EditWorkout(props){
   const [load, setLoad] = React.useState(props.load);
   const [error, setError] = React.useState(null);
   const [emptyFields, setEmptyFields] = React.useState([]);
-   console.log('edit workout rendered')
 
  const handleUpdate = async (e) => {    
    e.preventDefault();
