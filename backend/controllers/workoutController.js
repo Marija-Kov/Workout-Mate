@@ -5,7 +5,7 @@ const getAllItems = async (req, res) => {
  const page = req.query.p || 0;
  const itemsPerPage = 3;
  const search = req.query.search || null;
- const user_id = req.user._id;
+ const user_id = req.user._id; 
 
  try {
    const workouts = await Workout.find(
@@ -65,13 +65,32 @@ const deleteItem = async (req, res) => {
  const workout = await Workout.findOneAndDelete({_id: id});
 
   if(!workout){
-     return res.status(404).json({error: 'no such thing, sorry!'})
+     return res.status(404).json({error: 'Hmm, that item does not exist in the database.'})
  };
  res.status(200).json(workout);
+};
+
+const deleteAllUserItems = async (req, res) => {
+  const user_id = req.user._id;
+  if (!mongoose.Types.ObjectId.isValid(user_id)) {
+    return res
+      .status(404)
+      .json({
+        error: `The workout(s) and/or user does not exist.`,
+      });
+  }
+  const workout = await Workout.deleteMany({ user_id });
+
+  if (!workout) {
+    return res.status(404).json({ error: "no such thing, sorry!" });
+  }
+  res.status(200).json(workout);
 };
 
 module.exports = {
        getAllItems,
        addItem,
        deleteItem,
-       updateItem}
+       updateItem,
+       deleteAllUserItems
+      }

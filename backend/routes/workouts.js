@@ -1,23 +1,24 @@
 const express = require('express');
 const router = express.Router();
-const { getAllItems,
-       addItem,
-       deleteItem,
-       updateItem } = require('../controllers/workoutController');
+const {
+  getAllItems,
+  addItem,
+  deleteItem,
+  updateItem,
+  deleteAllUserItems
+} = require("../controllers/workoutController");
 
 const requireAuth = require('../middleware/requireAuth');
 
-
 router.use(requireAuth); 
-// ^ this has to fire before any workout methods to make sure
-// that the workout methods can only be executed if there is an authorized user 
-// i.e. a 'user' property inside the request object.
 
 router.get('/', getAllItems);
 
 router.post('/', addItem);
 
 router.delete('/:id', deleteItem);
+
+router.delete('/', deleteAllUserItems);
 
 router.patch('/:id', updateItem);
 
