@@ -22,7 +22,7 @@ export default function Search({page, setPage}) {
     const flipPage = (num) => {
       setPage(prev => prev + num)
     }
-   console.log(page)
+    
     return (
       <>
       <form className="search--bar" onSubmit={handleSubmit}>
