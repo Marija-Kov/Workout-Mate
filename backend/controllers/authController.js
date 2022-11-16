@@ -27,8 +27,9 @@ module.exports.signup_post = async (req, res) => {
  //---or with static signup method:
  const user = await User.signup(username, password);
  //--- create a webtoken:
- const token = createToken(user._id);
- res.status(200).json({username, token});
+ const id = user._id;
+ const token = createToken(id);
+ res.status(200).json({id, username, token});
   } catch(err){
    //  const errors = handleErrors(err);
    //  res.status(400).json({errors});
@@ -43,8 +44,9 @@ module.exports.login_post = async (req, res) => {
       //const user = await User.findOne({username, password});
       //---or with static login method:
       const user = await User.login(username, password);
-      const token = createToken(user._id);
-       res.status(200).json({username, token});
+      const id = user._id;
+      const token = createToken(id);
+       res.status(200).json({id, username, token});
     } catch(err){
      //  const errors = handleErrors(err);
      //  res.status(400).json({errors});
