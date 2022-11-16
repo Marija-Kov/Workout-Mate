@@ -21,6 +21,10 @@ export const workoutsReducer = (state, action) => { // state === previous state
             return {
                 workouts: state.workouts.filter(e => e._id !== action.payload._id )
             };
+        case 'DELETE_ALL':
+            return {
+                workouts: []
+            }
         default:
             return state; // ⟡ all cases return the state object;       
     }   // ⟡ returning values are about keeping local state in sync with the database, not interacting with it;
