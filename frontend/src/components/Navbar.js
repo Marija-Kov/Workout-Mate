@@ -35,9 +35,13 @@ const deleteAccount = async () => {
           {user && <Search page={page} setPage={setPage} />}
           {user && (
             <div>
-              <span className="hello--user">
-                Hello,
-                <span onClick={() => setDrop()}>{user.username}</span>!
+              <span className="hello--user" onClick={() => setDrop()}>
+                <span>Hello, {user.username}</span>
+                <img
+                  className="avatar"
+                  src={require("../assets/default-avatar.png")}
+                  alt="your avatar"
+                />
               </span>
             </div>
           )}
@@ -52,15 +56,16 @@ const deleteAccount = async () => {
             </div>
           )}
           {user && dropdown && (
-            <div className="dropdown">
+            <div className="user--dropdown">
+              <span className="user--dropdown--item" onClick={handleClick}>
+                Profile
+              </span>
               <span className="user--dropdown--item" onClick={handleClick}>
                 Log Out
               </span>
-              <span className="user--dropdown--item"
-                   onClick={deleteAccount}
-                   >
+              <span className="user--dropdown--item" onClick={deleteAccount}>
                 delete account
-                </span>
+              </span>
             </div>
           )}
         </div>
