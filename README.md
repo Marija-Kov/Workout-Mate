@@ -129,83 +129,38 @@ Creating useWorkoutsContext hook as a clean way to use context across components
 
 - Style update, conditional rendering of the input form.
 
-- BUG : When invalid input error is caused, the backend server crashes and does not recover until restarted.
-- SOLVED - quick fix by implementing the frontend error message solution instead of sending error from the backend. Will have to examine why the backend was crashing previously.
-
-
 ## Update item feature
 
-### Overview
 - Click on edit button renders the edit form that includes current content in all input fields.
 - Upon changing the content of the post, click on save/update button on the form shows the new content within the same card and the edit form disappears from the screen.
-
+- The user may discard edit form if they give up on updating the info.
 
 ### Process
 
-1. DONE: Build edit React component
-- * - discard button needs to be outside the form tag or it will trigger the update event?...
+- Build edit React component that pops up on edit icon click and disappears on save button click.
 
-2. DONE: Make it pop up on edit icon click and disappear on save click.
-
-- ISSUE "Cannot update a component (`Home`) while rendering a different component (`WorkoutDetails`)."
- SOLVED by wrapping props.showEdit() inside a function;
-
-Uh...should I have an edit form for each workout? 
-Or find a way to pass single workout data to just one?
-
-#### Approach 1:
-
-Import EditWorkout to WorkoutDetails.
-This would create an edit form for every workout that will have immediate access to all the existing workout data.
-
-##### How it went
-- PROBLEM: any details component sets showEditForm to true for all edit components.
-- There needs to be a way for a details component to single out the corresponding edit component.
-
-#### Approach 2:
-
-Import EditWorkout to Home page.
-
-Every time edit button is clicked on detail card with _id: X, EditWorkout fetches _id: X;
-
-##### How it went
-Before coming up with how to pass the correct document data to EditWorkout component, I tested the fetch method by adding any existing document _id to the fetch url.
-
-Although it shows in the console that the file has been fetched, I get an error: "workouts.map is not a function", as if .map() was running before the workouts were fetched on the home page.
-
-I suspect this could be prevented by preventing the rerendering of the Home page on the click of edit.
-
-More detailed observation: when edit is clicked, home and details are rerendered, edit is rendered, document is logged in console, but then home rerenders again - twice - and that's when it throws the error.
-*
-#### Approach 1.1:
-
-Let's reconsider the edit component being rendered in the details component *and* the details component managing showEditForm state *unique to each details/form component*.
-This worked.
-
-Also the fetch-patch request works and the result can be seen on both ends.
-
-- Optimization ideas: 
-The page doesn't need to re-render after patch request is sent. How can this be accomplished?
-The edit component doesn't need to rerender with every input change either.
-
-The user should be able to discard a new workout as well.
-
+- Import EditWorkout to WorkoutDetails which creates an edit form for every workout that will have immediate access to all the existing workout data. Every WorkoutDetails component manages a showEditForm state.
 
 ## User authentication feature
-### Overview
 
-The user should see the login/sign up page when logged out and should only see the items they posted on the home page.
-Signing up would automatically log the user in and redirect to the home page.
-Logging out should take the user to the login form.
+The user sees the login/sign up page when logged out and only sees the items they posted on the home page.
+Signing up automatically logs the user in and redirects to the home page.
+Logging out redirects the user to the login form.
 
-JWT should be created with every login for extra security.
+JWT is created with every login for extra security.
 
 ## Search and pagination
 
-Implemented a simple search filter on the frontend that works, but since implementing the pagination on the backend, only search results from the current page are displayed;
+- The docs are fetched upon every search query, and filtered on the backend, which displays correct number of search results on the UI.
+
+- Pages can be flipped back and forth, buttons disabled using the page limit data from the backend.
+
+- Add Workout component has access to page-flip function - flips to to page 0 once a workout is added.
+
+## Account deletion
+
+- The user can delete their account - workouts and username - from the database.
+
+
 
  
-
-
-
-
