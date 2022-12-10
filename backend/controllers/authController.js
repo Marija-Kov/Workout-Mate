@@ -6,19 +6,19 @@ const createToken = (_id) => {
 return jwt.sign({_id}, process.env.SECRET, {expiresIn: '3d'})
 }
 
-const handleErrors = (err) => {
-  let errors = { username: '', password:'' };
+// const handleErrors = (err) => {
+//   let errors = { username: '', password:'' };
 
-  if(err.message.includes('User validation failed')){
-    Object.values(err.errors).forEach(e => {  // by extracting ({properties}) here...
-        let errorsProperty = e.properties.path; // you could simplify the next couple of lines
-        errors[errorsProperty] = e.properties.message + ' ';
-    })
-  } else if(err.code === 11000){
-      errors.username = "That username already exists. Please enter a different one."
-  }
-  return errors
-}
+//   if(err.message.includes('User validation failed')){
+//     Object.values(err.errors).forEach(e => {  // by extracting ({properties}) here...
+//         let errorsProperty = e.properties.path; // you could simplify the next couple of lines
+//         errors[errorsProperty] = e.properties.message + ' ';
+//     })
+//   } else if(err.code === 11000){
+//       errors.username = "That username already exists. Please enter a different one."
+//   }
+//   return errors
+// }
 
 module.exports.signup_post = async (req, res) => {
  const {username, password} = req.body;
