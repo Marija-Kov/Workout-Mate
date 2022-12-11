@@ -457,6 +457,24 @@ input.error {
   background: transparent;
 }
 
+/* Delete account dialogue */
+
+.delete--account--dialogue {
+  position: absolute;
+  text-align: center;
+  padding: 20px;
+  top: 300px;
+  right: 50px;
+  width: 400px;
+  display: flex;
+  flex-direction: column;
+  background: pink;
+}
+.delete--account--dialogue > div {
+  display: flex;
+  gap: 20px;
+}
+
 @media screen and (max-width: 1000px){
   /* header should change style only on home page */
  .header--blur {

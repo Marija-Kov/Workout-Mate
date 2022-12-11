@@ -11,13 +11,18 @@ export default function Navbar({page, setPage}){
   const { deleteUser } = useDeleteUser();
   const { deleteAll } = deleteAllWorkouts();
   const [dropdown, setDropdown] = React.useState(true);
+  const [deleteAccountDialogue, setDeleteAccountDialogue] = React.useState(false);
   const { logout } = useLogout();
 
    function setDrop(){
        setDropdown(prev => !prev)
    }
-   const handleClick = () => {
+   function logOut() {
       logout()
+   }
+
+   function showDeleteAccount(){
+     setDeleteAccountDialogue(prev=>!prev)
    }
 
 const deleteAccount = async () => {
@@ -57,15 +62,30 @@ const deleteAccount = async () => {
           )}
           {user && dropdown && (
             <div className="user--dropdown">
-              <span className="user--dropdown--item" onClick={handleClick}>
-                Profile
-              </span>
-              <span className="user--dropdown--item" onClick={handleClick}>
+              <span className="user--dropdown--item">Profile</span>
+              <span className="user--dropdown--item" onClick={logOut}>
                 Log Out
               </span>
-              <span className="user--dropdown--item" onClick={deleteAccount}>
+              <span
+                className="user--dropdown--item"
+                onClick={showDeleteAccount}
+              >
                 delete account
               </span>
+            </div>
+          )}
+          {user && deleteAccountDialogue && (
+            <div className="delete--account--dialogue">
+              This is irreversible.<br></br> We won't be able to recover any of
+              your data.<br></br> Are you sure you want to proceed?
+              <div>
+                <button type="button" onClick={deleteAccount}>
+                  Yes, delete my account permanently.
+                </button>
+                <button type="button" onClick={showDeleteAccount}>
+                  No, I changed my mind.
+                </button>
+              </div>
             </div>
           )}
         </div>
