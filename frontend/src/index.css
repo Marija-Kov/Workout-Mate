@@ -188,6 +188,13 @@ background-color: var(--login);
   border: solid 1px var(--light-text);
 }
 
+.loading{
+  position: absolute;
+  top: 400px;
+  left: 200px;
+  color: rgb(187, 144, 182);
+}
+
 /* Workout details component */
 
 .workout-details {

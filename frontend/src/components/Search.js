@@ -42,6 +42,7 @@ export default function Search({page, setPage}) {
        limit={limit}
        flipPage={(num)=> flipPage(num)}
         />
+        {isLoading && <h1 className='loading'>Loading...</h1>}
       </>
     );
 }

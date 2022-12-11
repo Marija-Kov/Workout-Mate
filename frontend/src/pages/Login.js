@@ -35,8 +35,10 @@ const Login = () => {
             value={password}
             onChange={e=>setPassword(e.target.value)}
             />
+            <div className='forgot--password'>Forgot the password?</div>
             <button disabled={isLoading}>Log in</button>
             {error && <div className="error">{error}</div>} 
+            
         </form>
       </div>
       </>
