@@ -10,7 +10,8 @@ export default function Navbar({page, setPage}){
   const { user } = useAuthContext();
   const { deleteUser } = useDeleteUser();
   const { deleteAll } = deleteAllWorkouts();
-  const [dropdown, setDropdown] = React.useState(true);
+  const [dropdown, setDropdown] = React.useState(false);
+  const [username, setUsername] = React.useState('who are you?')
   const [deleteAccountDialogue, setDeleteAccountDialogue] = React.useState(false);
   const { logout } = useLogout();
 
@@ -20,9 +21,8 @@ export default function Navbar({page, setPage}){
    function logOut() {
       logout()
    }
-
    function showDeleteAccount(){
-     setDeleteAccountDialogue(prev=>!prev)
+     setDeleteAccountDialogue(prev => !prev)
    }
 
 const deleteAccount = async () => {
@@ -30,6 +30,13 @@ const deleteAccount = async () => {
   await deleteUser(user.id)
   logout()
 }
+React.useEffect(()=>{
+if(user){
+ const i = user.email.indexOf('@');
+ setUsername(`${user.email.slice(0,i)}`)
+}
+
+}, [])
 
     return (
       <header className={user ? "header--blur" : ""}>
@@ -41,7 +48,7 @@ const deleteAccount = async () => {
           {user && (
             <div>
               <span className="hello--user" onClick={() => setDrop()}>
-                <span>Hello, {user.username}</span>
+                <span>Hello, {username}</span>
                 <img
                   className="avatar"
                   src={require("../assets/default-avatar.png")}
@@ -62,7 +69,7 @@ const deleteAccount = async () => {
           )}
           {user && dropdown && (
             <div className="user--dropdown">
-              <span className="user--dropdown--item">Profile</span>
+              <span className="user--dropdown--item">Settings</span>
               <span className="user--dropdown--item" onClick={logOut}>
                 Log Out
               </span>

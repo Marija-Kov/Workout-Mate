@@ -3,13 +3,13 @@ import { useSignup } from '../hooks/useSignup';
 import Navbar from "../components/Navbar";
 
 const Signup = () => {
-    const [username, setUsername] = React.useState('');
+    const [email, setEmail] = React.useState('');
     const [password, setPassword] = React.useState('');
     const {signup, isLoading, error} = useSignup();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        await signup(username, password);
+        await signup(email, password);
     }
 
     return (
@@ -22,12 +22,12 @@ const Signup = () => {
           </h1>
           <form className="signup" onSubmit={handleSubmit}>
             <h4>Create an account</h4>
-            <label>username:</label>
+            <label>email address:</label>
             <input
               type="text"
-              placeholder="username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              placeholder="email address"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
             <label>password:</label>
             <input

@@ -3,13 +3,13 @@ import { useLogin } from '../hooks/useLogin';
 import Navbar from "../components/Navbar";
 
 const Login = () => {
-    const [username, setUsername] = React.useState('');
+    const [email, setEmail] = React.useState('');
     const [password, setPassword] = React.useState('');
     const {login, isLoading, error} = useLogin();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        await login(username, password);
+        await login(email, password);
     }
 
     return (
@@ -21,12 +21,12 @@ const Login = () => {
           <p>And your quads.</p></h1>
         <form className='login' onSubmit={handleSubmit}>
           <h4>User Login</h4>
-          <label>username:</label>
+          <label>email address:</label>
           <input 
             type="text" 
-            placeholder="username"
-            value={username}
-            onChange={e=>setUsername(e.target.value)}
+            placeholder="email address"
+            value={email}
+            onChange={e=>setEmail(e.target.value)}
             />
         <label>password:</label>
           <input 

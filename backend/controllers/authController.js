@@ -7,7 +7,7 @@ return jwt.sign({_id}, process.env.SECRET, {expiresIn: '3d'})
 }
 
 // const handleErrors = (err) => {
-//   let errors = { username: '', password:'' };
+//   let errors = { email: '', password:'' };
 
 //   if(err.message.includes('User validation failed')){
 //     Object.values(err.errors).forEach(e => {  // by extracting ({properties}) here...
@@ -15,21 +15,21 @@ return jwt.sign({_id}, process.env.SECRET, {expiresIn: '3d'})
 //         errors[errorsProperty] = e.properties.message + ' ';
 //     })
 //   } else if(err.code === 11000){
-//       errors.username = "That username already exists. Please enter a different one."
+//       errors.email = "That email already exists. Please enter a different one."
 //   }
 //   return errors
 // }
 
 module.exports.signup_post = async (req, res) => {
- const {username, password} = req.body;
+ const {email, password} = req.body;
      try {
- //  const user = await User.create({username, password});
+ //  const user = await User.create({email, password});
  //---or with static signup method:
- const user = await User.signup(username, password);
+ const user = await User.signup(email, password);
  //--- create a webtoken:
  const id = user._id;
  const token = createToken(id);
- res.status(200).json({id, username, token});
+ res.status(200).json({id, email, token});
   } catch(err){
    //  const errors = handleErrors(err);
    //  res.status(400).json({errors});
@@ -39,14 +39,14 @@ module.exports.signup_post = async (req, res) => {
 }
 
 module.exports.login_post = async (req, res) => {
-    const {username, password} = req.body;
+    const {email, password} = req.body;
     try{
-      //const user = await User.findOne({username, password});
+      //const user = await User.findOne({email, password});
       //---or with static login method:
-      const user = await User.login(username, password);
+      const user = await User.login(email, password);
       const id = user._id;
       const token = createToken(id);
-       res.status(200).json({id, username, token});
+       res.status(200).json({id, email, token});
     } catch(err){
      //  const errors = handleErrors(err);
      //  res.status(400).json({errors});
