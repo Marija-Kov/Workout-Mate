@@ -318,6 +318,15 @@ form {
 .form--container:has(.signup) > h1 > p {
   color: #b75fff;
 }
+.forgot--password {
+  color: #8b47c3;
+  font-size: 0.8em;
+  position: relative;
+  top: -15px;
+  cursor: pointer;
+  text-decoration: underline;
+  padding-bottom: 15px;
+}
 .form--container > h1 > p {
   font-size: 22px;
   color: #fff;
@@ -348,6 +357,20 @@ form.signup h4 {
  border-bottom: solid 1px #fff;
 }
 
+.reset--password {
+  top: 180px;
+  background: pink;
+  width: 80%;
+  height: 250px;
+}
+.reset--password > button {
+  margin: 0 15px;
+}
+.reset--password>button[type="button"] {
+  background: pink;
+  color: var(--primary);
+  transition: 0.2s;
+}
 /* Add & Edit workout forms */
 
 .workout--form > h4,
@@ -374,11 +397,12 @@ form button,
   font-family: "Poppins";
   border-radius: 50px;
   cursor: pointer;
-  transition: 0.3s;
+  transition: 0.2s;
 }
 
 form button:hover,
-.add--workout:hover {
+.add--workout:hover,
+.reset--password>button[type="button"]:hover {
   background:#ddd;
   color: var(--primary);
 }

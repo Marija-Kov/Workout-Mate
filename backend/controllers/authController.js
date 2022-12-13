@@ -1,10 +1,16 @@
 const User = require('../models/userModel');
-const mongoose = require('mongoose');
+const Token = require('../models/resetPasswordTokenModel');
 const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
+const bcrypt = require('bcrypt');
 
 const createToken = (_id) => {
 return jwt.sign({_id}, process.env.SECRET, {expiresIn: '3d'})
 }
+
+const sendEmail = require("../middleware/sendEmail");
+
+const clientUrl = process.env.EMAIL_HOST;
 
 // const handleErrors = (err) => {
 //   let errors = { email: '', password:'' };
@@ -34,6 +40,7 @@ module.exports.signup_post = async (req, res) => {
    //  const errors = handleErrors(err);
    //  res.status(400).json({errors});
    //---or with static signup method:
+   console.log(`Error at authController.js-->signup_post : ${err.message}`)
   res.status(400).json({error: err.message});
   }
 }
@@ -62,4 +69,37 @@ module.exports.user_deletion = async (req, res) => {
     return res.status(404).json({ error: "Hmm, the user doesn't exist in the database." });
   }
   res.status(200).json(user);
+};
+
+module.exports.reset_password_request = async (req, res) => {
+  const { email } = req.body;
+  const user = await User.findOne({email});
+  if(!user) {
+    return res.status(404).json({error: `The user with the provided email address doesn't exist in our database`})
+  }
+
+  let oldToken = await Token.findOne({ userId: user._id });
+  if (oldToken) await oldToken.deleteOne();
+  
+  let resetToken = crypto.randomBytes(32).toString("hex");
+  const hash = await bcrypt.hash(resetToken, Number(process.env.SALT));
+
+  await new Token({
+    userId: user._id,
+    token: hash,
+    createdAt: Date.now()
+  }).save();
+
+  const resetLink = `${clientUrl}/passwordReset?token=${resetToken}&id=${user._id}`;
+  
+  sendEmail(
+    user.email,
+    "Password Reset Request",
+    {
+      link: resetLink,
+    },
+    "../templates/requestPasswordReset.handlebars"
+  );
+
+  return resetLink
 };

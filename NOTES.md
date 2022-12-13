@@ -66,9 +66,8 @@ It's worth noting that all the data from the Model is passed on the request body
 
 Written in React using create-react-app.
 
-## React router
+## Set up React router
 
-- What do I know about React router except how to set it up? This readme section is a stub.
 ## Fetching data from the backend
 
 The page needs to fetch data from the backend in order to show it to the client. 
@@ -160,3 +159,19 @@ JWT is created with every login for extra security.
 ## Account deletion
 
 - The user can delete their account - workouts and username - from the database.
+
+## Password recovery feature
+
+- Built UI for sending password recovery request.
+- Built reset password request controller with corresponding routes.
+- Used installed nodemailer, crypto-api, handlebars.
+- Built sendEmail() middleware, recovery email template, resetPasswordToken model.
+#### ISSUES: 
+
+- Not sure if I entered suitable configuration details in sendEmail.js (EMAIL_HOST, USERNAME, PASSWORD, PORT) 
+
+- Email gets sent with outlook (proof in my outlook inbox) but rejected by: outlook, protonmail, gmail.
+
+- RESOLVED - I'm not able to sign up to the app with a new email. If I try to sign up with an existing email, it returns the corresponding error so the request reaches the database and finds irregularities there.
+Error message: "E11000 duplicate key error collection: mern_app.users index: username_1 dup key: { username: null }" * Deleting MongoDB 'users' collection and restarting the server made it work.
+
