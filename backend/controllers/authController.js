@@ -10,8 +10,6 @@ return jwt.sign({_id}, process.env.SECRET, {expiresIn: '3d'})
 
 const sendEmail = require("../middleware/sendEmail");
 
-const clientUrl = process.env.EMAIL_HOST;
-
 // const handleErrors = (err) => {
 //   let errors = { email: '', password:'' };
 
@@ -75,6 +73,7 @@ module.exports.reset_password_request = async (req, res) => {
   const { email } = req.body;
   const user = await User.findOne({email});
   if(!user) {
+    console.log('Error at authController, reset_password_request : The email does not exist in our database')
     return res.status(404).json({error: `The user with the provided email address doesn't exist in our database`})
   }
 
@@ -89,8 +88,8 @@ module.exports.reset_password_request = async (req, res) => {
     token: hash,
     createdAt: Date.now()
   }).save();
-
-  const resetLink = `${clientUrl}/passwordReset?token=${resetToken}&id=${user._id}`;
+  const clientUrl = process.env.EMAIL_HOST;
+  const resetLink = `${clientUrl}/reset-password?token=${resetToken}&id=${user._id}`;
   
   sendEmail(
     user.email,
@@ -100,6 +99,6 @@ module.exports.reset_password_request = async (req, res) => {
     },
     "../templates/requestPasswordReset.handlebars"
   );
-
-  return resetLink
+  
+  return res.status(200).json({resetLink: resetLink})
 };

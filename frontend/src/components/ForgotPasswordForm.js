@@ -15,9 +15,8 @@ export default function ForgotPasswordForm({ forgotPassword }) {
   }, [email, emailEntered]);
 
   const sendResetPasswordEmail = async (e) => {
-    await resetPassword(email)
     e.preventDefault();
-    console.log("please check your inbox");
+    await resetPassword(email)
   };
 
   return (

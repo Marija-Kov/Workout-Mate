@@ -168,9 +168,10 @@ JWT is created with every login for extra security.
 - Built sendEmail() middleware, recovery email template, resetPasswordToken model.
 #### ISSUES: 
 
-- Not sure if I entered suitable configuration details in sendEmail.js (EMAIL_HOST, USERNAME, PASSWORD, PORT) 
+- RESOLVED - The link in the password recovery email is not showing.
+ { link: resetLink, } --> {{link}} in hbs template (not resetLink)
 
-- Email gets sent with outlook (proof in my outlook inbox) but rejected by: outlook, protonmail, gmail.
+- RESOLVED - No recipients (protonmail, outlook, gmail) would accept the password recovery emails because they see it as spam. Adding 'from: process.env.EMAIL_USERNAME' to options in sendEmail.js made it work, all recipients are getting password recovery email.
 
 - RESOLVED - I'm not able to sign up to the app with a new email. If I try to sign up with an existing email, it returns the corresponding error so the request reaches the database and finds irregularities there.
 Error message: "E11000 duplicate key error collection: mern_app.users index: username_1 dup key: { username: null }" * Deleting MongoDB 'users' collection and restarting the server made it work.
