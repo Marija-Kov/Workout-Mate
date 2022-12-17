@@ -164,15 +164,31 @@ JWT is created with every login for extra security.
 
 - Built UI for sending password recovery request.
 - Built reset password request controller with corresponding routes.
-- Used installed nodemailer, crypto-api, handlebars.
-- Built sendEmail() middleware, recovery email template, resetPasswordToken model.
+- Used installed nodemailer, crypto, handlebars.
+- Built sendEmail() middleware, recovery email template.
+- Updated User model with resetPasswordToken and expiry date.
+- Built UI for password reset.
+##### Flow:
+
+1. Client sends request for password reset by entering email in the form
+2. Server responds by: 1) finding the user doc by email, 2) updating it with password reset token and token expiry time 3), creating password reset link, 4) sending an email from template with password reset link.
+3. When the user clicks on the link: 1) the token number is extracted from location.href, 2) the user can enter new password
+4. Once user clicks save, PATCH request is sent to the server with token number(in path) and password+confirmPassword(in body). If the request passes all validation, the password is updated, resetToken and expiry are removed from the doc; if the password is weak, passwords don't match or resetToken expires, errors are thrown.
+
 #### ISSUES: 
 
-- RESOLVED - The link in the password recovery email is not showing.
- { link: resetLink, } --> {{link}} in hbs template (not resetLink)
+- Errors are not showing on ResetPassword page..
 
-- RESOLVED - No recipients (protonmail, outlook, gmail) would accept the password recovery emails because they see it as spam. Adding 'from: process.env.EMAIL_USERNAME' to options in sendEmail.js made it work, all recipients are getting password recovery email.
+- RESOLVED - When the link in the password recovery email is clicked, ERR_SSL_PROTOCOL_ERROR is thrown. 
+* 'http' instead of 'https' (no SSL requirement) will do for development purposes. 
+
+- RESOLVED - The link in the password recovery email is not showing.
+ * { link: resetLink, } --> {{link}} in hbs template (not resetLink)
+
+- RESOLVED - No recipients (protonmail, outlook, gmail) would accept the password recovery emails because they see it as spam. 
+* Adding 'from: process.env.EMAIL_USERNAME' to options in sendEmail.js made it work, all recipients are getting password recovery email.
 
 - RESOLVED - I'm not able to sign up to the app with a new email. If I try to sign up with an existing email, it returns the corresponding error so the request reaches the database and finds irregularities there.
-Error message: "E11000 duplicate key error collection: mern_app.users index: username_1 dup key: { username: null }" * Deleting MongoDB 'users' collection and restarting the server made it work.
+Error message: "E11000 duplicate key error collection: mern_app.users index: username_1 dup key: { username: null }" 
+* Deleting MongoDB 'users' collection and restarting the server made it work.
 

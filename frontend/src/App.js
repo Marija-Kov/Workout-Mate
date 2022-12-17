@@ -5,6 +5,7 @@ import { useAuthContext } from './hooks/useAuthContext';
 const Home = React.lazy(() => import("./pages/Home"));
 const Login = React.lazy(() => import("./pages/Login"));
 const Signup = React.lazy(() => import("./pages/Signup"));
+const ResetPassword = React.lazy(() => import("./pages/ResetPassword"))
 
 function App() {
   const { user } = useAuthContext();
@@ -17,6 +18,7 @@ function App() {
         <Route path="/login" element={user ? <Navigate to="/" /> : <Login />} /> 
         <Route path="/signup" element={user ? <Navigate to="/" /> : <Signup />} />   
         <Route path="/" element={!user ? <Navigate to="/login" /> : <Home />} />
+        <Route path="reset-password" element={<ResetPassword />} />
       </Routes>
     </div>
     </BrowserRouter>

@@ -1,0 +1,60 @@
+import React from 'react';
+import { Link } from 'react-router-dom';
+
+export default function ResetPassword(){
+    const [password, setpassword] = React.useState('');
+    const [confirmPassword, setconfirmPassword] = React.useState('');
+    const [error, setError] = React.useState(null);
+    const [success, setSuccess] = React.useState(null);
+    const [token, setToken] = React.useState(null);
+
+    React.useEffect(()=> {
+      const start = window.location.href.indexOf('=')+1;
+      setToken(window.location.href.slice(start))
+    }, [])
+
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+      // you need access to the token here
+      const response = await fetch(`api/reset-password/${token}`, {
+        method: 'PATCH',
+        body: JSON.stringify({
+          password: password,
+          confirmPassword: confirmPassword,
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
+      const json = await response.json();  
+      if(!response.ok){
+        setError(json.error)
+      } else if(response.ok){
+        setSuccess(json.success)
+        setError(null)
+      } 
+    }
+    return (
+      <div className="form--container">
+        <form className="reset--password" onSubmit={handleSubmit}>
+          <label>New password:</label>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setpassword(e.target.value)}
+          />
+          <label>Confirm new password:</label>
+          <input
+            type="password"
+            value={confirmPassword}
+            onChange={(e) => setconfirmPassword(e.target.value)}
+          />
+          {!success && <button>Save</button>}
+          {error && <div className="error">{error}</div>}
+          {success && <div className="success">{success}</div>}
+          {success && <p><Link to="/login">Log in</Link></p>}
+        </form>
+      </div>
+    );
+
+}

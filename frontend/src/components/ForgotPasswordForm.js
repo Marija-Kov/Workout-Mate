@@ -1,22 +1,28 @@
 import React from "react";
-import { useResetPassword } from '../hooks/useResetPassword'
+//import { useResetPassword } from '../hooks/useResetPassword'
 
 export default function ForgotPasswordForm({ forgotPassword }) {
+  const [error, setError] = React.useState(null);
+  const [success, setSuccess] = React.useState(null);
   const [email, setEmail] = React.useState("");
-  const [emailEntered, setEmailEntered] = React.useState(false);
-  const { resetPassword } = useResetPassword();
-
-  React.useEffect(() => {
-    if (email) {
-      setEmailEntered(true);
-    } else {
-      setEmailEntered(false);
-    }
-  }, [email, emailEntered]);
 
   const sendResetPasswordEmail = async (e) => {
     e.preventDefault();
-    await resetPassword(email)
+        const response = await fetch(`api/reset-password`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            email: email,
+          }),
+        });
+        const json = await response.json();
+        if (!response.ok) {
+          setError(json.error)
+        }
+        if (response.ok) {
+          setSuccess(json.success)
+          setError(null)
+        }
   };
 
   return (
@@ -31,10 +37,12 @@ export default function ForgotPasswordForm({ forgotPassword }) {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
-        <button disabled={!emailEntered}>Proceed</button>
+        <button>Proceed</button>
         <button type="button" onClick={() => forgotPassword()}>
           Cancel
         </button>
+        {success && <div className="success">{success}</div>}
+        {error && <div className="error">{error}</div>}
       </form>
     </div>
   );

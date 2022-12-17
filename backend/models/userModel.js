@@ -13,7 +13,9 @@ const userSchema = new Schema({
         type: String,
         required: [true, 'Please provide a password.'],
         minlength: [8, 'Your password must be at least 8 characters long.']
-    }
+    },
+    resetPasswordToken: String,
+    resetPasswordTokenExpires: Date
 
 });
 

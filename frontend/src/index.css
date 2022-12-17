@@ -449,10 +449,18 @@ div.error {
   font-size: 14px;
 }
 
+div.success {
+  margin-top: 20px;
+  padding: 5px;
+  background: #b6f8db;
+  border: 1px solid var(--success);
+  color: var(--success);
+  font-size: 14px;
+}
+
 input.error {
   border: 1px solid var(--error);
 }
-
 .material-symbols-outlined {
   font-variation-settings:
   'FILL' 0,
