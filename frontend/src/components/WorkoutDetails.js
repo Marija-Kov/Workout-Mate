@@ -1,8 +1,9 @@
 import React from 'react';
 import formatDistanceToNow from 'date-fns/formatDistanceToNow';
-import EditWorkout from '../components/EditWorkout'
 import { useWorkoutsContext } from '../hooks/useWorkoutContext';
 import { useAuthContext } from '../hooks/useAuthContext';
+
+const EditWorkout = React.lazy(() => import("../components/EditWorkout"));
 
 export default function WorkoutDetails(props){
     const [showEditForm, setShowEditForm] = React.useState(false);
