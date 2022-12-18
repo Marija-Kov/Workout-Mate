@@ -6,7 +6,6 @@ export default function Search({page, setPage}) {
     const {search, isLoading, limit, currPageItemsNum} = useSearch();
     const [query, setQuery] = React.useState('');
     
-  
     React.useEffect(()=>{
       const fetchItems = async () => {
        await search(query, page);
@@ -42,7 +41,7 @@ export default function Search({page, setPage}) {
        limit={limit}
        flipPage={(num)=> flipPage(num)}
         />
-        {isLoading && <h1 className='loading'>Loading...</h1>}
+        {isLoading && <h1 className='loading'>Loading data...</h1>}
       </>
     );
 }

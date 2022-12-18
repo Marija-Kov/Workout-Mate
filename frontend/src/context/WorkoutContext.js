@@ -4,7 +4,7 @@ export const WorkoutsContext = React.createContext();
 
 export const workoutsReducer = (state, action) => { // state === previous state
     switch (action.type){                           // action === {type:.., payload:..}
-        case 'SET_WORKOUTS':                     // ⟡ state === {item: {type:.., payload:[..]}}
+        case 'SET_WORKOUTS':                        // ⟡ state === {item: {type:.., payload:[..]}}
             return { 
                 workouts: action.payload
             }; 
@@ -26,21 +26,18 @@ export const workoutsReducer = (state, action) => { // state === previous state
                 workouts: []
             }
         default:
-            return state; // ⟡ all cases return the state object;       
-    }   // ⟡ returning values are about keeping local state in sync with the database, not interacting with it;
+            return state;       
+    }   
 
 } 
 
 export const WorkoutsContextProvider  = (props) => {  
    const [state, dispatch] = React.useReducer(workoutsReducer, {
        workouts: null
-   }) // ...state === state.workouts ; the state object can be conveniently destructured within the context provider object; 
-   
+   }) 
     return (
         <WorkoutsContext.Provider value={{...state, dispatch}}> 
             { props.children } 
         </WorkoutsContext.Provider>
     )
 }
-
-// ⟡ props.children represents any component being wrapped/rendered within the context component.

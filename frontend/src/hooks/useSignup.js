@@ -3,10 +3,8 @@ import { useAuthContext } from './useAuthContext';
 
 export const useSignup = () => {
     const [error, setError] = React.useState(null);
-    // disabling the button while the request is being sent to prevent sending another one
     const [isLoading, setIsLoading] = React.useState(null); 
     const { dispatch } = useAuthContext();
-    // what happens after signup is fired:
     const signup = async (email, password) => {
         setIsLoading(true);
         setError(null);
@@ -19,7 +17,7 @@ export const useSignup = () => {
 
         if (!response.ok){
             setIsLoading(false);
-            setError(json.error); // remember backend: res.json({error:...})
+            setError(json.error);
         }
         if (response.ok) {
             localStorage.setItem('user', JSON.stringify(json));

@@ -10,7 +10,7 @@ const getAllItems = async (req, res) => {
  try {
    const workouts = await Workout.find(
      search ? { user_id, title: new RegExp(`^${search.toLowerCase()}`)} : { user_id }
-   ) // would be cool if i could get total number of items found
+   ) 
      .sort({ createdAt: -1 })
      .skip(page * itemsPerPage)
      .limit(itemsPerPage);
@@ -23,19 +23,6 @@ const getAllItems = async (req, res) => {
 const addItem = async (req, res) => {
     const {title, reps, load} = req.body;
     const user_id = req.user._id;
-    // let emptyFields = [];
-    // if(!title){
-    //   emptyFields.push('title')
-    // };
-    // if(!reps){
-    //   emptyFields.push('reps')
-    // };
-    // if(!load){
-    //   emptyFields.push('load')
-    // };
-    // if(emptyFields.length > 0){
-    //   res.status(400).json({error: 'Please fill in all the fields.', emptyFields})
-    // };
   try {
    const workouts = await Workout.create({title: title.trim().toLowerCase(), reps, load, user_id});
    res.status(200).json(workouts);
@@ -60,7 +47,7 @@ res.status(200).json(workout);
 const deleteItem = async (req, res) => {
  const { id } = req.params;
  if(!mongoose.Types.ObjectId.isValid(id)){
-     return res.status(404).json({error: `You're trying to delete something that doesn't exist in the database. Please double-triple check the id of the item that you want to delete.`})
+     return res.status(404).json({error: `You're trying to delete something that doesn't exist in the database.`})
  };
  const workout = await Workout.findOneAndDelete({_id: id});
 
@@ -94,3 +81,20 @@ module.exports = {
        updateItem,
        deleteAllUserItems
       }
+
+
+////------ Handling missing input server-side -----////
+
+    // let emptyFields = [];
+    // if(!title){
+    //   emptyFields.push('title')
+    // };
+    // if(!reps){
+    //   emptyFields.push('reps')
+    // };
+    // if(!load){
+    //   emptyFields.push('load')
+    // };
+    // if(emptyFields.length > 0){
+    //   res.status(400).json({error: 'Please fill in all the fields.', emptyFields})
+    // };

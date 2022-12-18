@@ -2,8 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 export default function ResetPassword(){
-    const [password, setpassword] = React.useState('');
-    const [confirmPassword, setconfirmPassword] = React.useState('');
+    const [password, setPassword] = React.useState('');
+    const [confirmPassword, setConfirmPassword] = React.useState('');
     const [error, setError] = React.useState(null);
     const [success, setSuccess] = React.useState(null);
     const [token, setToken] = React.useState(null);
@@ -41,13 +41,13 @@ export default function ResetPassword(){
           <input
             type="password"
             value={password}
-            onChange={(e) => setpassword(e.target.value)}
+            onChange={(e) => setPassword(e.target.value)}
           />
           <label>Confirm new password:</label>
           <input
             type="password"
             value={confirmPassword}
-            onChange={(e) => setconfirmPassword(e.target.value)}
+            onChange={(e) => setConfirmPassword(e.target.value)}
           />
           {!success && <button>Save</button>}
           {error && <div className="error">{error}</div>}

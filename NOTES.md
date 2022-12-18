@@ -47,6 +47,34 @@ After extracting the properties (destructuring), we call .create() method on the
 Once the documents are created, we can return a response.
 Because create() is asynchronous, we can make sure that the documents are created before we get the response by using await and putting async in front of the route handler function.
 
+##### Addendum: 
+This function is fired AFTER the document is saved to db: 
+
+userSchema.post('save', function (doc, next) {
+    console.log('new user created and saved', doc);
+    next(); // * 
+})
+
+Fired BEFORE the document is saved to db: 
+
+userSchema.pre('save', async function (next) {  // ** 
+   const salt = await bcrypt.genSalt();
+   this.password = await bcrypt.hash(this.password, salt);
+// *** 
+    next();
+})
+
+
+
+-* next has to be called at the end of any mongoose middleware/hook or the process will hang and the response will not be sent to the client
+
+-** Why not ()=> ? not using arrow function because it doesn't bind 'this', 
+which we want to use to refer to the instance of the user that hasn't been created YET.
+
+-** a) We don't pass the 'doc' argument here because at the time the function is fired, the doc doesn't exist in the db yet. 
+
+-*** We can refer to the instance of the user here with 'this' (not 'User') because we have access to it LOCALLY before it's saved to the db .
+
 ## Controllers
 
 Creating controllers is all about migrating route handlers into a separate file. 
@@ -61,6 +89,42 @@ It's worth noting that all the data from the Model is passed on the request body
     res.json(item);
 };
 
+##### Addendum:
+Workout controller - andling missing input server-side:
+
+    let emptyFields = [];
+    if(!title){
+      emptyFields.push('title')
+    };
+    if(!reps){
+      emptyFields.push('reps')
+    };
+    if(!load){
+      emptyFields.push('load')
+    };
+    if(emptyFields.length > 0){
+      res.status(400).json({error: 'Please fill in all the fields.', emptyFields})
+    };
+
+Auth controller - Error handling outside static method:
+
+const handleErrors = (err) => {
+  let errors = { email: '', password:'' };
+
+  if(err.message.includes('User validation failed')){
+    Object.values(err.errors).forEach(e => {  // by extracting ({properties}) here...
+        let errorsProperty = e.properties.path; // you could simplify the next couple of lines
+        errors[ errorsProperty] = e.properties.message + ' ';
+    })
+  } else if(err.code === 11000){
+      errors.email = "That email already exists. Please enter a different one."
+  }
+  return errors
+}
+
+....}catch(err){
+ res.status(400).json({errors});
+}
 
 ## Frontend
 
