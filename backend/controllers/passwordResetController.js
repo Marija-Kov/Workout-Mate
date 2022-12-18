@@ -41,13 +41,19 @@ module.exports.reset_password = async (req, res) => {
   resetPasswordTokenExpires: { $gt: Date.now() }
 });
 if (!user) {
-  throw Error("Invalid or expired password reset token" );
+    return res.status(404).json({
+      error: `No reset token found`,
+    });  
 } 
 if (!validator.isStrongPassword(password)) {
-  throw Error("Password not strong enough");
+    return res.status(400).json({
+      error: `Password not strong enough`,
+    });  
 }
 if(password!==confirmPassword){
-  throw Error("Passwords must match")
+    return res.status(400).json({
+      error: `Passwords must match`,
+    });  
 }else{
  const salt = await bcrypt.genSalt(10);
  const hash = await bcrypt.hash(password, salt);

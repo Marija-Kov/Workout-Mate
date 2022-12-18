@@ -177,7 +177,9 @@ JWT is created with every login for extra security.
 
 #### ISSUES: 
 
-- Errors are not showing on ResetPassword page..
+- RESOLVED: Errors are not showing on ResetPassword page..
+* Status code methods were missing.
+
 
 - RESOLVED - When the link in the password recovery email is clicked, ERR_SSL_PROTOCOL_ERROR is thrown. 
 * 'http' instead of 'https' (no SSL requirement) will do for development purposes. 
