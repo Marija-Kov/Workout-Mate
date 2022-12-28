@@ -258,3 +258,10 @@ JWT is created with every login for extra security.
 Error message: "E11000 duplicate key error collection: mern_app.users index: username_1 dup key: { username: null }" 
 * Deleting MongoDB 'users' collection and restarting the server made it work.
 
+## Change profile picture feature
+
+- Created UserMenu component as a Navbar child component;
+
+
+
+
