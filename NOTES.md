@@ -261,6 +261,7 @@ Error message: "E11000 duplicate key error collection: mern_app.users index: use
 ## Change profile picture feature
 
 - Created UserMenu component as a Navbar child component;
+- Created UserSettings as a UserMenu child component; It contains a file input form. Once the file is chosen and upload button is clicked, the chosen file is logged into the console.
 
 
 

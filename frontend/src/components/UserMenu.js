@@ -2,6 +2,7 @@ import React from "react";
 import { useLogout } from "../hooks/useLogout";
 import { useDeleteUser } from "../hooks/useDeleteUser";
 import { deleteAllWorkouts } from "../hooks/useDeleteAllWorkouts";
+import UserSettings from "./UserSettings";
 
 export default function UserMenu({ user }) {
   const { deleteUser } = useDeleteUser();
@@ -9,6 +10,7 @@ export default function UserMenu({ user }) {
   const { logout } = useLogout();
   const [deleteAccountDialogue, setDeleteAccountDialogue] =
     React.useState(false);
+  const [userSettings, setUserSettings] = React.useState(true);
 
   function logOut() {
     logout();
@@ -23,10 +25,16 @@ export default function UserMenu({ user }) {
     logout();
   };
 
+  function closeUserSettings(){
+    setUserSettings(false)
+  }
+
   return (
     <>
       <div className="user--menu">
-        <span className="user--menu--item">Account settings</span>
+        <span className="user--menu--item" onClick={()=> setUserSettings(prev => !prev)}>
+          Settings
+        </span>
         <span className="user--menu--item" onClick={logOut}>
           Log Out
         </span>
@@ -34,6 +42,9 @@ export default function UserMenu({ user }) {
           delete account
         </span>
       </div>
+      
+      {userSettings && <UserSettings closeUserSettings={closeUserSettings}/>}
+
       {deleteAccountDialogue && (
         <div className="delete--account--dialogue">
           This is irreversible.<br></br> We won't be able to recover any of your
