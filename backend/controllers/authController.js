@@ -1,5 +1,6 @@
 const User = require('../models/userModel');
 const jwt = require('jsonwebtoken');
+const { cloudinary } = require('../middleware/cloudinary');
 
 
 const createToken = (_id) => {
@@ -29,6 +30,23 @@ module.exports.login_post = async (req, res) => {
       res.status(400).json({error: err.message});
     }
 }
+
+module.exports.user_update_patch = async (req, res) => {
+  const {id} = req.params;
+  try {
+   if(req.body.profileImg){
+    const profileImg = req.body.profileImg;
+    const uploadResponse = await cloudinary.uploader.upload(profileImg, {
+      upload_preset: 'dev_setups'
+    });
+    console.log(uploadResponse)
+   }
+   const user = await User.findOneAndUpdate({_id:id}, req.body, {new: true, runValidators: true}); 
+   res.status(200).json(user);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
 
 module.exports.user_deletion = async (req, res) => {
   const { id } = req.params;

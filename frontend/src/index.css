@@ -196,6 +196,11 @@ background-color: var(--login);
   cursor: pointer;
 }
 
+.user--settings > img {
+  display: block;
+  padding-bottom: 20px;
+}
+
 /* Search bar */
 
 .search--bar {

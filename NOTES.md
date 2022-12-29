@@ -260,8 +260,31 @@ Error message: "E11000 duplicate key error collection: mern_app.users index: use
 
 ## Change profile picture feature
 
+### Frontend
+
 - Created UserMenu component as a Navbar child component;
+
 - Created UserSettings as a UserMenu child component; It contains a file input form. Once the file is chosen and upload button is clicked, the chosen file is logged into the console.
+
+- Wrote functions in UserSettings that let the chosen files be read and previewed. Wrote a patch request within uploadImage function that takes base64EncodedImage to be sent as profileImg value.
+
+- Passed changeProfileImg function (that has control over setProfileImg state from Navbar --> UserMenu --> UserSettings where it can be set to the image of choice.
+
+### Backend
+
+- Updated userModel with profileImg property.
+
+- Installed cloudinary package and added cloudinary middleware.
+
+- Added user_update_patch to authController that requires cloudinary for storing files.
+
+- Updated users routes correspondingly.
+
+
+- * - Current state: the image is uploaded, shows on the home page, but is reset to default with every logout-login. Duplicates appear in cloudinary when switching images back and forth.
+
+
+
 
 
 

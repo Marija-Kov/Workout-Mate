@@ -7,7 +7,10 @@ import UserMenu from './UserMenu';
 export default function Navbar({page, setPage}){
   const { user } = useAuthContext();
   const [showUserMenu, setShowUserMenu] = React.useState(true);
-  const [username, setUsername] = React.useState('who are you?')
+  const [username, setUsername] = React.useState('who are you?');
+  const [profileImg, setProfileImg] = React.useState(
+    require("../assets/default-avatar.png")
+  );
 
    function userMenu(){
        setShowUserMenu(prev => !prev)
@@ -18,8 +21,11 @@ if(user){
  const i = user.email.indexOf('@');
  setUsername(`${user.email.slice(0,i)}`)
 }
-
 }, [])
+
+const changeProfileImg = (img) => {
+  setProfileImg(img)
+}
 
     return (
       <header className={user ? "header--blur" : ""}>
@@ -34,7 +40,7 @@ if(user){
                 <span>Hello, {username}</span>
                 <img
                   className="avatar"
-                  src={require("../assets/default-avatar.png")}
+                  src={profileImg}
                   alt="your avatar"
                 />
               </span>
@@ -50,7 +56,11 @@ if(user){
               </Link>
             </div>
           )}
-          {user && showUserMenu && <UserMenu user={user} />}
+          {user && showUserMenu && 
+           <UserMenu 
+            user={user} 
+            changeProfileImg={changeProfileImg}
+            />}
 
         </div>
       </header>

@@ -1,10 +1,12 @@
 import React from "react";
+import { useAuthContext } from "../hooks/useAuthContext";
 import { useLogout } from "../hooks/useLogout";
 import { useDeleteUser } from "../hooks/useDeleteUser";
 import { deleteAllWorkouts } from "../hooks/useDeleteAllWorkouts";
 import UserSettings from "./UserSettings";
 
-export default function UserMenu({ user }) {
+export default function UserMenu({changeProfileImg}) {
+  const { user } = useAuthContext();
   const { deleteUser } = useDeleteUser();
   const { deleteAll } = deleteAllWorkouts();
   const { logout } = useLogout();
@@ -42,8 +44,12 @@ export default function UserMenu({ user }) {
           delete account
         </span>
       </div>
-      
-      {userSettings && <UserSettings closeUserSettings={closeUserSettings}/>}
+
+      {userSettings && 
+        <UserSettings 
+         closeUserSettings={closeUserSettings}
+         changeProfileImg={changeProfileImg}
+         />}
 
       {deleteAccountDialogue && (
         <div className="delete--account--dialogue">
