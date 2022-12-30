@@ -38,6 +38,8 @@ module.exports.user_update_patch = async (req, res) => {
    if(req.body.profileImg){
     const profileImg = req.body.profileImg;
     const uploadResponse = await cloudinary.uploader.upload(profileImg, {
+      resource_type: 'image',
+      overwrite: true,
       upload_preset: 'dev_setups'
     });
     console.log(uploadResponse)

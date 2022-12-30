@@ -1,12 +1,10 @@
 import React from 'react'
-import { useAuthContext } from "../hooks/useAuthContext";
+import { useUpdateUser } from '../hooks/useUpdateUser';
 
-export default function UserSettings({closeUserSettings, changeProfileImg}) {
-    const { user } = useAuthContext();
-    const [error, setError] = React.useState(null);
+export default function UserSettings({closeUserSettings, showNewProfileImg}) {
+    const {updateUser, isLoading, error} = useUpdateUser();
     const [fileInputState, setFileInputState] = React.useState();
     const [selectedFile, setSelectedFile] = React.useState(); 
-    const [previewSource, setPreviewSource] = React.useState(); 
 
     const handleFileInputChange = (e) => {
         const file = e.target.files[0]
@@ -17,36 +15,14 @@ export default function UserSettings({closeUserSettings, changeProfileImg}) {
      const reader = new FileReader();
      reader.readAsDataURL(file);
      reader.onloadend = () => {
-      setPreviewSource(reader.result)
-      setSelectedFile(true)
+      setSelectedFile(reader.result); // reader.result --> base64EncodedImage
      }
    }
 
-   const handleUpdateProfile = (e) => {
-    e.preventDefault();
-    if(!selectedFile) return;
-    uploadImage(previewSource);
-   }
-
-   const uploadImage = async (base64EncodedImage) => {
-      const response = await fetch(`/api/users/${user.id}`, {
-        method: 'PATCH',
-        body: JSON.stringify({
-          profileImg: base64EncodedImage,
-        }),
-        headers: {'Content-type': 'application/json'}
-      });
-
-   const json = await response.json();
-
-   if (!response.ok) {
-     setError(json.error);
-   }
-    if (response.ok) {
-      changeProfileImg(json.profileImg)
-      console.log(json);
-      setError(null);
-    }
+   const handleUpdateProfile = async (e) => {
+     e.preventDefault();
+     if (!selectedFile) return;
+     await updateUser(selectedFile);
    }
 
   return (
@@ -54,20 +30,32 @@ export default function UserSettings({closeUserSettings, changeProfileImg}) {
       <form className="user--settings" onSubmit={handleUpdateProfile}>
         <span
           className="close--user--settings material-symbols-outlined"
-          onClick={() => closeUserSettings()}>
-            close </span>
+          onClick={() => closeUserSettings()}
+        >
+          close{" "}
+        </span>
         <h4>Profile settings</h4>
-          <label>Change profile image</label>
-          <input 
-          type="file" 
-          name="profile-image" 
-          value={fileInputState} 
-          onChange={handleFileInputChange} />
-        {previewSource && <img src={previewSource} style={{height: "100px"}} alt="the chosen file"></img>}     
-          <button className="upload--btn">Upload</button>
-        
+        <label>Change profile image</label>
+        <input
+          type="file"
+          name="profile-image"
+          value={fileInputState}
+          onChange={handleFileInputChange}
+        />
+        {selectedFile && (
+          <img
+            src={selectedFile}
+            style={{ height: "100px" }}
+            alt="the chosen file"
+          ></img>
+        )}
+        <button disabled={isLoading} className="upload--btn">
+          Upload
+        </button>
+        {error && <div className="error">{error}</div>}
+       {isLoading && <h3 style={{zIndex:"10"}}>Uploading..</h3>} 
       </form>
-     
+      
     </div>
   );
 }

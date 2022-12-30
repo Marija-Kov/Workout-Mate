@@ -5,7 +5,7 @@ import { useDeleteUser } from "../hooks/useDeleteUser";
 import { deleteAllWorkouts } from "../hooks/useDeleteAllWorkouts";
 import UserSettings from "./UserSettings";
 
-export default function UserMenu({changeProfileImg}) {
+export default function UserMenu() {
   const { user } = useAuthContext();
   const { deleteUser } = useDeleteUser();
   const { deleteAll } = deleteAllWorkouts();
@@ -34,7 +34,10 @@ export default function UserMenu({changeProfileImg}) {
   return (
     <>
       <div className="user--menu">
-        <span className="user--menu--item" onClick={()=> setUserSettings(prev => !prev)}>
+        <span
+          className="user--menu--item"
+          onClick={() => setUserSettings((prev) => !prev)}
+        >
           Settings
         </span>
         <span className="user--menu--item" onClick={logOut}>
@@ -45,11 +48,11 @@ export default function UserMenu({changeProfileImg}) {
         </span>
       </div>
 
-      {userSettings && 
-        <UserSettings 
-         closeUserSettings={closeUserSettings}
-         changeProfileImg={changeProfileImg}
-         />}
+      {userSettings && (
+        <UserSettings
+          closeUserSettings={closeUserSettings}
+        />
+      )}
 
       {deleteAccountDialogue && (
         <div className="delete--account--dialogue">

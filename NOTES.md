@@ -280,7 +280,7 @@ Error message: "E11000 duplicate key error collection: mern_app.users index: use
 
 - Updated users routes correspondingly.
 
-- Custom profile image is sent via user.profileImg to the UI with every login.
+- ISSUE: Newly-uploaded image won't show until after refresh, i.e. profile image state needs to be changed from UserSettings somehow.
 
 
 
