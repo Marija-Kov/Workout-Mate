@@ -169,6 +169,7 @@ background-color: var(--login);
   box-shadow: none;
   right: 1px;
   height: fit-content;
+  width: fit-content;
   text-align: left;
   padding-left: 50px;  
 }

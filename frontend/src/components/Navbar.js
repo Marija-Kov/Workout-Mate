@@ -11,7 +11,7 @@ export default function Navbar({page, setPage}){
   const [profileImg, setProfileImg] = React.useState(
     require("../assets/default-avatar.png")
   );
-
+  
    function userMenu(){
        setShowUserMenu(prev => !prev)
    }
@@ -20,7 +20,11 @@ React.useEffect(()=>{
 if(user){
  const i = user.email.indexOf('@');
  setUsername(`${user.email.slice(0,i)}`)
+ if(user.profileImg){
+   setProfileImg(user.profileImg)
+ }
 }
+
 }, [])
 
 const changeProfileImg = (img) => {

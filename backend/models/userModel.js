@@ -2,7 +2,6 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema; 
 const bcrypt = require('bcrypt');
 const validator = require('validator');
-const root = process.env.IMG_STORAGE_URL;
 
 const userSchema = new Schema({
     email:{
@@ -17,7 +16,6 @@ const userSchema = new Schema({
     },
     profileImg: {
         type: String,
-        get: v => `${root}${v}`  // v --> image file
     },
     resetPasswordToken: String,
     resetPasswordTokenExpires: Date

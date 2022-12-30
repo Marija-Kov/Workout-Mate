@@ -280,8 +280,7 @@ Error message: "E11000 duplicate key error collection: mern_app.users index: use
 
 - Updated users routes correspondingly.
 
-
-- * - Current state: the image is uploaded, shows on the home page, but is reset to default with every logout-login. Duplicates appear in cloudinary when switching images back and forth.
+- Custom profile image is sent via user.profileImg to the UI with every login.
 
 
 
