@@ -5,7 +5,7 @@ import { useDeleteUser } from "../hooks/useDeleteUser";
 import { deleteAllWorkouts } from "../hooks/useDeleteAllWorkouts";
 import UserSettings from "./UserSettings";
 
-export default function UserMenu() {
+export default function UserMenu(props) {
   const { user } = useAuthContext();
   const { deleteUser } = useDeleteUser();
   const { deleteAll } = deleteAllWorkouts();
@@ -51,6 +51,7 @@ export default function UserMenu() {
       {userSettings && (
         <UserSettings
           closeUserSettings={closeUserSettings}
+          changeProfileImg={props.changeProfileImg}
         />
       )}
 

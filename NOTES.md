@@ -270,6 +270,8 @@ Error message: "E11000 duplicate key error collection: mern_app.users index: use
 
 - Passed changeProfileImg function (that has control over setProfileImg state from Navbar --> UserMenu --> UserSettings where it can be set to the image of choice.
 
+- When a new image is selected and upload is clicked, the database is updated. However, another request to the server would be required to get the image back from the database and set it as profile image right after. To avoid this, newImage is set in the localstorage so the user can see the new profile image until they log out. The next time they log in, the client will get the new profile image from the database.
+
 ### Backend
 
 - Updated userModel with profileImg property.
@@ -280,7 +282,6 @@ Error message: "E11000 duplicate key error collection: mern_app.users index: use
 
 - Updated users routes correspondingly.
 
-- ISSUE: Newly-uploaded image won't show until after refresh, i.e. profile image state needs to be changed from UserSettings somehow.
 
 
 

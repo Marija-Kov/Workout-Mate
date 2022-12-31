@@ -1,7 +1,7 @@
 import React from 'react'
 import { useUpdateUser } from '../hooks/useUpdateUser';
 
-export default function UserSettings({closeUserSettings, showNewProfileImg}) {
+export default function UserSettings({closeUserSettings, changeProfileImg}) {
     const {updateUser, isLoading, error} = useUpdateUser();
     const [fileInputState, setFileInputState] = React.useState();
     const [selectedFile, setSelectedFile] = React.useState(); 
@@ -23,6 +23,7 @@ export default function UserSettings({closeUserSettings, showNewProfileImg}) {
      e.preventDefault();
      if (!selectedFile) return;
      await updateUser(selectedFile);
+     changeProfileImg(selectedFile)
    }
 
   return (

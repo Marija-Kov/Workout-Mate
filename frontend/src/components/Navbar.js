@@ -16,15 +16,20 @@ export default function Navbar({page, setPage}){
        setShowUserMenu(prev => !prev)
    }
 
+  const changeProfileImg = (img) => {
+    setProfileImg(img)
+  }
+
 React.useEffect(() => {
   if (user) {
     const i = user.email.indexOf("@");
     setUsername(`${user.email.slice(0, i)}`);
-    const newImg = localStorage.getItem('newImg');
-    user.profileImg && !newImg && setProfileImg(user.profileImg);
-    newImg && setProfileImg(newImg)
+    const newImg = localStorage.getItem('newImg');  
+    if(user.profileImg && !newImg) setProfileImg(user.profileImg);
+    if(newImg) setProfileImg(newImg)
   }  
 }, []);
+
 
     return (
       <header className={user ? "header--blur" : ""}>
@@ -59,7 +64,8 @@ React.useEffect(() => {
           )}
           {user && showUserMenu && 
            <UserMenu 
-            user={user} 
+            user={user}
+            changeProfileImg={changeProfileImg}
             />}
 
         </div>
