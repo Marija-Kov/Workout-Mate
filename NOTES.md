@@ -280,9 +280,7 @@ Error message: "E11000 duplicate key error collection: mern_app.users index: use
 
 - Updated userModel with profileImg property.
 
-- Installed cloudinary package and added cloudinary middleware.
-
-- Added user_update_patch to authController that requires cloudinary for storing files.
+- Added user_update_patch to authController.
 
 - Updated users routes correspondingly.
 

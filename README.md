@@ -7,6 +7,9 @@ Generally speaking, Workout Mate allows users to:
 - Search data that they entered;
 - Get the searched data in smaller chunks at a time;
 - Reset forgotten password;
+- Change default to custom profile image;
+
+
 
 * For development details, see NOTES.md
 
