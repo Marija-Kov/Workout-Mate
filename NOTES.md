@@ -258,3 +258,47 @@ JWT is created with every login for extra security.
 Error message: "E11000 duplicate key error collection: mern_app.users index: username_1 dup key: { username: null }" 
 * Deleting MongoDB 'users' collection and restarting the server made it work.
 
+## Change profile picture feature
+
+### Frontend
+
+- Created UserMenu component as a Navbar child component;
+
+- Created UserSettings as a UserMenu child component; It contains a file input form. Once the file is chosen and upload button is clicked, the chosen file is logged into the console.
+
+- Wrote functions in UserSettings that let the chosen files be read and previewed. Wrote a patch request within uploadImage function that takes base64EncodedImage to be sent as profileImg value.
+
+- Passed changeProfileImg function (that has control over setProfileImg state from Navbar --> UserMenu --> UserSettings where it can be set to the image of choice.
+
+- When a new image is selected and upload is clicked, the database is updated. However, another request to the server would be required to get the image back from the database and set it as profile image right after. To avoid this, newImage is set in the localstorage so the user can see the new profile image until they log out. The next time they log in, the client will get the new profile image from the database.
+
+- Decided to do image cropping on the frontend and installed react-easy-crop. 
+
+- This repo was extremely helpful for implementing the cropper: https://github.com/CodingWith-Adam/react-easy-crop-tutorial 
+
+### Backend
+
+- Updated userModel with profileImg property.
+
+- Installed cloudinary package and added cloudinary middleware.
+
+- Added user_update_patch to authController that requires cloudinary for storing files.
+
+- Updated users routes correspondingly.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

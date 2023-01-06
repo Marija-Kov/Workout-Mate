@@ -1,7 +1,6 @@
 const User = require('../models/userModel');
 const jwt = require('jsonwebtoken');
 
-
 const createToken = (_id) => {
 return jwt.sign({_id}, process.env.SECRET, {expiresIn: '3d'})
 }
@@ -23,12 +22,23 @@ module.exports.login_post = async (req, res) => {
     try{
       const user = await User.login(email, password);
       const id = user._id;
+      const profileImg = user.profileImg;
       const token = createToken(id);
-       res.status(200).json({id, email, token});
+       res.status(200).json({id, email, token, profileImg});
     } catch(err){
       res.status(400).json({error: err.message});
     }
 }
+
+module.exports.user_update_patch = async (req, res) => {
+  const {id} = req.params;
+  try {
+   const user = await User.findOneAndUpdate({_id:id}, req.body, {new: true, runValidators: true}); 
+   res.status(200).json(user);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
 
 module.exports.user_deletion = async (req, res) => {
   const { id } = req.params;

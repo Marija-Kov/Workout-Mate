@@ -14,6 +14,9 @@ const userSchema = new Schema({
         required: [true, 'Please provide a password.'],
         minlength: [8, 'Your password must be at least 8 characters long.']
     },
+    profileImg: {
+        type: String,
+    },
     resetPasswordToken: String,
     resetPasswordTokenExpires: Date
 
