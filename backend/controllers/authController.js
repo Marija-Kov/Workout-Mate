@@ -1,7 +1,5 @@
 const User = require('../models/userModel');
 const jwt = require('jsonwebtoken');
-const { cloudinary } = require('../middleware/cloudinary');
-
 
 const createToken = (_id) => {
 return jwt.sign({_id}, process.env.SECRET, {expiresIn: '3d'})
@@ -35,15 +33,6 @@ module.exports.login_post = async (req, res) => {
 module.exports.user_update_patch = async (req, res) => {
   const {id} = req.params;
   try {
-   if(req.body.profileImg){
-    const profileImg = req.body.profileImg;
-    const uploadResponse = await cloudinary.uploader.upload(profileImg, {
-      resource_type: 'image',
-      overwrite: true,
-      upload_preset: 'dev_setups'
-    });
-    console.log(uploadResponse)
-   }
    const user = await User.findOneAndUpdate({_id:id}, req.body, {new: true, runValidators: true}); 
    res.status(200).json(user);
   } catch (error) {
