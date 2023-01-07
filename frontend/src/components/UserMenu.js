@@ -2,17 +2,17 @@ import React from "react";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { useLogout } from "../hooks/useLogout";
 import { useDeleteUser } from "../hooks/useDeleteUser";
-import { deleteAllWorkouts } from "../hooks/useDeleteAllWorkouts";
+import { useDeleteAllWorkouts } from "../hooks/useDeleteAllWorkouts";
 import UserSettings from "./UserSettings";
 
 export default function UserMenu(props) {
   const { user } = useAuthContext();
   const { deleteUser } = useDeleteUser();
-  const { deleteAll } = deleteAllWorkouts();
+  const { deleteAllWorkouts } = useDeleteAllWorkouts();
   const { logout } = useLogout();
   const [deleteAccountDialogue, setDeleteAccountDialogue] =
     React.useState(false);
-  const [userSettings, setUserSettings] = React.useState(true);
+  const [userSettings, setUserSettings] = React.useState(false);
 
   function logOut() {
     logout();
@@ -22,7 +22,7 @@ export default function UserMenu(props) {
   }
 
   const deleteAccount = async () => {
-    await deleteAll();
+    await deleteAllWorkouts();
     await deleteUser(user.id);
     logout();
   };

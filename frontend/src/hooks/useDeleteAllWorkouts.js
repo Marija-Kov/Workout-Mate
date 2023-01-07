@@ -1,12 +1,12 @@
 import { useWorkoutsContext } from '../hooks/useWorkoutContext'
 import { useAuthContext } from "../hooks/useAuthContext";
 
-export const deleteAllWorkouts = () => {
+export const useDeleteAllWorkouts = () => {
 
   const { dispatch } = useWorkoutsContext();
   const { user } = useAuthContext();
 
-  const deleteAll = async () => {
+  const deleteAllWorkouts = async () => {
     const response = await fetch(`api/workouts/`, {
       method: "DELETE",
       headers: {
@@ -20,5 +20,5 @@ export const deleteAllWorkouts = () => {
     }
   }
 
-  return { deleteAll }
+  return { deleteAllWorkouts }
 }
