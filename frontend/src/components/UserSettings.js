@@ -4,7 +4,7 @@ import Cropper from "react-easy-crop";
 import { useCroppedImg } from '../hooks/useCroppedImg';
 
 export default function UserSettings({closeUserSettings, changeProfileImg}) {
-    const {updateUser, isLoading, error} = useUpdateUser();
+    const {updateUser, isLoading, error, success} = useUpdateUser();
     const { getCroppedImg } = useCroppedImg();
 
     const [fileInputState, setFileInputState] = React.useState();
@@ -35,7 +35,7 @@ export default function UserSettings({closeUserSettings, changeProfileImg}) {
      try {
        const croppedImage = await getCroppedImg(selectedFile, croppedAreaPixels);
        await updateUser(croppedImage)
-       changeProfileImg(croppedImage)
+       changeProfileImg(croppedImage) 
      } catch (e) {
        console.error(e);
      }
@@ -43,7 +43,8 @@ export default function UserSettings({closeUserSettings, changeProfileImg}) {
    
    const handleUpdateProfile = async (e) => {
      e.preventDefault();
-     showFinalImage()  
+     showFinalImage()
+     
    }
 
   return (
@@ -84,6 +85,7 @@ export default function UserSettings({closeUserSettings, changeProfileImg}) {
           Upload
         </button>
         {error && <div className="error">{error}</div>}
+        {success && <div className="success">{success}</div>}
         {isLoading && <h3 style={{ zIndex: "10" }}>Uploading..</h3>}
       </form>
     </div>

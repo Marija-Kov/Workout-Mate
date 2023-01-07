@@ -3,6 +3,7 @@ import { useAuthContext } from './useAuthContext';
 
 export const useUpdateUser = () => {
  const [error, setError] = React.useState(null);
+ const [success, setSuccess] = React.useState(null)
  const [isLoading, setIsLoading] = React.useState(null); 
  const { user, dispatch } = useAuthContext();
 
@@ -22,13 +23,15 @@ export const useUpdateUser = () => {
       if (!response.ok) {
         setIsLoading(false);
         setError(json.error);
+        setSuccess(null)
       }
       if (response.ok) {
-        localStorage.setItem("newImg", json.profileImg);
-        dispatch({ type: "UPDATE", payload: json });
+        localStorage.setItem("newImg", json.user.profileImg);
+        dispatch({ type: "UPDATE", payload: json.user });
         setIsLoading(false);
         setError(null);
+        setSuccess(json.success)
       }
  }
-  return { updateUser, isLoading, error }
+  return { updateUser, isLoading, error, success }
 }
