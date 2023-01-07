@@ -286,6 +286,24 @@ Error message: "E11000 duplicate key error collection: mern_app.users index: use
 
 
 
+* ISSUES: 
+
+1. SOLVED - If the user tries to recrop the selected image or a different file is chosen for upload, click on upload throws an error-->
+
+Cast to ObjectId failed for value "undefined" (type string) at path "_id" for model "User".
+
+* json.user and user.id (useUpdateUser) return undefined after the crop area is changed - which indicates that user.id is lost after crop area is changed.
+
+* Wrapping updateUser function in React.useCallback preserves the value of user.id between the renders and no errors are thrown.
+
+
+2. When file selection dialogue is closed, an error is logged in the console.
+
+Ideally, if there is an existing selected file, closing the dialogue shouldn't reset the file input value.
+
+
+
+
 
 
 

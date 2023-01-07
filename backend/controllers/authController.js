@@ -36,7 +36,7 @@ module.exports.user_update_patch = async (req, res) => {
    const user = await User.findOneAndUpdate({_id:id}, req.body, {new: true, runValidators: true}); 
    res.status(200).json({user: user, success: "Profile updated."});
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(400).json({ error: "Something went wrong. Please refresh and try again.", logError: error.message });
   }
 };
 

@@ -36,15 +36,14 @@ export default function UserSettings({closeUserSettings, changeProfileImg}) {
        const croppedImage = await getCroppedImg(selectedFile, croppedAreaPixels);
        await updateUser(croppedImage)
        changeProfileImg(croppedImage) 
-     } catch (e) {
-       console.error(e);
+     } catch (err) {
+       console.error(err);
      }
    }, [croppedAreaPixels]);
    
    const handleUpdateProfile = async (e) => {
      e.preventDefault();
-     showFinalImage()
-     
+     await showFinalImage()   
    }
 
   return (

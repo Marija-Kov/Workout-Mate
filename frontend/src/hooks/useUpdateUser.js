@@ -6,8 +6,8 @@ export const useUpdateUser = () => {
  const [success, setSuccess] = React.useState(null)
  const [isLoading, setIsLoading] = React.useState(null); 
  const { user, dispatch } = useAuthContext();
-
- const updateUser = async (profileImg) => {
+ 
+ const updateUser = React.useCallback(async (profileImg) => {
     setIsLoading(true);
     setError(null); 
       const response = await fetch(`/api/users/${user.id}`, {
@@ -23,6 +23,7 @@ export const useUpdateUser = () => {
       if (!response.ok) {
         setIsLoading(false);
         setError(json.error);
+        console.log(json.logError)
         setSuccess(null)
       }
       if (response.ok) {
@@ -32,6 +33,6 @@ export const useUpdateUser = () => {
         setError(null);
         setSuccess(json.success)
       }
- }
+ }, [])
   return { updateUser, isLoading, error, success }
 }
