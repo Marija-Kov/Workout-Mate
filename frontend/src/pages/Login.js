@@ -7,20 +7,28 @@ const ForgotPasswordForm = React.lazy(() =>
 );
 
 const Login = () => {
-    const [email, setEmail] = React.useState('');
-    const [password, setPassword] = React.useState('');
+    const [credentials, setCredentials] = React.useState({email:'', password:''})
     const {login, isLoading, error} = useLogin();
     const [forgotPasswordForm, setForgotPasswordForm] = React.useState(false);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        await login(email, password);
+        await login(credentials);
     }
 
     const forgotPassword = () => {
       setForgotPasswordForm(prev=>!prev)
     }
 
+      const handleChange = (e) => {
+        const { name, value } = e.target;
+        setCredentials((prev) => {
+          return {
+            ...prev,
+            [name]: value,
+          };
+        });
+      };
     return (
       <>
         <Navbar />
@@ -34,16 +42,18 @@ const Login = () => {
             <label>email address:</label>
             <input
               type="text"
+              name="email"
               placeholder="email address"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={credentials.email}
+              onChange={handleChange}
             />
             <label>password:</label>
             <input
               type="password"
+              name="password"
               placeholder="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              value={credentials.password}
+              onChange={handleChange}
             />
             <div className="forgot--password" onClick={forgotPassword}>
               Forgot the password?
