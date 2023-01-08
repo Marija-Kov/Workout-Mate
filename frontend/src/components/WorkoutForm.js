@@ -1,37 +1,20 @@
 import React from 'react';
-import { useWorkoutsContext } from '../hooks/useWorkoutContext';
-import { useAuthContext } from '../hooks/useAuthContext';
+import { useCreateWorkout } from '../hooks/useCreateWorkout';
 
 export default function WorkoutForm(props){
-  const { dispatch } = useWorkoutsContext();
-  const { user } = useAuthContext();
+  const { createWorkout, error } = useCreateWorkout();
   const [workout, setWorkout] = React.useState({
     title: "",
     load: "",
     reps: "",
   });
-  const [error, setError] = React.useState(null);
   const [emptyFields, setEmptyFields] = React.useState([]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!user) {
-      setError("You must be logged in to do that");
-      return;
-    }
-    const response = await fetch("/api/workouts", {
-      method: "POST",
-      body: JSON.stringify(workout),
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${user.token}`,
-      },
-    });
-    const json = await response.json();
-
-    if (!response.ok) {
-      setError("Please fill out the empty fields");
-    }
+ 
+    await createWorkout(workout);
+    
     if (!workout.title) {
       setEmptyFields((prev) => ["title", ...prev]);
     }
@@ -41,14 +24,13 @@ export default function WorkoutForm(props){
     if (!workout.load) {
       setEmptyFields((prev) => ["load", ...prev]);
     }
-    if (response.ok) {
-      setWorkout({ title: "", load: "", reps: "" });
-      setError(null);
-      setEmptyFields([]);
-      dispatch({ type: "CREATE_WORKOUT", payload: json });
-      props.hideForm();
-      props.goToPageOne();
-    }
+
+    if(workout.title && workout.reps && workout.load){
+     props.hideForm();
+     props.goToPageOne();
+     setEmptyFields([]);
+     setWorkout({ title: "", load: "", reps: "" });
+    }   
   };
 
   const handleChange = (e) => {
