@@ -242,21 +242,37 @@ JWT is created with every login for extra security.
 #### ISSUES: 
 
 - RESOLVED: Errors are not showing on ResetPassword page..
+
 * Status code methods were missing.
 
 
 - RESOLVED - When the link in the password recovery email is clicked, ERR_SSL_PROTOCOL_ERROR is thrown. 
-* 'http' instead of 'https' (no SSL requirement) will do for development purposes. 
+
+
+- Solution:
+
+'http' instead of 'https' (no SSL requirement) will do for development purposes. 
+
 
 - RESOLVED - The link in the password recovery email is not showing.
- * { link: resetLink, } --> {{link}} in hbs template (not resetLink)
+
+- Solution:
+
+{ link: resetLink, } --> {{link}} in hbs template (not resetLink)
+
 
 - RESOLVED - No recipients (protonmail, outlook, gmail) would accept the password recovery emails because they see it as spam. 
-* Adding 'from: process.env.EMAIL_USERNAME' to options in sendEmail.js made it work, all recipients are getting password recovery email.
+
+- Solution:
+
+Adding 'from: process.env.EMAIL_USERNAME' to options in sendEmail.js made it work, all recipients are getting password recovery email.
 
 - RESOLVED - I'm not able to sign up to the app with a new email. If I try to sign up with an existing email, it returns the corresponding error so the request reaches the database and finds irregularities there.
 Error message: "E11000 duplicate key error collection: mern_app.users index: username_1 dup key: { username: null }" 
-* Deleting MongoDB 'users' collection and restarting the server made it work.
+
+- Solution: 
+
+Deleting MongoDB 'users' collection and restarting the server made it work.
 
 ## Change profile picture feature
 
@@ -292,14 +308,40 @@ Error message: "E11000 duplicate key error collection: mern_app.users index: use
 
 Cast to ObjectId failed for value "undefined" (type string) at path "_id" for model "User".
 
-* json.user and user.id (useUpdateUser) return undefined after the crop area is changed - which indicates that user.id is lost after crop area is changed.
+- Diagnostics:
 
-* Wrapping updateUser function in React.useCallback preserves the value of user.id between the renders and no errors are thrown.
+json.user and user.id (useUpdateUser) return undefined after the crop area is changed - which indicates that user.id is lost after crop area is changed.
+
+- Solution:
+
+Wrapping updateUser function in React.useCallback preserves the value of user.id between the renders and no errors are thrown.
 
 
-2. When file selection dialogue is closed, an error is logged in the console.
+2. SOLVED - Once the profile picture is changed, new workout can't be created before the page is refreshed - error 401.
 
-Ideally, if there is an existing selected file, closing the dialogue shouldn't reset the file input value.
+- Diagnostics:
+
+Logging user.token at update profile request returns the token.
+
+Logging user.token at create workout request right after update profile request returns undefined.
+
+Logging user.token from the Navbar (parent component to WorkoutForm and UserSettings) returns the token once the page is loaded, but returns undefined right after the update profile request is made.
+
+Therefore: something that happens during update profile causes the token to 'disappear'. 
+
+Logging action.payload in case "UPDATE" of authReducer in AuthContext confirms that the token isn't in the payload i.e. not sent back with the server response.
+
+- Solution:
+
+Sending user.token as authorization in patch request headers in useUpdateUser hook;
+
+On the backend, extracting the token from req.headers.authorization in authController;
+
+Recreating the user object adding the token and passing it inside res.json.
+
+
+
+
 
 
 

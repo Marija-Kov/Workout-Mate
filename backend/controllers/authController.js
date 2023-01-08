@@ -32,9 +32,18 @@ module.exports.login_post = async (req, res) => {
 
 module.exports.user_update_patch = async (req, res) => {
   const {id} = req.params;
+  const token = req.headers.authorization.slice(7);
   try {
    const user = await User.findOneAndUpdate({_id:id}, req.body, {new: true, runValidators: true}); 
-   res.status(200).json({user: user, success: "Profile updated."});
+   res
+     .status(200)
+     .json({
+       id: user.id,
+       email: user.email,
+       profileImg: user.profileImg,
+       token: token,
+       success: "Profile updated.",
+     });
   } catch (error) {
     res.status(400).json({ error: "Something went wrong. Please refresh and try again.", logError: error.message });
   }

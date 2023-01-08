@@ -23,7 +23,7 @@ export const authReducer = (state, action) => {
 }
 
 export const AuthContextProvider = (props) => {
-    // const userState = localStorage.getItem('user') || null;
+  
     const [state, dispatch] = React.useReducer(authReducer, {
         user: null
     });
@@ -34,9 +34,7 @@ export const AuthContextProvider = (props) => {
         dispatch({type: 'LOGIN', payload: user})
      };
     }, []);
-    
-
-    //console.log('AuthContext ', state);
+  
     return (
         <AuthContext.Provider value={{...state, dispatch}}>
             {props.children}

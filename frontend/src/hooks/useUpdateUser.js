@@ -15,7 +15,10 @@ export const useUpdateUser = () => {
         body: JSON.stringify({
           profileImg: profileImg,
         }),
-        headers: { "Content-type": "application/json" },
+        headers: {
+          "Content-type": "application/json",
+          Authorization: `Bearer ${user.token}`,
+        },
       });
 
       const json = await response.json();
@@ -27,8 +30,9 @@ export const useUpdateUser = () => {
         setSuccess(null)
       }
       if (response.ok) {
-        localStorage.setItem("newImg", json.user.profileImg);
-        dispatch({ type: "UPDATE", payload: json.user });
+        localStorage.setItem("newImg", json.profileImg);
+        const user = {id: json.id, email: json.email, token: json.token, profileImg: json.profileImg}
+        dispatch({ type: "UPDATE", payload: user });
         setIsLoading(false);
         setError(null);
         setSuccess(json.success)
