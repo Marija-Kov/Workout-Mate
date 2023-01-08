@@ -3,14 +3,23 @@ import { useSignup } from '../hooks/useSignup';
 import Navbar from "../components/Navbar";
 
 const Signup = () => {
-    const [email, setEmail] = React.useState('');
-    const [password, setPassword] = React.useState('');
+    const [credentials, setCredentials] = React.useState({email:"", password:""});
     const {signup, isLoading, error} = useSignup();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        await signup(email, password);
+        await signup(credentials);
     }
+
+    const handleChange = (e) => {
+      const { name, value } = e.target;
+      setCredentials((prev) => {
+        return {
+          ...prev,
+          [name]: value,
+        };
+      });
+    };
 
     return (
       <>
@@ -25,16 +34,18 @@ const Signup = () => {
             <label>email address:</label>
             <input
               type="text"
+              name="email"
               placeholder="email address"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={credentials.email}
+              onChange={handleChange}
             />
             <label>password:</label>
             <input
               type="password"
+              name="password"
               placeholder="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              value={credentials.password}
+              onChange={handleChange}
             />
             <button disabled={isLoading}>Sign up</button>
             {error && <div className="error">{error}</div>}
