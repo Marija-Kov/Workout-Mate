@@ -1,7 +1,11 @@
 import React from 'react'
+import { useWorkoutsContext } from '../hooks/useWorkoutContext';
 
-export default function Pagination({page, limit, currPageItemsNum, flipPage}){
+export default function Pagination({page, limit, flipPage}){
+  const {workouts} = useWorkoutsContext();
 
+  const btnIsDisabled = () => workouts ? workouts.length < limit : true ;
+  
     return (
       <div className="page--btn--container">
         <button
@@ -15,7 +19,7 @@ export default function Pagination({page, limit, currPageItemsNum, flipPage}){
         <button
           type="button"
           className="next--page"
-          disabled={currPageItemsNum < limit}
+          disabled={btnIsDisabled()}
           onClick={() => flipPage(1)}
         >
           <span className="material-symbols-outlined">chevron_right</span>

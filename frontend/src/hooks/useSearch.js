@@ -7,8 +7,6 @@ export const useSearch = () => {
     const { dispatch } = useWorkoutsContext();
     const { user } = useAuthContext();
     const [limit, setLimit] = React.useState(null);
-    // const [total, setTotal] = React.useState(0);
-    const [currPageItemsNum, setCurrPageItemsNum] = React.useState(null);
     
     const search = async (query, page) => {
       setIsLoading(true);
@@ -22,8 +20,6 @@ export const useSearch = () => {
       if(response.ok){
         setIsLoading(false);
         setLimit(json.limit);
-        setCurrPageItemsNum(json.workouts.length)
-        // setTotal(json.total);
         dispatch({type: "SET_WORKOUTS", payload: json.workouts})
       }
       if(!response.ok){
@@ -32,5 +28,5 @@ export const useSearch = () => {
       }
       
     }
-    return { search, isLoading, limit, currPageItemsNum }
+    return { search, isLoading, limit}
 }

@@ -3,7 +3,7 @@ import { useSearch } from '../hooks/useSearch';
 import Pagination from "./Pagination";
 
 export default function Search({page, setPage}) {
-    const {search, isLoading, limit, currPageItemsNum} = useSearch();
+    const {search, isLoading, limit} = useSearch();
     const [query, setQuery] = React.useState('');
     
     React.useEffect(()=>{
@@ -36,10 +36,9 @@ export default function Search({page, setPage}) {
         </button>
       </form>
       <Pagination
-       currPageItemsNum={currPageItemsNum}
        page={page}
        limit={limit}
-       flipPage={(num)=> flipPage(num)}
+       flipPage={flipPage}
         />
         {isLoading && <h1 className='loading'>Loading data...</h1>}
       </>
