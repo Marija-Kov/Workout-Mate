@@ -6,7 +6,7 @@ import UserMenu from './UserMenu';
 
 export default function Navbar({page, setPage}){
   const { user } = useAuthContext();
-  const [showUserMenu, setShowUserMenu] = React.useState(true);
+  const [showUserMenu, setShowUserMenu] = React.useState(false);
   const [username, setUsername] = React.useState('who are you?');
   const [profileImg, setProfileImg] = React.useState(
     require("../assets/default-avatar.png")
@@ -28,13 +28,12 @@ React.useEffect(() => {
     if(user.profileImg && !newImg) setProfileImg(user.profileImg);
     if(newImg) setProfileImg(newImg)
   }  
-}, []);
-
+}, [user]);
 
     return (
       <header className={user ? "header--blur" : ""}>
         <div className="container">
-          <h1>
+          <h1 className={user ? "logged--in--logo" : "logo"}>
             <Link to="/">WorkoutMate</Link>
           </h1>
           {user && <Search page={page} setPage={setPage} />}

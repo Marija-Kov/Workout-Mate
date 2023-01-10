@@ -57,6 +57,18 @@ header a {
   padding: 20px;
 }
 
+.logo > a {
+  font-family: 'Yellowtail', cursive;
+  font-size: 32px;
+  color: white;
+}
+
+.logged--in--logo > a {
+  font-family: 'Yellowtail', cursive;
+  font-size: 28px;
+  color: rgb(167, 133, 191);
+}
+
 /* Logged-out Navbar */
 
 .signup,
@@ -474,9 +486,9 @@ form button:hover,
 position: fixed;
 z-index: 5;
 width: 100%;
-margin: 0 35%;
+margin: 0 15%;
 bottom: 30px;
-max-width: 320px;
+max-width: 200px;
 }
 
 .checky {
@@ -516,6 +528,7 @@ div.error {
 div.success {
   margin-top: 20px;
   padding: 5px;
+  text-align: center;
   background: #b6f8db;
   border: 1px solid var(--success);
   color: var(--success);
