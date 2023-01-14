@@ -8,13 +8,14 @@ const getAllItems = async (req, res) => {
  const user_id = req.user._id; 
 
  try {
+   const allUserWorkouts = await Workout.find({user_id});
    const workouts = await Workout.find(
      search ? { user_id, title: new RegExp(`^${search.toLowerCase()}`)} : { user_id }
    ) 
      .sort({ createdAt: -1 })
      .skip(page * itemsPerPage)
      .limit(itemsPerPage);
-   res.status(200).json({workouts: workouts, limit: itemsPerPage});
+   res.status(200).json({ allUserWorkouts: allUserWorkouts, workouts: workouts, limit: itemsPerPage});
  } catch (error) {
    res.status(400).json({ error: error.message });
  }
@@ -66,12 +67,12 @@ const deleteAllUserItems = async (req, res) => {
         error: `The workout(s) and/or user does not exist.`,
       });
   }
-  const workout = await Workout.deleteMany({ user_id });
+  const workouts = await Workout.deleteMany({ user_id });
 
-  if (!workout) {
+  if (!workouts) {
     return res.status(404).json({ error: "no such thing, sorry!" });
   }
-  res.status(200).json(workout);
+  res.status(200).json(workouts);
 };
 
 module.exports = {

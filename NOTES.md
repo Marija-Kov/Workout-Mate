@@ -214,11 +214,17 @@ JWT is created with every login for extra security.
 
 ## Search and pagination
 
+(The page refers to the search result page)
+
 - The docs are fetched upon every search query, and filtered on the backend, which displays correct number of search results on the UI.
 
-- Pages can be flipped back and forth, buttons disabled using the page limit data from the backend.
+- Pages can be flipped back and forth, buttons disabled using the current number of workouts on the page.
 
-- Add Workout component has access to page-flip function - flips to to page 0 once a workout is added.
+- The user may go directly to the desired page.
+
+- Add Workout component has access to page-flip function - flips to page 0 once a workout is added.
+
+
 
 ## Account deletion
 

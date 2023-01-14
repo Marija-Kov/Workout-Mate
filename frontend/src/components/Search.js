@@ -3,7 +3,7 @@ import { useSearch } from '../hooks/useSearch';
 import Pagination from "./Pagination";
 
 export default function Search({page, setPage}) {
-    const {search, isLoading, limit} = useSearch();
+    const {search, isLoading, limit, total} = useSearch();
     const [query, setQuery] = React.useState('');
     
     React.useEffect(()=>{
@@ -19,7 +19,11 @@ export default function Search({page, setPage}) {
     }
 
     const flipPage = (num) => {
-      setPage(prev => prev + num)
+      setPage(prev => {
+        if(num===-1) return prev+num
+        if(num[0]) return prev+num[0]
+         return num-1
+      })
     }
     
     return (
@@ -37,6 +41,7 @@ export default function Search({page, setPage}) {
       </form>
       <Pagination
        page={page}
+       total={total}
        limit={limit}
        flipPage={flipPage}
         />

@@ -572,6 +572,9 @@ input.error {
   color: var(--light-text);
   background: transparent;
 }
+.page--btn--container > .num--page {
+  padding: 0 8px;
+}
 
 /* Delete account dialogue */
 
