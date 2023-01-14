@@ -3,7 +3,7 @@ import { useWorkoutsContext } from '../hooks/useWorkoutContext';
 
 export default function Pagination({page, limit, flipPage, total}){
   const {workouts} = useWorkoutsContext();
-  console.log(page+1)
+
   const spreadPages = (t,l) => {
     const pagesNum = Math.ceil(t/l);
     let spread = [];
@@ -13,7 +13,8 @@ export default function Pagination({page, limit, flipPage, total}){
     return spread
     }
   let pageSpread = spreadPages(total,limit);
-  const btnIsDisabled = () => workouts ? workouts.length < limit : true ;
+  // TODO: use total number of items to enable/disable prev/next page buttons to avoid showing blank page 
+  const btnIsDisabled = () => (page+1) * limit >= total ;
   
     return (
       <div className="page--btn--container">
@@ -30,7 +31,7 @@ export default function Pagination({page, limit, flipPage, total}){
           return (
           <button
           key={p} 
-          className="num--page"
+          className={page+1 === p ? "num--page current" : "num--page"}
           onClick={()=>flipPage(p)}
           >
             {p}

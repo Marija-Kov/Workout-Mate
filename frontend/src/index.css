@@ -571,10 +571,17 @@ input.error {
   border: solid 1px var(--light-text);
   color: var(--light-text);
   background: transparent;
+  cursor: default
 }
 .page--btn--container > .num--page {
   padding: 0 8px;
 }
+
+.page--btn--container > .current {
+  background: var(--primary);
+  color: white;
+}
+
 
 /* Delete account dialogue */
 
