@@ -4,11 +4,13 @@ import Navbar from "../components/Navbar";
 
 const Signup = () => {
     const [credentials, setCredentials] = React.useState({email:"", password:""});
+    const [verificationNeeded, setVerificationNeeded] = React.useState(null)
     const {signup, isLoading, error} = useSignup();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         await signup(credentials);
+        setVerificationNeeded(true);
     }
 
     const handleChange = (e) => {
@@ -49,6 +51,8 @@ const Signup = () => {
             />
             <button disabled={isLoading}>Sign up</button>
             {error && <div className="error">{error}</div>}
+            {verificationNeeded && <div className="success">
+              Account created and pending confirmation. Please check your inbox.</div>}
           </form>
         </div>
       </>
