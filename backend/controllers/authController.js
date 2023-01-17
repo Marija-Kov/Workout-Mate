@@ -20,7 +20,7 @@ module.exports.signup_post = async (req, res) => {
  await user.save();
 
  const clientUrl = process.env.CLIENT_URL;
- const accountVerificationLink = `${clientUrl}/users?confirmationToken=${confirmationToken}`;
+ const accountVerificationLink = `${clientUrl}/users?accountConfirmationToken=${confirmationToken}`;
 
    sendEmail(
      user.email,

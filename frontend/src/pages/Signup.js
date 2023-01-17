@@ -51,7 +51,7 @@ const Signup = () => {
             />
             <button disabled={isLoading}>Sign up</button>
             {error && <div className="error">{error}</div>}
-            {verificationNeeded && <div className="success">
+            {!error && verificationNeeded && <div className="success">
               Account created and pending confirmation. Please check your inbox.</div>}
           </form>
         </div>
