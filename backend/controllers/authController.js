@@ -1,5 +1,7 @@
 const User = require('../models/userModel');
 const jwt = require('jsonwebtoken');
+const crypto = require("crypto");
+const sendEmail = require("../middleware/sendEmail");
 
 const createToken = (_id) => {
 return jwt.sign({_id}, process.env.SECRET, {expiresIn: '3d'})
@@ -11,9 +13,46 @@ module.exports.signup_post = async (req, res) => {
  const user = await User.signup(email, password);
  const id = user._id;
  const token = createToken(id);
+
+ const confirmationToken = crypto.randomBytes(32).toString("hex");
+ user.accountConfirmationToken = confirmationToken;
+ user.accountConfirmationTokenExpires = Date.now() + 3600000;
+ await user.save();
+
+ const clientUrl = process.env.CLIENT_URL;
+ const accountVerificationLink = `${clientUrl}/users?accountConfirmationToken=${confirmationToken}`;
+
+   sendEmail(
+     user.email,
+     "Verify your account",
+     {
+       link: accountVerificationLink,
+     },
+     "../templates/verifySignup.handlebars"
+   );
+
  res.status(200).json({id, email, token});
   } catch(err){
   res.status(400).json({error: err.message});
+  }
+}
+
+module.exports.verify_user = async (req, res) => {
+  const {accountConfirmationToken} = req.params;
+  try {
+   const user = await User.findOne({
+    accountConfirmationToken: accountConfirmationToken,
+  });
+  if(!user){
+    return res.status(404).json({error: "User not found."})
+  }
+  user.accountStatus = "active";
+  user.accountConfirmationToken = undefined;
+  user.accountConfirmationTokenExpires = undefined;
+  await user.save()  
+   res.status(200).json({success: "Success! You may log in with your account now."})
+  } catch (err) {
+    res.status(400).json({ error: err.message });
   }
 }
 

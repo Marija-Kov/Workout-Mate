@@ -1,10 +1,9 @@
 import React from 'react';
-import { useAuthContext } from './useAuthContext';
 
 export const useSignup = () => {
     const [error, setError] = React.useState(null);
     const [isLoading, setIsLoading] = React.useState(null); 
-    const { dispatch } = useAuthContext();
+
     const signup = async (credentials) => {
         setIsLoading(true);
         setError(null);
@@ -20,8 +19,6 @@ export const useSignup = () => {
             setError(json.error);
         }
         if (response.ok) {
-            localStorage.setItem('user', JSON.stringify(json));
-            dispatch({type:'LOGIN', payload:json});
             setIsLoading(false)
             setError(null);
         }

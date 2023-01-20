@@ -8,6 +8,8 @@
   --primary: #373737;
   --error: #e7195a;
   --success: #16644a;
+  --success--bkg: #b6f8db;
+  --error--bkg: #fcd7d7;
   --login: #5fcfca;
   --signup: #b995e7;
   --home--bkg: rgb(209, 255, 240);
@@ -67,6 +69,13 @@ header a {
   font-family: 'Yellowtail', cursive;
   font-size: 28px;
   color: rgb(167, 133, 191);
+}
+
+/* Confirmed account page */
+
+.confirmed--account {
+  background: var(--success--bkg);
+  padding: 20px 40px;
 }
 
 /* Logged-out Navbar */
@@ -518,7 +527,7 @@ button.discard {
 div.error {
   margin-top: 20px;;
   padding: 5px;
-  background: #fcd7d7;
+  background: var(--error--bkg);
   border: 1px solid var(--error);
   color: var(--error);
   text-align: center;
@@ -529,7 +538,7 @@ div.success {
   margin-top: 20px;
   padding: 5px;
   text-align: center;
-  background: #b6f8db;
+  background: var(--success--bkg);
   border: 1px solid var(--success);
   color: var(--success);
   font-size: 14px;
