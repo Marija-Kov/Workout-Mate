@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 
 export default function ConfirmedAccount() {
   const [token, setToken] = React.useState(null);
-  
    React.useEffect(() => {
      const start = window.location.href.indexOf("=") + 1;
      setToken(window.location.href.slice(start));
@@ -14,7 +13,7 @@ export default function ConfirmedAccount() {
     const response = await fetch(`api/users/${token}`);
     const json = await response.json(); 
     if(response.ok){
-        console.log(json)
+        console.log(json.success)
         return json
     } else {
         console.log(json.error)

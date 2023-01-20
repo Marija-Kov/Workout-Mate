@@ -346,6 +346,33 @@ On the backend, extracting the token from req.headers.authorization in authContr
 Recreating the user object adding the token and passing it inside res.json.
 
 
+## Verify signing up via email
+
+### Backend
+
+1. Update User model with account status and account confirmation token.
+
+2. Update User model static methods.
+
+3. Generate confirmation token in signup_post (authController) and integrate the existing sendEmail function;
+
+4. Create account confirmation route.
+
+5. Create the confirmation email template.
+
+6. Create verifyUser function that will get the user by confirmationToken once the confirmation link has been clicked and change account status to active.
+
+### Frontend
+
+1. Make sure the user can't log in automatically upon signing up (remove AuthContext and localstorage from useSignup).
+
+2. Create ConfirmAccount page and set up the Route in App.
+
+3. In ConfirmAccount, extract the token number from the URL to send it with the get request that will get the user with the corresponding token and switch its status to active.
+
+
+
+
 
 
 
