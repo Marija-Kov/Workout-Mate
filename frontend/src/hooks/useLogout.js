@@ -10,6 +10,9 @@ export const useLogout = () => {
      if(localStorage.getItem('newImg')){
         localStorage.removeItem('newImg')
      }
+     if (localStorage.getItem("username")) {
+       localStorage.removeItem("username");
+     }
      dispatch({type: 'LOGOUT'})
      // clearing the global workouts state:
      workoutsDispatch({type: 'SET_WORKOUTS', payload: null})

@@ -61,9 +61,10 @@ module.exports.login_post = async (req, res) => {
     try{
       const user = await User.login(email, password);
       const id = user._id;
+      const username = user.username;
       const profileImg = user.profileImg;
       const token = createToken(id);
-       res.status(200).json({id, email, token, profileImg});
+       res.status(200).json({id, email, token, username, profileImg});
     } catch(err){
       res.status(400).json({error: err.message});
     }
@@ -79,6 +80,7 @@ module.exports.user_update_patch = async (req, res) => {
      .json({
        id: user.id,
        email: user.email,
+       username: user.username,
        profileImg: user.profileImg,
        token: token,
        success: "Profile updated.",

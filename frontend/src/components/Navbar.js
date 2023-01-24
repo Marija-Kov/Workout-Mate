@@ -6,7 +6,7 @@ import UserMenu from './UserMenu';
 
 export default function Navbar({page, setPage}){
   const { user } = useAuthContext();
-  const [showUserMenu, setShowUserMenu] = React.useState(false);
+  const [showUserMenu, setShowUserMenu] = React.useState(true);
   const [username, setUsername] = React.useState('who are you?');
   const [profileImg, setProfileImg] = React.useState(
     require("../assets/default-avatar.png")
@@ -22,8 +22,14 @@ export default function Navbar({page, setPage}){
 
 React.useEffect(() => {
   if (user) {
-    const i = user.email.indexOf("@");
-    setUsername(`${user.email.slice(0, i)}`);
+    if(!user.username){
+     const i = user.email.indexOf("@");
+     setUsername(`${user.email.slice(0, i)}`); 
+    } else {
+     const username = localStorage.getItem("username"); 
+     if(user.username && !username) setUsername(user.username);
+     if(username) setUsername(username);
+    }
     const newImg = localStorage.getItem('newImg');  
     if(user.profileImg && !newImg) setProfileImg(user.profileImg);
     if(newImg) setProfileImg(newImg)

@@ -14,6 +14,9 @@ const userSchema = new Schema({
         required: [true, 'Please provide a password.'],
         minlength: [8, 'Your password must be at least 8 characters long.']
     },
+    username: {
+        type: String
+    },
     profileImg: {
         type: String,
     },

@@ -7,6 +7,8 @@ export default function UserSettings({closeUserSettings, changeProfileImg}) {
     const {updateUser, isLoading, error, success} = useUpdateUser();
     const { getCroppedImg } = useCroppedImg();
 
+    const [newUsername, setNewUsername] = React.useState('');
+
     const [fileInputState, setFileInputState] = React.useState();
     const [selectedFile, setSelectedFile] = React.useState(); 
 
@@ -31,19 +33,27 @@ export default function UserSettings({closeUserSettings, changeProfileImg}) {
      setCroppedAreaPixels(croppedAreaPixels);
    }, []);
 
-   const showFinalImage = React.useCallback(async () => {
+   const readyToUpdateProfile = React.useCallback(async () => {
      try {
-       const croppedImage = await getCroppedImg(selectedFile, croppedAreaPixels);
-       await updateUser(croppedImage)
-       changeProfileImg(croppedImage) 
+      let croppedImage = undefined;
+      let username = undefined;
+      if(selectedFile){
+       croppedImage = await getCroppedImg(selectedFile, croppedAreaPixels);
+       changeProfileImg(croppedImage)
+      }
+      if(newUsername){
+        username = newUsername
+      }
+      await updateUser(username, croppedImage)      
      } catch (err) {
        console.error(err);
      }
    }, [croppedAreaPixels]);
+
    
    const handleUpdateProfile = async (e) => {
      e.preventDefault();
-     await showFinalImage()   
+     await readyToUpdateProfile()   
    }
 
   return (
@@ -56,6 +66,13 @@ export default function UserSettings({closeUserSettings, changeProfileImg}) {
           close
         </span>
         <h4>Profile settings</h4>
+        <label>Change displayed name</label>
+        <input
+          type="text"
+          name="username"
+          value={newUsername}
+          onChange={(e) => setNewUsername(e.target.value)}
+        />
         <label>Change profile image</label>
         <input
           type="file"

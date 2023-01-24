@@ -345,7 +345,6 @@ On the backend, extracting the token from req.headers.authorization in authContr
 
 Recreating the user object adding the token and passing it inside res.json.
 
-
 ## Verify signing up via email
 
 ### Backend
@@ -370,6 +369,35 @@ Recreating the user object adding the token and passing it inside res.json.
 
 3. In ConfirmAccount, extract the token number from the URL to send it with the get request that will get the user with the corresponding token and switch its status to active.
 
+
+## Change displayed name and password feature
+
+When logged in, the user should be able to change their displayed name on the homepage.
+Also, they should be able to change their password. Changing password could update the user doc without leaving the app, or it could require confirmation through email.
+
+### Change displayed name: Backend
+
+1. models/userModel: add "username" to the User schema;
+
+2. controllers/authController: apply user.username to login and patch methods;
+
+### Change displayed name: Frontend
+
+1. hooks/useUpdateUser: 
+ 1) add "username" as a parameter to updateUser function;
+ 2) add "username" to the patch request body
+ 3) set up the username to be saved to the localStorage
+ 4) add "username" to the auth context reducer payload
+
+2. hooks/useLogout: make sure username is removed from the localStorage once the user logs out for the first time after updating the username;
+
+3. components/UserSettings: 
+ 1) add newUsername state set to '' as a default;
+ 2) add text input field to the form (controlled);
+ 3) rename showFinalImage() into readyToUpdateProfile() because it's not just about one input type anymore;
+ 4) set croppedImage and username to undefined by default, then change them/run relevant functions only if the relevant states are truthy (so the program doesn't throw errors if the user sends a request with newUsername or selectedFile only);
+
+4. components/Navbar: refactor useEffect, take the new username from the localStorage or the database (via AuthContext), whichever is available.
 
 
 
