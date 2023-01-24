@@ -7,12 +7,13 @@ export const useUpdateUser = () => {
  const [isLoading, setIsLoading] = React.useState(null); 
  const { user, dispatch } = useAuthContext();
  
- const updateUser = React.useCallback(async (profileImg) => {
+ const updateUser = React.useCallback(async (username, profileImg) => {
     setIsLoading(true);
     setError(null); 
       const response = await fetch(`/api/users/${user.id}`, {
         method: "PATCH",
         body: JSON.stringify({
+          username: username,
           profileImg: profileImg,
         }),
         headers: {
@@ -30,8 +31,13 @@ export const useUpdateUser = () => {
         setSuccess(null)
       }
       if (response.ok) {
-        localStorage.setItem("newImg", json.profileImg);
-        const user = {id: json.id, email: json.email, token: json.token, profileImg: json.profileImg}
+        if(json.profileImg){
+         localStorage.setItem("newImg", json.profileImg); 
+        }
+        if(json.username) {
+          localStorage.setItem("username", json.username); 
+        }
+        const user = {id: json.id, email: json.email, token: json.token, username: json.username, profileImg: json.profileImg}
         dispatch({ type: "UPDATE", payload: user });
         setIsLoading(false);
         setError(null);
