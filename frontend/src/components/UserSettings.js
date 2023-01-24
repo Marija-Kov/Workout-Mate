@@ -34,21 +34,18 @@ export default function UserSettings({closeUserSettings, changeProfileImg}) {
    }, []);
 
    const readyToUpdateProfile = React.useCallback(async () => {
+    let croppedImage = undefined;
+    let username = newUsername ? newUsername : null;
      try {
-      let croppedImage = undefined;
-      let username = undefined;
       if(selectedFile){
        croppedImage = await getCroppedImg(selectedFile, croppedAreaPixels);
        changeProfileImg(croppedImage)
-      }
-      if(newUsername){
-        username = newUsername
       }
       await updateUser(username, croppedImage)      
      } catch (err) {
        console.error(err);
      }
-   }, [croppedAreaPixels]);
+   }, [newUsername, selectedFile, croppedAreaPixels, changeProfileImg, getCroppedImg, updateUser]);
 
    
    const handleUpdateProfile = async (e) => {
