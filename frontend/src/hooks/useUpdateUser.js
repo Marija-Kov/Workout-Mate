@@ -10,6 +10,8 @@ export const useUpdateUser = () => {
  const updateUser = React.useCallback(async (username, profileImg) => {
     setIsLoading(true);
     setError(null); 
+        if (!profileImg) profileImg = user.profileImg;
+        if (!username) username = user.username;
       const response = await fetch(`/api/users/${user.id}`, {
         method: "PATCH",
         body: JSON.stringify({
