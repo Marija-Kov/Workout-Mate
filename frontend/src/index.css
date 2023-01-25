@@ -77,6 +77,14 @@ header a {
   background: var(--success--bkg);
   padding: 20px 40px;
 }
+.already--confirmed {
+  border: solid 5px var(--success--bkg);
+  padding: 20px;
+  margin-top: 20px;
+  color: var(--primary);
+  font-size: 1em;
+  max-width: 480px;
+}
 
 /* Logged-out Navbar */
 
