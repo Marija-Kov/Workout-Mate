@@ -1,29 +1,20 @@
 import React from 'react';
 import formatDistanceToNow from 'date-fns/formatDistanceToNow';
-import { useWorkoutsContext } from '../hooks/useWorkoutContext';
-import { useAuthContext } from '../hooks/useAuthContext';
+import useDeleteWorkout from '../hooks/useDeleteWorkout';
+import { useSearch } from '../hooks/useSearch';
 
 const EditWorkout = React.lazy(() => import("../components/EditWorkout"));
 
 export default function WorkoutDetails(props){
     const [showEditForm, setShowEditForm] = React.useState(false);
-    const [error, setError] = React.useState(null);
-    const {dispatch} = useWorkoutsContext();
-    const { user } = useAuthContext();
-    const handleClick = ()=>{
-         if(!user){
-          setError('You must be logged in to do that')
-          return
-          }
-        fetch('/api/workouts/' + props.id, {
-            method: 'DELETE',
-            headers: {
-                'Authorization': `Bearer ${user.token}`
-            }
-        }).then(response => response.json())
-        .then(json => dispatch({type: 'DELETE_ONE', payload: json }))
-        .catch(err => console.log(err))
+    const {deleteWorkout, error} = useDeleteWorkout();
+    const {search} = useSearch();
+
+    const handleClick = async () => {
+      await deleteWorkout(props.id)
+      await search('', props.page)
     }
+
     const showEdit = () => {
        setShowEditForm(prev => !prev)
     }

@@ -32,6 +32,7 @@ export default function Home() {
                   load={workout.load}
                   createdAt={workout.createdAt}
                   updatedAt={workout.updatedAt}
+                  page={page}
                 />
               ))}
           </div>
