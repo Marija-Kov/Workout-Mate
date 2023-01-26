@@ -5,14 +5,14 @@ import { useSearch } from '../hooks/useSearch';
 
 const EditWorkout = React.lazy(() => import("../components/EditWorkout"));
 
-export default function WorkoutDetails(props){
+export default function WorkoutDetails({id, title, reps, load, createdAt, updatedAt, page}){
     const [showEditForm, setShowEditForm] = React.useState(false);
     const {deleteWorkout, error} = useDeleteWorkout();
-    const {search} = useSearch();
+    const {search, total, limit} = useSearch();
 
     const handleClick = async () => {
-      await deleteWorkout(props.id)
-      await search('', props.page)
+      await deleteWorkout(id)
+      await search('', page)
     }
 
     const showEdit = () => {
@@ -22,21 +22,21 @@ export default function WorkoutDetails(props){
     return (
         <>
         <div className="workout-details">
-            <h4>{props.title}</h4>
-            <p>reps: {props.reps}</p>
-            <p>load: {props.load}</p>
-            <p className='date'>{formatDistanceToNow(new Date(props.createdAt), { addSuffix: true})}</p>
+            <h4>{title}</h4>
+            <p>reps: {reps}</p>
+            <p>load: {load}</p>
+            <p className='date'>{formatDistanceToNow(new Date(createdAt), { addSuffix: true})}</p>
             <span className='material-symbols-outlined' onClick={handleClick}>delete</span>
             <span className='material-symbols-outlined edit' onClick={showEdit}>edit</span>
             {error && <div className="error">{error}</div>} 
         </div>
         {showEditForm && <EditWorkout
-                        key={props.id +'edit'}
-                        id = {props.id}
-                        title={props.title}
-                        reps={props.reps}
-                        load={props.load}
-                        createdAt={props.createdAt}
+                        key={id +'edit'}
+                        id = {id}
+                        title={title}
+                        reps={reps}
+                        load={load}
+                        createdAt={createdAt}
                         showEdit={()=>showEdit()}
                          />}
         </>

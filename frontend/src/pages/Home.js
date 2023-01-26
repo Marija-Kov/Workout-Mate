@@ -52,6 +52,7 @@ export default function Home() {
                   createdAt={workout.createdAt}
                   updatedAt={workout.updatedAt}
                   page={page}
+                  spreadPages={spreadPages}
                 />
               ))}
           </div>
