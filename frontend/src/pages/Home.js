@@ -3,10 +3,13 @@ import WorkoutDetails from '../components/WorkoutDetails'
 import WorkoutForm from '../components/WorkoutForm'
 import Navbar from'../components/Navbar'
 import { useWorkoutsContext } from '../hooks/useWorkoutContext'
+import { useAuthContext } from "../hooks/useAuthContext";
+import Search from "../components/Search";
 
 export default function Home() {
     const [addWorkoutForm, setAddWorkoutForm] = React.useState(false);
     const { workouts } = useWorkoutsContext(); 
+    const { user } = useAuthContext();
     const [page, setPage] = React.useState(0);
 
    function hideForm(){
@@ -20,6 +23,9 @@ export default function Home() {
     return (
       <>
         <Navbar page={page} setPage={setPage}/>
+        {user && (
+          <Search page={page} setPage={setPage} pageSpread={pageSpread} />
+        )}
         <div className="home">
           <div className="workouts">
             {workouts &&

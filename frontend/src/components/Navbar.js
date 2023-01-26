@@ -1,10 +1,9 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 import { useAuthContext } from '../hooks/useAuthContext';
-import Search from './Search';
 import UserMenu from './UserMenu';
 
-export default function Navbar({page, setPage}){
+export default function Navbar(){
   const { user } = useAuthContext();
   const [showUserMenu, setShowUserMenu] = React.useState(true);
   const [username, setUsername] = React.useState('who are you?');
@@ -42,7 +41,6 @@ React.useEffect(() => {
           <h1 className={user ? "logged--in--logo" : "logo"}>
             <Link to="/">WorkoutMate</Link>
           </h1>
-          {user && <Search page={page} setPage={setPage} />}
           {user && (
             <div>
               <span className="hello--user" onClick={() => userMenu()}>
