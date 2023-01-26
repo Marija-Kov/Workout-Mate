@@ -10,7 +10,20 @@ export default function Home() {
     const [addWorkoutForm, setAddWorkoutForm] = React.useState(false);
     const { workouts } = useWorkoutsContext(); 
     const { user } = useAuthContext();
+    const { search, total, limit } = useSearch();
     const [page, setPage] = React.useState(0);
+    const [pageSpread, setPageSpread] = React.useState([]);
+    React.useEffect(()=> {
+      spreadPages(total, limit)
+    },[total,limit])
+    const spreadPages = (t, l) => {
+      const pagesNum = Math.ceil(t / l);
+      let spread = [];
+      for (let i = 1; i <= pagesNum; ++i) {
+        spread.push(i);
+      }
+      setPageSpread(spread);
+    };
 
    function hideForm(){
        setAddWorkoutForm(false)

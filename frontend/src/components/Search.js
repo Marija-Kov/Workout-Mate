@@ -2,7 +2,7 @@ import React from 'react'
 import { useSearch } from '../hooks/useSearch';
 import Pagination from "./Pagination";
 
-export default function Search({page, setPage}) {
+export default function Search({page, setPage, pageSpread}) {
     const {search, isLoading, limit, total} = useSearch();
     const [query, setQuery] = React.useState('');
     
@@ -41,6 +41,7 @@ export default function Search({page, setPage}) {
       </form>
       <Pagination
        page={page}
+       pageSpread={pageSpread}
        total={total}
        limit={limit}
        flipPage={flipPage}
