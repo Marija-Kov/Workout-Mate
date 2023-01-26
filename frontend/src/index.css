@@ -249,7 +249,7 @@ background-color: var(--login);
 /* Search bar */
 
 .search--bar {
-  margin-top: 20px;
+  margin-top: 12px;
   display: flex;
   box-shadow: none;
   height: unset;
@@ -564,16 +564,19 @@ input.error {
 }
 
 .page--btn--container {
-  position: relative;
-  top: 50px;
+  position: fixed;
+  top: 80px;
+  left: 300px;
+  z-index: 10;
   display: flex;
-
+  width: max-content;
+  gap: 5px;
 }
 .page--btn--container > button {
   cursor: pointer;
   border: solid 1px var(--primary);
   border-radius: 4px;
-  padding: 0 ;
+  padding: 0;
   color: var(--primary);
   background: transparent;
   transition: 0.3s;
