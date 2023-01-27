@@ -100,7 +100,10 @@ export default function Home() {
                   createdAt={workout.createdAt}
                   updatedAt={workout.updatedAt}
                   page={page}
+                  getItems={getItems}
                   spreadPages={spreadPages}
+                  total={total}
+                  limit={limit}
                 />
               ))}
           </div>
