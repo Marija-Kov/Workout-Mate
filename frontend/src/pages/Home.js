@@ -36,13 +36,10 @@ export default function Home() {
       setPageSpread(spread);
     };
 
-   function hideForm(){
+   const hideForm = () => {
        setAddWorkoutForm(false)
    }
 
-   function goToPageOne(){
-    setPage(0)
-   }
    const flipPage = (num) => {
      setPage((prev) => {
        if (num === -1) return prev + num;
@@ -107,10 +104,15 @@ export default function Home() {
                 />
               ))}
           </div>
-          {addWorkoutForm && 
-          <WorkoutForm 
-          goToPageOne={() => goToPageOne()}
-          hideForm={() => hideForm()} />}
+          {addWorkoutForm && (
+            <WorkoutForm
+              hideForm={hideForm}
+              getItems={getItems}
+              spreadPages={spreadPages}
+              total={total}
+              limit={limit}
+            />
+          )}
           {!addWorkoutForm && (
             <button
               className="add--workout"
