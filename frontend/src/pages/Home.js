@@ -4,19 +4,29 @@ import WorkoutForm from '../components/WorkoutForm'
 import Navbar from'../components/Navbar'
 import { useWorkoutsContext } from '../hooks/useWorkoutContext'
 import { useAuthContext } from "../hooks/useAuthContext";
-import Search from "../components/Search";
 import Pagination from '../components/Pagination';
+import { useSearch } from '../hooks/useSearch';
 
 export default function Home() {
     const [addWorkoutForm, setAddWorkoutForm] = React.useState(false);
     const { workouts } = useWorkoutsContext(); 
     const { user } = useAuthContext();
-    const { search, total, limit } = useSearch();
+    const { search, total, limit, isLoading } = useSearch();
     const [page, setPage] = React.useState(0);
     const [pageSpread, setPageSpread] = React.useState([]);
+    const [query, setQuery] = React.useState("");
+    React.useEffect(() => {
+      getItems(query, page);
+    }, [query, page]);
+
     React.useEffect(()=> {
       spreadPages(total, limit)
     },[total,limit])
+
+    const getItems = async (q,p) => {
+      await search(q, p);
+    };
+
     const spreadPages = (t, l) => {
       const pagesNum = Math.ceil(t / l);
       let spread = [];
@@ -41,11 +51,34 @@ export default function Home() {
      });
    };
 
+   const handleSearch = async (e) => {
+     e.preventDefault();
+     await getItems(query, page)
+   };
+
     return (
       <>
         <Navbar page={page} setPage={setPage}/>
+        {user && ( // SEARCH BAR
+          <>
+            <form className="search--bar" onSubmit={handleSearch}>
+              <input
+                type="search"
+                placeholder="search workouts..."
+                value={query}
+                onChange={(e) => {
+                  setQuery(e.target.value);
+                  setPage(0);
+                }}
+              ></input>
+              <button disabled={isLoading}>
+                <span className="material-symbols-outlined">search</span>
+              </button>
+            </form>
+            {isLoading && <h1 className="loading">Loading data...</h1>}
+          </>
+        )}    
         {user && (
-          <Search page={page} setPage={setPage} pageSpread={pageSpread} />
           <Pagination
             page={page}
             pageSpread={pageSpread}
