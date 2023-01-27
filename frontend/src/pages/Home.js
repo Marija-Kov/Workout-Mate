@@ -58,7 +58,7 @@ export default function Home() {
 
     return (
       <>
-        <Navbar page={page} setPage={setPage}/>
+        <Navbar />
         {user && ( // SEARCH BAR
           <>
             <form className="search--bar" onSubmit={handleSearch}>
