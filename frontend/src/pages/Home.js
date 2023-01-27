@@ -5,6 +5,7 @@ import Navbar from'../components/Navbar'
 import { useWorkoutsContext } from '../hooks/useWorkoutContext'
 import { useAuthContext } from "../hooks/useAuthContext";
 import Search from "../components/Search";
+import Pagination from '../components/Pagination';
 
 export default function Home() {
     const [addWorkoutForm, setAddWorkoutForm] = React.useState(false);
@@ -32,12 +33,26 @@ export default function Home() {
    function goToPageOne(){
     setPage(0)
    }
+   const flipPage = (num) => {
+     setPage((prev) => {
+       if (num === -1) return prev + num;
+       if (num[0]) return prev + num[0];
+       return num - 1;
+     });
+   };
 
     return (
       <>
         <Navbar page={page} setPage={setPage}/>
         {user && (
           <Search page={page} setPage={setPage} pageSpread={pageSpread} />
+          <Pagination
+            page={page}
+            pageSpread={pageSpread}
+            total={total}
+            limit={limit}
+            flipPage={flipPage}
+          />
         )}
         <div className="home">
           <div className="workouts">
