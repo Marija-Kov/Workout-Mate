@@ -224,6 +224,28 @@ JWT is created with every login for extra security.
 
 - Add Workout component has access to page-flip function - flips to page 0 once a workout is added.
 
+## Responsive UI update on item add or delete request
+
+In order for the UI to feel responsive upon adding or deleting an item(workout), a GET request has to be made after every POST item and DELETE item request. Responsive UI, in this case, would mean that:
+ 1. When an item is added/deleted, Pagination is updated with the correct number of pages immediately;
+ 2. When an item is deleted from a page that's not the last page, the item from the next page fills up the page where teh item was deleted.
+
+To achieve this, both WorkoutForm and WorkoutDetails components must have access to search function which makes a get request to the server and is located (at the point of making the decision about this change) in the Search component, the child component of their sibling, Navbar.
+
+Home--> WorkoutDetails
+    --> AddWorkout
+    --> Navbar --> Search --> Pagination
+
+Since there is no functional reason for Search to be inside Navbar, or even Pagination within Navbar or Search, we can refactor to this:
+
+Home--> WorkoutDetails
+    --> AddWorkout
+    --> Navbar 
+    --> Search
+    --> Pagination
+
+After this, useSearch should be removed from Search and imported in Home directly so all the sibling components have access to search function, total number of pages and items-per-page limit value AS PROPS, which are used for building functions that will get the sibling components in sync with each other.
+
 
 
 ## Account deletion
