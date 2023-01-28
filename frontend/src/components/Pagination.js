@@ -1,19 +1,9 @@
 import React from 'react'
-import { useWorkoutsContext } from '../hooks/useWorkoutContext';
 
-export default function Pagination({page, limit, flipPage, total}){
-  const {workouts} = useWorkoutsContext();
+export default function Pagination({page, limit, flipPage, total, pageSpread}){
+  
+  console.log("Pagination renders")
 
-  const spreadPages = (t,l) => {
-    const pagesNum = Math.ceil(t/l);
-    let spread = [];
-    for(let i=1; i<=pagesNum; ++i){
-      spread.push(i)
-    }
-    return spread
-    }
-  let pageSpread = spreadPages(total,limit);
-  // TODO: use total number of items to enable/disable prev/next page buttons to avoid showing blank page 
   const btnIsDisabled = () => (page+1) * limit >= total ;
   
     return (

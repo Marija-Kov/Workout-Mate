@@ -1,29 +1,19 @@
 import React from 'react';
 import formatDistanceToNow from 'date-fns/formatDistanceToNow';
-import { useWorkoutsContext } from '../hooks/useWorkoutContext';
-import { useAuthContext } from '../hooks/useAuthContext';
+import useDeleteWorkout from '../hooks/useDeleteWorkout';
 
 const EditWorkout = React.lazy(() => import("../components/EditWorkout"));
 
-export default function WorkoutDetails(props){
+export default function WorkoutDetails({id, title, reps, load, createdAt, updatedAt, page, getItems, total, limit, spreadPages}){
     const [showEditForm, setShowEditForm] = React.useState(false);
-    const [error, setError] = React.useState(null);
-    const {dispatch} = useWorkoutsContext();
-    const { user } = useAuthContext();
-    const handleClick = ()=>{
-         if(!user){
-          setError('You must be logged in to do that')
-          return
-          }
-        fetch('/api/workouts/' + props.id, {
-            method: 'DELETE',
-            headers: {
-                'Authorization': `Bearer ${user.token}`
-            }
-        }).then(response => response.json())
-        .then(json => dispatch({type: 'DELETE_ONE', payload: json }))
-        .catch(err => console.log(err))
+    const {deleteWorkout, error} = useDeleteWorkout();
+
+    const handleDelete = async () => {
+      await deleteWorkout(id)
+      await getItems('', page)
+      spreadPages(total, limit)
     }
+
     const showEdit = () => {
        setShowEditForm(prev => !prev)
     }
@@ -31,21 +21,21 @@ export default function WorkoutDetails(props){
     return (
         <>
         <div className="workout-details">
-            <h4>{props.title}</h4>
-            <p>reps: {props.reps}</p>
-            <p>load: {props.load}</p>
-            <p className='date'>{formatDistanceToNow(new Date(props.createdAt), { addSuffix: true})}</p>
-            <span className='material-symbols-outlined' onClick={handleClick}>delete</span>
+            <h4>{title}</h4>
+            <p>reps: {reps}</p>
+            <p>load: {load}</p>
+            <p className='date'>{formatDistanceToNow(new Date(createdAt), { addSuffix: true})}</p>
+            <span className='material-symbols-outlined' onClick={handleDelete}>delete</span>
             <span className='material-symbols-outlined edit' onClick={showEdit}>edit</span>
             {error && <div className="error">{error}</div>} 
         </div>
         {showEditForm && <EditWorkout
-                        key={props.id +'edit'}
-                        id = {props.id}
-                        title={props.title}
-                        reps={props.reps}
-                        load={props.load}
-                        createdAt={props.createdAt}
+                        key={id +'edit'}
+                        id = {id}
+                        title={title}
+                        reps={reps}
+                        load={load}
+                        createdAt={createdAt}
                         showEdit={()=>showEdit()}
                          />}
         </>

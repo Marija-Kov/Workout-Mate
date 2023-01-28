@@ -1,7 +1,7 @@
 import React from 'react';
 import { useCreateWorkout } from '../hooks/useCreateWorkout';
 
-export default function WorkoutForm(props){
+export default function WorkoutForm({hideForm, spreadPages, total, limit, getItems}){
   const { createWorkout, error } = useCreateWorkout();
   const [workout, setWorkout] = React.useState({
     title: "",
@@ -12,9 +12,7 @@ export default function WorkoutForm(props){
 
   const handleSubmit = async (e) => {
     e.preventDefault();
- 
     await createWorkout(workout);
-    
     if (!workout.title) {
       setEmptyFields((prev) => ["title", ...prev]);
     }
@@ -26,8 +24,9 @@ export default function WorkoutForm(props){
     }
 
     if(workout.title && workout.reps && workout.load){
-     props.hideForm();
-     props.goToPageOne();
+     hideForm();
+     await getItems("", 0);
+     spreadPages(total, limit);
      setEmptyFields([]);
      setWorkout({ title: "", load: "", reps: "" });
     }   
@@ -79,7 +78,7 @@ export default function WorkoutForm(props){
       </p>
       <div className="btns">
         <button>Add workout</button>
-        <button className="discard" onClick={() => props.hideForm()}>
+        <button className="discard" onClick={hideForm}>
           Not now
         </button>
       </div>
