@@ -57,11 +57,14 @@ React.useEffect(() => {
           )}
           {!user && (
             <div>
+              <Link to="/about">
+                <button className="about--btn">About</button>
+              </Link>
               <Link to="/login">
-                <span className="login--btn">Log In</span>
+                <button className="login--btn">Log In</button>
               </Link>
               <Link to="/signup">
-                <span className="signup--btn">Sign Up</span>
+                <button className="signup--btn">Sign Up</button>
               </Link>
             </div>
           )}
