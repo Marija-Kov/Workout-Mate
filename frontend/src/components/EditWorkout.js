@@ -51,47 +51,46 @@ export default function EditWorkout(props){
         dispatch({type: 'UPDATE_ONE', payload: json})
     }
  }
-    return(
-
-        <form className="edit--form" >
-          <h4>Edit workout</h4>
-          <label>exercise title:</label>
-          <input 
-            type="text" 
-            name="title" 
-            id="title" 
-            onChange={e=> setTitle(e.target.value)}
-            value={title}
-            className={emptyFields.includes('title') ?
-                   'error' : ''}
-            />
+    return (
+      <form className="edit--form">
+        <span
+          className="close--user--settings material-symbols-outlined"
+          onClick={() => props.showEdit()}
+        >
+          close
+        </span>
+        <h4>Edit workout</h4>
+        <label>exercise title:</label>
+        <input
+          type="text"
+          name="title"
+          id="title"
+          onChange={(e) => setTitle(e.target.value)}
+          value={title}
+          className={emptyFields.includes("title") ? "error" : ""}
+        />
         <label>number of reps:</label>
-          <input 
-            type="number" 
-            name="reps" 
-            id="reps" 
-            onChange={e=> setReps(e.target.value)}
-            value={reps}
-            className={emptyFields.includes('reps') ?
-                   'error' : ''}
-            />
+        <input
+          type="number"
+          name="reps"
+          id="reps"
+          onChange={(e) => setReps(e.target.value)}
+          value={reps}
+          className={emptyFields.includes("reps") ? "error" : ""}
+        />
         <label>load (kg):</label>
-          <input 
-            type="number" 
-            name="load" 
-            id="load" 
-            onChange={e=> setLoad(e.target.value)}
-            value={load}
-            className={emptyFields.includes('load') ?
-                   'error' : ''}
-            />
+        <input
+          type="number"
+          name="load"
+          id="load"
+          onChange={(e) => setLoad(e.target.value)}
+          value={load}
+          className={emptyFields.includes("load") ? "error" : ""}
+        />
         <div className="btns">
-       <button onClick={(e)=>handleUpdate(e)}>Save changes</button> 
-        <button className="discard" onClick={()=>props.showEdit()}>Discard changes</button>
-       </div>
-       {error && <div className="error">{error}</div>}   
-       
+          <button onClick={(e) => handleUpdate(e)}>Save changes</button>
+        </div>
+        {error && <div className="error">{error}</div>}
       </form>
-      
-    )
+    );
 }

@@ -63,14 +63,14 @@ export default function UserSettings({closeUserSettings, changeProfileImg}) {
           close
         </span>
         <h4>Profile settings</h4>
-        <label>Change displayed name</label>
+        <label>Change displayed name:</label>
         <input
           type="text"
           name="username"
           value={newUsername}
           onChange={(e) => setNewUsername(e.target.value)}
         />
-        <label>Change profile image</label>
+        <label>Change profile image:</label>
         <input
           type="file"
           name="profile-image"

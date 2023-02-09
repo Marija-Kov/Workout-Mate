@@ -74,18 +74,19 @@ export default function Home() {
             </form>
             {isLoading && <h1 className="loading">Loading data...</h1>}
           </>
-        )}    
-        {user && (
-          <Pagination
-            page={page}
-            pageSpread={pageSpread}
-            total={total}
-            limit={limit}
-            flipPage={flipPage}
-          />
         )}
+
         <div className="home">
           <div className="workouts">
+            {user && (
+              <Pagination
+                page={page}
+                pageSpread={pageSpread}
+                total={total}
+                limit={limit}
+                flipPage={flipPage}
+              />
+            )}
             {workouts &&
               workouts.map((workout) => (
                 <WorkoutDetails
@@ -103,6 +104,15 @@ export default function Home() {
                   limit={limit}
                 />
               ))}
+
+            {!addWorkoutForm && (
+              <button
+                className="add--workout"
+                onClick={() => setAddWorkoutForm(true)}
+              >
+                + Add workout
+              </button>
+            )}
           </div>
           {addWorkoutForm && (
             <WorkoutForm
@@ -112,14 +122,6 @@ export default function Home() {
               total={total}
               limit={limit}
             />
-          )}
-          {!addWorkoutForm && (
-            <button
-              className="add--workout"
-              onClick={() => setAddWorkoutForm(true)}
-            >
-              + Add workout
-            </button>
           )}
         </div>
       </>

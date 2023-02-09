@@ -28,6 +28,12 @@ export default function ForgotPasswordForm({ forgotPassword }) {
   return (
     <div className="form--container">
       <form className="reset--password" onSubmit={sendResetPasswordEmail}>
+        <span
+          className="close--user--settings material-symbols-outlined"
+          onClick={() => forgotPassword()}
+        >
+          close
+        </span>
         <h4>Reset Password</h4>
         <label>Please enter your email address</label>
         <input
@@ -38,9 +44,6 @@ export default function ForgotPasswordForm({ forgotPassword }) {
           onChange={(e) => setEmail(e.target.value)}
         />
         <button>Proceed</button>
-        <button type="button" onClick={() => forgotPassword()}>
-          Cancel
-        </button>
         {success && <div className="success">{success}</div>}
         {error && <div className="error">{error}</div>}
       </form>

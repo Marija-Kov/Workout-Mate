@@ -28,8 +28,8 @@ const Signup = () => {
         <Navbar />
         <div className="form--container">
           <h1>
-            Meet your mate.
-            <p>Flex some fiber.</p>
+            
+            <p></p>
           </h1>
           <form className="signup" onSubmit={handleSubmit}>
             <h4>Create an account</h4>

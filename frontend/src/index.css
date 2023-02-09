@@ -17,7 +17,7 @@
 }
 
 body {
-  background: #ededed;
+  background: #e2e2e2;
   overflow-x: hidden;
   margin: 0;
   padding: 0;
@@ -36,9 +36,8 @@ header {
 
 header > .container {
   position: relative;
-  padding: 5px 30px;
+  padding: 0px 30px;
   display: flex;
-  align-items: center;
   justify-content: space-between;
 }
 
@@ -57,17 +56,21 @@ header a {
 .pages {
   max-width: 1400px;
   padding: 20px;
+  height: 90vh;
 }
 
 .logo > a {
   font-family: 'Yellowtail', cursive;
-  font-size: 32px;
+  font-size: 0.8em;
   color: white;
+}
+.logo {
+  margin: 15px 0;
 }
 
 .logged--in--logo > a {
   font-family: 'Yellowtail', cursive;
-  font-size: 28px;
+  font-size: 22px;
   color: rgb(167, 133, 191);
 }
 
@@ -100,18 +103,23 @@ background-color: var(--login);
 }
 
 .login--btn,
-.signup--btn {
-  padding: 6px 8px;
+.signup--btn,
+.about--btn {
+  background: transparent;
+  padding: 6px;
+  position: relative;
+  top: 30px;
   cursor: pointer;
-  width: 50px;
+  width: fit-content;
   text-align: center;
-  font-size: 14px;
+  font-size: 1.3em;
   font-weight: 500;
   border: solid 1px var(--primary);
   border-radius: 20px;
   transition: 0.3s;
 }
-.login--btn {
+.login--btn,
+.about--btn {
   border: solid 1px transparent;
 }
 .signup--btn:hover{
@@ -120,8 +128,11 @@ background-color: var(--login);
 .login--btn:hover {
  background: var(--login);
 }
+.about--btn:hover{
+  background:rgb(249, 158, 200);
+}
 
-/* homepage */
+/* Homepage */
 
 .home {
   margin: 0;
@@ -175,25 +186,31 @@ background-color: var(--login);
   display: flex;
   align-items: center;
   gap: 5px;
+  z-index: 2;
 }
 
 .hello--user > span:nth-child(1){
   display: inline-block;
-  font-weight: 500;
+  font-size: 0.85em;
+  font-weight: 400;
+}
+.hello--user > span:nth-child(1) > strong{
+  display: inline-block;
+  font-weight: 600;
 }
 
 .avatar-wrapper {
   position: relative;
   display: inline-block;
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   font-size: 10px;
   border-radius: 100%;
   overflow: hidden;
 }
 
 .avatar {
-  width: 50px;
+  width: 40px;
 }
 
 /* User menu */
@@ -201,17 +218,16 @@ background-color: var(--login);
 .user--menu {
   position: absolute;
   background: var(--home--bkg);
-  top: 100px;
   right:15px;
-  padding: 0 20px 20px 20px;
+  padding: 100px 20px 20px 20px;
   box-shadow: 0px 20px 20px rgba(160, 160, 160, 0.316);
   display: flex;
+  border-bottom-left-radius:15px;
   flex-direction: column;
-  width: 150px;
 }
 
 .user--menu--item {
- font-size: 14px;
+ font-size: 0.8em;
  color: var(--light-text);
  cursor: pointer;
  transition: 0.3s;
@@ -227,20 +243,24 @@ background-color: var(--login);
   position: absolute;
   background: palegoldenrod;
   box-shadow: none;
-  right: 1px;
+  right: 18%;
   height: fit-content;
   width: fit-content;
   text-align: left;
+  border-radius: 20px;
   padding-left: 50px;  
 }
 .user--settings > input {
-  margin-left: 20px;
+  width: 200px;
+  margin-left: 0;
 }
 .user--settings > h4 {
- color: var(--primary)
+ color: var(--primary);
+ border-bottom: solid 1px rgb(214, 214, 214);
 }
 .user--settings > label {
   font-weight: 500;
+  font-size: 0.8em;
 }
 .upload--image{
   padding: 30px 0;
@@ -256,8 +276,12 @@ background-color: var(--login);
 }
 
 .close--user--settings{
+  z-index: 20;
   position: absolute;
   right: 20px;
+  height: 1em;
+  width: 1em;
+  color: var(--primary);
   cursor: pointer;
 }
 
@@ -265,7 +289,7 @@ background-color: var(--login);
   display: block;
   padding-bottom: 20px;
 }
-.cropper--wrapper{
+.cropper--wrapper {
   display:block;
   position:relative;
   height: 250px;
@@ -275,6 +299,7 @@ background-color: var(--login);
 /* Search bar */
 
 .search--bar {
+  margin: 0 32%;
   margin-top: 12px;
   display: flex;
   box-shadow: none;
@@ -285,19 +310,24 @@ background-color: var(--login);
   background: none;
 }
 .search--bar > button {
- height:fit-content;
- padding: 4px 4px 0 6px;
- margin: 3px 0;
+ height: 25px;
+ width: 25px;
+ padding: 3px 3px 0 3px;
+ margin: 6px 0;
  position: relative;
- left: 5px;
- background:var(--primary) ;
+ left: -20px;
  color: white;
- border-radius: 100%;
+ border-top-right-radius: 50px;
+ border-bottom-right-radius: 20px;
  cursor: pointer;
+}
+.search--bar > button > span {
+  font-size: 1.4em;
 }
 
 .search--bar > input{
-  height: 30px;
+  font-size: 0.75em;
+  height: 25px;
   border-radius: 20px;
   border: solid 1px var(--light-text);
 }
@@ -309,36 +339,41 @@ background-color: var(--login);
   color: rgb(187, 144, 182);
 }
 
+/* Workouts */
+
+
+
 /* Workout details component */
 
 .workout-details {
   background: #fff;
   margin: 20px auto;
   padding: 20px;
-  max-width: 500px;
+  max-width: 350px;
+  border-radius: 20px;
   position: relative;
   box-shadow: 0px 5px 22px -2px rgba(142, 142, 142, 0.5);
 }
 
-.workout-details:nth-child(n+4){
+/* .workout-details:nth-child(n+4){
  display: none;
-}
+} */
 
 .workout-details h4 {
   margin: 0 0 10px 0;
-  font-weight: 500;
+  font-weight: 700;
   text-transform: capitalize;
-  font-size: 1.2em;
+  font-size: 1em;
   padding-bottom: 10px;
   padding-left: 20px;
-  border-bottom: solid 1px #a1a1a1;
+  border-bottom: solid 1px #c6f2ee;
   color: var(--primary);
 }
 
 .workout-details p {
   min-width: 300px;
   margin: 0;
-  font-size: 0.9em;
+  font-size: 0.8em;
   padding: 5px 20px;
 }
 
@@ -347,9 +382,11 @@ background-color: var(--login);
   top: 130px;
   right: 15px;
   cursor: pointer;
-  padding: 5px;
   border-radius: 50%;
   color: #a1a1a1;
+}
+.workout-details p > strong {
+  font-weight: 600;
 }
 .workout-details .edit {
   right: 45px;
@@ -373,6 +410,7 @@ label {
 input {
   padding: 10px;
   max-width: 274px;
+  height: 30px;
   margin: 0 auto;
   margin-top: 6px;
   margin-bottom: 20px;
@@ -390,14 +428,13 @@ form {
   background: #dad5e5;
   min-width: 300px; 
   max-width: 400px;
-  height: 500px;
+  height: fit-content;
   text-align: center;
   padding: 20px;
   box-shadow: 7px 6px 189px 186px rgba(86, 90, 109, 0.64);
   z-index: 10;
   position: fixed;
   top: 100px;
-  left: 30%;
 }
 
 /* Login & Signup form */
@@ -428,6 +465,8 @@ form {
   top: 150px;
   font-size: 60px;
   color: #ff61b8;
+  margin: 0;
+  height: fit-content;
 }
 .form--container:has(.signup) > h1 {
   color: #fd922e;
@@ -478,8 +517,11 @@ form.signup h4 {
 .reset--password {
   top: 180px;
   background: pink;
-  width: 80%;
-  height: 250px;
+  width: fit-content;
+  height: fit-content;
+  position: relative;
+  margin: 0 auto;
+  border-radius: 20px;
 }
 .reset--password > button {
   margin: 0 15px;
@@ -489,22 +531,35 @@ form.signup h4 {
   color: var(--primary);
   transition: 0.2s;
 }
+.reset--password > h4 {
+  border-bottom: solid 1px rgb(249, 158, 200);
+}
 /* Add & Edit workout forms */
 
 .workout--form > h4,
 .edit--form > h4 {
-  font-size: 24px;
-  font-weight: 500;
+  font-size: 1.2em;
+  font-weight: 600;
   padding: 0;
   margin: 20px 0;
+  border-bottom: solid 1px rgb(188, 188, 188);
 }
 .edit--form,
 .workout--form {
-  height: 480px;
+  border-radius: 20px;
+  margin: 0 32%;
 }
+.edit--form > label,
+.workout--form > label {
+  font-weight: 500;
+}
+.edit--form > input,
+.workout--form > input {
+  width: 70%;
+}
+
 .edit--form {
   background: #E0E1DB;
-  height: 440px;
 }
 form button,
 .add--workout {
@@ -526,29 +581,15 @@ form button:hover,
 }
 
 .add--workout {
-position: fixed;
+position: absolute;
 z-index: 5;
-width: 100%;
-margin: 0 15%;
-bottom: 30px;
-max-width: 200px;
-}
-
-.checky {
-  display: grid;
-  height: 30px;
-  width: 200px;
-  grid-template-columns: 1fr 5fr;
-  padding: 10px;
-  font-size: 14px;
-  margin: 0 auto;
+/* bottom: 30px; */
+margin: 0 38%;
+max-width: 170px;
 }
 
 .btns {
-  display: grid;
-  grid-template-rows: 1fr 1fr;
-  gap: 10px;
-  padding: 0 30px;
+  padding: 10px;
 }
 
 button.discard {
@@ -590,14 +631,16 @@ input.error {
 }
 
 .page--btn--container {
+  display: block;
   position: fixed;
   top: 80px;
-  left: 300px;
+  /* background: pink; */
+  margin-left: 25%;
   z-index: 10;
   display: flex;
-  width: max-content;
   gap: 5px;
 }
+
 .page--btn--container > button {
   cursor: pointer;
   border: solid 1px var(--primary);
@@ -606,7 +649,11 @@ input.error {
   color: var(--primary);
   background: transparent;
   transition: 0.3s;
-  height: 27px;
+  height: 20px;
+}
+
+.page--btn--container > button > span {
+  font-size: 1.3em;
 }
 
 .page--btn--container > button:hover {
@@ -620,7 +667,8 @@ input.error {
   cursor: default
 }
 .page--btn--container > .num--page {
-  padding: 0 8px;
+  font-size: 0.8em;
+  padding: 0 5px;
 }
 
 .page--btn--container > .current {

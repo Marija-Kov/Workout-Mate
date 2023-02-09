@@ -5,7 +5,7 @@ import UserMenu from './UserMenu';
 
 export default function Navbar(){
   const { user } = useAuthContext();
-  const [showUserMenu, setShowUserMenu] = React.useState(true);
+  const [showUserMenu, setShowUserMenu] = React.useState(false);
   const [username, setUsername] = React.useState('who are you?');
   const [profileImg, setProfileImg] = React.useState(
     require("../assets/default-avatar.png")
@@ -44,13 +44,11 @@ React.useEffect(() => {
           {user && (
             <div>
               <span className="hello--user" onClick={() => userMenu()}>
-                <span>Hello, {username}</span>
-                <span className='avatar-wrapper'>
-                <img
-                  className="avatar"
-                  src={profileImg}
-                  alt="your avatar"
-                />
+                <span>
+                  Hello, <strong>{username}</strong>
+                </span>
+                <span className="avatar-wrapper">
+                  <img className="avatar" src={profileImg} alt="your avatar" />
                 </span>
               </span>
             </div>
@@ -68,12 +66,9 @@ React.useEffect(() => {
               </Link>
             </div>
           )}
-          {user && showUserMenu && 
-           <UserMenu 
-            user={user}
-            changeProfileImg={changeProfileImg}
-            />}
-
+          {user && showUserMenu && (
+            <UserMenu user={user} changeProfileImg={changeProfileImg} />
+          )}
         </div>
       </header>
     );

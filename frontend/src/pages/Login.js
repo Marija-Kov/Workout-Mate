@@ -34,8 +34,8 @@ const Login = () => {
         <Navbar />
         <div className="form--container">
           <h1>
-            We got your back.
-            <p>And your quads.</p>
+         
+            <p></p>
           </h1>
           <form className="login" onSubmit={handleSubmit}>
             <h4>User Login</h4>

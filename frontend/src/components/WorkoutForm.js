@@ -43,6 +43,10 @@ export default function WorkoutForm({hideForm, spreadPages, total, limit, getIte
   }
   return (
     <form className="workout--form" onSubmit={handleSubmit}>
+      <span
+        className="close--user--settings material-symbols-outlined"
+        onClick={hideForm}
+      >close</span>
       <h4>New workout</h4>
       <label>exercise title:</label>
       <input
@@ -72,15 +76,8 @@ export default function WorkoutForm({hideForm, spreadPages, total, limit, getIte
         value={workout.load}
         className={emptyFields.includes("load") ? "error" : ""}
       />
-      <p className="checky">
-        <input type="checkbox" />
-        <label>I am not making this up</label>
-      </p>
       <div className="btns">
         <button>Add workout</button>
-        <button className="discard" onClick={hideForm}>
-          Not now
-        </button>
       </div>
       {error && <div className="error">{error}</div>}
     </form>

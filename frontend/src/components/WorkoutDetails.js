@@ -22,8 +22,8 @@ export default function WorkoutDetails({id, title, reps, load, createdAt, update
         <>
         <div className="workout-details">
             <h4>{title}</h4>
-            <p>reps: {reps}</p>
-            <p>load: {load}</p>
+            <p><strong>reps:</strong> {reps}</p>
+            <p><strong>load:</strong> {load}</p>
             <p className='date'>{formatDistanceToNow(new Date(createdAt), { addSuffix: true})}</p>
             <span className='material-symbols-outlined' onClick={handleDelete}>delete</span>
             <span className='material-symbols-outlined edit' onClick={showEdit}>edit</span>
