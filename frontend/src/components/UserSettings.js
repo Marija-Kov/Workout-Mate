@@ -2,10 +2,18 @@ import React from 'react'
 import { useUpdateUser } from '../hooks/useUpdateUser';
 import Cropper from "react-easy-crop";
 import { useCroppedImg } from '../hooks/useCroppedImg';
+import { useDeleteUser } from "../hooks/useDeleteUser";
+import { useDeleteAllWorkouts } from "../hooks/useDeleteAllWorkouts";
+import { useLogout } from "../hooks/useLogout";
+import { useAuthContext } from "../hooks/useAuthContext";
 
 export default function UserSettings({closeUserSettings, changeProfileImg}) {
     const {updateUser, isLoading, error, success} = useUpdateUser();
     const { getCroppedImg } = useCroppedImg();
+    const { deleteUser } = useDeleteUser();
+    const { deleteAllWorkouts } = useDeleteAllWorkouts();
+    const { logout } = useLogout();
+    const { user } = useAuthContext();
 
     const [newUsername, setNewUsername] = React.useState('');
 
@@ -16,6 +24,9 @@ export default function UserSettings({closeUserSettings, changeProfileImg}) {
     const [zoom, setZoom] = React.useState(1);
     const [croppedAreaPixels, setCroppedAreaPixels] = React.useState(null);
     
+    const [deleteAccountDialogue, setDeleteAccountDialogue] =
+      React.useState(false);
+
     const handleFileInputChange = (e) => {
         const file = e.target.files[0]
         previewFile(file) 
@@ -47,18 +58,28 @@ export default function UserSettings({closeUserSettings, changeProfileImg}) {
      }
    }, [newUsername, selectedFile, croppedAreaPixels, changeProfileImg, getCroppedImg, updateUser]);
 
-   
    const handleUpdateProfile = async (e) => {
      e.preventDefault();
-     await readyToUpdateProfile()   
-   }
+     await readyToUpdateProfile();
+   };
+
+   const deleteAccount = async () => {
+     await deleteAllWorkouts();
+     await deleteUser(user.id);
+     logout();
+   };
+
+   const showDeleteAccount = () => {
+     setDeleteAccountDialogue((prev) => !prev);
+   };
 
   return (
+    <>
     <div className="form--container">
       <form className="user--settings" onSubmit={handleUpdateProfile}>
         <span
           className="close--user--settings material-symbols-outlined"
-          onClick={() => closeUserSettings()}
+          onClick={closeUserSettings}
         >
           close
         </span>
@@ -100,7 +121,27 @@ export default function UserSettings({closeUserSettings, changeProfileImg}) {
         {error && <div className="error">{error}</div>}
         {success && <div className="success">{success}</div>}
         {isLoading && <h3 style={{ zIndex: "10" }}>Uploading..</h3>}
+        <button type="button" className="delete--account--btn" onClick={showDeleteAccount}>
+          delete account
+        </button>
       </form>
+       {deleteAccountDialogue && (
+        <div className="delete--account--dialogue">
+          <h4>This is irreversible.</h4>
+          <p>We won't be able to recover any of your data.</p>
+          <p>Are you sure you want to proceed?</p>
+          <div className="delete--account--dialogue--btns">
+            <button type="button" onClick={deleteAccount}>
+              Yes, delete my account permanently 💀
+            </button>
+            <button type="button" onClick={showDeleteAccount}>
+              No, I changed my mind
+            </button>
+          </div>
+        </div>
+      )}
     </div>
+         
+      </>
   );
 }
