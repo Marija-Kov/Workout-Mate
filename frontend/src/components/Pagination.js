@@ -1,8 +1,6 @@
 import React from 'react'
 
 export default function Pagination({page, limit, flipPage, total, pageSpread}){
-  
-  console.log("Pagination renders")
 
   const btnIsDisabled = () => (page+1) * limit >= total ;
   
