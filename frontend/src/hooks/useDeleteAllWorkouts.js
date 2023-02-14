@@ -1,9 +1,9 @@
-import { useWorkoutsContext } from '../hooks/useWorkoutContext'
+import { useWorkoutContext } from '../hooks/useWorkoutContext'
 import { useAuthContext } from "../hooks/useAuthContext";
 
 export const useDeleteAllWorkouts = () => {
 
-  const { dispatch } = useWorkoutsContext();
+  const { dispatch } = useWorkoutContext();
   const { user } = useAuthContext();
 
   const deleteAllWorkouts = async () => {

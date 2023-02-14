@@ -1,11 +1,11 @@
 import React from 'react';
-import { WorkoutsContext} from '../context/WorkoutContext';
+import { WorkoutContext} from '../context/WorkoutContext';
 
-export const useWorkoutsContext = () => {
-    const context = React.useContext(WorkoutsContext);
+export const useWorkoutContext = () => {
+    const context = React.useContext(WorkoutContext);
     
     if (!context){
-        throw Error('useWorkoutsContext must be used inside an WorkoutContextProvider')
+        throw Error('useWorkoutContext must be used inside an WorkoutContextProvider')
     }
     return context
 }

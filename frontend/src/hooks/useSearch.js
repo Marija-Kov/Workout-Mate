@@ -1,11 +1,11 @@
 import React from 'react'
-import { useWorkoutsContext } from "../hooks/useWorkoutContext";
+import { useWorkoutContext } from "../hooks/useWorkoutContext";
 import { useAuthContext } from "../hooks/useAuthContext";
 
 export const useSearch = () => {
     const [isLoading, setIsLoading] = React.useState(null); 
-    const { dispatch } = useWorkoutsContext();
     const { user } = useAuthContext();
+    const { dispatch } = useWorkoutContext();
     const [limit, setLimit] = React.useState(null);
     const [total, setTotal] = React.useState(null)
     

@@ -1,10 +1,10 @@
 import React from "react";
-import { useWorkoutsContext } from "./useWorkoutContext";
+import { useWorkoutContext } from "./useWorkoutContext";
 import { useAuthContext } from "./useAuthContext";
 
 export default function useDeleteWorkout() {
        const [error, setError] = React.useState(null);
-       const { dispatch } = useWorkoutsContext();
+       const { dispatch } = useWorkoutContext();
        const { user } = useAuthContext();
 
     const deleteWorkout = async (id) => {

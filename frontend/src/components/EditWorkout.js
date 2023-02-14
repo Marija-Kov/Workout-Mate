@@ -1,9 +1,9 @@
 import React from 'react';
-import { useWorkoutsContext } from '../hooks/useWorkoutContext';
+import { useWorkoutContext } from '../hooks/useWorkoutContext';
 import { useAuthContext } from '../hooks/useAuthContext';
 
 export default function EditWorkout(props){
-  const { dispatch } = useWorkoutsContext();
+  const { dispatch } = useWorkoutContext();
   const { user } = useAuthContext();
   const [title, setTitle] = React.useState(props.title);
   const [reps, setReps] = React.useState(props.reps);

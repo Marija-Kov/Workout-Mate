@@ -1,9 +1,9 @@
 import React from 'react'
-import { useWorkoutsContext } from "../hooks/useWorkoutContext";
+import { useWorkoutContext } from "../hooks/useWorkoutContext";
 import { useAuthContext } from "../hooks/useAuthContext";
 
 export const useCreateWorkout = () => { 
-   const { dispatch } = useWorkoutsContext();
+   const { dispatch } = useWorkoutContext();
    const { user } = useAuthContext();
    const [error, setError] = React.useState(null);
 

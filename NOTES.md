@@ -162,17 +162,17 @@ The function containing fetch request can't be wrapped inside useEffect because 
 This can be solved using context.
 ## Context
 
-The context is provided by WorkoutsContext to the whole App component by wrapping the App component where it's rendered in index.js.
+The context is provided by WorkoutContext to the whole App component by wrapping the App component where it's rendered in index.js.
 
 The reducer is used in place of multiple functions changing multiple states.
 
 ## Custom hook
 
-Creating useWorkoutsContext hook as a clean way to use context across components.
+Creating useWorkoutContext hook as a clean way to use context across components.
 
 ## Syncing UI with the database
 
-1) Import useWorkoutsContext hook to the page where the content that needs to be synced with the DB lives.
+1) Import useWorkoutContext hook to the page where the content that needs to be synced with the DB lives.
 
 2) Replace the local state with the global state, which is the hook destructured.
 - * - remember that, since the hook returns the context, it has access to its structure/data.

@@ -2,14 +2,14 @@ import React from 'react';
 import WorkoutDetails from '../components/WorkoutDetails'
 import WorkoutForm from '../components/WorkoutForm'
 import Navbar from'../components/Navbar'
-import { useWorkoutsContext } from '../hooks/useWorkoutContext'
+import { useWorkoutContext } from '../hooks/useWorkoutContext'
 import { useAuthContext } from "../hooks/useAuthContext";
 import Pagination from '../components/Pagination';
 import { useSearch } from '../hooks/useSearch';
 
 export default function Home() {
     const [addWorkoutForm, setAddWorkoutForm] = React.useState(false);
-    const { workouts } = useWorkoutsContext(); 
+    const { workouts } = useWorkoutContext(); 
     const { user } = useAuthContext();
     const { search, total, limit, isLoading } = useSearch();
     const [page, setPage] = React.useState(0);
