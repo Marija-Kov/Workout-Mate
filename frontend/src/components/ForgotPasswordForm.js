@@ -29,7 +29,7 @@ export default function ForgotPasswordForm({ forgotPassword }) {
     <div className="form--container">
       <form className="reset--password" onSubmit={sendResetPasswordEmail}>
         <span
-          className="close--user--settings material-symbols-outlined"
+          className="close material-symbols-outlined"
           onClick={() => forgotPassword()}
         >
           close

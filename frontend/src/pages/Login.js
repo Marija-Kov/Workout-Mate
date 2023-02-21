@@ -56,9 +56,9 @@ const Login = () => {
               value={credentials.password}
               onChange={handleChange}
             />
-            <div className="forgot--password" onClick={forgotPassword}>
+            <button type="button" className="forgot--password" onClick={forgotPassword}>
               Forgot the password?
-            </div>
+            </button>
             <button disabled={isLoading}>Log in</button>
             {error && (
               <div role="alert" className="error">

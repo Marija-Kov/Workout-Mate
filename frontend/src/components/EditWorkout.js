@@ -53,12 +53,12 @@ export default function EditWorkout(props){
  }
     return (
       <form className="edit--form">
-        <span
-          className="close--user--settings material-symbols-outlined"
+        <button
+          className="close material-symbols-outlined"
           onClick={() => props.showEdit()}
         >
           close
-        </span>
+        </button>
         <h4>Edit workout</h4>
         <label>exercise title:</label>
         <input

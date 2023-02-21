@@ -43,26 +43,26 @@ React.useEffect(() => {
           </h1>
           {user && (
             <div>
-              <span className="hello--user" onClick={() => userMenu()}>
+              <button className="hello--user" onClick={() => userMenu()}>
                 <span>
                   Hello, <strong>{username}</strong>
                 </span>
                 <span className="avatar-wrapper">
                   <img className="avatar" src={profileImg} alt="your avatar" />
                 </span>
-              </span>
-            </div>
+              </button>
+            </div>  
           )}
           {!user && (
             <div>
               <Link to="/about">
-                <button className="about--btn">About</button>
+                <span className="about--btn">About</span>
               </Link>
               <Link to="/login">
-                <button className="login--btn">Log In</button>
+                <span className="login--btn">Log In</span>
               </Link>
               <Link to="/signup">
-                <button className="signup--btn">Sign Up</button>
+                <span className="signup--btn">Sign Up</span>
               </Link>
             </div>
           )}

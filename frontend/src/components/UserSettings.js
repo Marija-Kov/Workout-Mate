@@ -77,12 +77,12 @@ export default function UserSettings({closeUserSettings, changeProfileImg}) {
     <>
     <div className="form--container">
       <form className="user--settings" onSubmit={handleUpdateProfile}>
-        <span
-          className="close--user--settings material-symbols-outlined"
+        <button
+          className="close material-symbols-outlined"
           onClick={closeUserSettings}
         >
           close
-        </span>
+        </button>
         <h4>Profile settings</h4>
         <label>Change displayed name:</label>
         <input

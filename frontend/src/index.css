@@ -188,12 +188,17 @@ background-color: var(--login);
   align-items: center;
   gap: 5px;
   z-index: 2;
+  font-size: 0.9em;
+  background: unset;
+  border:unset;
+  border-radius: unset;
+  transition:unset;
 }
 
 .hello--user > span:nth-child(1){
   display: inline-block;
-  font-size: 0.85em;
   font-weight: 400;
+
 }
 .hello--user > span:nth-child(1) > strong{
   display: inline-block;
@@ -231,7 +236,10 @@ background-color: var(--login);
  font-size: 0.8em;
  color: var(--light-text);
  cursor: pointer;
- transition: 0.3s;
+ background: unset;
+ border:unset;
+ border-radius: unset;
+ transition:unset;
 }
 
 .user--menu--item:hover{
@@ -279,7 +287,7 @@ background-color: var(--login);
   font-size: small;
 }
 
-.close--user--settings{
+.close{
   z-index: 20;
   position: absolute;
   right: 20px;
@@ -287,7 +295,16 @@ background-color: var(--login);
   width: 1em;
   color: var(--primary);
   cursor: pointer;
+  background: unset;
+  padding: 0;
+  border:unset;
+  border-radius: unset;
+  transition:unset;
 }
+.close:hover{
+  background: unset;
+}
+
 
 .user--settings > img {
   display: block;
@@ -445,13 +462,17 @@ background-color: var(--login);
   padding: 5px 20px;
 }
 
-.workout-details span {
+.workout-details button {
   position: absolute;
   top: 130px;
   right: 15px;
   cursor: pointer;
   border-radius: 50%;
   color: #a1a1a1;
+  background: unset;
+  border:unset;
+  border-radius: unset;
+  transition:unset;
 }
 .workout-details p > strong {
   font-weight: 600;
@@ -550,7 +571,13 @@ form {
   top: -15px;
   cursor: pointer;
   text-decoration: underline;
-  padding-bottom: 15px;
+  background: unset;
+  border:unset;
+  border-radius: unset;
+  transition:unset;
+}
+.forgot--password:hover{
+  background: unset;
 }
 .form--container > h1 > p {
   font-size: 22px;

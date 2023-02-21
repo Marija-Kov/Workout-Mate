@@ -43,12 +43,12 @@ export default function WorkoutForm({hideForm, spreadPages, total, limit, getIte
   }
   return (
     <form className="workout--form" onSubmit={handleSubmit}>
-      <span
-        className="close--user--settings material-symbols-outlined"
+      <button
+        className="close material-symbols-outlined"
         onClick={hideForm}
-      >
+      >       
         close
-      </span>
+      </button>
       <h4>New workout</h4>
       <label>exercise title:</label>
       <input
