@@ -4,13 +4,11 @@ import Navbar from "../components/Navbar";
 
 const Signup = () => {
     const [credentials, setCredentials] = React.useState({email:"", password:""});
-    const [verificationNeeded, setVerificationNeeded] = React.useState(null)
-    const {signup, isLoading, error} = useSignup();
+    const {signup, isLoading, error, verificationNeeded} = useSignup();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         await signup(credentials);
-        setVerificationNeeded(true);
     }
 
     const handleChange = (e) => {
