@@ -32,7 +32,6 @@ const Login = () => {
       <>
         <div className="form--container">
           <h1>
-         
             <p></p>
           </h1>
           <form className="login" onSubmit={handleSubmit}>
@@ -40,16 +39,20 @@ const Login = () => {
             <label>email address:</label>
             <input
               type="text"
+              id="email"
               name="email"
               placeholder="email address"
+              aria-label="email address"
               value={credentials.email}
               onChange={handleChange}
             />
             <label>password:</label>
             <input
               type="password"
+              id="password"
               name="password"
               placeholder="password"
+              aria-label="password"
               value={credentials.password}
               onChange={handleChange}
             />
@@ -57,13 +60,17 @@ const Login = () => {
               Forgot the password?
             </div>
             <button disabled={isLoading}>Log in</button>
-            {error && <div className="error">{error}</div>}
+            {error && (
+              <div role="alert" className="error">
+                {error}
+              </div>
+            )}
           </form>
         </div>
 
-      {forgotPasswordForm && <ForgotPasswordForm forgotPassword={forgotPassword} />
-        }
-        
+        {forgotPasswordForm && (
+          <ForgotPasswordForm forgotPassword={forgotPassword} />
+        )}
       </>
     );
 

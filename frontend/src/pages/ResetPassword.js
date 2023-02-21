@@ -40,19 +40,35 @@ export default function ResetPassword(){
           <label>New password:</label>
           <input
             type="password"
+            id="new-password"
+            aria-label="new password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
           <label>Confirm new password:</label>
           <input
             type="password"
+            id="confirm-new-password"
+            aria-label="confirm new password"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
           />
           {!success && <button>Save</button>}
-          {error && <div className="error">{error}</div>}
-          {success && <div className="success">{success}</div>}
-          {success && <p><Link to="/login">Log in</Link></p>}
+          {error && (
+            <div role="alert" className="error">
+              {error}
+            </div>
+          )}
+          {success && (
+            <div role="alert" className="success">
+              {success}
+            </div>
+          )}
+          {success && (
+            <p>
+              <Link to="/login">Log in</Link>
+            </p>
+          )}
         </form>
       </div>
     );

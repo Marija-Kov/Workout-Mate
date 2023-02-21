@@ -46,7 +46,9 @@ export default function WorkoutForm({hideForm, spreadPages, total, limit, getIte
       <span
         className="close--user--settings material-symbols-outlined"
         onClick={hideForm}
-      >close</span>
+      >
+        close
+      </span>
       <h4>New workout</h4>
       <label>exercise title:</label>
       <input
@@ -54,6 +56,7 @@ export default function WorkoutForm({hideForm, spreadPages, total, limit, getIte
         name="title"
         id="title"
         placeholder="ex: bench press"
+        aria-label="workout title"
         onChange={handleChange}
         value={workout.title}
         className={emptyFields.includes("title") ? "error" : ""}
@@ -63,6 +66,7 @@ export default function WorkoutForm({hideForm, spreadPages, total, limit, getIte
         type="number"
         name="reps"
         id="reps"
+        aria-label="number of reps"
         onChange={handleChange}
         value={workout.reps}
         className={emptyFields.includes("reps") ? "error" : ""}
@@ -72,6 +76,7 @@ export default function WorkoutForm({hideForm, spreadPages, total, limit, getIte
         type="number"
         name="load"
         id="load"
+        aria-label="load in kg"
         onChange={handleChange}
         value={workout.load}
         className={emptyFields.includes("load") ? "error" : ""}
@@ -79,7 +84,11 @@ export default function WorkoutForm({hideForm, spreadPages, total, limit, getIte
       <div className="btns">
         <button>Add workout</button>
       </div>
-      {error && <div className="error">{error}</div>}
+      {error && (
+        <div role="alert" className="error">
+          {error}
+        </div>
+      )}
     </form>
   );
 }
