@@ -1,12 +1,10 @@
 import React from 'react'
-import Navbar from '../components/Navbar'
 import github from "../assets/github.png";
 import patternBkg from "../assets/gym-pattern.png"
 
 export default function About() {
   return (
     <>
-      <Navbar />
       <div className="about--container">
         <h1>About</h1>
         <p>Workout Mate is there for you to keep track of your physical activity.</p>

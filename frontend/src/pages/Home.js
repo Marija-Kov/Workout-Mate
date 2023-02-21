@@ -1,7 +1,6 @@
 import React from 'react';
 import WorkoutDetails from '../components/WorkoutDetails'
 import WorkoutForm from '../components/WorkoutForm'
-import Navbar from'../components/Navbar'
 import { useWorkoutContext } from '../hooks/useWorkoutContext'
 import { useAuthContext } from "../hooks/useAuthContext";
 import Pagination from '../components/Pagination';
@@ -55,7 +54,6 @@ export default function Home() {
 
     return (
       <>
-        <Navbar />
         {user && ( // SEARCH BAR
           <>
             <form className="search--bar" onSubmit={handleSearch}>

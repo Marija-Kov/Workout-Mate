@@ -1,5 +1,6 @@
 import React from 'react'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import Navbar from './components/Navbar';
 import { useAuthContext } from './hooks/useAuthContext';
 
 const Home = React.lazy(() => import("./pages/Home"));
@@ -15,6 +16,7 @@ function App() {
   return (
     <div className="App">
       <BrowserRouter>
+      <Navbar />
         <div className="pages">
           <Routes>
             <Route

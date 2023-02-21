@@ -1,6 +1,5 @@
 import React from 'react';
 import { useLogin } from '../hooks/useLogin';
-import Navbar from "../components/Navbar";
 
 const ForgotPasswordForm = React.lazy(() =>
   import("../components/ForgotPasswordForm")
@@ -31,7 +30,6 @@ const Login = () => {
       };
     return (
       <>
-        <Navbar />
         <div className="form--container">
           <h1>
          

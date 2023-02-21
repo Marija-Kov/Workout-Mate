@@ -1,6 +1,5 @@
 import React from 'react';
 import { useSignup } from '../hooks/useSignup';
-import Navbar from "../components/Navbar";
 
 const Signup = () => {
     const [credentials, setCredentials] = React.useState({email:"", password:""});
@@ -23,7 +22,6 @@ const Signup = () => {
 
     return (
       <>
-        <Navbar />
         <div className="form--container">
           <h1>
             
