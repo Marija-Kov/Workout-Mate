@@ -16,6 +16,10 @@
   --light-text: #a1a1a1;
 }
 
+:focus {
+  outline: 5px solid rgb(240, 40, 73);
+}
+
 body {
   background: #e2e2e2;
   overflow-x: hidden;
@@ -76,7 +80,10 @@ header a {
 
 /* Confirmed account page */
 
-.confirmed--account {
+.confirmed--container {
+  margin-top: 80px;
+}
+.confirmed--account--success {
   background: var(--success--bkg);
   padding: 20px 40px;
 }
