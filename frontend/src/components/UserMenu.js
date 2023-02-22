@@ -15,15 +15,15 @@ export default function UserMenu(props) {
   return (
     <>
       <div className="user--menu">
-        <span
+        <button
           className="user--menu--item"
           onClick={() => setUserSettings((prev) => !prev)}
         >
           Settings
-        </span>
-        <span className="user--menu--item" onClick={logout}>
+        </button>
+        <button className="user--menu--item" onClick={logout}>
           Log Out
-        </span>
+        </button>
       </div>
 
       {userSettings && (

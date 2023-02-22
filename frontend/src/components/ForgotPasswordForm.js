@@ -29,7 +29,7 @@ export default function ForgotPasswordForm({ forgotPassword }) {
     <div className="form--container">
       <form className="reset--password" onSubmit={sendResetPasswordEmail}>
         <span
-          className="close--user--settings material-symbols-outlined"
+          className="close material-symbols-outlined"
           onClick={() => forgotPassword()}
         >
           close
@@ -38,14 +38,24 @@ export default function ForgotPasswordForm({ forgotPassword }) {
         <label>Please enter your email address</label>
         <input
           name="email"
+          id="email"
           type="email"
           placeholder="email address"
+          aria-label="email address"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
         <button>Proceed</button>
-        {success && <div className="success">{success}</div>}
-        {error && <div className="error">{error}</div>}
+        {success && (
+          <div role="alert" className="success">
+            {success}
+          </div>
+        )}
+        {error && (
+          <div role="alert" className="error">
+            {error}
+          </div>
+        )}
       </form>
     </div>
   );

@@ -77,17 +77,19 @@ export default function UserSettings({closeUserSettings, changeProfileImg}) {
     <>
     <div className="form--container">
       <form className="user--settings" onSubmit={handleUpdateProfile}>
-        <span
-          className="close--user--settings material-symbols-outlined"
+        <button
+          className="close material-symbols-outlined"
           onClick={closeUserSettings}
         >
           close
-        </span>
+        </button>
         <h4>Profile settings</h4>
         <label>Change displayed name:</label>
         <input
           type="text"
           name="username"
+          id="new-username"
+          aria-label="new username"
           value={newUsername}
           onChange={(e) => setNewUsername(e.target.value)}
         />
@@ -95,6 +97,8 @@ export default function UserSettings({closeUserSettings, changeProfileImg}) {
         <input
           type="file"
           name="profile-image"
+          id="new-profile-image"
+          aria-label="new profile image"
           value={fileInputState}
           onChange={handleFileInputChange}
         />
@@ -118,8 +122,8 @@ export default function UserSettings({closeUserSettings, changeProfileImg}) {
         <button disabled={isLoading} className="upload--btn">
           Upload
         </button>
-        {error && <div className="error">{error}</div>}
-        {success && <div className="success">{success}</div>}
+        {error && <div role="alert" className="error">{error}</div>}
+        {success && <div role="alert" className="success">{success}</div>}
         {isLoading && <h3 style={{ zIndex: "10" }}>Uploading..</h3>}
         <button type="button" className="delete--account--btn" onClick={showDeleteAccount}>
           delete account

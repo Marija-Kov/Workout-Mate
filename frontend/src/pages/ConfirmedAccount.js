@@ -1,5 +1,4 @@
 import React from 'react'
-import { Link } from "react-router-dom";
 
 export default function ConfirmedAccount() {
   const [token, setToken] = React.useState(null);
@@ -27,27 +26,23 @@ export default function ConfirmedAccount() {
    }, [token, verify])
     
   return (
-    <>
+    <div className="confirmed--container">
       {success && (
-        <div className="confirmed--account">
+        <div className="confirmed--account--success">
           <h2>Your account has been confirmed.</h2>
-          <p>
-            You may <Link to="/login">Log in</Link> now.
-          </p>
+          <p>You may log in now.</p>
         </div>
       )}
       {error && (
         <>
           <div className="error">{error} </div>
           <div className="already--confirmed">
-            In fact, you might be seeing this because the page was refreshed
-            after your account has already been confirmed!<br></br>
-            Please try logging in.<br></br>
-            <br></br>
-            <Link to="/login">Log in</Link>
+            <p>In fact, you might be seeing this because the page was refreshed
+            after your account has already been confirmed!</p>
+           <p> Please try logging in.</p>
           </div>
         </>
       )}
-    </>
+    </div>
   );
 }

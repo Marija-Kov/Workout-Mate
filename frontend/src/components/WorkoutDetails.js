@@ -25,9 +25,9 @@ export default function WorkoutDetails({id, title, reps, load, createdAt, update
             <p><strong>reps:</strong> {reps}</p>
             <p><strong>load:</strong> {load}</p>
             <p className='date'>{formatDistanceToNow(new Date(createdAt), { addSuffix: true})}</p>
-            <span className='material-symbols-outlined' onClick={handleDelete}>delete</span>
-            <span className='material-symbols-outlined edit' onClick={showEdit}>edit</span>
-            {error && <div className="error">{error}</div>} 
+            <button className='material-symbols-outlined' onClick={handleDelete}>delete</button>
+            <button className='material-symbols-outlined edit' onClick={showEdit}>edit</button>
+            {error && <div role="alert" className="error">{error}</div>} 
         </div>
         {showEditForm && <EditWorkout
                         key={id +'edit'}

@@ -53,18 +53,19 @@ export default function EditWorkout(props){
  }
     return (
       <form className="edit--form">
-        <span
-          className="close--user--settings material-symbols-outlined"
+        <button
+          className="close material-symbols-outlined"
           onClick={() => props.showEdit()}
         >
           close
-        </span>
+        </button>
         <h4>Edit workout</h4>
         <label>exercise title:</label>
         <input
           type="text"
           name="title"
           id="title"
+          aria-label="workout title"
           onChange={(e) => setTitle(e.target.value)}
           value={title}
           className={emptyFields.includes("title") ? "error" : ""}
@@ -74,6 +75,7 @@ export default function EditWorkout(props){
           type="number"
           name="reps"
           id="reps"
+          aria-label="number of reps"
           onChange={(e) => setReps(e.target.value)}
           value={reps}
           className={emptyFields.includes("reps") ? "error" : ""}
@@ -83,6 +85,7 @@ export default function EditWorkout(props){
           type="number"
           name="load"
           id="load"
+          aria-label="load in kg"
           onChange={(e) => setLoad(e.target.value)}
           value={load}
           className={emptyFields.includes("load") ? "error" : ""}
@@ -90,7 +93,11 @@ export default function EditWorkout(props){
         <div className="btns">
           <button onClick={(e) => handleUpdate(e)}>Save changes</button>
         </div>
-        {error && <div className="error">{error}</div>}
+        {error && (
+          <div role="alert" className="error">
+            {error}
+          </div>
+        )}
       </form>
     );
 }
