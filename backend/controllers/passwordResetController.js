@@ -8,7 +8,7 @@ module.exports.reset_password_request = async (req, res) => {
   const { email } = req.body;
   const user = await User.findOne({ email });
   if (!user) {
-   res.status(404).json({
+   return res.status(404).json({
         error: `That email address doesn't exist in our database`,
       });
   }
