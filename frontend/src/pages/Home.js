@@ -53,38 +53,28 @@ export default function Home() {
    };
 
     return (
-      <>
-        {user && ( // SEARCH BAR
-          <>
-            <form className="search--bar" onSubmit={handleSearch}>
-              <input
-                type="search"
-                placeholder="search workouts..."
-                value={query}
-                onChange={(e) => {
-                  setQuery(e.target.value);
-                  setPage(0);
-                }}
-              ></input>
-              <button disabled={isLoading}>
-                <span className="material-symbols-outlined">search</span>
-              </button>
-            </form>
-            {isLoading && <h1 className="loading">Loading data...</h1>}
-          </>
-        )}
+      <div className="home--container">
+        {!user && <h3>Access denied.</h3>}
+        {user && 
+                <div className="home">
+          {isLoading && <h1 className="loading">Loading data...</h1>}
 
-        <div className="home">
+          <form className="search--bar" onSubmit={handleSearch}>
+            <input
+              type="search"
+              placeholder="search workouts..."
+              value={query}
+              onChange={(e) => {
+                setQuery(e.target.value);
+                setPage(0);
+              }}
+            ></input>
+            <button disabled={isLoading}>
+              <span className="material-symbols-outlined">search</span>
+            </button>
+          </form>
+
           <div className="workouts">
-            {user && (
-              <Pagination
-                page={page}
-                pageSpread={pageSpread}
-                total={total}
-                limit={limit}
-                flipPage={flipPage}
-              />
-            )}
             {workouts &&
               workouts.map((workout) => (
                 <WorkoutDetails
@@ -102,16 +92,23 @@ export default function Home() {
                   limit={limit}
                 />
               ))}
-
-            {!addWorkoutForm && (
-              <button
-                className="add--workout"
-                onClick={() => setAddWorkoutForm(true)}
-              >
-                + Add workout
-              </button>
-            )}
           </div>
+          {!addWorkoutForm && (
+            <button
+              className="add--workout"
+              onClick={() => setAddWorkoutForm(true)}
+            >
+              + Buff It Up
+            </button>
+          )}
+          <Pagination
+            page={page}
+            pageSpread={pageSpread}
+            total={total}
+            limit={limit}
+            flipPage={flipPage}
+          />
+
           {addWorkoutForm && (
             <WorkoutForm
               hideForm={hideForm}
@@ -121,7 +118,20 @@ export default function Home() {
               limit={limit}
             />
           )}
+          <div className="space"></div>
+          <div className="chart--container">
+            <h3>Routine Balance</h3>
+            <div className="chart"></div>
+            <p className="stats--upper-bod">
+              <span></span> Upper body - 36%
+            </p>
+            <p className="stats--lower-bod">
+              <span></span> Lower body - 64%
+            </p>
+          </div>
         </div>
-      </>
+        }
+
+      </div>
     );
 };

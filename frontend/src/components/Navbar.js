@@ -67,7 +67,7 @@ React.useEffect(() => {
             </div>
           )}
           {user && showUserMenu && (
-            <UserMenu user={user} changeProfileImg={changeProfileImg} />
+            <UserMenu user={user} changeProfileImg={changeProfileImg} userMenu={userMenu}/>
           )}
         </div>
       </header>

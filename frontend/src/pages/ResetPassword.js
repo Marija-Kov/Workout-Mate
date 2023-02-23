@@ -56,7 +56,8 @@ export default function ResetPassword(){
           {!success && <button>Save</button>}
           {error && (
             <div role="alert" className="error">
-              {error}
+              {error}.<br></br>
+            <Link to="/login">Go back</Link> to resend the request.
             </div>
           )}
           {success && (

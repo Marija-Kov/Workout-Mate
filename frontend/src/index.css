@@ -13,6 +13,7 @@
   --login: #5fcfca;
   --signup: #b995e7;
   --home--bkg: rgb(209, 255, 240);
+  --home--bkg--dark: rgb(33, 81, 100);
   --light-text: #a1a1a1;
 }
 
@@ -32,18 +33,27 @@ header {
   z-index: 5;
   top: 0;
   width: 100vw;
+  height: 60px;
+}
+
+/* Logged-in header */
+
+.header--blur{
+  background: rgba(255, 255, 255, 0);
+  backdrop-filter: blur(4px);
+  box-shadow: 1px 1px 5px rgba(160, 160, 160, 0.616);
 }
 
 header > .container {
   position: relative;
-  padding: 0px 30px;
+  padding: 0px 20px;
+  padding-right: 10px;
   display: flex;
   justify-content: space-between;
+  height: fit-content;
 }
 
 header > .container > div {
- display: flex;
- gap: 20px;
  padding-right: 20px;
 }
 
@@ -67,11 +77,14 @@ header a {
 .logo {
   margin: 15px 0;
 }
-
+.logged--in--logo {
+  display: inline-block;
+  margin: 0;
+}
 .logged--in--logo > a {
   font-family: 'Yellowtail', cursive;
-  font-size: 22px;
-  color: rgb(167, 133, 191);
+  font-size: 20px;
+  color: rgb(177, 159, 190);
 }
 
 /* Confirmed account page */
@@ -111,6 +124,7 @@ background-color: var(--login);
   background: transparent;
   padding: 6px;
   position: relative;
+  margin-left: 20px;
   top: 30px;
   cursor: pointer;
   width: fit-content;
@@ -137,22 +151,43 @@ background-color: var(--login);
 
 /* Homepage */
 
-.home {
+.home--container {
   margin: 0;
-  padding-top: 80px;
   background: var(--home--bkg);
   background-image: url('./assets/gym-pattern.png');
   width: 100vw;
-  height: 170%;
+  height: 100vh;
   background-size: cover;
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-position-y: 40%;
   position: absolute;
-  width: 100%;
-  height: 100%;
   left: 0;
   top: 0;
+}
+
+.home {
+  position: relative;
+  top: 70px;
+  margin: 0 auto;
+  max-width: 900px;
+  min-width: 800px;
+  display: grid; 
+  grid-template-columns: 250px auto;
+  grid-template-areas:
+  'search search space space space'
+  'search search space space space'
+  'workouts workouts add-btn add-btn add-btn'
+  'workouts workouts chart chart chart'
+  'workouts workouts chart chart chart'
+  'workouts workouts chart chart chart'
+  'workouts workouts chart chart chart'
+  'workouts workouts chart chart chart'
+  'pagination pagination chart chart chart'
+}
+
+.space {
+  grid-area: space;
 }
 
 /* About page */
@@ -191,6 +226,8 @@ background-color: var(--login);
   align-items: center;
   gap: 5px;
   z-index: 2;
+  position: relative;
+  top: 10px;
   font-size: 0.9em;
   background: unset;
   border:unset;
@@ -226,18 +263,21 @@ background-color: var(--login);
 
 .user--menu {
   position: absolute;
-  background: var(--home--bkg);
-  right:15px;
+  background: whitesmoke;
+  right:20px;
   padding: 90px 20px 20px 20px;
-  box-shadow: 0px 20px 20px rgba(160, 160, 160, 0.316);
+  box-shadow: 0px 5px 22px -2px rgba(142, 142, 142, 0.5);
   display: flex;
+  justify-content: space-around;
   border-bottom-left-radius:15px;
-  flex-direction: column;
+  border-bottom-right-radius:15px;
 }
 
 .user--menu--item {
  font-size: 0.8em;
- color: var(--light-text);
+ font-weight: 600;
+ margin-right: 2px;
+ color: var(--primary);
  cursor: pointer;
  background: unset;
  border:unset;
@@ -246,7 +286,7 @@ background-color: var(--login);
 }
 
 .user--menu--item:hover{
-  color: var(--primary);
+  color: pink;
 }
 
 /* User/Profile settings */
@@ -307,7 +347,6 @@ background-color: var(--login);
 .close:hover{
   background: unset;
 }
-
 
 .user--settings > img {
   display: block;
@@ -387,16 +426,19 @@ background-color: var(--login);
 
 .search--bar {
   z-index: 5;
-  margin: 0 32%;
-  margin-top: 12px;
+  position:relative;
+  top: 0;
+  width: 180px;
+  left: 40px;
   display: flex;
   box-shadow: none;
   height: unset;
   min-width: unset;
-  top: unset;
   padding: unset;
   background: none;
+  grid-area: search;
 }
+
 .search--bar > button {
  height: 25px;
  width: 25px;
@@ -422,33 +464,37 @@ background-color: var(--login);
 
 .loading{
   position: absolute;
-  top: 400px;
+  z-index: 5;
+  top: 200px;
   left: 200px;
   color: rgb(187, 144, 182);
 }
 
 /* Workouts */
 
-
+ .workouts {
+   grid-area: workouts;
+   margin-left:40px;
+ }
 
 /* Workout details component */
 
 .workout-details {
   background: #fff;
-  margin: 20px auto;
-  padding: 20px;
-  max-width: 350px;
+  margin: 0 0 15px 0;
+  padding: 15px;
+  max-width: 250px;
   border-radius: 20px;
   position: relative;
   box-shadow: 0px 5px 22px -2px rgba(142, 142, 142, 0.5);
 }
 
-/* .workout-details:nth-child(n+4){
+.workout-details:nth-child(n+4){
  display: none;
-} */
+}
 
 .workout-details h4 {
-  margin: 0 0 10px 0;
+  margin: 0 0 8px 0;
   font-weight: 700;
   text-transform: capitalize;
   font-size: 1em;
@@ -456,22 +502,22 @@ background-color: var(--login);
   padding-left: 20px;
   border-bottom: solid 1px #c6f2ee;
   color: var(--primary);
+  
 }
 
 .workout-details p {
-  min-width: 300px;
   margin: 0;
   font-size: 0.8em;
-  padding: 5px 20px;
+  padding: 3px 20px;
 }
 
 .workout-details button {
   position: absolute;
-  top: 130px;
+  top: 110px;
   right: 15px;
   cursor: pointer;
-  border-radius: 50%;
   color: #a1a1a1;
+  font-size: 1.3em;
   background: unset;
   border:unset;
   border-radius: unset;
@@ -485,6 +531,50 @@ background-color: var(--login);
 }
 .date {
   color: #797979;
+}
+
+/* Chart */
+
+.chart--container {
+  grid-area: chart;
+  width: 100%;
+}
+.chart--container h3 {
+  position: relative;
+  margin: 20px auto 0 auto;
+  color:rgb(152, 113, 165);
+  width: fit-content;
+}
+
+.chart {
+  position: relative;
+  margin: 25px auto 0 auto;
+  width: 220px;
+  height: 220px;
+  background-image: conic-gradient(rgb(234, 123, 214) 64%, rgb(126, 211, 253) 36%);
+  border-radius: 50%;
+   box-shadow: 2px 4px 30px rgba(47, 113, 107, 0.43);
+  
+}
+.chart--container > p {
+  width: fit-content;
+  font-size: 0.8em;
+  font-weight: 500;
+  padding-left: 50px;
+  color:rgb(82, 82, 82);
+}
+
+.stats--upper-bod > span,
+.stats--lower-bod > span {
+  display: inline-block;
+  height: 20px;
+  width: 20px;
+  border-radius: 20px;
+  background:rgb(234, 123, 214);
+}
+
+.stats--lower-bod > span {
+  background:rgb(126, 211, 253);
 }
 
 /* All forms */
@@ -523,10 +613,10 @@ form {
   height: fit-content;
   text-align: center;
   padding: 20px;
-  box-shadow: 7px 6px 189px 186px rgba(86, 90, 109, 0.64);
   z-index: 10;
   position: fixed;
   top: 100px;
+  box-shadow: 5px 5px 25px 5px rgba(22, 22, 22, 0.307);
 }
 
 /* Login & Signup form */
@@ -548,6 +638,10 @@ form {
 }
 .form--container:has(.signup) {
   background-image: url("./assets/pastel-gym-2.jpeg");
+}
+.form--container:has(.reset--password) {
+  background: #c3f1fc;
+  z-index: 5;
 }
 
 .form--container > h1 {
@@ -612,14 +706,30 @@ form.signup h4 {
  border-bottom: solid 1px #fff;
 }
 
-.reset--password {
+.reset--password--request {
   top: 180px;
-  background: pink;
+  background: rgb(255, 192, 251);
   width: fit-content;
   height: fit-content;
   position: relative;
   margin: 0 auto;
   border-radius: 20px;
+  box-shadow: 6px 6px 20px 10px rgba(177, 61, 183, 0.248);
+}
+
+.reset--password--request > h4 {
+  border-bottom: solid 1px rgb(233, 160, 194);
+}
+
+.reset--password {
+  top: 180px;
+  background: rgb(192, 232, 255);
+  width: fit-content;
+  height: fit-content;
+  position: relative;
+  margin: 0 auto;
+  border-radius: 20px;
+  box-shadow: 6px 6px 20px 20px rgba(81, 121, 169, 0.225);
 }
 .reset--password > button {
   margin: 0 15px;
@@ -664,7 +774,7 @@ form button,
 .add--workout {
   background: var(--primary);
   border: solid 1px var(--primary);
-  color: #fff;
+  color: rgb(255, 255, 255);
   padding: 10px 30px;
   font-family: "Poppins";
   border-radius: 50px;
@@ -680,22 +790,18 @@ form button:hover,
 }
 
 .add--workout {
-position: absolute;
-z-index: 2;
-/* bottom: 30px; */
-margin: 0 38%;
-max-width: 170px;
+z-index: 1;
+height: 40px;
+max-width: 140px;
+font-size: .9em;
+padding: 0;
+font-weight: 500;
+position: relative;
+grid-area: add-btn;
 }
 
 .btns {
   padding: 10px;
-}
-
-button.discard {
-  background: rgb(170, 170, 170);
-  border: solid 1px rgb(170, 170, 170);
-  padding: 0;
-  margin: 0 50px;
 }
 
 div.error {
@@ -730,14 +836,12 @@ input.error {
 }
 
 .page--btn--container {
-  display: block;
-  position: fixed;
-  top: 80px;
-  /* background: pink; */
-  margin-left: 25%;
+  position: relative;
+  left: 50px;
   z-index: 5;
   display: flex;
   gap: 5px;
+  grid-area: pagination;
 }
 
 .page--btn--container > button {
@@ -775,14 +879,11 @@ input.error {
   color: white;
 }
 
+.page--btn--container > .invisible {
+ display: none;
+}
+
 @media screen and (max-width: 1000px){
   /* header should change style only on home page */
- .header--blur {
-   background: rgba(255, 255, 255, 0);
-   backdrop-filter: blur(10px);
-   box-shadow: 2px 2px 20px rgba(160, 160, 160, 0.616);
- }
- .workouts {
-   margin-top: 40px;
- }
+
 }

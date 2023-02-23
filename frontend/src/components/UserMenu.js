@@ -1,7 +1,5 @@
 import React from "react";
 import { useLogout } from "../hooks/useLogout";
-
-
 import UserSettings from "./UserSettings";
 
 export default function UserMenu(props) {
@@ -10,6 +8,11 @@ export default function UserMenu(props) {
 
   const closeUserSettings = () => {
     setUserSettings(false)
+  }
+
+  const closeAllAndLogout = () => {
+    props.userMenu();
+    logout()
   }
 
   return (
@@ -21,7 +24,7 @@ export default function UserMenu(props) {
         >
           Settings
         </button>
-        <button className="user--menu--item" onClick={logout}>
+        <button className="user--menu--item" onClick={closeAllAndLogout}>
           Log Out
         </button>
       </div>
