@@ -114,6 +114,7 @@ export default function Home() {
               hideForm={hideForm}
               getItems={getItems}
               spreadPages={spreadPages}
+              flipPage={flipPage}
               total={total}
               limit={limit}
             />

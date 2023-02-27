@@ -1,7 +1,7 @@
 import React from 'react';
 import { useCreateWorkout } from '../hooks/useCreateWorkout';
 
-export default function WorkoutForm({hideForm, spreadPages, total, limit, getItems}){
+export default function WorkoutForm({hideForm, spreadPages, flipPage, total, limit, getItems}){
   const { createWorkout, error } = useCreateWorkout();
   const [workout, setWorkout] = React.useState({
     title: "",
@@ -27,6 +27,7 @@ export default function WorkoutForm({hideForm, spreadPages, total, limit, getIte
      hideForm();
      await getItems("", 0);
      spreadPages(total, limit);
+     flipPage(1)
      setEmptyFields([]);
      setWorkout({ title: "", load: "", reps: "" });
     }   
