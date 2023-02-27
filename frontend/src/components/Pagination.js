@@ -39,20 +39,18 @@ export default function Pagination({page, limit, flipPage, total, pageSpread}){
             </>
            );
          } 
-         if (p === pageSpread.length-1) {
            return (
             <>
-            <span className="dotdotdot">...</span>
-             <button
                key={p}
+            {p > 3 && <span className="dotdotdot">...</span>}
+            <button
                className={pageBtnStyle(page, p)}
                onClick={() => flipPage(p)}
              >
                {p}
              </button>
             </>
-           ) 
-         }   
+           )  
         })}
         <button
           type="button"
