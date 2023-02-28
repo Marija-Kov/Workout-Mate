@@ -31,7 +31,7 @@ export default function Pagination({page, limit, flipPage, total, pageSpread}){
         {pageSpread.map((p) => {
            return (
              <button
-               key={uuid}
+               key={uuid()}
                className={pageBtnStyle(page, p)}
                onClick={() => flipPage(p)}
              >
