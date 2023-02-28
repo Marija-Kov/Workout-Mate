@@ -5,6 +5,7 @@ import { useWorkoutContext } from '../hooks/useWorkoutContext'
 import { useAuthContext } from "../hooks/useAuthContext";
 import Pagination from '../components/Pagination';
 import { useSearch } from '../hooks/useSearch';
+import Search from '../components/Search';
 
 export default function Home() {
     const [addWorkoutForm, setAddWorkoutForm] = React.useState(false);
@@ -25,7 +26,7 @@ export default function Home() {
     const getItems = async (q,p) => {
       await search(q, p);
     };
-
+    
     const spreadPages = (t, l) => {
       const pagesNum = Math.ceil(t / l);
       let spread = [];
@@ -49,90 +50,84 @@ export default function Home() {
 
    const handleSearch = async (e) => {
      e.preventDefault();
-     await getItems(query, page)
+     await getItems(query, page);
    };
 
+   const handleSearchChange = (e) => {
+      setQuery(e.target.value);
+      setPage(0);
+   }
     return (
       <div className="home--container">
         {!user && <h3>Access denied.</h3>}
-        {user && 
-                <div className="home">
-          {isLoading && <h1 className="loading">Loading data...</h1>}
+        {user && (
+          <div className="home">
 
-          <form className="search--bar" onSubmit={handleSearch}>
-            <input
-              type="search"
-              placeholder="search workouts..."
-              value={query}
-              onChange={(e) => {
-                setQuery(e.target.value);
-                setPage(0);
-              }}
-            ></input>
-            <button disabled={isLoading}>
-              <span className="material-symbols-outlined">search</span>
-            </button>
-          </form>
+            <Search
+              handleSearchChange={handleSearchChange}
+              handleSearch={handleSearch}
+              query={query}
+              isLoading={isLoading}
+            />
 
-          <div className="workouts">
-            {workouts &&
-              workouts.map((workout) => (
-                <WorkoutDetails
-                  key={workout._id}
-                  id={workout._id}
-                  title={workout.title}
-                  reps={workout.reps}
-                  load={workout.load}
-                  createdAt={workout.createdAt}
-                  updatedAt={workout.updatedAt}
-                  page={page}
-                  getItems={getItems}
-                  spreadPages={spreadPages}
-                  total={total}
-                  limit={limit}
-                />
-              ))}
-          </div>
-          {!addWorkoutForm && (
-            <button
-              className="add--workout"
-              onClick={() => setAddWorkoutForm(true)}
-            >
-              + Buff It Up
-            </button>
-          )}
-          <Pagination
-            page={page}
-            pageSpread={pageSpread}
-            total={total}
-            limit={limit}
-            flipPage={flipPage}
-          />
-
-          {addWorkoutForm && (
-            <WorkoutForm
-              hideForm={hideForm}
-              getItems={getItems}
-              spreadPages={spreadPages}
-              flipPage={flipPage}
+            <div className="workouts">
+              {workouts &&
+                workouts.map((workout) => (
+                  <WorkoutDetails
+                    key={workout._id}
+                    id={workout._id}
+                    title={workout.title}
+                    reps={workout.reps}
+                    load={workout.load}
+                    createdAt={workout.createdAt}
+                    updatedAt={workout.updatedAt}
+                    page={page}
+                    getItems={getItems}
+                    spreadPages={spreadPages}
+                    total={total}
+                    limit={limit}
+                  />
+                ))}
+            </div>
+            {!addWorkoutForm && (
+              <button
+                className="add--workout"
+                onClick={() => setAddWorkoutForm(true)}
+              >
+                + Buff It Up
+              </button>
+            )}
+            <Pagination
+              page={page}
+              pageSpread={pageSpread}
               total={total}
               limit={limit}
+              flipPage={flipPage}
             />
-          )}
-          <div className="space"></div>
-          <div className="chart--container">
-            <h3>Routine Balance</h3>
-            <div className="chart"></div>
-            <p className="stats--upper-bod">
-              <span></span> Upper body - 36%
-            </p>
-            <p className="stats--lower-bod">
-              <span></span> Lower body - 64%
-            </p>
-          </div>
-        </div>
-        }
 
+            {addWorkoutForm && (
+              <WorkoutForm
+                hideForm={hideForm}
+                getItems={getItems}
+                spreadPages={spreadPages}
+                flipPage={flipPage}
+                total={total}
+                limit={limit}
+              />
+            )}
+            <div className="space"></div>
+            <div className="chart--container">
+              <h3>Routine Balance</h3>
+              <div className="chart"></div>
+              <p className="stats--upper-bod">
+                <span></span> Upper body - 36%
+              </p>
+              <p className="stats--lower-bod">
+                <span></span> Lower body - 64%
+              </p>
+            </div>
+          </div>
+        )}
       </div>
     );
 };
