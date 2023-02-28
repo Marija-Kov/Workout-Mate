@@ -22,8 +22,8 @@ export const useSearch = () => {
       if(response.ok){
         setIsLoading(false);
         setLimit(json.limit);
-        setTotal(json.allUserWorkouts.length);
-        dispatch({type: "SET_WORKOUTS", payload: json.workouts})
+        setTotal(json.allUserWorkoutsByQuery.length);
+        dispatch({type: "SET_WORKOUTS", payload: json.workoutsChunk})
       }
       if(!response.ok){
         setIsLoading(false);

@@ -8,14 +8,18 @@ const getAllItems = async (req, res) => {
  const user_id = req.user._id; 
 
  try {
-   const allUserWorkouts = await Workout.find({user_id});
-   const workouts = await Workout.find(
+   const allUserWorkoutsByQuery = await Workout.find(
+     search
+       ? { user_id, title: new RegExp(`^${search.toLowerCase()}`) }
+       : { user_id }
+   );
+   const workoutsChunk = await Workout.find(
      search ? { user_id, title: new RegExp(`^${search.toLowerCase()}`)} : { user_id }
    ) 
      .sort({ createdAt: -1 })
      .skip(page * itemsPerPage)
      .limit(itemsPerPage);
-   res.status(200).json({ allUserWorkouts: allUserWorkouts, workouts: workouts, limit: itemsPerPage});
+   res.status(200).json({ allUserWorkoutsByQuery: allUserWorkoutsByQuery, workoutsChunk: workoutsChunk, limit: itemsPerPage});
  } catch (error) {
    res.status(400).json({ error: error.message });
  }
