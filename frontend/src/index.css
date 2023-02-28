@@ -835,6 +835,8 @@ input.error {
   'opsz' 48
 }
 
+/* Pagination */
+
 .page--btn--container {
   position: relative;
   left: 50px;
@@ -842,6 +844,7 @@ input.error {
   display: flex;
   gap: 5px;
   grid-area: pagination;
+  width: fit-content;
 }
 
 .page--btn--container > button {
@@ -853,6 +856,13 @@ input.error {
   background: transparent;
   transition: 0.3s;
   height: 20px;
+}
+
+.dots-left::before,
+.dots-right::after {
+  display: inline-block;
+  content:"...";
+  color: rgb(149, 149, 149);
 }
 
 .page--btn--container > button > span {
