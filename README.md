@@ -30,7 +30,9 @@ Workout Mate lets you be the athlete you want to be.</i>
 Workout Mate started off as a basic made-from-scratch CRUD course project that I decided to build on top of to create a more complete web app. I've done a lot of research, trial and error to hopefully make something that looks like a project that anybody would want to put in their portfolio to demonstrate profound understanding of the fundamentals of building a common real-world piece of software.
 </p>
 
-## App Features (from the User's perspective) <a name = "features"></a>
+<br>
+
+## App Features <a name = "features"></a>
 <p> 
 As the User, you can <b>create an account</b> on Workout Mate from the <b>Signup</b> page with a valid email address and a strong password. You will then be sent an email with a link to <b>confirm your account</b>. Clicking on the link, you will be redirected to the page that will inform you that your account has been confirmed successfully and you can go to the <b>Login</b> page and use your credentials to access your account. If you type in wrong credentials, you will be alerted so. Note that every clickable element in the app is also <b>keyboard focusable</b>.
  
@@ -49,6 +51,8 @@ If you happen to forget your password, you will be able to recover it by first c
 In case you want to delete your Workout Mate account, you will have to log in, open Profile settings from the dropdown menu and click on <b>delete account</b> at the bottom-right of the form. You will see a dialogue pop-up that will warn you about the consequences of deleting your account and will give you an option to give up or delete your account permanently. After you click on "Yes, delete my account permanently", all your data will be deleted from the database and you will be redirected to the Login page.
 </p>
 
+<br>
+
 ## Tools and Dependencies <a name = "tools"></a>
 
 ### Backend
@@ -61,9 +65,9 @@ In case you want to delete your Workout Mate account, you will have to log in, o
 - [Dotenv](https://www.npmjs.com/package/dotenv) - secret-keeping
 - [JWT](https://jwt.io/) - Authentication
 - [Validator](https://www.npmjs.com/package/validator) - request (input) validation
-- [Nodemailer](https://nodemailer.com/about/) - Email sending
+- [Nodemailer](https://nodemailer.com/about/) - Email sending middleware
 - [Handlebars](https://handlebarsjs.com/) - Email templates
-
+- [Ethereal email](https://ethereal.email/) - Mock SMTP service
 
 ### Frontend
 
@@ -73,13 +77,19 @@ In case you want to delete your Workout Mate account, you will have to log in, o
 - [Date-fns](https://date-fns.org/) - Date formatting
 - [CSS](https://developer.mozilla.org/en-US/docs/Web/CSS) - Styling
 
+<br>
+
 ## Test coverage <a name = "test"></a>
 
 Coming soon.
 
+<br>
+
 ## Resources <a name = "resources"></a>
 
 Coming soon.
+
+<br>
 
 ## Author <a name = "author"></a>
 
