@@ -423,6 +423,23 @@ Also, they should be able to change their password. Changing password could upda
 
 
 
+## Testing
+
+### Server and DB testing issues
+
+#### Problem: Account confirmation test not passing due to inability to find the user with the generated confirmation token
+When account confirmation GET is being tested, accountConfirmationToken is being passed to the controller in req.params (console.log confirmed), but User.findOne({accountConfirmationToken:accountConfirmationToken}) is unsuccessfull i.e. returns: {error: "User not found."}.
+
+ - The token sent in req.params was generated upon a test /signup POST request and the database is only dropped after all the tests have been run.
+
+#### SOLUTION: 
+Close inspection of the signup_post in authController.js revealed that the token sent in response wasn't the confirmationToken. ::facepalm:: Passing the confirmationToken as token results in verify_user receiving the token in req.params that matches the user.accountConfirmationToken and the test is passing.
+
+
+
+
+
+
 
 
 

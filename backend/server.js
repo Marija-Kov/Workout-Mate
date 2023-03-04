@@ -22,9 +22,11 @@ app.use((req, res, next)=>{
 
 mongoose.connect(process.env.MONGO_URI, {useNewUrlParser: true, useUnifiedTopology: true})
 .then(()=>{
- app.listen(process.env.PORT, ()=>{
-    console.log(`connected to db & listening on port ${process.env.PORT}`)
-});  
+    if (process.env.NODE_ENV !== "test"){
+        app.listen(process.env.PORT, () => {
+        console.log(`connected to db & listening on port ${process.env.PORT}`)
+      }); 
+    } 
 }).catch(err => {
     console.log(`ERROR: ${err}`)
 });
@@ -35,6 +37,7 @@ app.use('/api/workouts', workoutRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/reset-password', passwordResetRoutes);
 
+module.exports = app;
 
 
 
