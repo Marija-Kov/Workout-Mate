@@ -38,17 +38,17 @@ As the User, you can <b>create an account</b> on Workout Mate from the <b>Signup
  
 Once you log in successfully, you will be redirected to your <b>Home</b> page where you will see your generated default username and avatar in the Navbar section. These can be changed by clicking on the avatar or username and then clicking the "Settings" option on the dropdown menu. This will open the <b>Profile Settings</b> form where you can enter a different username and choose a <b>custom profile image</b> from your device that you can also crop to your taste within the form. All the changes that you made will be saved after clicking the "Upload" button. You can opt out of changes by clicking the X in the top right corner of the form.
  
-After personalizing your profile, you can start <b>adding workouts</b> by clicking the "Buff It Up" button. A form will appear with "title", "reps" and "load" input fields that you'll have to fill entirely before your workout can be added. Clicking "Add Workout" with valid input will make a card with your <b>Workout details</b> appear on the page. The time of the entry will be added automatically on every card and you'll find that the workouts are sorted in chronological order, newer first.
+After personalizing your profile, you can start <b>adding workouts</b> by clicking the "Buff It Up" button. A form will appear with "title", "reps" and "load" input fields that you'll have to fill entirely before your workout can be added. Clicking "Add Workout" with valid input will make a card with your <b>Workout details</b> appear on the page. The time of the entry will be added automatically on every card and you'll find that the workouts are sorted in the chronological order, newer first.
  
-As you keep adding workouts, you will find useful the <b>Pagination</b> feature at the bottom-left of the page that will enable you to access your entire workout history by clicking on page numbers or chevrons, since the app is set up to only show 3 workouts at a time. Also, you can use the <b>Search bar</b> in the top-left section of the page (right below the Navbar) to search your workout history by the workout title.
+As you keep adding workouts, you will find to be useful the <b>Pagination</b> feature at the bottom-left of the page that will enable you to access your entire workout history by clicking on page numbers or chevrons, since the app is set up to only show 3 workouts at a time. Also, you can use the <b>Search bar</b> in the top-left section of the page (right below the Navbar) to search your workout history by the workout title.
  
-Every workout card contains a <b>delete workout</b> (trash can) and <b>edit workout</b> (pen) icons at the bottom right of the card. By clicking on the trash can, the workout will be deleted from your workouts list and from the database. By clicking on the pen, the Edit workout form will pop-up and it will be filled with the current workout details. After editing the workout and clicking save, the workout will be updated with new details. You can opt out of editing by clicking X.
+Every workout card contains a <b>delete workout</b> (trash can) and <b>edit workout</b> (pen) icons at the bottom right of the card. By clicking on the trash can, the workout will be deleted from your workouts list and from the database. By clicking on the pen, the Edit workout form will pop-up and it will be filled with the current workout details. After editing the workout and clicking save, the workout will be updated with the new details. You can opt out of editing by clicking X.
  
 You can finish your session with Workout Mate by clicking <b>Log Out</b> after opening the dropdown menu from your avatar/username and you will be logged out and redirected to the Login page.
  
-If you happen to forget your password, you will be able to recover it by first clicking on <b>Forgot password?</b> that's in the login form, which will open a <b>Reset password request</b> form that will ask you to enter your email address that you have an account with. Once you correctly enter your email address and click proceed, you will be alerted to check your inbox for an email with the <b>password reset link</b>. When you click on the password reset link, you will be redirected to the password reset page that will contain a single form asking you to type your new password twice. The form will check the strength of the new password before you will be allowed to finish the password reset. Once you've successfully reset your password, you will be able to access your account with it.
+If you happen to forget your password, you will be able to recover it by first clicking on <b>Forgot password?</b> that's in the login form, which will open a <b>Reset password request</b> form that will ask you to enter your email address that you have an account with. Once you correctly enter your email address and click proceed, you will be alerted to check your inbox for an email with the <b>password reset link</b>. When you click on the password reset link, you will be redirected to the password reset page that will contain a single form asking you to type your new password in two input fields. The form will check the strength of the new password as well as whether the passwords are matching before you will be allowed to finish the password reset. Once you've successfully reset your password, you will be able to access your account with it.
  
-In case you want to delete your Workout Mate account, you will have to log in, open Profile settings from the dropdown menu and click on <b>delete account</b> at the bottom-right of the form. You will see a dialogue pop-up that will warn you about the consequences of deleting your account and will give you an option to give up or delete your account permanently. After you click on "Yes, delete my account permanently", all your data will be deleted from the database and you will be redirected to the Login page.
+In case you want to delete your Workout Mate account, you will have to log in, open Profile settings from the dropdown menu and click on <b>delete account</b> at the bottom-right of the form. You will see a dialogue pop-up that will warn you about the consequences of deleting your account and will give you an option to change your mind or delete your account permanently. After you click on "Yes, delete my account permanently", all your data will be deleted from the database and you will be redirected to the Login page.
 </p>
 
 <br>
@@ -69,6 +69,13 @@ In case you want to delete your Workout Mate account, you will have to log in, o
 - [Handlebars](https://handlebarsjs.com/) - Email templates
 - [Ethereal email](https://ethereal.email/) - Mock SMTP service
 
+#### Dev Dependencies
+
+- [Jest](https://jestjs.io/) - Javascript testing framework
+- [Supertest](https://github.com/ladjs/supertest) - testing HTTP requests
+- [MongoDB Memory Server](https://github.com/nodkz/mongodb-memory-server) - testing/mocking MongoDB memory server in NodeJS
+- [@shelf/jest-mongodb](https://ethereal.email/) - A Jest preset for running MongoDB memory server
+
 ### Frontend
 
 - [React](https://reactjs.org/) - User interface
@@ -87,7 +94,7 @@ Coming soon.
 
 ## Resources <a name = "resources"></a>
 
-Coming soon.
+🐱 You can start building the app from scratch by following along [this tutorial](https://www.youtube.com/watch?v=98BzS5Oz5E4&list=PL4cUxeGkcC9iJ_KkrkBZWZRHVwnzLIoUE) (like I did).
 
 <br>
 
