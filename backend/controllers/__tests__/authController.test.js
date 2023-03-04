@@ -5,20 +5,16 @@ const db = require("../../database.config");
 const agent = request.agent(app);
 
 beforeAll(async () => await db.connect());
-afterEach(async () => await db.clear());
-afterAll(async () => await db.close());
+afterAll(async () => {
+   await db.clear()
+   await db.close()
+});
 
 describe("authController", () => {
-  describe("POST /signup", () => {
-    it("should post user and return id and account confirmation token", async () => {
-      const user = { email: "keech@validemail.com", password: "abcABC123!" };
-      const res = await agent.post("/api/users/signup").send(user);
-      expect(res._body.id).toBeTruthy();
-      expect(res._body.token).toBeTruthy();
-    });
-
+    let user;
+  describe("POST /signup", () => {    
     it("should send error response for trying to sign up with invalid email", async () => {
-      const user = { email: "invalidemail", password: "abcABC123!" };
+      user = { email: "invalidemail", password: "abcABC123!" };
       const res = await agent.post("/api/users/signup").send(user);
       expect(res._body.id).toBeFalsy();
       expect(res._body.token).toBeFalsy();
@@ -29,12 +25,43 @@ describe("authController", () => {
     });
 
     it("should send error response for trying to sign up with a weak password", async () => {
-      const user = { email: "keech@validemail.com", password: "abc" };
+      user = { email: "keech@validemail.com", password: "abc" };
       const res = await agent.post("/api/users/signup").send(user);
-      console.log(res._body);
       expect(res._body.id).toBeFalsy();
       expect(res._body.token).toBeFalsy();
       expect(res._body).toHaveProperty("error", "Password not strong enough");
     });
+
+    it("should post user and return id and account confirmation token", async () => {
+      user = { email: "keech@validemail.com", password: "abcABC123!" };
+      const res = await agent.post("/api/users/signup").send(user);
+      if(res.ok){
+        user = res._body
+      }
+      expect(res._body.id).toBeTruthy();
+      expect(res._body.token).toBeTruthy();
+    });
+    
   });
+
+  describe("GET /:accountConfirmationToken", () => {
+    it("should send error if the confirmation token is invalid", async () => {
+      const notVerified = {
+        badToken: "fakeOrExpired",
+      };
+      const res = await agent.get(`/api/users/${notVerified.badToken}`
+    );
+      expect(res._body).toHaveProperty("error", "User not found.");
+    });
+
+    it("should send success message if the confirmation token is valid", async () => {
+      const res = await agent.get(`/api/users/${user.token}`);
+      expect(res._body).toHaveProperty(
+        "success",
+        "Success! You may log in with your account now."
+      );
+    });
+
+  });
+
 });

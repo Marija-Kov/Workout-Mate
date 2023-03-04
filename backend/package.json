@@ -9,7 +9,8 @@
     "dev": "nodemon server.js"
   },
   "jest": {
-    "preset": "@shelf/jest-mongodb"
+    "preset": "@shelf/jest-mongodb",
+    "testEnvironment": "node"
   },
   "mongodb-memory-server": {
     "mongodbMemoryServerOptions": {
