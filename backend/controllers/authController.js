@@ -1,6 +1,5 @@
 const User = require('../models/userModel');
 const jwt = require('jsonwebtoken');
-const crypto = require("crypto");
 const sendEmail = require("../middleware/sendEmail");
 
 const createToken = (_id) => {
@@ -12,9 +11,7 @@ module.exports.signup_post = async (req, res) => {
      try {
  const user = await User.signup(email, password);
  const id = user._id;
- const token = createToken(id);
-
- const confirmationToken = crypto.randomBytes(32).toString("hex");
+ const confirmationToken = createToken(id);
  user.accountConfirmationToken = confirmationToken;
  user.accountConfirmationTokenExpires = Date.now() + 3600000;
  await user.save();
@@ -31,7 +28,7 @@ module.exports.signup_post = async (req, res) => {
      "../templates/verifySignup.handlebars"
    );
 
- res.status(200).json({id, email, token});
+ res.status(200).json({id, token: confirmationToken});
   } catch(err){
   res.status(400).json({error: err.message});
   }
