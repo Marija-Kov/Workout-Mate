@@ -157,4 +157,19 @@ describe("authController", () => {
     });
   });
 
+  describe("DELETE /:id", () => {
+    it("should delete user and return deleted user's details", async () => {  
+      const newUserCredentials = {
+        email: "crickets@grass.com",
+        password: "5tr0ng+P@ssw0rd",
+      };
+      const newUserPending = (
+        await agent.post("/api/users/signup").send(newUserCredentials)
+      )._body;
+      const newUserConfirmed = (await agent.get(`/api/users/${newUserPending.token}`))._body;
+      const deletedUser = (await agent.delete(`/api/users/${newUserConfirmed.id}`))._body;
+      expect(deletedUser).toHaveProperty("email", newUserCredentials.email);
+    })
+  })
+
 });

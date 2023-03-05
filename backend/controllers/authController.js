@@ -47,7 +47,7 @@ module.exports.verify_user = async (req, res) => {
   user.accountConfirmationToken = undefined;
   user.accountConfirmationTokenExpires = undefined;
   await user.save()  
-   res.status(200).json({success: "Success! You may log in with your account now."})
+   res.status(200).json({id: user._id, success: "Success! You may log in with your account now."})
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
