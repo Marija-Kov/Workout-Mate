@@ -121,4 +121,40 @@ describe("authController", () => {
     });
   })
 
+  describe("PATCH /:id", () => {
+    let userLoggedIn;
+    it("should update username when the new username is entered", async () => {
+    const newUserCredentials = { email: "cecee@hello.com", password: "5tr0ng+P@ssw0rd" };
+    const newUserPending = (await agent.post("/api/users/signup").send(newUserCredentials))._body; 
+    await agent.get(`/api/users/${newUserPending.token}`);
+    userLoggedIn = (
+      await agent.post("/api/users/login").send(newUserCredentials)
+    )._body;
+    const newUsername = "theDawg78";
+    const userUsernameUpdated = (
+      await agent
+        .patch(`/api/users/${userLoggedIn.id}`)
+        .set("Authorization", `Bearer ${userLoggedIn.token}`)
+        .send({ username: newUsername })
+    )._body;
+    expect(userUsernameUpdated).toHaveProperty("username", newUsername);
+    expect(userUsernameUpdated).toHaveProperty("success", "Profile updated.");
+    });
+
+    it ("should update the profile image when the new image is selected", async () => {
+      const newProfileImg = "selectedImageEncodedToBase64akaAVeryLargeString";
+      const userProfileImgUpdated = (
+        await agent
+          .patch(`/api/users/${userLoggedIn.id}`)
+          .set("Authorization", `Bearer ${userLoggedIn.token}`)
+          .send({ profileImg: newProfileImg })
+      )._body;
+      expect(userProfileImgUpdated).toHaveProperty("profileImg", newProfileImg);
+      expect(userProfileImgUpdated).toHaveProperty(
+        "success",
+        "Profile updated."
+      );
+    });
+  });
+
 });
