@@ -9,8 +9,13 @@ module.exports.reset_password_request = async (req, res) => {
   const user = await User.findOne({ email });
   if (!user) {
    return res.status(404).json({
-        error: `That email address doesn't exist in our database`,
-      });
+     error: `That email does not exist in our database`,
+   });
+  }
+  if(user.accountConfirmationToken){
+    return res.status(404).json({
+      error: `The account with that email address has not yet been confirmed`,
+    });
   }
 
   const resetToken = crypto.randomBytes(32).toString("hex");
@@ -30,7 +35,7 @@ module.exports.reset_password_request = async (req, res) => {
     "../templates/requestPasswordReset.handlebars"
   );
 
-  return res.status(200).json({ success: `Reset link was sent to your inbox.` });
+  return res.status(200).json({ resetToken: resetToken, success: `Reset link was sent to your inbox.` });
 };
 
 module.exports.reset_password = async (req, res) => {
@@ -42,7 +47,7 @@ module.exports.reset_password = async (req, res) => {
 });
 if (!user) {
     return res.status(404).json({
-      error: `No reset token found`,
+      error: `Invalid token`,
     });  
 } 
 if (!validator.isStrongPassword(password)) {
