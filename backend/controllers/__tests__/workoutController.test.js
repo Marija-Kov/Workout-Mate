@@ -124,6 +124,69 @@ describe("workoutController", () => {
         });
     })
 
+    describe("PATCH /api/workouts/:id", () => {
+        it("should send error if no authorization token was found", async () => {
+            const user = await mockUserWithWorkouts("keech@thecouch.com", "abcABC123!");
+            user.user.token = undefined;
+            const updateWorkout = {
+                id: user.workouts[1]._id,
+                body: {
+                    reps: 33
+                }
+            };
+            const res = (
+              await agent
+                .patch(`/api/workouts/${updateWorkout.id}`)
+                .send(updateWorkout.body)
+                .set("Authorization", `Bearer ${user.user.token}`)
+            )._body;
+            expect(res.error).toBeTruthy();
+            expect(res.error).toMatch(/not authorized/i);
+        });
+
+        it("should send error if there was an attempt to update with invalid value(s)", async () => {
+           const user = await mockUserWithWorkouts(
+             "poozh@thedoor.com",
+             "abcABC123!"
+           ); 
+           const updateWorkout = {
+             id: user.workouts[1]._id,
+             body: {
+               reps: "",
+             },
+           };
+           const res = (
+             await agent
+               .patch(`/api/workouts/${updateWorkout.id}`)
+               .send(updateWorkout.body)
+               .set("Authorization", `Bearer ${user.user.token}`)
+           )._body;
+           expect(res.error).toBeTruthy();
+           expect(res.error).toMatch(/validation failed/i);
+        });
+
+        it("should update workout if the provided values are valid and return the updated version of the workout", async () => {
+             const user = await mockUserWithWorkouts(
+               "cecee@thedoor.com",
+               "abcABC123!"
+             );
+             const updateWorkout = {
+               id: user.workouts[1]._id,
+               body: {
+                 reps: 40,
+               },
+             };
+             const res = (
+               await agent
+                 .patch(`/api/workouts/${updateWorkout.id}`)
+                 .send(updateWorkout.body)
+                 .set("Authorization", `Bearer ${user.user.token}`)
+             )._body;
+             expect(res.reps).toEqual(updateWorkout.body.reps);
+             expect(res.updatedAt).not.toMatch(user.workouts[1].updatedAt);
+        });
+    })
+
 });
 
 async function mockUser(email, password, authenticated=true){
