@@ -19,7 +19,14 @@ const getAllItems = async (req, res) => {
      .sort({ createdAt: -1 })
      .skip(page * itemsPerPage)
      .limit(itemsPerPage);
-   res.status(200).json({ allUserWorkoutsByQuery: allUserWorkoutsByQuery, workoutsChunk: workoutsChunk, limit: itemsPerPage});
+   res
+     .status(200)
+     .json({
+       allUserWorkoutsByQuery: allUserWorkoutsByQuery,
+       workoutsChunk: workoutsChunk,
+       limit: itemsPerPage,
+       noWorkoutsByQuery: allUserWorkoutsByQuery.length ? false : `No workouts found by query '${search}'`,
+     });
  } catch (error) {
    res.status(400).json({ error: error.message });
  }
