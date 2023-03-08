@@ -36,8 +36,8 @@ const addItem = async (req, res) => {
     const {title, reps, load} = req.body;
     const user_id = req.user._id;
   try {
-   const workouts = await Workout.create({title: title.trim().toLowerCase(), reps, load, user_id});
-   res.status(200).json(workouts);
+   const workout = await Workout.create({title: title.trim().toLowerCase(), reps, load, user_id});
+   res.status(200).json(workout);
   } catch(error){
    res.status(400).json({error: error.message})
   }
@@ -46,7 +46,7 @@ const addItem = async (req, res) => {
 const updateItem = async (req, res) => {
   const { id } = req.params;
  if(!mongoose.Types.ObjectId.isValid(id)){
-     return res.status(404).json({error: `Invalid user id.`})
+     return res.status(404).json({error: `Invalid workout id.`})
  };
 try {
 const workout = await Workout.findOneAndUpdate({_id: id}, req.body, {new: true, runValidators: true}); 
@@ -59,31 +59,28 @@ res.status(200).json(workout);
 const deleteItem = async (req, res) => {
  const { id } = req.params;
  if(!mongoose.Types.ObjectId.isValid(id)){
-     return res.status(404).json({error: `You're trying to delete something that doesn't exist in the database.`})
+     return res.status(404).json({error: `Invalid workout id`})
  };
- const workout = await Workout.findOneAndDelete({_id: id});
-
+ try{
+  const workout = await Workout.findOneAndDelete({_id: id});
   if(!workout){
-     return res.status(404).json({error: 'Hmm, that item does not exist in the database.'})
- };
- res.status(200).json(workout);
+     return res.status(404).json({error: `Workout id (${id}) does not exist`})
+  };
+ const workouts = await Workout.find({user_id: workout.user_id});
+ res.status(200).json({workout: workout, remaining: workouts.length});
+ } catch (error) {
+  res.status(400).json({ error: error.message });
+ }
 };
 
 const deleteAllUserItems = async (req, res) => {
   const user_id = req.user._id;
-  if (!mongoose.Types.ObjectId.isValid(user_id)) {
-    return res
-      .status(404)
-      .json({
-        error: `The workout(s) and/or user does not exist.`,
-      });
+  try {
+   const workouts = await Workout.deleteMany({ user_id }); 
+   res.status(200).json(workouts);
+  } catch (error){
+   res.status(400).json({ error: error.message });
   }
-  const workouts = await Workout.deleteMany({ user_id });
-
-  if (!workouts) {
-    return res.status(404).json({ error: "no such thing, sorry!" });
-  }
-  res.status(200).json(workouts);
 };
 
 module.exports = {
