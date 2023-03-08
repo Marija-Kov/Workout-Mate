@@ -185,7 +185,88 @@ describe("workoutController", () => {
              expect(res.reps).toEqual(updateWorkout.body.reps);
              expect(res.updatedAt).not.toMatch(user.workouts[1].updatedAt);
         });
-    })
+    });
+
+    describe("DELETE /api/workouts/:id", () => {
+      it("should send error if no authorization token was found", async () => {
+        const user = await mockUserWithWorkouts(
+          "keech@thepark.com",
+          "abcABC123!"
+        );
+        user.user.token = undefined;
+        const deleteWorkoutId = user.workouts[1]._id;
+        const res = (
+          await agent
+            .delete(`/api/workouts/${deleteWorkoutId}`)
+            .set("Authorization", `Bearer ${user.user.token}`)
+        )._body;
+        expect(res.error).toBeTruthy();
+        expect(res.error).toMatch(/not authorized/i);
+      });  
+
+      it("should return error if the provided workout id is invalid ObjectId", async () => {
+        const user = await mockUserWithWorkouts(
+          "chook@thepark.com",
+          "abcABC123!"
+        );
+        const res = (
+          await agent
+            .delete(`/api/workouts/invalidWorkoutId`)
+            .set("Authorization", `Bearer ${user.user.token}`)
+        )._body;
+        expect(res.error).toBeTruthy();
+        expect(res.error).toMatch(/invalid workout id/i);
+      });
+
+      it("should return error if the workout with the provided id doesn't exist", async () => {
+        const user = await mockUserWithWorkouts(
+          "lebowski@thepark.com",
+          "abcABC123!"
+        );
+        const deleteWorkoutId = user.workouts[1]._id;
+          await agent
+            .delete(`/api/workouts/${deleteWorkoutId}`)
+            .set("Authorization", `Bearer ${user.user.token}`);
+        const res = (
+          await agent
+            .delete(`/api/workouts/${deleteWorkoutId}`)
+            .set("Authorization", `Bearer ${user.user.token}`)
+        )._body;
+        expect(res.error).toBeTruthy();
+        expect(res.error).toMatch(/does not exist/i);
+      });
+
+      it("should delete a workout and return the number of remaining workouts", async () => {
+       const user = await mockUserWithWorkouts(
+         "poozh@thepark.com",
+         "abcABC123!"
+       );
+       const totalWorkouts = user.workouts.length;
+       const deleteWorkoutId = user.workouts[1]._id;
+       const res = (
+         await agent
+           .delete(`/api/workouts/${deleteWorkoutId}`)
+           .set("Authorization", `Bearer ${user.user.token}`)
+       )._body;
+       expect(res.workout._id).toMatch(deleteWorkoutId);
+       expect(res.remaining).toEqual(totalWorkouts-1);
+      });
+
+      it("should delete all workouts", async () => {
+          const user = await mockUserWithWorkouts(
+          "poozh@thegate.com",
+          "abcABC123!"
+        );
+        const res = (
+          await agent
+            .delete(`/api/workouts/`)
+            .set("Authorization", `Bearer ${user.user.token}`)
+        )._body;
+        expect(res.deletedCount).toBeTruthy();
+        expect(res.deletedCount).toEqual(user.workouts.length)
+      })
+
+    });
 
 });
 
