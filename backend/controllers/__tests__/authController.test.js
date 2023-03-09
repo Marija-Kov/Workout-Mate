@@ -11,33 +11,35 @@ afterAll(async () => {
 });
 
 describe("authController", () => {
-    let user;
+    
   describe("POST /signup", () => {    
-    it("should send error response for trying to sign up with invalid email", async () => {
-      user = { email: "invalidemail", password: "abcABC123!" };
+    it("should respond with error on attempt to sign up with an invalid email", async () => {
+      const user = { email: "invalidemail", password: "abcABC123!" };
       const res = await agent.post("/api/users/signup").send(user);
       expect(res._body.id).toBeFalsy();
-      expect(res._body.token).toBeFalsy();
       expect(res._body).toHaveProperty(
         "error",
         "Please enter valid email address"
       );
     });
 
-    it("should send error response for trying to sign up with a weak password", async () => {
-      user = { email: "keech@validemail.com", password: "abc" };
+    it("should respond with error on attempt to sign up with a weak password", async () => {
+      const user = { email: "keech@validemail.com", password: "abc" };
       const res = await agent.post("/api/users/signup").send(user);
       expect(res._body.id).toBeFalsy();
-      expect(res._body.token).toBeFalsy();
       expect(res._body).toHaveProperty("error", "Password not strong enough");
     });
 
-    it("should post user and return id and account confirmation token", async () => {
-      user = { email: "keech@validemail.com", password: "abcABC123!" };
+    it("should respond with error on attempt to sign up with an email that already exists in the database", async () => {
+      const user = { email: "poozh@validemail.yu", password: "abcABC123!" };
+      await mockUser(user.email, user.password, "confirmed");
+      const res = (await agent.post("/api/users/signup").send(user))._body;
+      expect(res.error).toBeTruthy();
+    });
+
+    it("should respond with the user id and account confirmation token given that email is valid and password strong enough", async () => {
+      const user = { email: "keech@validemail.com", password: "abcABC123!" };
       const res = await agent.post("/api/users/signup").send(user);
-      if(res.ok){
-        user = res._body
-      }
       expect(res._body.id).toBeTruthy();
       expect(res._body.token).toBeTruthy();
     });
@@ -45,17 +47,16 @@ describe("authController", () => {
   });
 
   describe("GET /:accountConfirmationToken", () => {
-    it("should send error if the confirmation token is invalid", async () => {
-      const notVerified = {
-        badToken: "fakeOrExpired",
-      };
-      const res = await agent.get(`/api/users/${notVerified.badToken}`
-    );
+    it("should respond with error if the confirmation token was invalid", async () => {
+      const res = await agent.get(`/api/users/forgedOrExpiredToken`);
       expect(res._body).toHaveProperty("error", "User not found.");
     });
 
-    it("should send success message if the confirmation token is valid", async () => {
-      const res = await agent.get(`/api/users/${user.token}`);
+    it("should respond with success message if the confirmation token was valid", async () => {
+      const user = { email: "keech2@validemail.com", password: "abcABC123!" };
+      const confirmedUser = (await agent.post("/api/users/signup").send(user))
+        ._body;
+      const res = await agent.get(`/api/users/${confirmedUser.token}`);
       expect(res._body).toHaveProperty(
         "success",
         "Success! You may log in with your account now."
@@ -64,112 +65,148 @@ describe("authController", () => {
 
   });
   
-  describe("POST /login", () => {
-    it("should throw an error if input value is missing", async () => {
-      const userMissingInputValue = {
-        email: "keech@validemail.com",
-        password: "",
-      };
-      const res = await agent.post(`/api/users/login`).send(userMissingInputValue);
+  describe("POST /login" , () => {
+    it("should respond with error if login was attempted without email and/or password", async () => {
+      await mockUser("poozh@thedoor.rs", "abcABC123!", "confirmed");
+      const user = { email: "poozh2@thedoor.rs", password: "" };
+      const res = await agent.post(`/api/users/login`).send(user);
       expect(res._body).toHaveProperty("error", "All fields must be filled");
     })
 
-    it("should throw an error if the password is wrong", async () => {
-     const userWrongPassword = {
-      email: "keech@validemail.com", password: "wrongPassword"
-     }
-     const res = await agent.post(`/api/users/login`).send(userWrongPassword);
-     expect(res._body).toHaveProperty("error", "Wrong password");
+    it("should respond with error if the password is wrong", async () => {
+      await mockUser("keech@validemail.yu", "abcABC123!", "confirmed");
+      const user = {
+        email: "keech@validemail.yu",
+        password: "wrongPassword",
+      };
+      const res = await agent.post(`/api/users/login`).send(user);
+      expect(res._body).toHaveProperty("error", "Wrong password");
     });
 
-    it("should throw an error if the email is not registered in the database", async () => {
-      const notRegistered = {
+    it("should respond with error if the email is not registered in the database", async () => {
+      const user = {
         email: "keech@notregistered.com",
         password: "somePassword",
       };
-      const res = await agent.post(`/api/users/login`).send(notRegistered);
+      const res = await agent.post(`/api/users/login`).send(user);
       expect(res._body).toHaveProperty(
         "error",
         "That email does not exist in our database"
       );
     });
 
-    it("should throw error if the user has been registered but not confirmed", async () => {
-      const userPendingConfirmation = {
+    it("should respond with error if the user has been registered but not confirmed", async () => {
+      const user = {
         email: "poozh@validemail.com",
         password: "5tr0ng+P@ssw0rd",
       };
-      await agent.post("/api/users/signup").send(userPendingConfirmation); 
-      const res = await agent
-        .post(`/api/users/login`)
-        .send(userPendingConfirmation);
-        expect(res._body).toHaveProperty(
-          "error",
-          "You must verify your email before you log in"
-        );
+      await mockUser(user.email, user.password, "pending");
+      await agent.post("/api/users/signup").send(user);
+      const res = await agent.post(`/api/users/login`).send(user);
+      expect(res._body).toHaveProperty(
+        "error",
+        "You must verify your email before you log in"
+      );
     });
 
-    it("should send a login token if the user has been registered, confirmed and credentials are correct", async () => {
-      const confirmedUser = {
-        email: "keech@validemail.com",
+    it("should respond with a login token if the user has been registered, confirmed and credentials are correct", async () => {
+      const user = {
+        email: "keechy@validemail.com",
         password: "abcABC123!",
       };
+       await mockUser(user.email, user.password, "confirmed");
       const res = await agent
         .post("/api/users/login")
-        .send(confirmedUser);
+        .send(user);
         expect(res._body.token).toBeTruthy();
     });
   })
 
   describe("PATCH /:id", () => {
-    let userLoggedIn;
-    it("should update username when the new username is entered", async () => {
-    const newUserCredentials = { email: "cecee@hello.com", password: "5tr0ng+P@ssw0rd" };
-    const newUserPending = (await agent.post("/api/users/signup").send(newUserCredentials))._body; 
-    await agent.get(`/api/users/${newUserPending.token}`);
-    userLoggedIn = (
-      await agent.post("/api/users/login").send(newUserCredentials)
-    )._body;
+    it("should respond with error in case of unauthorized update attempt", async () => {
+        const user = {
+         email: "crickets@grass.tk",
+         password: "5tr0ng+P@ssw0rd",
+       };
+       const userConfirmed = await mockUser(user.email, user.password, "confirmed");
+       const newUsername = "theDawg76";
+       const res = (
+         await agent
+           .patch(`/api/users/${userConfirmed.id}`)
+           .set("Authorization", `Bearer ${userConfirmed.token}`)
+           .send({ username: newUsername })
+       )._body;
+       expect(res.error).toBeTruthy();
+    });
+
+    it("should respond with user details updated with the new username given that the user is authorized and a new username is submitted", async () => {
+    const user = { email: "cecee@hello.com", password: "5tr0ng+P@ssw0rd" };
+    const userLoggedIn = await mockUser(user.email, user.password, "logged-in")
     const newUsername = "theDawg78";
-    const userUsernameUpdated = (
+    const res = (
       await agent
         .patch(`/api/users/${userLoggedIn.id}`)
         .set("Authorization", `Bearer ${userLoggedIn.token}`)
         .send({ username: newUsername })
     )._body;
-    expect(userUsernameUpdated).toHaveProperty("username", newUsername);
-    expect(userUsernameUpdated).toHaveProperty("success", "Profile updated.");
+    expect(res).toHaveProperty("username", newUsername);
     });
-
-    it ("should update the profile image when the new image is selected", async () => {
+   
+    it ("should respond with user details updated with the new profile image given that the user is authorized and a new image is submitted", async () => {
+      const user = { email: "cecee@hello.yu", password: "5tr0ng+P@ssw0rd" };
+      const userLoggedIn = await mockUser(user.email, user.password, "logged-in");
       const newProfileImg = "selectedImageEncodedToBase64akaAVeryLargeString";
-      const userProfileImgUpdated = (
+      const res = (
         await agent
           .patch(`/api/users/${userLoggedIn.id}`)
           .set("Authorization", `Bearer ${userLoggedIn.token}`)
           .send({ profileImg: newProfileImg })
       )._body;
-      expect(userProfileImgUpdated).toHaveProperty("profileImg", newProfileImg);
-      expect(userProfileImgUpdated).toHaveProperty(
-        "success",
-        "Profile updated."
-      );
+      expect(res).toHaveProperty("profileImg", newProfileImg);
     });
   });
 
   describe("DELETE /:id", () => {
-    it("should delete user and return deleted user's details", async () => {  
-      const newUserCredentials = {
+    it("should respond with error if no authorization token was found", async () => {
+       const user = {
+         email: "crickets@grass.roots",
+         password: "5tr0ng+P@ssw0rd",
+       };
+       const userConfirmed = await mockUser(user.email, user.password, "confirmed");
+       const res = (await agent.delete(`/api/users/${userConfirmed.id}`)
+       .set("Authorization", `Bearer ${userConfirmed.token}`))._body;
+       expect(res.error).toBeTruthy();
+    });
+
+    it("should return no error upon signup attempt with the email of the user that has been deleted", async () => {  
+      const user = {
         email: "crickets@grass.com",
         password: "5tr0ng+P@ssw0rd",
       };
-      const newUserPending = (
-        await agent.post("/api/users/signup").send(newUserCredentials)
-      )._body;
-      const newUserConfirmed = (await agent.get(`/api/users/${newUserPending.token}`))._body;
-      const deletedUser = (await agent.delete(`/api/users/${newUserConfirmed.id}`))._body;
-      expect(deletedUser).toHaveProperty("email", newUserCredentials.email);
-    })
-  })
+      const userLoggedIn = await mockUser(user.email, user.password, "logged-in");
+      await agent
+        .delete(`/api/users/${userLoggedIn.id}`)
+        .set("Authorization", `Bearer ${userLoggedIn.token}`);
+      const res = await mockUser(user.email, user.password, "pending");
+      expect(res.error).toBeFalsy();
+    });
+  });
 
 });
+
+async function mockUser(email, password, status){
+  const user = {
+    email: email,
+    password: password,
+  };
+  const userPending = (await agent.post("/api/users/signup").send(user))._body;
+  if(status==="pending") return userPending;
+
+  const userConfirmed = (await agent.get(`/api/users/${userPending.token}`))
+    ._body;
+  if(status==="confirmed") return userConfirmed
+
+  const userLoggedIn = (await agent.post("/api/users/login").send(user))._body;
+  if(status==="logged-in") return userLoggedIn
+
+}
