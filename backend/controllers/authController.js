@@ -89,11 +89,12 @@ module.exports.user_update_patch = async (req, res) => {
 
 module.exports.user_deletion = async (req, res) => {
   const { id } = req.params;
-  const user = await User.findOneAndDelete({ _id: id });
-  if (!user) {
-    return res.status(404).json({ error: "Hmm, the user doesn't exist in the database." });
+  try {
+    const user = await User.findOneAndDelete({ _id: id });
+   res.status(200).json(user);
+  } catch (error) {
+    res.status(400).json({error: error.message})
   }
-  res.status(200).json(user);
 };
 
 

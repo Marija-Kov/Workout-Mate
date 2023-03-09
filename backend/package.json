@@ -4,7 +4,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "test": "jest --watch --detectOpenHandles",
+    "test": "jest --watchAll --detectOpenHandles --runInBand --coverage",
     "start": "node server.js",
     "dev": "nodemon server.js"
   },
@@ -39,10 +39,7 @@
   },
   "devDependencies": {
     "@shelf/jest-mongodb": "^4.1.6",
-    "chai": "^4.3.7",
-    "chai-http": "^4.3.0",
     "jest": "^29.4.3",
-    "mocha": "^10.2.0",
     "mongodb-memory-server": "^8.11.5",
     "supertest": "^6.3.3"
   }
