@@ -1,55 +1,35 @@
 import React from 'react';
-import { useWorkoutContext } from '../hooks/useWorkoutContext';
-import { useAuthContext } from '../hooks/useAuthContext';
+import useEditWorkout from '../hooks/useEditWorkout';
+
 
 export default function EditWorkout(props){
-  const { dispatch } = useWorkoutContext();
-  const { user } = useAuthContext();
+  const {editWorkout, error} = useEditWorkout();
   const [title, setTitle] = React.useState(props.title);
   const [reps, setReps] = React.useState(props.reps);
   const [load, setLoad] = React.useState(props.load);
-  const [error, setError] = React.useState(null);
   const [emptyFields, setEmptyFields] = React.useState([]);
 
+ const closeEditForm = () => props.showEdit();
  const handleUpdate = async (e) => {    
    e.preventDefault();
-   if(!user){
-      setError('You must be logged in to do that')
-      return
-    }
-   const response = await fetch('/api/workouts/'+ props.id, {
-       method: 'PATCH',
-       body: JSON.stringify({
-           title: title,
-           reps: reps,
-           load: load
-       }), 
-       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${user.token}` 
-       } 
-    });
-    const json = await response.json(); 
-   console.log(json)
-    if (!response.ok) {
-      setError('Please fill out the empty fields')
-      if (!title){
+     if (!title){
       setEmptyFields(prev => ['title', ...prev])
     }
     if (!reps){
       setEmptyFields(prev => ['reps', ...prev])
     }
-    if (!load){
-      setEmptyFields(prev => ['load', ...prev])
+    if (load === (undefined || null)) {
+      setEmptyFields((prev) => ["load", ...prev]);
     }
-    }
-    
-    if (response.ok){
-        setEmptyFields([]);
-        console.log('workout updated', json)
-        props.showEdit();
-        dispatch({type: 'UPDATE_ONE', payload: json})
-    }
+   await editWorkout(
+     props.id,
+     {
+       title: title.trim().toLowerCase(),
+       reps: reps,
+       load: load,
+     },
+     closeEditForm
+   ); 
  }
     return (
       <form className="edit--form">
