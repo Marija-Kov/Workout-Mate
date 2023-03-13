@@ -1,33 +1,19 @@
 import React from "react";
-//import { useResetPassword } from '../hooks/useResetPassword'
+import useSendPasswordResetRequest from '../hooks/useSendPasswordResetRequest'
 
 export default function ForgotPasswordForm({ forgotPassword }) {
-  const [error, setError] = React.useState(null);
-  const [success, setSuccess] = React.useState(null);
+  const { sendPasswordResetRequest, error, success } =
+    useSendPasswordResetRequest();
   const [email, setEmail] = React.useState("");
 
-  const sendResetPasswordEmail = async (e) => {
+  const sendEmail = async (e) => {
     e.preventDefault();
-        const response = await fetch(`api/reset-password`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            email: email,
-          }),
-        });
-        const json = await response.json();
-        if (!response.ok) {
-          setError(json.error)
-        }
-        if (response.ok) {
-          setSuccess(json.success)
-          setError(null)
-        }
+    await sendPasswordResetRequest(email)
   };
 
   return (
     <div className="form--container">
-      <form className="reset--password--request" onSubmit={sendResetPasswordEmail}>
+      <form className="reset--password--request" onSubmit={sendEmail}>
         <span
           className="close material-symbols-outlined"
           onClick={() => forgotPassword()}

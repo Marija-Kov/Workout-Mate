@@ -1,11 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import useResetPassword from '../hooks/useResetPassword';
 
 export default function ResetPassword(){
+    const { resetPassword, error, success } = useResetPassword();
     const [password, setPassword] = React.useState('');
     const [confirmPassword, setConfirmPassword] = React.useState('');
-    const [error, setError] = React.useState(null);
-    const [success, setSuccess] = React.useState(null);
     const [token, setToken] = React.useState(null);
 
     React.useEffect(()=> {
@@ -15,24 +15,7 @@ export default function ResetPassword(){
 
     const handleSubmit = async (e) => {
       e.preventDefault();
-      // you need access to the token here
-      const response = await fetch(`api/reset-password/${token}`, {
-        method: 'PATCH',
-        body: JSON.stringify({
-          password: password,
-          confirmPassword: confirmPassword,
-        }),
-        headers: {
-          'Content-Type': 'application/json',
-        }
-      });
-      const json = await response.json();  
-      if(!response.ok){
-        setError(json.error)
-      } else if(response.ok){
-        setSuccess(json.success)
-        setError(null)
-      } 
+      await resetPassword(token, password, confirmPassword)
     }
     return (
       <div className="form--container">
