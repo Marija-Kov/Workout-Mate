@@ -21,12 +21,11 @@ const Signup = () => {
     };
 
     return (
-      <>
         <div className="form--container">
           <h1>
             <p></p>
           </h1>
-          <form className="signup" onSubmit={handleSubmit}>
+          <form aria-label="create an account" className="signup" onSubmit={handleSubmit}>
             <h4>Create an account</h4>
             <label>email address:</label>
             <input
@@ -62,7 +61,6 @@ const Signup = () => {
             )}
           </form>
         </div>
-      </>
     );
 
 }
