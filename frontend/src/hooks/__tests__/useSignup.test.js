@@ -1,14 +1,15 @@
-import { renderHook, screen, act, render, fireEvent, waitFor } from "@testing-library/react";
+import { renderHook, act, cleanup } from "@testing-library/react";
 import { server, rest } from "../../mocks/server";
 import { useSignup } from "../useSignup";
-import Signup from "../../pages/Signup";
 
 beforeAll(() => server.listen());
-afterEach(() => server.resetHandlers());
+afterEach(() => {
+    server.resetHandlers();
+    cleanup();
+});
 afterAll(() => server.close());
 
-describe("useSignup", ()=> {
-
+describe("useSignup()", ()=> {
     it("should have error, isLoading and verificationNeeded states initially set to null", () => {
         const { result } = renderHook(useSignup);
         expect(result.current.error).toBeFalsy()
@@ -16,7 +17,7 @@ describe("useSignup", ()=> {
         expect(result.current.verificationNeeded).toBeFalsy();
     });
 
-     it("should set error state to true if at least one input value is invalid", async () => {
+     it("should set error state to true given that the server responded with an error", async () => {
        server.use(
          rest.post(
            "api/users/signup",
@@ -31,16 +32,13 @@ describe("useSignup", ()=> {
          await act(async () =>
            result.current.signup()
          );
-        render(<Signup />)
-       await expect(result.current.error).toBeTruthy();
+        await expect(result.current.error).toBeTruthy(); 
      });
 
-    it("should set verificationNeeded state to true if all input values are valid", async () => {
-        const { result } = renderHook(useSignup);   
-        await act(async () =>
-          result.current.signup()
-        );
-        await expect(result.current.verificationNeeded).toBeTruthy()
+    it("should set verificationNeeded state to true given that the server responded with a success message", async () => {
+      const { result } = renderHook(useSignup);
+      await act(async () => result.current.signup());
+      await expect(result.current.verificationNeeded).toBeTruthy();
     })
 
 })
