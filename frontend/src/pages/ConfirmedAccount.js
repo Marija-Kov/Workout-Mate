@@ -1,22 +1,16 @@
 import React from 'react'
+import useConfirmAccount from '../hooks/useConfirmAccount';
 
 export default function ConfirmedAccount() {
   const [token, setToken] = React.useState(null);
-  const [success, setSuccess] = React.useState(null);
-  const [error, setError] = React.useState(null);
+  const { confirmAccount, error, success } = useConfirmAccount();
    React.useEffect(() => {
      const start = window.location.href.indexOf("=") + 1;
      setToken(window.location.href.slice(start))  
    }, []);
 
    const verify = React.useCallback( async () => {
-        const response = await fetch(`api/users/${token}`);
-        const json = await response.json();
-        if (response.ok) {
-          setSuccess(json.success)
-        } else {
-          setError(json.error)
-        }
+        await confirmAccount(token)
       }, [token])
 
    React.useEffect(()=>{
