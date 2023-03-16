@@ -1,10 +1,17 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, cleanup } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import user from "@testing-library/user-event";
 import Signup from "../Signup";
+import { server, rest } from "../../mocks/server";
 
-describe("Signup page", () => {
+beforeAll(() => server.listen());
+afterEach(() => {
+  server.resetHandlers();
+  cleanup();
+});
+afterAll(() => server.close());
 
+describe("<Signup />", () => {   
   it("should render the signup form", () => {
     render(<Signup />);
     const signupForm = screen.getByLabelText("create an account");
@@ -30,10 +37,40 @@ describe("Signup page", () => {
    render(<Signup />);
    const emailInp = screen.getByPlaceholderText("email address");
    const passwordInp = screen.getByPlaceholderText("password");
-   await user.type(emailInp, "keech@goodmail.yu");
-   await user.type(passwordInp, "abcABC123!");
-   expect(emailInp).toHaveValue("keech@goodmail.yu");
-   expect(passwordInp).toHaveValue("abcABC123!");
-  })
+   await user.type(emailInp, "keech@mail.yu");
+   await user.type(passwordInp, "abc");
+   expect(emailInp).toHaveValue("keech@mail.yu");
+   expect(passwordInp).toHaveValue("abc");
+  });
+
+  it("should render error element once the signup button is clicked given that the server responds with an error", async () => {
+     server.use(
+       rest.post("api/users/signup", (req, res, ctx) => {
+         return res(
+           ctx.status(400),
+           ctx.json({
+             error: "Invalid input",
+           })
+         );
+       })
+     ); 
+    user.setup();
+    render(<Signup />);
+    const signupBtn = await screen.findByText("Sign up");
+    await user.click(signupBtn);
+    const errorEl = await screen.findByRole("alert");
+    await expect(errorEl).toBeInTheDocument();
+    await expect(errorEl).toHaveClass("error");
+  });
+
+  it("should render success element once the signup button is clicked given that the server responds with a success message", async () => {
+      user.setup();
+      render(<Signup />)
+      const signupBtn = await screen.findByText("Sign up")
+      await user.click(signupBtn);
+      const successEl = await screen.findByRole("alert");    
+      await expect(successEl).toBeInTheDocument();
+      await expect(successEl).toHaveClass("success");
+  });
 
 });
