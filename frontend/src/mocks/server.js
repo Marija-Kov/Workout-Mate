@@ -3,6 +3,7 @@ import { setupServer } from "msw/node";
 import { rest } from "msw";
 
 const handlers = [
+
   rest.post("api/users/signup", (req, res, ctx) => {
     return res(
       ctx.status(200),
@@ -11,13 +12,14 @@ const handlers = [
       })
     );
   }),
-  rest.get("api/users/:accountConfirmationToken", (req, res, ctx) => {
-    return res(
+  
+  rest.get("api/users/*", (req, res, ctx) => {
+   return res(
       ctx.status(200),
       ctx.json({
         success: "Account confirmed, you may log in",
       })
-    );
+    )
   }),
 ];
 
