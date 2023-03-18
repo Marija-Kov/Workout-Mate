@@ -69,7 +69,9 @@ const Login = () => {
         </div>
 
         {forgotPasswordForm && (
-          <ForgotPasswordForm forgotPassword={forgotPassword} />
+           <Suspense>
+            <ForgotPasswordForm forgotPassword={forgotPassword} />
+          </Suspense>
         )}
       </>
     );
