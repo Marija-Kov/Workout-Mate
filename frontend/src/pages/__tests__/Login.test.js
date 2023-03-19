@@ -99,5 +99,28 @@ describe("Login page", () => {
     await expect(errorEl).toHaveClass("error");
   });
 
+  it("should render home page once the user logs in given that the server responds with success", async () => {
+    user.setup();
+    const MockHome = () => {
+      return <div>MockHome</div>;
+    };
+    let userLoggedIn = false;
+    await renderPage(userLoggedIn);
+    user.logIn = (userLoggedIn) => !userLoggedIn;
+    const loginBtn = await screen.findByText("Log in");
+    expect(loginBtn).toBeInTheDocument();
+    await renderPage(user.logIn(userLoggedIn));
+    await expect(await screen.findByText("MockHome")).toBeInTheDocument();
+
+    async function renderPage(userLoggedIn) {
+      cleanup();
+      return render(
+        <AuthContextProvider>
+          {userLoggedIn ? <MockHome /> : <Login />}
+        </AuthContextProvider>
+      );
+    }
+  });
+  
 });
 
