@@ -2,6 +2,7 @@ import React from 'react';
 import { useAuthContext } from './useAuthContext';
 
 export const useLogin = () => {
+ const [user, setUser] = React.useState(null);
  const [error, setError] = React.useState(null);
  const [isLoading, setIsLoading] = React.useState(null); 
  const { dispatch } = useAuthContext();
@@ -25,10 +26,11 @@ export const useLogin = () => {
             dispatch({type:'LOGIN', payload:json});
             setIsLoading(false)
             setError(null);
+            setUser(json)
         }
 
 
  }
 
-    return { login, isLoading, error}
+    return { login, isLoading, error, user }
 }
