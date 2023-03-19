@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { useLogin } from '../hooks/useLogin';
 
 const ForgotPasswordForm = React.lazy(() =>
@@ -34,7 +34,11 @@ const Login = () => {
           <h1>
             <p></p>
           </h1>
-          <form className="login" onSubmit={handleSubmit}>
+          <form
+            aria-label="log in"
+            className="login"
+            onSubmit={handleSubmit}
+          >
             <h4>User Login</h4>
             <label>email address:</label>
             <input
