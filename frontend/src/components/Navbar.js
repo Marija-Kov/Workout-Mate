@@ -43,7 +43,11 @@ React.useEffect(() => {
           </h1>
           {user && (
             <div>
-              <button className="hello--user" onClick={() => userMenu()}>
+              <button
+                aria-label="open user menu"
+                className="hello--user"
+                onClick={() => userMenu()}
+              >
                 <span>
                   Hello, <strong>{username}</strong>
                 </span>
@@ -51,23 +55,33 @@ React.useEffect(() => {
                   <img className="avatar" src={profileImg} alt="your avatar" />
                 </span>
               </button>
-            </div>  
+            </div>
           )}
           {!user && (
             <div>
               <Link to="/about">
-                <span className="about--btn">About</span>
+                <span aria-label="about workout mate" className="about--btn">
+                  About
+                </span>
               </Link>
               <Link to="/login">
-                <span className="login--btn">Log In</span>
+                <span aria-label="go to login page" className="login--btn">
+                  Log In
+                </span>
               </Link>
               <Link to="/signup">
-                <span className="signup--btn">Sign Up</span>
+                <span aria-label="go to signup page" className="signup--btn">
+                  Sign Up
+                </span>
               </Link>
             </div>
           )}
           {user && showUserMenu && (
-            <UserMenu user={user} changeProfileImg={changeProfileImg} userMenu={userMenu}/>
+            <UserMenu
+              user={user}
+              changeProfileImg={changeProfileImg}
+              userMenu={userMenu}
+            />
           )}
         </div>
       </header>
