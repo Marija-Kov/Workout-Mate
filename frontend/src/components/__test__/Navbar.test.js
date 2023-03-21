@@ -20,7 +20,24 @@ afterAll(() => {
 
 describe("<Navbar />", ()=>{
     it("should render the navbar correctly when the user is not logged in", () => {
-     render(
+            render(
+              <AuthContextProvider>
+                <BrowserRouter>
+                  <Navbar />
+                </BrowserRouter>
+              </AuthContextProvider>
+            );
+     const aboutLink = screen.getByLabelText(/about/i);
+     const loginLink = screen.getByLabelText(/login/i);
+     const signupLink = screen.getByLabelText(/signup/i);
+     expect(aboutLink).toBeInTheDocument();
+     expect(signupLink).toBeInTheDocument();
+     expect(loginLink).toBeInTheDocument();
+    });
+
+    it("should focus navbar elements in the right order", async () => {
+     user.setup();
+        render(
        <AuthContextProvider>
          <BrowserRouter>
            <Navbar />
@@ -30,14 +47,19 @@ describe("<Navbar />", ()=>{
      const aboutLink = screen.getByLabelText(/about/i);
      const loginLink = screen.getByLabelText(/login/i);
      const signupLink = screen.getByLabelText(/signup/i);
-     expect(aboutLink).toBeInTheDocument();
-     expect(signupLink).toBeInTheDocument();
-     expect(loginLink).toBeInTheDocument();
+     await user.tab();
+     await user.tab();
+     expect(aboutLink).toHaveFocus();
+     await user.tab();
+     expect(loginLink).toHaveFocus();
+     await user.tab();
+     expect(signupLink).toHaveFocus();
     });
 
-    it("should render the navbar correctly when the user is logged in", ()=>{
+    it("should render the navbar correctly when the user is logged in as well as focus the elements in the right order", async () =>{
+       user.setup();
        const mockLocalStorage = {};
-       const user = {
+       const storageUser = {
          id: "userId",
          email: "keech@mail.yu",
          token: "authorizationToken",
@@ -46,7 +68,7 @@ describe("<Navbar />", ()=>{
          mockLocalStorage[key] = value;
        });
        global.Storage.prototype.getItem = jest.fn((key) => mockLocalStorage[key]);
-       localStorage.setItem("user", JSON.stringify(user))
+       localStorage.setItem("user", JSON.stringify(storageUser))
             render(
               <AuthContextProvider>
                 <BrowserRouter> 
@@ -55,7 +77,10 @@ describe("<Navbar />", ()=>{
               </AuthContextProvider>
             );
        const helloUser = screen.getByLabelText(/user menu/i);
+       await user.tab();
+       await user.tab();
        expect(helloUser).toBeInTheDocument();
+       expect(helloUser).toHaveFocus();
     });
 
     it("should render the user menu once the user clicks on the avatar/", async () => {
@@ -77,7 +102,7 @@ describe("<Navbar />", ()=>{
                       <Navbar />
                     </BrowserRouter>
                   </AuthContextProvider>
-                </WorkoutContextProvider>
+                 </WorkoutContextProvider>
               );
        user.setup();
        const helloUser = screen.getByLabelText(/user menu/i);
