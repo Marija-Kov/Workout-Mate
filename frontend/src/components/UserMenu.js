@@ -17,14 +17,17 @@ export default function UserMenu(props) {
 
   return (
     <>
-      <div className="user--menu">
+      <div aria-label="user menu" className="user--menu">
         <button
+          aria-label="user settings"
           className="user--menu--item"
           onClick={() => setUserSettings((prev) => !prev)}
         >
           Settings
         </button>
-        <button className="user--menu--item" onClick={closeAllAndLogout}>
+        <button 
+          aria-label="log out"
+          className="user--menu--item" onClick={closeAllAndLogout}>
           Log Out
         </button>
       </div>
