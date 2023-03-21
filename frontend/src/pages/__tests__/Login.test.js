@@ -10,7 +10,11 @@ afterEach(() => {
   server.resetHandlers();
   cleanup();
 });
-afterAll(() => server.close());
+afterAll(() => {
+  global.Storage.prototype.setItem.mockReset();
+  global.Storage.prototype.getItem.mockReset();
+  server.close();
+});
 
 describe("Login page", () => {
   
@@ -101,26 +105,33 @@ describe("Login page", () => {
 
   it("should render home page once the user logs in given that the server responds with success", async () => {
     user.setup();
-    const MockHome = () => {
-      return <div>MockHome</div>;
+    const mockLocalStorage = {};
+    const storageUser = {
+      id: "userId",
+      email: "keech@mail.yu",
+      token: "authorizationToken",
     };
-    let userLoggedIn = false;
-    await renderPage(userLoggedIn);
-    user.logIn = (userLoggedIn) => !userLoggedIn;
-    const loginBtn = await screen.findByText("Log in");
-    expect(loginBtn).toBeInTheDocument();
-    await renderPage(user.logIn(userLoggedIn));
-    await expect(await screen.findByText("MockHome")).toBeInTheDocument();
+    const MockHome = () => {
+      return <div>Mock Home</div>;
+    };
+    global.Storage.prototype.setItem = jest.fn((key, value) => {
+      mockLocalStorage[key] = value;
+    });
+    global.Storage.prototype.getItem = jest.fn((key) => mockLocalStorage[key]);
 
-    async function renderPage(userLoggedIn) {
-      cleanup();
+    user.logIn = () => {
+      localStorage.setItem("user", JSON.stringify(storageUser));
       return render(
         <AuthContextProvider>
-          {userLoggedIn ? <MockHome /> : <Login />}
+          {localStorage.getItem("user") ? <MockHome /> : <Login />}
         </AuthContextProvider>
       );
     }
+    await user.logIn();
+    expect(screen.getByText(/mock home/i)).toBeInTheDocument();
   });
   
 });
 
+    
+ 
