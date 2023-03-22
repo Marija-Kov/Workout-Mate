@@ -2,7 +2,7 @@ import React from 'react'
 
 export default function Search({handleSearch, query, isLoading, handleSearchChange}) {
   return (
-    <form className="search--bar" onSubmit={handleSearch}>
+    <form aria-label="search bar" className="search--bar" onSubmit={handleSearch}>
       <input
         type="search"
         placeholder="search workouts..."

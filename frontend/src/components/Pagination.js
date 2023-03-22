@@ -19,7 +19,7 @@ export default function Pagination({page, limit, flipPage, total, pageSpread}){
     }
   }
     return (
-      <div className="page--btn--container">
+      <div aria-label="pages" className="page--btn--container">
         <button
           type="button"
           className="prev--page"
