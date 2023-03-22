@@ -54,5 +54,23 @@ describe("<Home />", () => {
       await expect(workouts).toBeInTheDocument();
       await expect(pagination).toBeInTheDocument();
     });
+
+    it("should render the add workout form after clicking buff it up", async () => {
+       user.setup()
+        render(
+          <WorkoutContextProvider>
+            <AuthContextProvider>
+              <Home />
+            </AuthContextProvider>
+          </WorkoutContextProvider>
+        );
+         const addWorkoutBtn = await screen.findByLabelText(/buff it up/i);
+         await user.click(addWorkoutBtn);
+         const addWorkoutForm = await screen.findByLabelText(/workout form/i);
+         await expect(addWorkoutForm).toBeInTheDocument();
+    });
+
 });
 
+
+ 
