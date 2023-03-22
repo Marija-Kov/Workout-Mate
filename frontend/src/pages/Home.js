@@ -70,7 +70,7 @@ export default function Home() {
               isLoading={isLoading}
             />
 
-            <div className="workouts">
+            <div aria-label="workouts" className="workouts">
               {workouts &&
                 workouts.map((workout) => (
                   <WorkoutDetails
@@ -91,6 +91,7 @@ export default function Home() {
             </div>
             {!addWorkoutForm && (
               <button
+                aria-label="buff it up"
                 className="add--workout"
                 onClick={() => setAddWorkoutForm(true)}
               >
