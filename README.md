@@ -74,7 +74,7 @@ In case you want to delete your Workout Mate account, you will have to log in, o
 - [Jest](https://jestjs.io/) - Javascript testing framework
 - [Supertest](https://github.com/ladjs/supertest) - testing HTTP requests
 - [MongoDB Memory Server](https://github.com/nodkz/mongodb-memory-server) - testing/mocking MongoDB memory server in NodeJS
-- [@shelf/jest-mongodb](https://ethereal.email/) - A Jest preset for running MongoDB memory server
+- [@shelf/jest-mongodb](https://www.npmjs.com/package/@shelf/jest-mongodb) - A Jest preset for running MongoDB memory server
 
 ### Frontend
 
