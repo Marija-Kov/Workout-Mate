@@ -19,8 +19,9 @@ Workout Mate lets you be the athlete you want to be.</i>
 2. [App Features](#features)
 3. [Tools and Dependencies](#tools)
 4. [Test coverage](#test)
-5. [Resources](#resources)
-6. [Author](#author)
+5. [Todos](#todos)
+6. [Resources](#resources)
+7. [Author](#author)
 
 ---
 <br>
@@ -89,6 +90,15 @@ In case you want to delete your Workout Mate account, you will have to log in, o
 ## Test coverage <a name = "test"></a>
 
 Coming soon.
+
+<br>
+
+## Todos <a name = "todos"></a>
+
+- Finish UI tests
+- Add more demo gifs to readme
+- Add test coverage to readme
+- Feature: Change the pie chart role from ornamental to relevant/functional.
 
 <br>
 
