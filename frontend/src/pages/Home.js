@@ -15,6 +15,16 @@ export default function Home() {
     const [page, setPage] = React.useState(0);
     const [pageSpread, setPageSpread] = React.useState([]);
     const [query, setQuery] = React.useState("");
+
+    React.useEffect(()=> {
+     const tokenExpires = JSON.parse(localStorage.getItem('user')).tokenExpires; 
+     const timeout = tokenExpires - Date.now();
+     setTimeout(()=> {
+       localStorage.removeItem("user");
+       window.location.reload(); 
+     }, timeout)
+    }, [])
+
     React.useEffect(() => {
       getItems(query, page);
     }, [query, page]);

@@ -2,8 +2,9 @@ const User = require('../models/userModel');
 const jwt = require('jsonwebtoken');
 const sendEmail = require("../middleware/sendEmail");
 
+const expiresIn = 3600;
 const createToken = (_id) => {
-return jwt.sign({_id}, process.env.SECRET, {expiresIn: '3d'})
+return jwt.sign({_id}, process.env.SECRET, {expiresIn: expiresIn})
 }
 
 module.exports.signup_post = async (req, res) => {
@@ -61,7 +62,8 @@ module.exports.login_post = async (req, res) => {
       const username = user.username;
       const profileImg = user.profileImg;
       const token = createToken(id);
-       res.status(200).json({id, email, token, username, profileImg});
+      const tokenExpires = Date.now() + expiresIn*1000;
+       res.status(200).json({id, email, token, username, profileImg, tokenExpires});
     } catch(err){
       res.status(400).json({error: err.message});
     }
