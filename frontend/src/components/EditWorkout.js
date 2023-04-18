@@ -32,6 +32,7 @@ export default function EditWorkout(props){
    ); 
  }
     return (
+      <div className="form--container">
       <form className="edit--form">
         <button
           className="close material-symbols-outlined"
@@ -79,5 +80,6 @@ export default function EditWorkout(props){
           </div>
         )}
       </form>
+     </div>
     );
 }
