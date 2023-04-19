@@ -19,7 +19,7 @@ Table of contents:
  /* User menu
  /* User/Profile settings form
  /* Delete account component 
- /* Workouts (container)
+ /* Workouts container
  /* Workout details component 
  /* Success and error messages
  /* Search bar
@@ -855,11 +855,13 @@ background:#ddd;
   border: solid 1px var(--light-text);
 }
 
-/* Workouts (container) */
+/* Workouts container */
 
- .workouts {
+ .workouts--container {
    grid-area: workouts;
    margin-left:40px;
+   max-height: 482px;
+   overflow-y: hidden;
  }
 
 /* Workout details component */
