@@ -63,7 +63,7 @@ const Login = () => {
             <button type="button" className="forgot--password" onClick={forgotPassword}>
               Forgot the password?
             </button>
-            <button disabled={isLoading}>Log in</button>
+            <button className="log-in--form--btn" disabled={isLoading}>Log in</button>
             {error && (
               <div role="alert" className="error">
                 {error}

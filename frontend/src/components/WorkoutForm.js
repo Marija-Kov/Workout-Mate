@@ -83,9 +83,7 @@ export default function WorkoutForm({hideForm, spreadPages, flipPage, total, lim
         value={workout.load}
         className={emptyFields.includes("load") ? "error" : ""}
       />
-      <div className="btns">
-        <button>Add workout</button>
-      </div>
+        <button className="workout--form--btn">Add workout</button>
       {error && (
         <div role="alert" className="error">
           {error}

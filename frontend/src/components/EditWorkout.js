@@ -71,9 +71,7 @@ export default function EditWorkout(props){
           value={load}
           className={emptyFields.includes("load") ? "error" : ""}
         />
-        <div className="btns">
-          <button onClick={(e) => handleUpdate(e)}>Save changes</button>
-        </div>
+          <button className="edit--form--btn" onClick={(e) => handleUpdate(e)}>Save changes</button>
         {error && (
           <div role="alert" className="error">
             {error}
