@@ -39,15 +39,56 @@ Table of contents:
   --success: #16644a;
   --success--bkg: #b6f8db;
   --error--bkg: #fcd7d7;
-  --login: #5fcfca;
-  --signup: #b995e7;
-  --home--bkg: rgb(209, 255, 240);
+  --login--form--bkg: #5fcfca;
+  --signup--form--bkg: #b995e7;
+  --home--bkg: rgb(203, 253, 229);
   --home--bkg--dark: rgb(33, 81, 100);
   --light-text: #a1a1a1;
+  --light-text--hover: rgb(66, 104, 194);
+  --header--shadow: rgba(160, 160, 160, 0.616);
+  --header--link--text: #333;
+  --logo--link: white;
+  --logo--link--logged--in: rgb(177, 159, 190);
+  --about--link--bkg--hover: rgb(249, 158, 200);
+  --about--bkg: rgb(231, 231, 231);
+  --all--form--btn--text: white;
+  --all--form--btn--bkg--hover: #ddd;
+  --login--signup--form--text: white;
+  --login--signup--form--btn--bkg--hover: #ddd;
+  --forgot-password--btn--text: #8b47c3;
+  --forgot-password--btn--text--hover: rgb(83, 38, 121);
+  --form--container--bkg: rgba(128, 128, 128, 0.508);
+  --reset-password-request--form--bkg: rgb(255, 192, 251);
+  --reset-password-request--form--shadow: 5px 5px 25px 5px rgba(22, 22, 22, 0.196);
+  --reset-password-request--form--h4--border: solid 1px rgb(233, 160, 194);
+  --reset-password-request--form--btn--bkg--hover: #ddd;
+  --reset-password--form--bkg: rgb(192, 232, 255);
+  --reset-password--form--shadow: 6px 6px 20px 20px rgba(81, 121, 169, 0.225);
+  --workout--form--bkg: #dad5e5;
+  --edit--form--bkg: #E0E1DB;
+  --user-menu--bkg: rgba(209, 255, 240, 0.514);
+  --user-menu--shadow: 0px 5px 22px -2px rgba(142, 142, 142, 0.5);
+  --user-menu-item--border: solid 1px rgb(121, 190, 190);
+  --user-menu-item--text--hover: rgb(121, 190, 190);
+  --user-settings-form--bkg: palegoldenrod;
+  --user-settings-form--shadow: 5px 5px 25px 5px rgba(22, 22, 22, 0.307); 
+  --user-settings-form--h4--border: solid 1px rgb(214, 214, 214);
+  --delete-account-dialogue--accent: orangered;
+  --delete-account-dialogue--change-my-mind--btn--bkg: rgb(82, 82, 82);
+  --workout-details--bkg: white;
+  --workout-details--shadow: 0px 5px 22px -2px rgba(142, 142, 142, 0.5);
+  --workout-details--h4--border: solid 1px #c6f2ee;
+  --pagination-dots--color: rgb(149, 149, 149);
+  --chart-title--color: rgb(112, 98, 109);
+  --chart--color-1: rgba(167, 79, 142, 0.7);
+  --chart--color-2: rgba(70, 217, 224, 0.7);
+  --chart--shadow: 3px 5px 25px rgba(34, 74, 70, 0.362);
+  --chart-legend--text: rgb(82, 82, 82);
+
 }
 
 body {
-  background: #e2e2e2;
+  background: var(--home--bkg);
   overflow-x: hidden;
   margin: 0;
   padding: 0;
@@ -70,7 +111,7 @@ header {
 .header--blur{
   background: rgba(255, 255, 255, 0);
   backdrop-filter: blur(4px);
-  box-shadow: 1px 1px 5px rgba(160, 160, 160, 0.616);
+  box-shadow: 1px 1px 5px var(--header--shadow);
 }
 
 header > .container {
@@ -87,7 +128,7 @@ header > .container > div {
 }
 
 header a {
-  color: #333;
+  color: var(--header--link--text);
   text-decoration: none;
   font-size: 0.6em;
 }
@@ -102,7 +143,7 @@ header a {
 .logo > a {
   font-family: 'Yellowtail', cursive;
   font-size: 0.8em;
-  color: white;
+  color: var(--logo--link);
 }
 
 .logo {
@@ -117,7 +158,7 @@ header a {
 .logged--in--logo > a {
   font-family: 'Yellowtail', cursive;
   font-size: 20px;
-  color: rgb(177, 159, 190);
+  color: var(--logo--link--logged--in);
 }
 
 /* Confirmed account page */
@@ -144,13 +185,13 @@ header a {
 
 .signup,
 .login {
-  background: var(--signup);
+  background: var(--signup--form--bkg);
   width: 250px;
   box-shadow: none;
 }
 
 .login {
-background-color: var(--login);
+background-color: var(--login--form--bkg);
 }
 
 .login--btn,
@@ -177,15 +218,15 @@ background-color: var(--login);
 }
 
 .signup--btn:hover{
-  background: var(--signup);
+  background: var(--signup--form--bkg);
 }
 
 .login--btn:hover {
- background: var(--login);
+ background: var(--login--form--bkg);
 }
 
 .about--btn:hover{
-  background:rgb(249, 158, 200);
+  background:var(--about--link--bkg--hover);
 }
 
 /* Homepage */
@@ -249,7 +290,8 @@ background-color: var(--login);
   transition: 0.2s;
 }
 
-.gym--pattern--bkg {
+.about--gym--pattern--bkg {
+  background: var(--about--bkg);
   position: fixed;
   top:0;
   z-index:-1;
@@ -382,24 +424,24 @@ input {
 
 .login > label,
 .signup > label {
-color: white;
+color: var(--login--signup--form--text);
 font-size: 0.9em;
 }
 
 form.login h4,
 form.signup h4 {
  margin-top: 200px;
- color: #fff;
+ color: var(--login--signup--form--text);
  font-weight: 500;
  font-size: 20px;
- border-bottom: solid 1px #fff;
+ border-bottom: solid 1px var(--login--signup--form--text);
 }
 
 .log-in--form--btn,
 .sign-up--form--btn {
   background: var(--primary);
   border: solid 1px var(--primary);
-  color: rgb(255, 255, 255);
+  color: var(--login--signup--form--text);
   padding: 10px 30px;
   font-family: "Poppins";
   border-radius: 50px;
@@ -409,7 +451,7 @@ form.signup h4 {
 
 .log-in--form--btn:hover,
 .sign-up--form--btn:hover {
-  background:#ddd;
+  background: var(--login--signup--form--btn--bkg--hover);
   color: var(--primary);
 }
 
@@ -418,7 +460,7 @@ form.signup h4 {
 .forgot--password {
   padding: 10px 30px;
   font-family: "Poppins";
-  color: #8b47c3;
+  color: var(--forgot-password--btn--text);
   font-size: 0.8em;
   position: relative;
   top: -15px;
@@ -429,13 +471,13 @@ form.signup h4 {
 }
 
 .forgot--password:hover{
-  color: rgb(83, 38, 121);
+  color: var(--forgot--password--btn--text--hover);
 }
 
 /* Reset password request form (to send reset link to inbox) */
 
 .form--container:has(.reset--password--request) {
-    background: rgba(128, 128, 128, 0.508); 
+    background: var(--form--container--bkg); 
     z-index: 5;
     top: 0;
     left: 0;
@@ -448,17 +490,17 @@ form.signup h4 {
   text-align: center;
   padding: 20px;
   top: 180px;
-  background: rgb(255, 192, 251);
+  background: var(--reset-password-request--form--bkg);
   width: 300px; 
   height: fit-content;
   position: relative;
   margin: 0 auto;
   border-radius: 20px;
-  box-shadow: 5px 5px 25px 5px rgba(22, 22, 22, 0.196);
+  box-shadow: var(--reset-password-request--form--shadow);
 }
 
 .reset--password--request > h4 {
-  border-bottom: solid 1px rgb(233, 160, 194);
+  border-bottom: var(--reset-password-request--form--h4--border);
 }
 
 .reset--password--request > button {
@@ -473,7 +515,7 @@ form.signup h4 {
 }
 
 .reset--password--request > button:hover {
-  background:#ddd;
+  background: var(--reset-password-request--form--btn--bkg--hover);
   color: var(--primary);
 }
 
@@ -491,20 +533,20 @@ form.signup h4 {
 
 .reset--password {
   top: 180px;
-  background: rgb(192, 232, 255);
+  background: var(--reset-password--form--bkg);
   width: 300px;
   height: fit-content;
   position: relative;
   margin: 0 auto;
   padding: 20px;
   border-radius: 20px;
-  box-shadow: 6px 6px 20px 20px rgba(81, 121, 169, 0.225);
+  box-shadow: var(--reset-password--form--shadow);
 }
 
 .reset--password > button {
   background: var(--primary);
   border: solid 1px var(--primary);
-  color: rgb(255, 255, 255);
+  color: var(--all--form--btn--text);
   padding: 8px 28px;
   font-family: "Poppins";
   border-radius: 50px;
@@ -513,7 +555,7 @@ form.signup h4 {
 }
 
 .reset--password> button:hover {
-  background:#ddd;
+  background: var(--all--form--btn--bkg--hover);
   color: var(--primary);
 }
 
@@ -521,7 +563,7 @@ form.signup h4 {
 
 .form--container:has(.workout--form),
 .form--container:has(.edit--form){
-  background: rgba(128, 128, 128, 0.508); 
+  background: var(--form--container--bkg);
   height: 100vh;
   z-index: 5;
   top: -70px;
@@ -542,7 +584,7 @@ form.signup h4 {
 
 .edit--form,
 .workout--form {
-  background: #dad5e5;
+  background: var(--workout--form--bkg);
   min-width: 300px; 
   max-width: 400px;
   height: fit-content;
@@ -566,7 +608,7 @@ form.signup h4 {
 }
 
 .edit--form {
-  background: #E0E1DB;
+  background: var(--edit--form--bkg);
 }
 
 .workout--form--btn,
@@ -574,7 +616,7 @@ form.signup h4 {
   background: var(--primary);
   border: solid 1px var(--primary);
   border-radius: 50px;
-  color: rgb(255, 255, 255);
+  color: var(--all--form--btn--text);
   padding: 10px 30px;
   margin: 10px;
   font-family: "Poppins";
@@ -585,7 +627,7 @@ form.signup h4 {
 
 .workout--form--btn:hover,
 .edit--form--btn:hover {
-  background:#ddd;
+  background: var(--all--form--btn--bkg--hover);
   color: var(--primary);
 }
 
@@ -595,7 +637,7 @@ form.signup h4 {
   background: var(--primary);
   border: solid 1px var(--primary);
   border-radius: 50px;
-  color: rgb(255, 255, 255);
+  color: var(--all--form--btn--text);
   font-family: "Poppins";
   font-weight: 500;
   font-size: .9em;
@@ -605,7 +647,7 @@ form.signup h4 {
 }
 
 .add--workout:hover {
-  background:#ddd;
+  background:var(--all--form--btn--bkg--hover);
   color: var(--primary);
 } 
 
@@ -613,11 +655,11 @@ form.signup h4 {
 
 .user--menu {
   position: absolute;
-  background: var(--home--bkg);
-  backdrop-filter: blur(2px);
-  right:20px;
-  padding: 90px 20px 20px 20px;
-  box-shadow: 0px 5px 22px -2px rgba(142, 142, 142, 0.5);
+  background: var(--user-menu--bkg);
+  top: 61px;
+  right: 20px;
+  padding: 20px;
+  box-shadow: var(--user-menu--shadow);
   display: flex;
   justify-content: space-around;
   border-bottom-left-radius:15px;
@@ -634,14 +676,18 @@ form.signup h4 {
  border:unset;
 }
 
+.user--menu--item:nth-child(1){
+ border-right: var(--user-menu-item--border);
+}
+
 .user--menu--item:hover{
-  color: pink;
+  color: var(--user-menu-item--text--hover);
 }
 
 /* User/Profile settings form */
 
 .form--container:has(.user--settings){
-  background: rgba(128, 128, 128, 0.508); 
+  background: var(--form--container--bkg); 
   height: 100vh;
   z-index: 3;
   top: 0;
@@ -653,7 +699,7 @@ form.signup h4 {
 .user--settings {
   position: absolute;
   top: 70px;
-  background: palegoldenrod;
+  background: var(--user-settings-form--bkg);
   right: 18%;
   height: fit-content;
   min-width: 300px; 
@@ -662,7 +708,7 @@ form.signup h4 {
   border-radius: 20px;
   padding: 20px;
   padding-left: 50px; 
-  box-shadow: 5px 5px 25px 5px rgba(22, 22, 22, 0.307); 
+  box-shadow: var(--user-settings-form--shadow); 
 }
 
 .user--settings > input {
@@ -672,7 +718,7 @@ form.signup h4 {
 
 .user--settings > h4 {
  color: var(--primary);
- border-bottom: solid 1px rgb(214, 214, 214);
+ border-bottom: var(--user-settings-form--h4--border);
 }
 
 .user--settings > label {
@@ -687,7 +733,7 @@ form.signup h4 {
 .upload--btn{
   background: var(--primary);
   border: solid 1px var(--primary);
-  color: rgb(255, 255, 255);
+  color: var(--all--form--btn--text);
   padding: 10px 30px;
   font-family: "Poppins";
   border-radius: 50px;
@@ -698,7 +744,7 @@ form.signup h4 {
 }
 
 .upload--btn:hover{
-  background:#ddd;
+  background:var(--all--form--btn--bkg--hover);
   color: var(--primary);
 }
 
@@ -752,8 +798,8 @@ form.signup h4 {
 }
 
 .delete--account--btn:hover {
-  color: orangered;
-  border-bottom: 1px solid orangered;
+  color: var(--delete-account-dialogue--accent);
+  border-bottom: 1px solid var(--delete-account-dialogue--accent);
 }
 
 .delete--account--dialogue {
@@ -768,7 +814,7 @@ form.signup h4 {
   flex-direction: column;
   background: pink;
   border-radius: 10px;
-  border: solid 1px orangered;
+  border: solid 1px var(--delete-account-dialogue--accent);
   box-shadow: 2px 2px 60px rgba(54, 21, 21, 0.884);
 }
 
@@ -783,7 +829,7 @@ form.signup h4 {
  position:relative;
  margin: 0 auto;
  width: fit-content;
- border-bottom: solid 2px orangered;
+ border-bottom: solid 2px var(--delete-account-dialogue--accent);
 }
 
 .delete--account--dialogue--btns {
@@ -797,12 +843,12 @@ form.signup h4 {
   font-family: 'Poppins', sans-serif;
   cursor: pointer;
   padding: 3px 8px;
-  color: whitesmoke;
+  color: var(--all--form--btn--text);
   background: var(--primary)
 }
 
 .delete--account--dialogue--btns > button:nth-child(2) {
- background-color: rgb(82, 82, 82);
+ background-color: var(--delete-account-dialogue--change-my-mind--btn--bkg);
  border-radius: 5px;
 }
 
@@ -832,7 +878,7 @@ form.signup h4 {
  margin: 6px 0;
  position: relative;
  left: -20px;
- color: white;
+ color: var(--all--form--btn--text);
  font-family: "Poppins";
  border: solid 1px var(--primary);
  border-radius: 50px;
@@ -842,8 +888,8 @@ form.signup h4 {
 }
 
 .search--bar > button:hover {
-background:#ddd;
-  color: var(--primary);
+ background: var(--all--form--btn--bkg--hover);
+ color: var(--primary);
 }
 
 .search--bar > button > span {
@@ -869,18 +915,14 @@ background:#ddd;
 /* Workout details component */
 
 .workout-details {
-  background: #fff;
+  background: var(--workout-details--bkg);
   margin: 0 0 15px 0;
   padding: 15px;
   max-width: 250px;
   border-radius: 20px;
   position: relative;
-  box-shadow: 0px 5px 22px -2px rgba(142, 142, 142, 0.5);
+  box-shadow: var(--workout-details--shadow);
 }
-
-/* .workout-details:nth-child(n+4){
- display: none;
-} */
 
 .workout-details h4 {
   margin: 0 0 8px 0;
@@ -889,7 +931,7 @@ background:#ddd;
   font-size: 1em;
   padding-bottom: 10px;
   padding-left: 20px;
-  border-bottom: solid 1px #c6f2ee;
+  border-bottom: var(--workout-details--h4--border);
   color: var(--primary);
   
 }
@@ -905,7 +947,7 @@ background:#ddd;
   top: 110px;
   right: 15px;
   cursor: pointer;
-  color: #a1a1a1;
+  color: var(--light-text);
   font-size: 1.3em;
   background: unset;
   border:unset;
@@ -914,7 +956,7 @@ background:#ddd;
 }
 
 .workout-details > button:hover {
- color: rgb(66, 104, 194);
+ color: var(--light-text--hover);
 }
 
 .workout-details p > strong {
@@ -926,7 +968,7 @@ background:#ddd;
 }
 
 .date {
-  color: #797979;
+  color: var(--light-text);
 }
 
 /* Success and error messages */
@@ -991,7 +1033,7 @@ input.error {
   display: inline-block;
   content:"...";
   font-size: larger;
-  color: rgb(149, 149, 149);
+  color: var(--pagination-dots--color);
 }
 
 .page--btn--container > button > span {
@@ -1000,7 +1042,7 @@ input.error {
 
 .page--btn--container > button:hover {
   background: var(--primary);
-  color: white;
+  color: var(--all--form--btn--text);
 }
 .page--btn--container > button:disabled {
   border: solid 1px var(--light-text);
@@ -1015,7 +1057,7 @@ input.error {
 
 .page--btn--container > .current {
   background: var(--primary);
-  color: white;
+  color: var(--all--form--btn--text);
 }
 
 .page--btn--container > .invisible {
@@ -1028,10 +1070,10 @@ input.error {
   grid-area: chart;
   width: 100%;
 }
-.chart--container h3 {
+.chart--container > h3 {
   position: relative;
   margin: 20px auto 0 auto;
-  color:rgb(152, 113, 165);
+  color:var(--chart-title--color);
   width: fit-content;
 }
 
@@ -1040,9 +1082,9 @@ input.error {
   margin: 25px auto 0 auto;
   width: 220px;
   height: 220px;
-  background-image: conic-gradient(rgb(234, 123, 214) 64%, rgb(126, 211, 253) 36%);
+  background-image: conic-gradient(var(--chart--color-1) 64%, var(--chart--color-2) 36%);
   border-radius: 50%;
-  box-shadow: 2px 4px 30px rgba(47, 113, 107, 0.43);
+  box-shadow: var(--chart--shadow);
   
 }
 .chart--container > p {
@@ -1050,7 +1092,7 @@ input.error {
   font-size: 0.8em;
   font-weight: 500;
   padding-left: 50px;
-  color:rgb(82, 82, 82);
+  color:var(--chart-legend--text);
 }
 
 .stats--upper-bod > span,
@@ -1059,9 +1101,9 @@ input.error {
   height: 20px;
   width: 20px;
   border-radius: 20px;
-  background:rgb(234, 123, 214);
+  background: var(--chart--color-1);
 }
 
 .stats--lower-bod > span {
-  background:rgb(126, 211, 253);
+  background: var(--chart--color-2);
 }
