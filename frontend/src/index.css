@@ -454,6 +454,7 @@ form.signup h4 {
   position: relative;
   margin: 0 auto;
   border-radius: 20px;
+  box-shadow: 5px 5px 25px 5px rgba(22, 22, 22, 0.196);
 }
 
 .reset--password--request > h4 {
@@ -660,7 +661,8 @@ form.signup h4 {
   text-align: left;
   border-radius: 20px;
   padding: 20px;
-  padding-left: 50px;  
+  padding-left: 50px; 
+  box-shadow: 5px 5px 25px 5px rgba(22, 22, 22, 0.307); 
 }
 
 .user--settings > input {
@@ -767,7 +769,7 @@ form.signup h4 {
   background: pink;
   border-radius: 10px;
   border: solid 1px orangered;
-  box-shadow: 2px 2px 60px rgba(128, 72, 72, 0.816);
+  box-shadow: 2px 2px 60px rgba(54, 21, 21, 0.884);
 }
 
 .delete--account--dialogue > p {
