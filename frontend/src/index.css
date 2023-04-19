@@ -395,23 +395,41 @@ form.signup h4 {
  border-bottom: solid 1px #fff;
 }
 
+.log-in--form--btn,
+.sign-up--form--btn {
+  background: var(--primary);
+  border: solid 1px var(--primary);
+  color: rgb(255, 255, 255);
+  padding: 10px 30px;
+  font-family: "Poppins";
+  border-radius: 50px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.log-in--form--btn:hover,
+.sign-up--form--btn:hover {
+  background:#ddd;
+  color: var(--primary);
+}
+
 /* Forgot password button */
 
 .forgot--password {
+  padding: 10px 30px;
+  font-family: "Poppins";
   color: #8b47c3;
   font-size: 0.8em;
   position: relative;
   top: -15px;
   cursor: pointer;
   text-decoration: underline;
+  border: unset;
   background: unset;
-  border:unset;
-  border-radius: unset;
-  transition:unset;
 }
 
 .forgot--password:hover{
-  background: unset;
+  color: rgb(83, 38, 121);
 }
 
 /* Reset password request form (to send reset link to inbox) */
@@ -442,6 +460,22 @@ form.signup h4 {
   border-bottom: solid 1px rgb(233, 160, 194);
 }
 
+.reset--password--request > button {
+  background: var(--primary);
+  border: solid 1px var(--primary);
+  color: rgb(255, 255, 255);
+  padding: 8px 28px;
+  font-family: "Poppins";
+  border-radius: 50px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.reset--password--request > button:hover {
+  background:#ddd;
+  color: var(--primary);
+}
+
 /* Reset password form (accessed from the reset link) */
 
 .form--container:has(.reset--password){
@@ -467,7 +501,19 @@ form.signup h4 {
 }
 
 .reset--password > button {
-  margin: 0 15px;
+  background: var(--primary);
+  border: solid 1px var(--primary);
+  color: rgb(255, 255, 255);
+  padding: 8px 28px;
+  font-family: "Poppins";
+  border-radius: 50px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.reset--password> button:hover {
+  background:#ddd;
+  color: var(--primary);
 }
 
 /* Add & Edit workout forms */
@@ -522,40 +568,45 @@ form.signup h4 {
   background: #E0E1DB;
 }
 
-form button,
-.add--workout {
+.workout--form--btn,
+.edit--form--btn {
   background: var(--primary);
   border: solid 1px var(--primary);
+  border-radius: 50px;
   color: rgb(255, 255, 255);
   padding: 10px 30px;
+  margin: 10px;
   font-family: "Poppins";
-  border-radius: 50px;
   cursor: pointer;
   transition: 0.2s;
+
 }
 
-form button:hover,
-.add--workout:hover,
-.reset--password > button[type="button"]:hover {
+.workout--form--btn:hover,
+.edit--form--btn:hover {
   background:#ddd;
   color: var(--primary);
 }
 
 .add--workout {
-z-index: 1;
-height: 40px;
-max-width: 140px;
-font-size: .9em;
-padding: 0;
-font-weight: 500;
-position: relative;
-grid-area: add-btn;
+  height: 40px;
+  max-width: 140px;
+  background: var(--primary);
+  border: solid 1px var(--primary);
+  border-radius: 50px;
+  color: rgb(255, 255, 255);
+  font-family: "Poppins";
+  font-weight: 500;
+  font-size: .9em;
+  cursor: pointer;
+  transition: 0.2s;
+  grid-area: add-btn;
 }
 
-.btns { 
-  /* submit button wrapper */
-  padding: 10px;
-}
+.add--workout:hover {
+  background:#ddd;
+  color: var(--primary);
+} 
 
 /* User menu */
 
@@ -580,8 +631,6 @@ grid-area: add-btn;
  cursor: pointer;
  background: unset;
  border:unset;
- border-radius: unset;
- transition:unset;
 }
 
 .user--menu--item:hover{
@@ -634,8 +683,21 @@ grid-area: add-btn;
 }
 
 .upload--btn{
+  background: var(--primary);
+  border: solid 1px var(--primary);
+  color: rgb(255, 255, 255);
+  padding: 10px 30px;
+  font-family: "Poppins";
+  border-radius: 50px;
+  cursor: pointer;
+  transition: 0.2s;
   height: 30px;
   padding: 5px 20px;
+}
+
+.upload--btn:hover{
+  background:#ddd;
+  color: var(--primary);
 }
 
 .remove--profile--img {
@@ -643,7 +705,6 @@ grid-area: add-btn;
 }
 
 .close{
-  z-index: 20;
   position: absolute;
   right: 20px;
   height: 1em;
@@ -653,7 +714,6 @@ grid-area: add-btn;
   background: unset;
   padding: 0;
   border:unset;
-  border-radius: unset;
   transition:unset;
 }
 
@@ -684,13 +744,14 @@ grid-area: add-btn;
   background: unset;
   color: var(--primary);
   border: unset;
-  border-radius: unset;
   border-bottom: 1px solid var(--primary);
   margin-top: 20px;
+  cursor: pointer;
 }
 
 .delete--account--btn:hover {
-  background-color: unset;
+  color: orangered;
+  border-bottom: 1px solid orangered;
 }
 
 .delete--account--dialogue {
@@ -761,6 +822,8 @@ grid-area: add-btn;
 }
 
 .search--bar > button {
+ background: var(--primary);
+ font-family: "Poppins";
  height: 25px;
  width: 25px;
  padding: 3px 3px 0 3px;
@@ -768,13 +831,17 @@ grid-area: add-btn;
  position: relative;
  left: -20px;
  color: white;
- border: solid 1px var(--primary);
- border-top-right-radius: 50px;
- border-bottom-right-radius: 20px;
- background: var(--primary);
- cursor: pointer;
  font-family: "Poppins";
+ border: solid 1px var(--primary);
+ border-radius: 50px;
+ border-bottom-right-radius: 20px;
+ cursor: pointer;
  transition: 0.2s;
+}
+
+.search--bar > button:hover {
+background:#ddd;
+  color: var(--primary);
 }
 
 .search--bar > button > span {
@@ -786,14 +853,6 @@ grid-area: add-btn;
   height: 25px;
   border-radius: 20px;
   border: solid 1px var(--light-text);
-}
-
-.loading{
-  position: absolute;
-  z-index: 5;
-  top: 200px;
-  left: 200px;
-  color: rgb(187, 144, 182);
 }
 
 /* Workouts (container) */
@@ -815,9 +874,9 @@ grid-area: add-btn;
   box-shadow: 0px 5px 22px -2px rgba(142, 142, 142, 0.5);
 }
 
-.workout-details:nth-child(n+4){
+/* .workout-details:nth-child(n+4){
  display: none;
-}
+} */
 
 .workout-details h4 {
   margin: 0 0 8px 0;
@@ -837,7 +896,7 @@ grid-area: add-btn;
   padding: 3px 20px;
 }
 
-.workout-details button {
+.workout-details > button {
   position: absolute;
   top: 110px;
   right: 15px;
@@ -848,6 +907,10 @@ grid-area: add-btn;
   border:unset;
   border-radius: unset;
   transition:unset;
+}
+
+.workout-details > button:hover {
+ color: rgb(66, 104, 194);
 }
 
 .workout-details p > strong {
@@ -915,7 +978,7 @@ input.error {
   padding: 0;
   color: var(--primary);
   background: transparent;
-  transition: 0.3s;
+  transition: 0.2s;
   height: 20px;
 }
 
@@ -997,10 +1060,4 @@ input.error {
 
 .stats--lower-bod > span {
   background:rgb(126, 211, 253);
-}
-
-
-@media screen and (max-width: 1000px){
-  /* header should change style only on home page */
-
 }
