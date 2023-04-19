@@ -47,7 +47,7 @@ const Signup = () => {
               value={credentials.password}
               onChange={handleChange}
             />
-            <button disabled={isLoading}>Sign up</button>
+            <button className="sign-up--form--btn" disabled={isLoading}>Sign up</button>
             {error && (
               <div role="alert" className="error">
                 {error}

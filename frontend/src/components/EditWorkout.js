@@ -32,6 +32,7 @@ export default function EditWorkout(props){
    ); 
  }
     return (
+      <div className="form--container">
       <form className="edit--form">
         <button
           className="close material-symbols-outlined"
@@ -70,14 +71,13 @@ export default function EditWorkout(props){
           value={load}
           className={emptyFields.includes("load") ? "error" : ""}
         />
-        <div className="btns">
-          <button onClick={(e) => handleUpdate(e)}>Save changes</button>
-        </div>
+          <button className="edit--form--btn" onClick={(e) => handleUpdate(e)}>Save changes</button>
         {error && (
           <div role="alert" className="error">
             {error}
           </div>
         )}
       </form>
+     </div>
     );
 }

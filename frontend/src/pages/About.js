@@ -21,7 +21,7 @@ export default function About() {
           <img className="github" src={github} alt="Github" />
         </a>
       </div>
-      <img className="gym--pattern--bkg" src={patternBkg} alt="Sports and healthy lifestyle symbols pattern" />
+      <img className="about--gym--pattern--bkg" src={patternBkg} alt="Sports and healthy lifestyle symbols pattern" />
     </>
   );
 }

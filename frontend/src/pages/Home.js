@@ -70,7 +70,7 @@ export default function Home() {
               isLoading={isLoading}
             />
 
-            <div aria-label="workouts" className="workouts">
+            <div aria-label="workouts" className="workouts--container">
               {workouts &&
                 workouts.map((workout) => (
                   <WorkoutDetails
