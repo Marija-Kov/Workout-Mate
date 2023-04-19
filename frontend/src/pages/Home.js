@@ -6,6 +6,7 @@ import { useAuthContext } from "../hooks/useAuthContext";
 import Pagination from '../components/Pagination';
 import { useSearch } from '../hooks/useSearch';
 import Search from '../components/Search';
+import { logOutIfTokenExpired } from '../utils/logOutIfTokenExpired';
 
 export default function Home() {
     const [addWorkoutForm, setAddWorkoutForm] = React.useState(false);
@@ -15,15 +16,6 @@ export default function Home() {
     const [page, setPage] = React.useState(0);
     const [pageSpread, setPageSpread] = React.useState([]);
     const [query, setQuery] = React.useState("");
-
-    React.useEffect(()=> {
-     const tokenExpires = JSON.parse(localStorage.getItem('user')).tokenExpires; 
-     const timeout = tokenExpires - Date.now();
-     setTimeout(()=> {
-       localStorage.removeItem("user");
-       window.location.reload(); 
-     }, timeout)
-    }, [])
 
     React.useEffect(() => {
       getItems(query, page);
@@ -67,12 +59,10 @@ export default function Home() {
       setQuery(e.target.value);
       setPage(0);
    }
-    return (
-      <div className="home--container">
-        {!user && <h3>Access denied.</h3>}
-        {user && (
-          <div className="home">
 
+    return (
+      <div className="home--container" onClick={logOutIfTokenExpired}>
+          <div className="home">
             <Search
               handleSearchChange={handleSearchChange}
               handleSearch={handleSearch}
@@ -138,7 +128,6 @@ export default function Home() {
               </p>
             </div>
           </div>
-        )}
       </div>
     );
 };
