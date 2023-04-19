@@ -1,7 +1,8 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 import { useAuthContext } from '../hooks/useAuthContext';
-import UserMenu from './UserMenu';
+import { logOutIfTokenExpired } from '../utils/logOutIfTokenExpired';
+import UserMenu from './UserMenu'
 
 export default function Navbar(){
   const { user } = useAuthContext();
@@ -36,7 +37,7 @@ React.useEffect(() => {
 }, [user]);
 
     return (
-      <header className={user ? "header--blur" : ""}>
+      <header className={user ? "header--blur" : ""} onClick={user && logOutIfTokenExpired}>
         <div className="container">
           <h1 className={user ? "logged--in--logo" : "logo"}>
             <Link to="/">WorkoutMate</Link>
