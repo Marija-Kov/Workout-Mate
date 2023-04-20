@@ -44,7 +44,7 @@ export default function WorkoutForm({hideForm, spreadPages, flipPage, total, lim
   }
   return (
     <div className="form--container">
-    <form className="workout--form" onSubmit={handleSubmit}>
+    <form className="workout--form" aria-label="workout form" onSubmit={handleSubmit}>
       <button
         className="close material-symbols-outlined"
         onClick={hideForm}
