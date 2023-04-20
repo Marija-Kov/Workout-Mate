@@ -89,7 +89,82 @@ In case you want to delete your Workout Mate account, you will have to log in, o
 
 ## Test coverage <a name = "test"></a>
 
-Coming soon.
+As of last update:
+
+### Backend
+
+
+File                         | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
+-----------------------------|---------|----------|---------|---------|-------------------
+All files                    |   95.05 |     92.3 |      92 |   95.05 |                   
+ backend                     |    90.9 |       50 |   66.66 |    90.9 |                   
+  database.config.js         |     100 |      100 |     100 |     100 |                   
+  server.js                  |   84.21 |       50 |   33.33 |   84.21 | 26-31             
+ backend/controllers         |   94.92 |    96.42 |     100 |   94.92 |                   
+  authController.js          |   94.64 |      100 |     100 |   94.64 | 53,88,98          
+  passwordResetController.js |     100 |      100 |     100 |     100 |                   
+  workoutController.js       |   91.11 |    93.75 |     100 |   91.11 | 31,49,72,82       
+ backend/middleware          |      96 |      100 |     100 |      96 |                   
+  requireAuth.js             |     100 |      100 |     100 |     100 |                   
+  sendEmail.js               |   92.85 |      100 |     100 |   92.85 | 36                
+ backend/models              |   94.73 |     90.9 |     100 |   94.73 |                   
+  userModel.js               |   94.11 |     90.9 |     100 |   94.11 | 41,67             
+  workoutModel.js            |     100 |      100 |     100 |     100 |                   
+ backend/routes              |     100 |      100 |     100 |     100 |                   
+  resetPassword.js           |     100 |      100 |     100 |     100 |                   
+  users.js                   |     100 |      100 |     100 |     100 |                   
+  workouts.js                |     100 |      100 |     100 |     100 |                   
+
+
+### Frontend
+
+File                          | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
+------------------------------|---------|----------|---------|---------|-------------------
+All files                     |   39.39 |    27.53 |   38.88 |   41.55 |                   
+ src                          |       0 |        0 |       0 |       0 |                   
+  App.js                      |       0 |        0 |       0 |       0 | 6-16              
+  index.js                    |       0 |      100 |     100 |       0 | 8-9               
+ src/components               |    20.9 |    21.84 |   18.96 |   22.87 |                   
+  EditWorkout.js              |       0 |        0 |       0 |       0 | 6-74              
+  ForgotPasswordForm.js       |      50 |       50 |      25 |      50 | 10-11,19-32       
+  Navbar.js                   |      68 |    65.51 |   83.33 |      80 | 20,29-31          
+  Pagination.js               |    12.5 |        0 |   28.57 |    12.5 | 8-18,27-46        
+  Search.js                   |     100 |      100 |     100 |     100 |                   
+  UserMenu.js                 |      50 |       50 |      20 |   55.55 | 10,14-15,24       
+  UserSettings.js             |       0 |        0 |       0 |       0 | 11-94             
+  WorkoutDetails.js           |    7.69 |        0 |       0 |    9.09 | 8-39              
+  WorkoutForm.js              |   22.22 |    21.05 |   14.28 |      25 | 14-32,37-39       
+ src/context                  |   55.17 |       25 |   57.14 |   57.14 |                   
+  AuthContext.js              |   78.57 |       50 |     100 |   78.57 | 12-20             
+  WorkoutContext.js           |   33.33 |        0 |      25 |   35.71 | 6-29              
+ src/hooks                    |   36.97 |    17.91 |      40 |    37.6 |                   
+  useAuthContext.js           |      75 |       50 |     100 |      75 | 7                 
+  useConfirmAccount.js        |     100 |      100 |     100 |     100 |                   
+  useCreateWorkout.js         |    37.5 |        0 |      50 |    37.5 | 11-32             
+  useCroppedImg.js            |    3.12 |        0 |       0 |    3.33 | 4-57              
+  useDeleteAllWorkouts.js     |      10 |        0 |       0 |      10 | 6-23              
+  useDeleteUser.js            |    12.5 |        0 |       0 |    12.5 | 6-20              
+  useDeleteWorkout.js         |       0 |        0 |       0 |       0 | 6-33              
+  useEditWorkout.js           |       0 |        0 |       0 |       0 | 6-35              
+  useLogin.js                 |     100 |      100 |     100 |     100 |                   
+  useLogout.js                |   41.66 |        0 |      50 |   41.66 | 9-18              
+  useResetPassword.js         |   36.36 |        0 |      50 |   36.36 | 8-23              
+  useSearch.js                |   52.63 |        0 |     100 |   52.63 | 20-30             
+  ...dPasswordResetRequest.js |   36.36 |        0 |      50 |   36.36 | 8-21              
+  useSignup.js                |     100 |      100 |     100 |     100 |                   
+  useUpdateUser.js            |    3.33 |        0 |       0 |    3.57 | 5-49              
+  useWorkoutContext.js        |      80 |       50 |     100 |      80 | 8                 
+ src/mocks                    |     100 |      100 |     100 |     100 |                   
+  server.js                   |     100 |      100 |     100 |     100 |                   
+ src/pages                    |   80.21 |    75.75 |   69.69 |    81.6 |                   
+  About.js                    |       0 |      100 |       0 |       0 | 6                 
+  ConfirmedAccount.js         |     100 |      100 |     100 |     100 |                   
+  Home.js                     |   65.78 |       50 |      50 |   68.57 | ...54-55,59-60,76 
+  Login.js                    |     100 |      100 |     100 |     100 |                   
+  ResetPassword.js            |   69.23 |     62.5 |      40 |   69.23 | 17-18,29-37       
+  Signup.js                   |     100 |      100 |     100 |     100 |                   
+ src/utils                    |      40 |       25 |     100 |      40 |                   
+  logOutIfTokenExpired.js     |      40 |       25 |     100 |      40 | 6-13              
 
 <br>
 
@@ -97,7 +172,6 @@ Coming soon.
 
 - Finish UI tests
 - Add more demo gifs to readme
-- Add test coverage to readme
 - Feature: Change the pie chart role from ornamental to relevant/functional.
 
 <br>
