@@ -86,6 +86,7 @@ export default function UserSettings({closeUserSettings, changeProfileImg}) {
         <h4>Profile settings</h4>
         <label>Change displayed name:</label>
         <input
+          className={newUsername.length > 12 ? "error" : ""}
           type="text"
           name="username"
           id="new-username"
@@ -93,6 +94,7 @@ export default function UserSettings({closeUserSettings, changeProfileImg}) {
           value={newUsername}
           onChange={(e) => setNewUsername(e.target.value)}
         />
+        {newUsername.length > 12 && <p className="max-chars-error" role="alert">⚠Too long name!</p>}
         <label>Change profile image:</label>
         <input
           type="file"
@@ -119,7 +121,7 @@ export default function UserSettings({closeUserSettings, changeProfileImg}) {
             />
           </div>
         )}
-        <button disabled={isLoading} className="upload--btn">
+        <button disabled={isLoading || newUsername.length > 12} className={newUsername.length > 12 ? "disabled--btn upload--btn" : "upload--btn"}>
           Upload
         </button>
         {error && <div role="alert" className="error">{error}</div>}
