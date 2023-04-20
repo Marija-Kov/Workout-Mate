@@ -12,7 +12,7 @@ afterAll(() => server.close());
 
 describe("<ConfirmedAccount />", () => {
 
-    it("should render error message given that the confirmation was not successful", async () => {
+    it("should render error message given that confirmation was not successful", async () => {
      server.use(
        rest.get("api/users/*", (req, res, ctx) => {
          return res(
@@ -31,7 +31,7 @@ describe("<ConfirmedAccount />", () => {
      await expect(mayHaveAlreadyBeenConfirmed).toBeInTheDocument();
     });
 
-    it("should render success message given that the confirmation was successful", async () => {
+    it("should render success message given that confirmation was successful", async () => {
       render(<ConfirmedAccount />);
       const success = await screen.findByText(/account has been confirmed/i);
       await expect(success).toBeInTheDocument();

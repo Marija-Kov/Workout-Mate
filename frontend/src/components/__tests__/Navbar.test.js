@@ -83,7 +83,7 @@ describe("<Navbar />", ()=>{
        expect(helloUser).toHaveFocus();
     });
 
-    it("should render the user menu once the user clicks on the avatar/", async () => {
+    it("should render User menu once user clicks on avatar", async () => {
       const mockLocalStorage = {};
        const storageUser = {
          id: "userId",
@@ -112,4 +112,17 @@ describe("<Navbar />", ()=>{
        expect(userSettings).toBeInTheDocument();
        expect(logOut).toBeInTheDocument();
     });
+
+    it("should render Profile settings component when user clicks on Settings in User menu", () => {
+      expect(true).toBe(false);
+    });
+
+    it("should redirect to Log In page when user clicks on Log Out in User menu", () => {
+      expect(true).toBe(false);
+    });
+
+    it("should redirect to Log In page when user clicks anywhere on Navbar after auth token has expired", () => {
+      expect(true).toBe(false);
+    });
+
 })

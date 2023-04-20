@@ -37,7 +37,7 @@ afterAll(() => {
 });
 
 describe("<Home />", () => {
-    it("should render the home page correctly", async () => {
+    it("should render Home page correctly given that user is authenticated", async () => {
       render (
           <WorkoutContextProvider>
               <AuthContextProvider>
@@ -55,7 +55,15 @@ describe("<Home />", () => {
       await expect(pagination).toBeInTheDocument();
     });
 
-    it("should render the add workout form after clicking buff it up", async () => {
+    it("should focus elements on page in correct order", () => {
+     expect(true).toBe(false);
+    });
+
+    it("should render search input value as user types and render correct search results on page", () => {
+     expect(true).toBe(false);
+    });
+
+    it("should render Add Workout form when user clicks Buff It Up button", async () => {
        user.setup()
         render(
           <WorkoutContextProvider>
@@ -68,6 +76,30 @@ describe("<Home />", () => {
          await user.click(addWorkoutBtn);
          const addWorkoutForm = await screen.findByLabelText(/workout form/i);
          await expect(addWorkoutForm).toBeInTheDocument();
+    });
+
+    it("should render corresponding Edit Workout form when user clicks on Edit button in Workout details component", () => {
+      expect(false).toBe(true);
+    });
+
+    it("should delete corresponding workout when trashcan button is clicked", () => {
+      expect(false).toBe(true);
+    });
+
+    it("should flip to the next page of workouts results when chevron-right button is clicked", () => {
+      expect(false).toBe(true);
+    });
+
+    it("should flip to previous page of workouts results when chevron-left button is clicked", () => {
+      expect(false).toBe(true);
+    });
+
+    it("should flip to page p of workouts results when page number p button is clicked", () => {
+      expect(false).toBe(true);
+    });
+
+    it("should redirect to Login page if user clicks anywhere on Home page after auth token has expired", () => {
+      expect(false).toBe(true);
     });
 
 });
