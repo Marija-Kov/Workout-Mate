@@ -35,6 +35,7 @@ export default function EditWorkout(props){
       <div className="form--container">
       <form className="edit--form">
         <button
+          aria-label="close form"
           className="close material-symbols-outlined"
           onClick={() => props.showEdit()}
         >
@@ -71,7 +72,7 @@ export default function EditWorkout(props){
           value={load}
           className={emptyFields.includes("load") ? "error" : ""}
         />
-          <button className="edit--form--btn" onClick={(e) => handleUpdate(e)}>Save changes</button>
+          <button className="edit--form--btn" onClick={(e) => handleUpdate(e)} aria-label="submit edited workout button" >Save changes</button>
         {error && (
           <div role="alert" className="error">
             {error}
