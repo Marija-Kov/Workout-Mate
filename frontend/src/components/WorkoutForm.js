@@ -46,6 +46,7 @@ export default function WorkoutForm({hideForm, spreadPages, flipPage, total, lim
     <div className="form--container">
     <form className="workout--form" aria-label="workout form" onSubmit={handleSubmit}>
       <button
+        aria-label="close form"
         className="close material-symbols-outlined"
         onClick={hideForm}
       >       
@@ -83,7 +84,7 @@ export default function WorkoutForm({hideForm, spreadPages, flipPage, total, lim
         value={workout.load}
         className={emptyFields.includes("load") ? "error" : ""}
       />
-        <button className="workout--form--btn">Add workout</button>
+        <button className="workout--form--btn" aria-label="submit workout button">Add workout</button>
       {error && (
         <div role="alert" className="error">
           {error}
