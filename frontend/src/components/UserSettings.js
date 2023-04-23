@@ -76,8 +76,9 @@ export default function UserSettings({closeUserSettings, changeProfileImg}) {
   return (
     <>
     <div className="form--container">
-      <form className="user--settings" onSubmit={handleUpdateProfile}>
+      <form aria-label="user settings" className="user--settings" onSubmit={handleUpdateProfile}>
         <button
+          aria-label="close form"
           className="close material-symbols-outlined"
           onClick={closeUserSettings}
         >
@@ -121,26 +122,26 @@ export default function UserSettings({closeUserSettings, changeProfileImg}) {
             />
           </div>
         )}
-        <button disabled={isLoading || newUsername.length > 12} className={newUsername.length > 12 ? "disabled--btn upload--btn" : "upload--btn"}>
+        <button aria-label="update profile button" disabled={isLoading || newUsername.length > 12} className={newUsername.length > 12 ? "disabled--btn upload--btn" : "upload--btn"}>
           Upload
         </button>
         {error && <div role="alert" className="error">{error}</div>}
         {success && <div role="alert" className="success">{success}</div>}
         {isLoading && <h3 style={{ zIndex: "10" }}>Uploading..</h3>}
-        <button type="button" className="delete--account--btn" onClick={showDeleteAccount}>
+        <button aria-label="delete account button" type="button" className="delete--account--btn" onClick={showDeleteAccount}>
           delete account
         </button>
       </form>
        {deleteAccountDialogue && (
-        <div className="delete--account--dialogue">
+        <div className="delete--account--dialogue" aria-label="delete account dialogue">
           <h4>This is irreversible.</h4>
           <p>We won't be able to recover any of your data.</p>
           <p>Are you sure you want to proceed?</p>
           <div className="delete--account--dialogue--btns">
-            <button type="button" onClick={deleteAccount}>
+            <button aria-label="confirm account deletion" type="button" onClick={deleteAccount}>
               Yes, delete my account permanently 💀
             </button>
-            <button type="button" onClick={showDeleteAccount}>
+            <button aria-label="keep account and close dialogue" type="button" onClick={showDeleteAccount}>
               No, I changed my mind
             </button>
           </div>
