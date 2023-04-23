@@ -1,40 +1,10 @@
 import React from 'react';
-import { render, screen, cleanup } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
+import { server, rest} from "../../mocks/server";
 import user from "@testing-library/user-event";
-import "@testing-library/jest-dom";
 import Home from "../Home";
-import { server, rest } from "../../mocks/server";
 import { AuthContextProvider } from "../../context/AuthContext";
 import { WorkoutContextProvider } from "../../context/WorkoutContext";
-
-let mockLocalStorage;
-beforeAll(async () => {
-  server.listen();
-});
-beforeEach(() => {
-  mockLocalStorage = {};
-  global.Storage.prototype.setItem = jest.fn((key, value) => {
-    mockLocalStorage[key] = value;
-  });
-  global.Storage.prototype.getItem = jest.fn(
-    (key) => mockLocalStorage[key]
-  );
-    const storageUser = {
-      id: "userId",
-      email: "keech@mail.yu",
-      token: "authorizationToken",
-    };
-    localStorage.setItem("user", JSON.stringify(storageUser));
-});
-afterEach(() => {
-  global.Storage.prototype.setItem.mockReset();
-  global.Storage.prototype.getItem.mockReset();  
-  server.resetHandlers();
-  cleanup();
-});
-afterAll(() => {
-  server.close();
-});
 
 describe("<Home />", () => {
     it("should render Home page correctly given that user is authenticated", async () => {
