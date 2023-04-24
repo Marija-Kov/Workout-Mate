@@ -1,6 +1,6 @@
 import { setupServer } from "msw/node";
 import { rest } from "msw";
-import uuid from "react-uuid";
+import { genSampleWorkouts } from "../utils/test/genSampleWorkouts";
 
 const handlers = [
   rest.post("/api/users/signup", (req, res, ctx) => {
@@ -35,43 +35,23 @@ const handlers = [
   }),
 
   rest.all("/api/workouts/", (req, res, ctx) => {
-    console.log(req)
-    // const page = req.query.p || 0;
-    // const search = req.query.search || null;
-    // const sampleWorkouts = genSampleWorkouts(search, page);
-    // const itemsPerPage = 3;
+    const page = req.query.p || 0;
+    const search = req.query.search || null;
+    const itemsPerPage = 3;
+    const { allUserWorkoutsByQuery, workoutsChunk, noWorkoutsByQuery}= genSampleWorkouts(search, page, itemsPerPage);
     return res(
       ctx.status(200),
-      // ctx.json({
-      //   allUserWorkoutsByQuery: sampleWorkouts,
-      //   workoutsChunk: sampleWorkouts.slice(itemsPerPage),
-      //   limit: itemsPerPage,
-      //   noWorkoutsByQuery: false,
-      // })
+      ctx.json({
+        allUserWorkoutsByQuery: allUserWorkoutsByQuery,
+        workoutsChunk: workoutsChunk,
+        limit: itemsPerPage,
+        noWorkoutsByQuery: noWorkoutsByQuery,
+      })
     );
   }),
 ];
 
-function genSampleWorkouts(searchFor, page){
-  const workoutTitles = ['bench press', 'pullups', 'pushups', 'burpees', 'squats', 'arm curls'];
-  const workouts = [];
-  for(let i = 0; i < workoutTitles.length; ++i){
-    workouts.push({
-      _id: uuid(),
-      title: workoutTitles[i],
-      reps: Math.floor(Math.random() * 99) + 1,
-      load: Math.floor(Math.random() * 50),
-      user_id: "userid"
-    });
-  }
-  return workouts.filter(e => {
-    const regExp = `^${searchFor}`;
-    e.title.match(regExp);
-    //take page number into account
-  })
-}
-
 const server = setupServer(...handlers);
 
-export { server, rest, genSampleWorkouts }
+export { server, rest }
 
