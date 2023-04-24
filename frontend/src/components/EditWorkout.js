@@ -33,7 +33,7 @@ export default function EditWorkout(props){
  }
     return (
       <div className="form--container">
-      <form className="edit--form">
+      <form className="edit--form" aria-label="edit workout form">
         <button
           aria-label="close form"
           className="close material-symbols-outlined"
