@@ -1,6 +1,6 @@
 import uuid from "react-uuid";
 
-export function genSampleWorkouts(searchFor = "", page = 1, itemsPerPage) {
+export function genSampleWorkouts(searchFor = "", page = 1, itemsPerPage=3) {
   const workoutTitles = [
     "bench press",
     "pullups",
@@ -31,7 +31,7 @@ export function genSampleWorkouts(searchFor = "", page = 1, itemsPerPage) {
     return { searchResults, resultsOnPage: [], noWorkoutsByQuery}
   } 
   const firstResultOnPage_Index = Math.floor(workouts.length/itemsPerPage) * (page - 1);
-  const resultsOnPage = searchResults.slice(firstResultOnPage_Index, firstResultOnPage_Index + itemsPerPage + 1);
+  const resultsOnPage = searchResults.slice(firstResultOnPage_Index, firstResultOnPage_Index + itemsPerPage);
   return { searchResults, resultsOnPage, noWorkoutsByQuery }
 }
 
