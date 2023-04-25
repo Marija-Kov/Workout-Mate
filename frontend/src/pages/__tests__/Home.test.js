@@ -1,20 +1,11 @@
 import React from 'react';
 import { render, screen } from "@testing-library/react";
-import { server, rest} from "../../mocks/server";
 import user from "@testing-library/user-event";
-import Home from "../Home";
-import { AuthContextProvider } from "../../context/AuthContext";
-import { WorkoutContextProvider } from "../../context/WorkoutContext";
+import Home from "../../mocks/components/Home";
 
 describe("<Home />", () => {
     it("should render Home page correctly given that user is authenticated", async () => {
-      render (
-          <WorkoutContextProvider>
-              <AuthContextProvider>
-                  <Home />
-              </AuthContextProvider>
-          </WorkoutContextProvider>
-      )
+      render(<Home />);
       const searchBar = await screen.findByLabelText(/search/i);
       const addWorkoutBtn = await screen.findByLabelText(/buff it up/i);
       const workouts = await screen.findByLabelText(/workouts/i);
@@ -34,38 +25,76 @@ describe("<Home />", () => {
     });
 
     it("should render Add Workout form when user clicks Buff It Up button", async () => {
-       user.setup()
-        render(
-          <WorkoutContextProvider>
-            <AuthContextProvider>
-              <Home />
-            </AuthContextProvider>
-          </WorkoutContextProvider>
-        );
-         const addWorkoutBtn = await screen.findByLabelText(/buff it up/i);
-         await user.click(addWorkoutBtn);
-         const addWorkoutForm = await screen.findByLabelText(/workout form/i);
-         await expect(addWorkoutForm).toBeInTheDocument();
+      user.setup();
+      render(<Home />);
+      const addWorkoutBtn = await screen.findByLabelText(/buff it up/i);
+      await user.click(addWorkoutBtn);
+      const addWorkoutForm = await screen.findByLabelText("workout form");
+      await expect(addWorkoutForm).toBeInTheDocument();
     });
 
-    it("should render corresponding Edit Workout form when user clicks on Edit button in Workout details component", () => {
-      expect(false).toBe(true);
+    it("should render corresponding Edit Workout form when user clicks on Edit button in Workout details component", async () => {
+      user.setup();
+      render(<Home />);
+      const workoutTitle = "bench press"; // 'bench press' happens to be the first sample workout title, see: src/utils/test/genSampleWorkouts
+      const workoutTitleCount = await screen.findAllByText(workoutTitle);
+      await expect(workoutTitleCount.length).toBeGreaterThanOrEqual(1);
+      const editWorkoutBtn = (await screen.findAllByLabelText(/open edit workout form/i))[0];
+      user.click(editWorkoutBtn);
+      const editWorkoutTitle = await screen.findByLabelText(
+        /edit workout title/i
+      );
+      const editWorkoutReps = await screen.findByLabelText(
+        /edit number of reps/i
+      );
+      const editWorkoutLoad = await screen.findByLabelText(
+        /edit load in kg/i
+      );
+      const prefilledInputTitle = await screen.findByDisplayValue(workoutTitle);
+      await expect(editWorkoutTitle).toBeInTheDocument();
+      await expect(editWorkoutReps).toBeInTheDocument();
+      await expect(editWorkoutLoad).toBeInTheDocument();
+      await expect(prefilledInputTitle).toBeInTheDocument();
     });
 
     it("should delete corresponding workout when trashcan button is clicked", () => {
       expect(false).toBe(true);
     });
 
-    it("should flip to the next page of workouts results when chevron-right button is clicked", () => {
-      expect(false).toBe(true);
-    });
+    describe("<Pagination/>", () => {
+      it("should render Pagination component correctly considering total number of workouts and limit of workouts per page", async () => {
+        render(<Home />);
+        const total = 8; // number of sample workouts, see: src/utils/test/genSampleWorkouts
+        const limit = 3;
+        const numButtons = await screen.findAllByLabelText(/go to page/i);
+        const pageOne = await screen.findByLabelText(/page 1/i)
+        const prev = await screen.findByLabelText(/previous page/i);
+        const next = await screen.findByLabelText(/next page/i);
+        await expect(prev).toBeInTheDocument();
+        await expect(prev).toHaveAttribute('disabled');
+        await expect(next).toBeInTheDocument();
+        expect(pageOne).toHaveAttribute('class', 'num--page current');
+        await expect(numButtons.length).toBe(Math.ceil(total/limit));
+      });
 
-    it("should flip to previous page of workouts results when chevron-left button is clicked", () => {
-      expect(false).toBe(true);
-    });
+      it("should flip workout results pages back and forth when chevron-right/left button is clicked", async () => {
+        user.setup();
+        render(<Home />);
+        const next = await screen.findByLabelText(/next page/i);
+        const prev = await screen.findByLabelText(/previous page/i);
+        const firstPageLastDate = (await screen.findAllByLabelText(/date/i))[2];
+        user.click(next);
+        const nextPageFirstDate = (await screen.findAllByLabelText(/date/i))[0];
+        const pageTwo = await screen.findByLabelText(/page 2/i);
+        user.click(pageTwo);
+        expect(Number(firstPageLastDate.textContent)).toBeGreaterThanOrEqual(Number(nextPageFirstDate.textContent))
+        expect(pageTwo).toHaveAttribute("class", "num--page current");
+      });
 
-    it("should flip to page p of workouts results when page number p button is clicked", () => {
-      expect(false).toBe(true);
+      it("should flip to page p of workouts results when page number p button is clicked", () => {
+        expect(false).toBe(true);
+      });
+
     });
 
     it("should redirect to Login page if user clicks anywhere on Home page after auth token has expired", () => {
