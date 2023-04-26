@@ -1,17 +1,42 @@
+import React from "react";
 import EditWorkout from "../EditWorkout";
 import user from "@testing-library/user-event";
-import { render, screen } from "@testing-library/react";
-import { WorkoutContextProvider } from "../../context/WorkoutContext";
-import { AuthContextProvider } from "../../context/AuthContext";
+import { render, screen, cleanup } from "@testing-library/react";
+import { AuthContext } from "../../context/AuthContext";
+import { WorkoutContext } from "../../context/WorkoutContext";
+import { rest } from "msw";
+import { server } from "../../mocks/server";
+
+let mockUser;
+
+beforeAll(() => {
+  server.listen();
+  mockUser = {
+    id: "userid",
+    email: "keech@mail.yu",
+    token: "authorizationToken",
+  };
+});
+
+afterEach(() => {
+  server.resetHandlers();
+  cleanup();
+});
+
+afterAll(() => {
+  server.close();
+  mockUser = null;
+});
+
 
 describe("<EditWorkout/>", () => {
   it("should render Edit workout form given that user is authenticated", async () => {
   render(
-    <AuthContextProvider>
-      <WorkoutContextProvider>
+    <AuthContext.Provider value={mockUser}>
+      <WorkoutContext.Provider value={[]}>
         <EditWorkout />
-      </WorkoutContextProvider>
-    </AuthContextProvider>
+      </WorkoutContext.Provider>
+    </AuthContext.Provider>
   );
   const workoutForm = await screen.findByLabelText(/edit workout form/i);
   const titleInput = await screen.findByLabelText(/workout title/i);
@@ -21,22 +46,22 @@ describe("<EditWorkout/>", () => {
   const submitEditedWorkoutBtn = await screen.findByLabelText(
     /submit edited workout/i
   );
-  await expect(workoutForm).toBeInTheDocument();
-  await expect(titleInput).toBeInTheDocument();
-  await expect(repsInput).toBeInTheDocument();
-  await expect(loadInput).toBeInTheDocument();
-  await expect(submitEditedWorkoutBtn).toBeInTheDocument();
-  await expect(closeForm).toBeInTheDocument();
+  expect(workoutForm).toBeInTheDocument();
+  expect(titleInput).toBeInTheDocument();
+  expect(repsInput).toBeInTheDocument();
+  expect(loadInput).toBeInTheDocument();
+  expect(submitEditedWorkoutBtn).toBeInTheDocument();
+  expect(closeForm).toBeInTheDocument();
   });
 
   it("should focus input fields in the right order", async () => {
         user.setup();
     render(
-      <AuthContextProvider>
-        <WorkoutContextProvider>
+      <AuthContext.Provider value={mockUser}>
+        <WorkoutContext.Provider value={[]}>
           <EditWorkout />
-        </WorkoutContextProvider>
-      </AuthContextProvider>
+        </WorkoutContext.Provider>
+      </AuthContext.Provider>
     );
      const titleInput = await screen.findByLabelText(/workout title/i);
      const repsInput = await screen.findByLabelText(/number of reps/i);
@@ -60,11 +85,11 @@ describe("<EditWorkout/>", () => {
   it("should update input value when user types", async () => {
     user.setup();
     render(
-      <AuthContextProvider>
-        <WorkoutContextProvider>
+      <AuthContext.Provider value={mockUser}>
+        <WorkoutContext.Provider value={[]}>
           <EditWorkout />
-        </WorkoutContextProvider>
-      </AuthContextProvider>
+        </WorkoutContext.Provider>
+      </AuthContext.Provider>
     );
     const titleInput = await screen.findByLabelText(/workout title/i);
     const repsInput = await screen.findByLabelText(/number of reps/i);
@@ -78,30 +103,79 @@ describe("<EditWorkout/>", () => {
   });
 
   it("should respond with error message when user attempts to submit edit form with invalid input value(s)", async () => {
-        user.setup();
+    user.setup();
     render(
-      <AuthContextProvider>
-        <WorkoutContextProvider>
+      <AuthContext.Provider value={mockUser}>
+        <WorkoutContext.Provider value={[]}>
           <EditWorkout />
-        </WorkoutContextProvider>
-      </AuthContextProvider>
+        </WorkoutContext.Provider>
+      </AuthContext.Provider>
     );
     const titleInput = await screen.findByLabelText(/workout title/i);
     const submitEditedWorkoutBtn = await screen.findByLabelText(
       /submit edited workout/i
     );
     await user.type(titleInput, "arm curls");
-    // it runs into authorization issue here
     await user.click(submitEditedWorkoutBtn);
     const error = await screen.findByRole("alert");
+    expect(error).toHaveAttribute("class", "error");
     expect(error).toBeInTheDocument();
   });
 
-  it("should respond with error message if authentication token expired and user attempts to submit", () => {
-    expect(true).toBe(false);
-  })
-
-  it("should close Edit workout form and render updated workout given that all input values are valid", () => {
-    expect(true).toBe(false);
+  it("should not show error on submit given that all input values are valid", async () => {
+    user.setup();
+    render(
+      <AuthContext.Provider value={mockUser}>
+        <WorkoutContext.Provider value={[]}>
+          <EditWorkout />
+        </WorkoutContext.Provider>
+      </AuthContext.Provider>
+    );
+    const titleInput = await screen.findByLabelText(/workout title/i);
+    const repsInput = await screen.findByLabelText(/number of reps/i);
+    const loadInput = await screen.findByLabelText(/load in kg/i);
+    const submitEditedWorkoutBtn = await screen.findByLabelText(
+      /submit edited workout/i
+    );
+    await user.type(titleInput, "arm curls");
+    await user.type(repsInput, "30");
+    await user.type(loadInput, "15");
+    await user.click(submitEditedWorkoutBtn);
+    //TODO: find out why error shows here
+    const error = await screen.findByRole("alert");
+    expect(error).not.toBeInTheDocument();
   });
+
+  it("should respond with error message if authentication token expired and user attempts to submit", async () => {
+    server.use(
+      rest.post("/api/workouts/*", (req, res, ctx) => {
+        return res(
+          ctx.status(400),
+          ctx.json({ error: "Not authorized, token expired."})
+        );
+      })
+    );
+    user.setup();
+    render(
+      <AuthContext.Provider value={{ token: "expired" }}>
+        <WorkoutContext.Provider value={[]}>
+          <EditWorkout />
+        </WorkoutContext.Provider>
+      </AuthContext.Provider>
+    );
+    const titleInput = await screen.findByLabelText(/workout title/i);
+    const repsInput = await screen.findByLabelText(/number of reps/i);
+    const loadInput = await screen.findByLabelText(/load in kg/i);
+    const submitEditedWorkoutBtn = await screen.findByLabelText(
+      /submit edited workout/i
+    );
+    await user.type(titleInput, "arm curls");
+    await user.type(repsInput, "30");
+    await user.type(loadInput, "15");
+    await user.click(submitEditedWorkoutBtn);
+    const error = await screen.findByRole("alert");
+    expect(error).toBeInTheDocument();
+    expect(error).toHaveAttribute("class", "error");
+  });
+
 });
