@@ -49,4 +49,13 @@ export const handlers = [
       })
     );
   }),
+
+  rest.post("/api/reset-password", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        success: "Reset link sent to inbox",
+      })
+    );
+  }),
 ];
