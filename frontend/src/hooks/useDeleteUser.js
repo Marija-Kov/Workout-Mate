@@ -6,6 +6,10 @@ export const useDeleteUser = () => {
 const { user } = useAuthContext();
 
  const deleteUser = async (id) => {
+    if (!user) {
+      console.log("Not authorized")
+       return;
+     }
    const response = await fetch(`api/users/${id}`, {
      method: "DELETE",
      headers: {

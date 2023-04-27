@@ -8,6 +8,10 @@ export const useUpdateUser = () => {
  const { user, dispatch } = useAuthContext();
  
  const updateUser = React.useCallback(async (username, profileImg) => {
+     if (!user) {
+       setError("Not authorized");
+       return;
+     }
     setIsLoading(true);
     setError(null); 
         if (!profileImg) profileImg = user.profileImg;

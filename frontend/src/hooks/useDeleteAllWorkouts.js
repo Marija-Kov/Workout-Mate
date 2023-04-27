@@ -7,6 +7,10 @@ export const useDeleteAllWorkouts = () => {
   const { user } = useAuthContext();
 
   const deleteAllWorkouts = async () => {
+      if (!user) {
+      console.log("Not authorized")
+       return;
+     }
     const response = await fetch(`api/workouts/`, {
       method: "DELETE",
       headers: {
