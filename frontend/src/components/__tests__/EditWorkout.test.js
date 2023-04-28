@@ -131,6 +131,7 @@ describe("<EditWorkout/>", () => {
     const error = await screen.findByRole("alert");
     expect(error).toHaveAttribute("class", "error");
     expect(error).toBeInTheDocument();
+    expect(error.textContent).toMatch(/empty fields/i);
   });
 
   it("should not show error on submit given that all input values are valid", async () => {
@@ -152,9 +153,8 @@ describe("<EditWorkout/>", () => {
     await user.type(repsInput, "30");
     await user.type(loadInput, "15");
     await user.click(submitEditedWorkoutBtn);
-    //TODO: find out why error shows here
-    const error = await screen.findByRole("alert");
-    expect(error).not.toBeInTheDocument();
+    const error = screen.queryAllByRole("alert");
+    expect(error.length).toBe(0);
   });
 
   it("should respond with error message if authentication token expired and user attempts to submit", async () => {
@@ -187,6 +187,7 @@ describe("<EditWorkout/>", () => {
     const error = await screen.findByRole("alert");
     expect(error).toBeInTheDocument();
     expect(error).toHaveAttribute("class", "error");
+    expect(error.textContent).toMatch(/must be logged in/i);
   });
 
 });
