@@ -23,6 +23,7 @@ export default function useEditWorkout() {
    const json = await response.json(); 
        if (!response.ok) {
          setError("Please fill out the empty fields");
+         return
        }
        if (response.ok) {
         // console.log("workout updated", json);
