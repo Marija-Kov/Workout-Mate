@@ -34,6 +34,17 @@ export const handlers = [
   }),
 
   rest.all("/api/workouts/", (req, res, ctx) => {
+  rest.post("/api/workouts", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        title: "workout title",
+        reps: "workout reps",
+        load: "workout loads",
+      })
+    );
+  }),
+
     const page = req.query.p || 0;
     const search = req.query.search || null;
     const itemsPerPage = 3;
