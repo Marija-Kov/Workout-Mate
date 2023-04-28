@@ -1,7 +1,6 @@
 import WorkoutForm from "../WorkoutForm";
 import user from "@testing-library/user-event";
 import { render, screen, cleanup } from "@testing-library/react";
-import { jest } from "@jest/globals"
 import { rest } from "msw";
 import { server } from "../../mocks/server";
 import { AuthContext } from "../../context/AuthContext";
@@ -152,9 +151,16 @@ describe("<WorkoutForm/>", () => {
     );
     user.setup();
     render(
-      <AuthContext.Provider value={{user: undefined}}>
-        <WorkoutContext.Provider value={{workouts: undefined}}>
-          <WorkoutForm />
+      <AuthContext.Provider value={{ user: undefined }}>
+        <WorkoutContext.Provider
+          value={{ workouts: undefined, dispatch: () => {} }}
+        >
+          <WorkoutForm
+            hideForm={() => {}}
+            getItems={() => {}}
+            spreadPages={() => {}}
+            flipPage={() => {}}
+          />
         </WorkoutContext.Provider>
       </AuthContext.Provider>
     );
@@ -175,9 +181,16 @@ describe("<WorkoutForm/>", () => {
   it("should not respond with error when user submits form with valid input", async () => {
     user.setup();
     render(
-      <AuthContext.Provider value={{user: mockUser}}>
-        <WorkoutContext.Provider value={{workouts: mockWorkouts}}>
-          <WorkoutForm />
+      <AuthContext.Provider value={{ user: mockUser }}>
+        <WorkoutContext.Provider
+          value={{ workouts: mockWorkouts, dispatch: () => {} }}
+        >
+          <WorkoutForm
+            hideForm={() => {}}
+            getItems={() => {}}
+            spreadPages={() => {}}
+            flipPage={() => {}}
+          />
         </WorkoutContext.Provider>
       </AuthContext.Provider>
     );
