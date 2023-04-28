@@ -33,7 +33,17 @@ export const handlers = [
     );
   }),
 
-  rest.all("/api/workouts/", (req, res, ctx) => {
+  rest.patch("/api/workouts/*", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        title: "workout title",
+        reps: "workout reps",
+        load: "workout loads",
+      })
+    );
+  }),
+
   rest.post("/api/workouts", (req, res, ctx) => {
     return res(
       ctx.status(200),
