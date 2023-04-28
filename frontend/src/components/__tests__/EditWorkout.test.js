@@ -147,9 +147,9 @@ describe("<EditWorkout/>", () => {
   it("should not show error on submit given that all input values are valid", async () => {
     user.setup();
     render(
-      <AuthContext.Provider value={{ user: mockUser }}>
-        <WorkoutContext.Provider value={{ workouts: mockWorkouts }}>
-          <EditWorkout />
+      <AuthContext.Provider value={{ user: mockUser, dispatch: () => {} }}>
+        <WorkoutContext.Provider value={{ workouts: mockWorkouts, dispatch: () => {} }}>
+          <EditWorkout showEdit={()=>{}}/>
         </WorkoutContext.Provider>
       </AuthContext.Provider>
     );
