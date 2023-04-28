@@ -71,6 +71,15 @@ export const handlers = [
     );
   }),
 
+  rest.patch("/api/users/*", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        success: "Updated successfully"
+      })
+    );
+  }),
+
   rest.post("/api/reset-password", (req, res, ctx) => {
     return res(
       ctx.status(200),
