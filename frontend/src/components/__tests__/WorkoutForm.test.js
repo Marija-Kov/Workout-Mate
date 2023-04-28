@@ -7,11 +7,11 @@ import { AuthContextProvider } from "../../context/AuthContext";
 describe("<WorkoutForm/>", () => {
   it("should render Workout form given that user is authenticated", async () => {
           render(
-           <AuthContextProvider>
-            <WorkoutContextProvider>
-              <WorkoutForm />
-            </WorkoutContextProvider>
-           </AuthContextProvider>
+            <AuthContext.Provider value={{ user: mockUser }}>
+              <WorkoutContext.Provider value={{ workouts: mockWorkouts }}>
+                <WorkoutForm />
+              </WorkoutContext.Provider>
+            </AuthContext.Provider>
           );
       const workoutForm = await screen.findByLabelText(/workout form/i);
       const titleInput = await screen.findByLabelText(/workout title/i);
@@ -30,11 +30,11 @@ describe("<WorkoutForm/>", () => {
   it("should focus input fields in the right order", async () => {
     user.setup();
     render(
-      <AuthContextProvider>
-        <WorkoutContextProvider>
+      <AuthContext.Provider value={{ user: mockUser }}>
+        <WorkoutContext.Provider value={{ workouts: mockWorkouts }}>
           <WorkoutForm />
-        </WorkoutContextProvider>
-      </AuthContextProvider>
+        </WorkoutContext.Provider>
+      </AuthContext.Provider>
     );
      const titleInput = await screen.findByLabelText(/workout title/i);
      const repsInput = await screen.findByLabelText(/number of reps/i);
@@ -58,11 +58,11 @@ describe("<WorkoutForm/>", () => {
   it("should update input value when user types", async () => {
     user.setup();
     render(
-      <AuthContextProvider>
-        <WorkoutContextProvider>
+      <AuthContext.Provider value={{ user: mockUser }}>
+        <WorkoutContext.Provider value={{ workouts: mockWorkouts }}>
           <WorkoutForm />
-        </WorkoutContextProvider>
-      </AuthContextProvider>
+        </WorkoutContext.Provider>
+      </AuthContext.Provider>
     );
     const titleInput = await screen.findByLabelText(/workout title/i);
     const repsInput = await screen.findByLabelText(/number of reps/i);
@@ -78,11 +78,11 @@ describe("<WorkoutForm/>", () => {
   it("should respond with error message when user attempts to submit form with invalid input value(s)", async () => {
     user.setup();
     render(
-      <AuthContextProvider>
-        <WorkoutContextProvider>
+      <AuthContext.Provider value={{ user: mockUser }}>
+        <WorkoutContext.Provider value={{ workouts: mockWorkouts}}>
           <WorkoutForm />
-        </WorkoutContextProvider>
-      </AuthContextProvider>
+        </WorkoutContext.Provider>
+      </AuthContext.Provider>
     );
     const titleInput = await screen.findByLabelText(/workout title/i);
     const submitWorkoutBtn = await screen.findByLabelText(
@@ -102,11 +102,11 @@ describe("<WorkoutForm/>", () => {
   it("should close Workout form when user clicks on close button", async () => {
     user.setup();
     render(
-      <AuthContextProvider>
-        <WorkoutContextProvider>
+      <AuthContext.Provider value={{user: mockUser}}>
+        <WorkoutContext.Provider value={{workouts: mockWorkouts}}>
           <WorkoutForm />
-        </WorkoutContextProvider>
-      </AuthContextProvider>
+        </WorkoutContext.Provider>
+      </AuthContext.Provider>
     );
     const workoutForm = await screen.findByLabelText(/workout form/i);
     const closeForm = await screen.findByLabelText(/close form/i);
