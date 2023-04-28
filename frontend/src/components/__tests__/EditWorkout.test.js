@@ -8,6 +8,7 @@ import { rest } from "msw";
 import { server } from "../../mocks/server";
 
 let mockUser;
+let mockWorkouts;
 
 beforeAll(() => {
   server.listen();
@@ -15,7 +16,16 @@ beforeAll(() => {
     id: "userid",
     email: "keech@mail.yu",
     token: "authorizationToken",
+    username: undefined,
+    profileImg: undefined,
+    tokenExpires: Date.now() + 3600000,
   };
+    mockWorkouts = {
+      allUserWorkoutsByQuery: [],
+      workoutsChunk: [],
+      limit: 3,
+      noWorkoutsByQuery: false,
+    };
 });
 
 afterEach(() => {
