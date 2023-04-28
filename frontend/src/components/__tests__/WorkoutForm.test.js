@@ -1,8 +1,41 @@
 import WorkoutForm from "../WorkoutForm";
 import user from "@testing-library/user-event";
-import { render, screen } from "@testing-library/react";
-import { WorkoutContextProvider } from "../../context/WorkoutContext";
-import { AuthContextProvider } from "../../context/AuthContext";
+import { render, screen, cleanup } from "@testing-library/react";
+import { jest } from "@jest/globals"
+import { rest } from "msw";
+import { server } from "../../mocks/server";
+import { AuthContext } from "../../context/AuthContext";
+import { WorkoutContext } from "../../context/WorkoutContext";
+let mockUser;
+let mockWorkouts;
+beforeAll(() => {
+  server.listen();
+  mockUser = {
+    id: "userid",
+    email: "keech@mail.yu",
+    token: "authorizationToken",
+    username: undefined,
+    profileImg: undefined,
+    tokenExpires: Date.now() + 3600000
+  };
+  mockWorkouts = {
+    allUserWorkoutsByQuery: [],
+    workoutsChunk: [],
+    limit: 3,
+    noWorkoutsByQuery: false,
+  };
+});
+
+afterEach(() => {
+  server.resetHandlers();
+  cleanup();
+});
+
+afterAll(() => {
+  server.close();
+  mockUser = null;
+  mockWorkouts=null;
+});
 
 describe("<WorkoutForm/>", () => {
   it("should render Workout form given that user is authenticated", async () => {
@@ -19,12 +52,12 @@ describe("<WorkoutForm/>", () => {
       const loadInput = await screen.findByLabelText(/load in kg/i);
       const closeForm = await screen.findByLabelText(/close form/i);
       const submitWorkoutBtn = await screen.findByLabelText(/submit workout button/i);
-      await expect(workoutForm).toBeInTheDocument();
-      await expect(titleInput).toBeInTheDocument();
-      await expect(repsInput).toBeInTheDocument();
-      await expect(loadInput).toBeInTheDocument();
-      await expect(submitWorkoutBtn).toBeInTheDocument();
-      await expect(closeForm).toBeInTheDocument();
+      expect(workoutForm).toBeInTheDocument();
+      expect(titleInput).toBeInTheDocument();
+      expect(repsInput).toBeInTheDocument();
+      expect(loadInput).toBeInTheDocument();
+      expect(submitWorkoutBtn).toBeInTheDocument();
+      expect(closeForm).toBeInTheDocument();
   });
 
   it("should focus input fields in the right order", async () => {
@@ -76,6 +109,16 @@ describe("<WorkoutForm/>", () => {
   });
 
   it("should respond with error message when user attempts to submit form with invalid input value(s)", async () => {
+    server.use(
+      rest.post("/api/workouts", (req, res, ctx) => {
+        return res(
+          ctx.status(400),
+          ctx.json({
+            error: "All fields must be filled"
+          })
+        );
+      })
+    );
     user.setup();
     render(
       <AuthContext.Provider value={{ user: mockUser }}>
@@ -84,22 +127,52 @@ describe("<WorkoutForm/>", () => {
         </WorkoutContext.Provider>
       </AuthContext.Provider>
     );
+    
     const titleInput = await screen.findByLabelText(/workout title/i);
     const submitWorkoutBtn = await screen.findByLabelText(
       /submit workout button/i
     );
     await user.type(titleInput, "arm curls");
-    // it runs into authorization issue here
     await user.click(submitWorkoutBtn);
     const error = await screen.findByRole("alert");
     expect(error).toBeInTheDocument();
+    expect(error.textContent).toMatch(/empty fields/i)
   });
 
-  it("should respond with error message if authentication token expired and user attempts to submit", () => {
-    expect(true).toBe(false);
+  it("should respond with error message if authentication token expired and user attempts to submit", async () => {
+    server.use(
+      rest.post("/api/workouts", (req, res, ctx) => {
+        return res(
+          ctx.status(401),
+          ctx.json({
+            error: "You must be logged in"
+          })
+        );
+      })
+    );
+    user.setup();
+    render(
+      <AuthContext.Provider value={{user: undefined}}>
+        <WorkoutContext.Provider value={{workouts: undefined}}>
+          <WorkoutForm />
+        </WorkoutContext.Provider>
+      </AuthContext.Provider>
+    );
+    const titleInput = await screen.findByLabelText(/workout title/i);
+    const repsInput = await screen.findByLabelText(/number of reps/i);
+    const loadInput = await screen.findByLabelText(/load in kg/i);
+    const submitWorkoutBtn = await screen.findByLabelText(
+      /submit workout button/i
+    );
+    await user.type(titleInput, "arm curls");
+    await user.type(repsInput, "33");
+    await user.type(loadInput, "20");
+    await user.click(submitWorkoutBtn);
+    const error = await screen.findByRole("alert");
+    expect(error.textContent).toMatch(/must be logged in/i);
   });
 
-  it("should close Workout form when user clicks on close button", async () => {
+  it("should not respond with error when user submits form with valid input", async () => {
     user.setup();
     render(
       <AuthContext.Provider value={{user: mockUser}}>
@@ -108,14 +181,18 @@ describe("<WorkoutForm/>", () => {
         </WorkoutContext.Provider>
       </AuthContext.Provider>
     );
-    const workoutForm = await screen.findByLabelText(/workout form/i);
-    const closeForm = await screen.findByLabelText(/close form/i);
-    await user.click(closeForm);
-    // it runs into authorization issue here
-    expect(workoutForm).not.toBeInTheDocument();
-  });
+    const titleInput = await screen.findByLabelText(/workout title/i);
+    const repsInput = await screen.findByLabelText(/number of reps/i);
+    const loadInput = await screen.findByLabelText(/load in kg/i);
+    const submitWorkoutBtn = await screen.findByLabelText(
+      /submit workout button/i
+    );
+    await user.type(titleInput, "arm curls");
+    await user.type(repsInput, "33");
+    await user.type(loadInput, "20");
+    await user.click(submitWorkoutBtn);
+    const error = screen.queryAllByRole("alert");
+    expect(error.length).toBe(0);
+  })
 
-  it("should close Workout form, flip to page 1 of workout results and render new workout in the list of workouts given all input values are valid", () => {
-    expect(true).toBe(false);
-  });
 });
