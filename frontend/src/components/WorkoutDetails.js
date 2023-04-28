@@ -24,7 +24,7 @@ export default function WorkoutDetails({id, title, reps, load, createdAt, update
             <h4>{title}</h4>
             <p><strong>reps:</strong> {reps}</p>
             <p><strong>load:</strong> {load}</p>
-            <p className='date'>{formatDistanceToNow(new Date(createdAt), { addSuffix: true})}</p>
+            <p aria-label="date" className='date'>{formatDistanceToNow(new Date(createdAt), { addSuffix: true})}</p>
             <button className='material-symbols-outlined' onClick={handleDelete}>delete</button>
             <button className='material-symbols-outlined edit' onClick={showEdit}>edit</button>
             {error && <div role="alert" className="error">{error}</div>} 
