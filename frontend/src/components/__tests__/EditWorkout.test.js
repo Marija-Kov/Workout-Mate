@@ -32,8 +32,8 @@ afterAll(() => {
 describe("<EditWorkout/>", () => {
   it("should render Edit workout form given that user is authenticated", async () => {
   render(
-    <AuthContext.Provider value={mockUser}>
-      <WorkoutContext.Provider value={[]}>
+    <AuthContext.Provider value={{ user: mockUser }}>
+      <WorkoutContext.Provider value={{ workouts: mockWorkouts }}>
         <EditWorkout />
       </WorkoutContext.Provider>
     </AuthContext.Provider>
@@ -57,8 +57,8 @@ describe("<EditWorkout/>", () => {
   it("should focus input fields in the right order", async () => {
         user.setup();
     render(
-      <AuthContext.Provider value={mockUser}>
-        <WorkoutContext.Provider value={[]}>
+      <AuthContext.Provider value={{ user: mockUser }}>
+        <WorkoutContext.Provider value={{ workouts: mockWorkouts }}>
           <EditWorkout />
         </WorkoutContext.Provider>
       </AuthContext.Provider>
@@ -85,8 +85,8 @@ describe("<EditWorkout/>", () => {
   it("should update input value when user types", async () => {
     user.setup();
     render(
-      <AuthContext.Provider value={mockUser}>
-        <WorkoutContext.Provider value={[]}>
+      <AuthContext.Provider value={{ user: mockUser }}>
+        <WorkoutContext.Provider value={{ workouts: mockWorkouts }}>
           <EditWorkout />
         </WorkoutContext.Provider>
       </AuthContext.Provider>
@@ -105,8 +105,8 @@ describe("<EditWorkout/>", () => {
   it("should respond with error message when user attempts to submit edit form with invalid input value(s)", async () => {
     user.setup();
     render(
-      <AuthContext.Provider value={mockUser}>
-        <WorkoutContext.Provider value={[]}>
+      <AuthContext.Provider value={{ user: mockUser }}>
+        <WorkoutContext.Provider value={{ workouts: mockWorkouts }}>
           <EditWorkout />
         </WorkoutContext.Provider>
       </AuthContext.Provider>
@@ -125,8 +125,8 @@ describe("<EditWorkout/>", () => {
   it("should not show error on submit given that all input values are valid", async () => {
     user.setup();
     render(
-      <AuthContext.Provider value={mockUser}>
-        <WorkoutContext.Provider value={[]}>
+      <AuthContext.Provider value={{ user: mockUser }}>
+        <WorkoutContext.Provider value={{ workouts: mockWorkouts }}>
           <EditWorkout />
         </WorkoutContext.Provider>
       </AuthContext.Provider>
@@ -157,8 +157,8 @@ describe("<EditWorkout/>", () => {
     );
     user.setup();
     render(
-      <AuthContext.Provider value={{ token: "expired" }}>
-        <WorkoutContext.Provider value={[]}>
+      <AuthContext.Provider value={{ user: undefined }}>
+        <WorkoutContext.Provider value={{ workouts: undefined }}>
           <EditWorkout />
         </WorkoutContext.Provider>
       </AuthContext.Provider>
