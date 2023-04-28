@@ -59,8 +59,8 @@ describe("<Signup />", () => {
     const signupBtn = await screen.findByText("Sign up");
     await user.click(signupBtn);
     const errorEl = await screen.findByRole("alert");
-    await expect(errorEl).toBeInTheDocument();
-    await expect(errorEl).toHaveClass("error");
+    expect(errorEl).toBeInTheDocument();
+    expect(errorEl).toHaveClass("error");
   });
 
   it("should render success element once 'sign up' button is clicked given that server responds with success message", async () => {
@@ -69,8 +69,8 @@ describe("<Signup />", () => {
       const signupBtn = await screen.findByText("Sign up")
       await user.click(signupBtn);
       const successEl = await screen.findByRole("alert");    
-      await expect(successEl).toBeInTheDocument();
-      await expect(successEl).toHaveClass("success");
+      expect(successEl).toBeInTheDocument();
+      expect(successEl).toHaveClass("success");
   });
 
 });

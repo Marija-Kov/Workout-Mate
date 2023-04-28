@@ -99,8 +99,8 @@ describe("<Login />", () => {
     const loginBtn = await screen.findByText("Log in");
     await user.click(loginBtn);
     const errorEl = await screen.findByRole("alert");
-    await expect(errorEl).toBeInTheDocument();
-    await expect(errorEl).toHaveClass("error");
+    expect(errorEl).toBeInTheDocument();
+    expect(errorEl).toHaveClass("error");
   });
 
   it("should render Home page once 'log in' button is clicked given that server responds with success", async () => {

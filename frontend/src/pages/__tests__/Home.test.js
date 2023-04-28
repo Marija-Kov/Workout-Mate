@@ -10,10 +10,10 @@ describe("<Home />", () => {
       const addWorkoutBtn = await screen.findByLabelText(/buff it up/i);
       const workouts = await screen.findByLabelText(/workouts/i);
       const pagination = await screen.findByLabelText(/pages/i);
-      await expect(addWorkoutBtn).toBeInTheDocument();
-      await expect(searchBar).toBeInTheDocument();
-      await expect(workouts).toBeInTheDocument();
-      await expect(pagination).toBeInTheDocument();
+      expect(addWorkoutBtn).toBeInTheDocument();
+      expect(searchBar).toBeInTheDocument();
+      expect(workouts).toBeInTheDocument();
+      expect(pagination).toBeInTheDocument();
     });
 
     it("should focus elements on page in correct order", () => {
@@ -30,7 +30,7 @@ describe("<Home />", () => {
       const addWorkoutBtn = await screen.findByLabelText(/buff it up/i);
       await user.click(addWorkoutBtn);
       const addWorkoutForm = await screen.findByLabelText("workout form");
-      await expect(addWorkoutForm).toBeInTheDocument();
+      expect(addWorkoutForm).toBeInTheDocument();
     });
 
     it("should render corresponding Edit Workout form when user clicks on Edit button in Workout details component", async () => {
@@ -38,7 +38,7 @@ describe("<Home />", () => {
       render(<Home />);
       const workoutTitle = "bench press"; // 'bench press' happens to be the first sample workout title, see: src/utils/test/genSampleWorkouts
       const workoutTitleCount = await screen.findAllByText(workoutTitle);
-      await expect(workoutTitleCount.length).toBeGreaterThanOrEqual(1);
+      expect(workoutTitleCount.length).toBeGreaterThanOrEqual(1);
       const editWorkoutBtn = (await screen.findAllByLabelText(/open edit workout form/i))[0];
       user.click(editWorkoutBtn);
       const editWorkoutTitle = await screen.findByLabelText(
@@ -51,10 +51,10 @@ describe("<Home />", () => {
         /edit load in kg/i
       );
       const prefilledInputTitle = await screen.findByDisplayValue(workoutTitle);
-      await expect(editWorkoutTitle).toBeInTheDocument();
-      await expect(editWorkoutReps).toBeInTheDocument();
-      await expect(editWorkoutLoad).toBeInTheDocument();
-      await expect(prefilledInputTitle).toBeInTheDocument();
+      expect(editWorkoutTitle).toBeInTheDocument();
+      expect(editWorkoutReps).toBeInTheDocument();
+      expect(editWorkoutLoad).toBeInTheDocument();
+      expect(prefilledInputTitle).toBeInTheDocument();
     });
 
     it("should delete corresponding workout when trashcan button is clicked", () => {
@@ -70,11 +70,11 @@ describe("<Home />", () => {
         const pageOne = await screen.findByLabelText(/page 1/i)
         const prev = await screen.findByLabelText(/previous page/i);
         const next = await screen.findByLabelText(/next page/i);
-        await expect(prev).toBeInTheDocument();
-        await expect(prev).toHaveAttribute('disabled');
-        await expect(next).toBeInTheDocument();
+        expect(prev).toBeInTheDocument();
+        expect(prev).toHaveAttribute('disabled');
+        expect(next).toBeInTheDocument();
         expect(pageOne).toHaveAttribute('class', 'num--page current');
-        await expect(numButtons.length).toBe(Math.ceil(total/limit));
+        expect(numButtons.length).toBe(Math.ceil(total/limit));
       });
 
       it("should flip workout results pages back and forth when chevron-right/left button is clicked", async () => {

@@ -28,12 +28,12 @@ describe("useConfirmAccount()", () => {
       }));
     const { result } = renderHook(useConfirmAccount);
     await act(async () => result.current.confirmAccount());
-    await expect(result.current.error).toBeTruthy(); 
+    expect(result.current.error).toBeTruthy(); 
    });
 
     it("should set success state to true given that the server responded with a success response", async () => {
       const { result } = renderHook(useConfirmAccount);
       await act(async () => result.current.confirmAccount());
-      await expect(result.current.success).toBeTruthy();
+      expect(result.current.success).toBeTruthy();
     });
 })

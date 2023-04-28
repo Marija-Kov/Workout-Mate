@@ -32,13 +32,13 @@ describe("useSignup()", ()=> {
          await act(async () =>
            result.current.signup()
          );
-        await expect(result.current.error).toBeTruthy(); 
+        expect(result.current.error).toBeTruthy(); 
      });
 
     it("should set verificationNeeded state to true given that the server responded with a success message", async () => {
       const { result } = renderHook(useSignup);
       await act(async () => result.current.signup());
-      await expect(result.current.verificationNeeded).toBeTruthy();
+      expect(result.current.verificationNeeded).toBeTruthy();
     })
 
 })

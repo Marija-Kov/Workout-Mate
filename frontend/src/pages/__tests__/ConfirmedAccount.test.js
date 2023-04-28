@@ -26,14 +26,14 @@ describe("<ConfirmedAccount />", () => {
      render(<ConfirmedAccount />);
      const errorEl = await screen.findByRole("alert");
      const mayHaveAlreadyBeenConfirmed = await screen.findByText(/already been confirmed/i)
-     await expect(errorEl).toBeInTheDocument();
-     await expect(errorEl).toHaveClass("error");
-     await expect(mayHaveAlreadyBeenConfirmed).toBeInTheDocument();
+     expect(errorEl).toBeInTheDocument();
+     expect(errorEl).toHaveClass("error");
+     expect(mayHaveAlreadyBeenConfirmed).toBeInTheDocument();
     });
 
     it("should render success message given that confirmation was successful", async () => {
       render(<ConfirmedAccount />);
       const success = await screen.findByText(/account has been confirmed/i);
-      await expect(success).toBeInTheDocument();
+      expect(success).toBeInTheDocument();
     });
 })
