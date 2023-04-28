@@ -19,7 +19,7 @@ export default function UserMenu(props) {
     <>
       <div aria-label="user menu" className="user--menu">
         <button
-          aria-label="user settings"
+          aria-label="open user settings"
           className="user--menu--item"
           onClick={() => setUserSettings((prev) => !prev)}
         >
