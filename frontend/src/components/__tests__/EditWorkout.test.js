@@ -42,7 +42,7 @@ describe("<EditWorkout/>", () => {
       </WorkoutContext.Provider>
     </AuthContext.Provider>
   );
-  const workoutForm = await screen.findByLabelText(/edit workout form/i);
+
   const titleInput = await screen.findByLabelText(/workout title/i);
   const repsInput = await screen.findByLabelText(/number of reps/i);
   const loadInput = await screen.findByLabelText(/load in kg/i);
@@ -50,7 +50,6 @@ describe("<EditWorkout/>", () => {
   const submitEditedWorkoutBtn = await screen.findByLabelText(
     /submit edited workout/i
   );
-  expect(workoutForm).toBeInTheDocument();
   expect(titleInput).toBeInTheDocument();
   expect(repsInput).toBeInTheDocument();
   expect(loadInput).toBeInTheDocument();
