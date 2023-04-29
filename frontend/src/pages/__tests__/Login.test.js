@@ -1,19 +1,14 @@
-import { render, screen, cleanup } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import user from "@testing-library/user-event";
 import "@testing-library/jest-dom";
 import Login from "../Login";
-import { server, rest } from "../../mocks/server";
+import { rest } from "msw";
+import { server } from "../../mocks/server";
 import { AuthContextProvider } from "../../context/AuthContext";
 
-beforeAll(() => server.listen());
-afterEach(() => {
-  server.resetHandlers();
-  cleanup();
-});
 afterAll(() => {
   global.Storage.prototype.setItem.mockReset();
   global.Storage.prototype.getItem.mockReset();
-  server.close();
 });
 
 describe("<Login />", () => {

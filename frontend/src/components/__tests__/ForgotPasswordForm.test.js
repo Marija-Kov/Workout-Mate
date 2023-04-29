@@ -1,15 +1,8 @@
 import ForgotPasswordForm from "../ForgotPasswordForm";
 import user from "@testing-library/user-event";
-import { render, screen, cleanup } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { rest } from "msw";
 import { server } from "../../mocks/server";
-
-beforeAll(() => server.listen());
-afterEach(() => {
-  server.resetHandlers();
-  cleanup();
-});
-afterAll(() => server.close());
 
 describe("<ForgotPasswordForm />", () => {
   it("should render ForgotPasswordForm component properly", async () => {

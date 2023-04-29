@@ -2,14 +2,8 @@ import { render, screen, cleanup } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import user from "@testing-library/user-event";
 import Signup from "../Signup";
-import { server, rest } from "../../mocks/server";
-
-beforeAll(() => server.listen());
-afterEach(() => {
-  server.resetHandlers();
-  cleanup();
-});
-afterAll(() => server.close());
+import { rest } from "msw";
+import { server } from "../../mocks/server";
 
 describe("<Signup />", () => {   
   it("should render signup form", () => {

@@ -1,17 +1,10 @@
-import { render, screen, cleanup } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
+import { rest } from "msw";
 import ConfirmedAccount from "../ConfirmedAccount";
-import { server, rest } from "../../mocks/server";
-
-beforeAll(() => server.listen());
-afterEach(() => {
-  server.resetHandlers();
-  cleanup();
-});
-afterAll(() => server.close());
+import { server } from "../../mocks/server";
 
 describe("<ConfirmedAccount />", () => {
-
     it("should render error message given that confirmation was not successful", async () => {
      server.use(
        rest.get("api/users/*", (req, res, ctx) => {

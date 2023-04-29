@@ -1,13 +1,9 @@
-import { renderHook, act, cleanup } from "@testing-library/react";
-import { server, rest } from "../../mocks/server";
+import { renderHook, act } from "@testing-library/react";
+import { rest } from "msw";
+import { server } from "../../mocks/server";
 import { useSignup } from "../useSignup";
 
-beforeAll(() => server.listen());
-afterEach(() => {
-    server.resetHandlers();
-    cleanup();
-});
-afterAll(() => server.close());
+
 
 describe("useSignup()", ()=> {
     it("should have error, isLoading and verificationNeeded states initially set to null", () => {

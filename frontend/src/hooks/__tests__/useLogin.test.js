@@ -1,14 +1,8 @@
-import { renderHook, act, cleanup } from "@testing-library/react";
-import { server, rest } from "../../mocks/server";
+import { renderHook, act } from "@testing-library/react";
+import { rest } from "msw";
+import { server } from "../../mocks/server";
 import { useLogin } from "../useLogin";
 import { AuthContextProvider } from "../../context/AuthContext";
-
-beforeAll(() => server.listen());
-afterEach(() => {
-  server.resetHandlers();
-  cleanup();
-});
-afterAll(() => server.close());
 
 describe("useLogin()", () => {
   it("should have user and error state initially set to null", () => {

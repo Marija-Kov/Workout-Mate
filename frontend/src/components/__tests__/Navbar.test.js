@@ -1,8 +1,7 @@
-import { render, screen, cleanup } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import user from "@testing-library/user-event";
 import Navbar from "../Navbar";
-import { server } from "../../mocks/server";
 import { BrowserRouter } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 import { WorkoutContext } from "../../context/WorkoutContext";
@@ -11,7 +10,6 @@ let mockUser;
 let mockWorkouts;
 
 beforeAll(() => {
-  server.listen();
   mockUser = {
     id: "userid",
     email: "keech@mail.yu",
@@ -28,13 +26,7 @@ beforeAll(() => {
   };
 });
 
-afterEach(() => {
-  server.resetHandlers();
-  cleanup();
-});
-
 afterAll(() => {
-  server.close();
   mockUser = null;
   mockWorkouts = null;
 });

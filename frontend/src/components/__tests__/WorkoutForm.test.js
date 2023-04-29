@@ -1,14 +1,14 @@
 import WorkoutForm from "../WorkoutForm";
 import user from "@testing-library/user-event";
-import { render, screen, cleanup } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { rest } from "msw";
 import { server } from "../../mocks/server";
 import { AuthContext } from "../../context/AuthContext";
 import { WorkoutContext } from "../../context/WorkoutContext";
+
 let mockUser;
 let mockWorkouts;
 beforeAll(() => {
-  server.listen();
   mockUser = {
     id: "userid",
     email: "keech@mail.yu",
@@ -25,13 +25,7 @@ beforeAll(() => {
   };
 });
 
-afterEach(() => {
-  server.resetHandlers();
-  cleanup();
-});
-
 afterAll(() => {
-  server.close();
   mockUser = null;
   mockWorkouts=null;
 });

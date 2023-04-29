@@ -1,13 +1,7 @@
-import { renderHook, act, cleanup } from "@testing-library/react";
-import { server, rest } from "../../mocks/server";
+import { renderHook, act } from "@testing-library/react";
+import { rest } from "msw";
+import { server } from "../../mocks/server";
 import { useConfirmAccount } from "../useConfirmAccount"
-
-beforeAll(() => server.listen());
-afterEach(() => {
-  server.resetHandlers();
-  cleanup();
-});
-afterAll(() => server.close());
 
 describe("useConfirmAccount()", () => {
  it("should have success and error states initially set to null", () => {
