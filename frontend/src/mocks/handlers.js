@@ -21,12 +21,13 @@ export const handlers = [
   }),
 
   rest.post("/api/users/login", async (req, res, ctx) => {
-    const { email } = await req.json();
     return res(
       ctx.status(200),
       ctx.json({
         id: "userid",
-        email: email,
+        email: "keech@mail.yu",
+        username: undefined,
+        profileImg: undefined,
         token: "authorizationToken",
         tokenExpires: Date.now() + 3600000,
       })
@@ -55,6 +56,7 @@ export const handlers = [
     );
   }),
 
+  rest.get("/api/workouts/*", (req, res, ctx) => {
     const page = req.query.p || 0;
     const search = req.query.search || null;
     const itemsPerPage = 3;
