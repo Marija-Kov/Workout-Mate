@@ -3,126 +3,113 @@ import "@testing-library/jest-dom";
 import user from "@testing-library/user-event";
 import Navbar from "../Navbar";
 import { server } from "../../mocks/server";
-import { AuthContextProvider } from "../../context/AuthContext";
 import { BrowserRouter } from "react-router-dom";
-import { WorkoutContextProvider } from "../../context/WorkoutContext";
+import { AuthContext } from "../../context/AuthContext";
+import { WorkoutContext } from "../../context/WorkoutContext";
 
-beforeAll(() => server.listen());
+let mockUser;
+let mockWorkouts;
+
+beforeAll(() => {
+  server.listen();
+  mockUser = {
+    id: "userid",
+    email: "keech@mail.yu",
+    token: "authorizationToken",
+    username: undefined,
+    profileImg: undefined,
+    tokenExpires: Date.now() + 3600000,
+  };
+  mockWorkouts = {
+    allUserWorkoutsByQuery: [],
+    workoutsChunk: [],
+    limit: 3,
+    noWorkoutsByQuery: false,
+  };
+});
+
 afterEach(() => {
   server.resetHandlers();
   cleanup();
 });
+
 afterAll(() => {
-    global.Storage.prototype.setItem.mockReset();
-    global.Storage.prototype.getItem.mockReset();
-    server.close()
+  server.close();
+  mockUser = null;
+  mockWorkouts = null;
 });
 
 describe("<Navbar />", ()=>{
     it("should render the navbar correctly when the user is not logged in", () => {
-            render(
-              <AuthContextProvider>
-                <BrowserRouter>
-                  <Navbar />
-                </BrowserRouter>
-              </AuthContextProvider>
-            );
-     const aboutLink = screen.getByLabelText(/about/i);
-     const loginLink = screen.getByLabelText(/login/i);
-     const signupLink = screen.getByLabelText(/signup/i);
-     expect(aboutLink).toBeInTheDocument();
-     expect(signupLink).toBeInTheDocument();
-     expect(loginLink).toBeInTheDocument();
+      render(
+        <AuthContext.Provider value={{ user: undefined }}>
+          <BrowserRouter>
+            <Navbar />
+          </BrowserRouter>
+        </AuthContext.Provider>
+      );
+      const aboutLink = screen.getByLabelText(/about/i);
+      const loginLink = screen.getByLabelText(/login/i);
+      const signupLink = screen.getByLabelText(/signup/i);
+      expect(aboutLink).toBeInTheDocument();
+      expect(signupLink).toBeInTheDocument();
+      expect(loginLink).toBeInTheDocument();
     });
 
     it("should focus navbar elements in the right order", async () => {
-     user.setup();
-        render(
-       <AuthContextProvider>
-         <BrowserRouter>
-           <Navbar />
-         </BrowserRouter>
-       </AuthContextProvider>
-     );
-     const aboutLink = screen.getByLabelText(/about/i);
-     const loginLink = screen.getByLabelText(/login/i);
-     const signupLink = screen.getByLabelText(/signup/i);
-     await user.tab();
-     await user.tab();
-     expect(aboutLink).toHaveFocus();
-     await user.tab();
-     expect(loginLink).toHaveFocus();
-     await user.tab();
-     expect(signupLink).toHaveFocus();
+      user.setup();
+      render(
+        <AuthContext.Provider value={{ user: undefined }}>
+          <BrowserRouter>
+            <Navbar />
+          </BrowserRouter>
+        </AuthContext.Provider>
+      );
+      const aboutLink = screen.getByLabelText(/about/i);
+      const loginLink = screen.getByLabelText(/login/i);
+      const signupLink = screen.getByLabelText(/signup/i);
+      await user.tab();
+      await user.tab();
+      expect(aboutLink).toHaveFocus();
+      await user.tab();
+      expect(loginLink).toHaveFocus();
+      await user.tab();
+      expect(signupLink).toHaveFocus();
     });
 
-    it("should render the navbar correctly when the user is logged in as well as focus the elements in the right order", async () =>{
-       user.setup();
-       const mockLocalStorage = {};
-       const storageUser = {
-         id: "userId",
-         email: "keech@mail.yu",
-         token: "authorizationToken",
-       };
-       global.Storage.prototype.setItem = jest.fn((key, value) => {
-         mockLocalStorage[key] = value;
-       });
-       global.Storage.prototype.getItem = jest.fn((key) => mockLocalStorage[key]);
-       localStorage.setItem("user", JSON.stringify(storageUser))
-            render(
-              <AuthContextProvider>
-                <BrowserRouter> 
-                  <Navbar />
-                </BrowserRouter>
-              </AuthContextProvider>
-            );
-       const helloUser = screen.getByLabelText(/user menu/i);
-       await user.tab();
-       await user.tab();
-       expect(helloUser).toBeInTheDocument();
-       expect(helloUser).toHaveFocus();
+    it("should render the navbar correctly when the user is logged in as well as focus the elements in the right order", async () => {
+      user.setup();
+      render(
+        <AuthContext.Provider value={{ user: mockUser }}>
+          <BrowserRouter>
+            <Navbar />
+          </BrowserRouter>
+        </AuthContext.Provider>
+      );
+      const helloUser = screen.getByLabelText(/user menu/i);
+      await user.tab();
+      await user.tab();
+      expect(helloUser).toBeInTheDocument();
+      expect(helloUser).toHaveFocus();
     });
 
     it("should render User menu once user clicks on avatar", async () => {
-      const mockLocalStorage = {};
-       const storageUser = {
-         id: "userId",
-         email: "keech@mail.yu",
-         token: "authorizationToken",
-       };
-       global.Storage.prototype.setItem = jest.fn((key, value) => {
-         mockLocalStorage[key] = value;
-       });
-       global.Storage.prototype.getItem = jest.fn((key) => mockLocalStorage[key]);
-       localStorage.setItem("user", JSON.stringify(storageUser));
-              render(
-                 <WorkoutContextProvider>
-                  <AuthContextProvider>
-                    <BrowserRouter>
-                      <Navbar />
-                    </BrowserRouter>
-                  </AuthContextProvider>
-                 </WorkoutContextProvider>
-              );
-       user.setup();
-       const helloUser = screen.getByLabelText(/user menu/i);
-       user.click(helloUser);
-       const userSettings = await screen.findByLabelText(/settings/i);
-       const logOut = await screen.findByLabelText(/log out/i);
-       expect(userSettings).toBeInTheDocument();
-       expect(logOut).toBeInTheDocument();
-    });
-
-    it("should render Profile settings component when user clicks on Settings in User menu", () => {
-      expect(true).toBe(false);
-    });
-
-    it("should redirect to Log In page when user clicks on Log Out in User menu", () => {
-      expect(true).toBe(false);
-    });
-
-    it("should redirect to Log In page when user clicks anywhere on Navbar after auth token has expired", () => {
-      expect(true).toBe(false);
+      user.setup();
+      render(
+        <WorkoutContext.Provider value={{ workouts: mockWorkouts }}>
+          <AuthContext.Provider value={{ user: mockUser }}>
+            <BrowserRouter>
+              <Navbar />
+            </BrowserRouter>
+          </AuthContext.Provider>
+        </WorkoutContext.Provider>
+      );   
+      const helloUser = screen.getByLabelText(/user menu/i);
+      user.click(helloUser);
+      const openUserSettings = await screen.findByLabelText(/open user settings/i);
+      const logOut = await screen.findByLabelText(/log out/i);
+      expect(openUserSettings).toBeInTheDocument();
+      expect(logOut).toBeInTheDocument();
     });
 
 })
