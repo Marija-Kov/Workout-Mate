@@ -117,54 +117,56 @@ All files                    |   95.05 |     92.3 |      92 |   95.05 |
 
 
 ### Frontend
-
-File                          | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
-------------------------------|---------|----------|---------|---------|-------------------
-All files                     |   39.39 |    27.53 |   38.88 |   41.55 |                   
- src                          |       0 |        0 |       0 |       0 |                   
-  App.js                      |       0 |        0 |       0 |       0 | 6-16              
-  index.js                    |       0 |      100 |     100 |       0 | 8-9               
- src/components               |    20.9 |    21.84 |   18.96 |   22.87 |                   
-  EditWorkout.js              |       0 |        0 |       0 |       0 | 6-74              
-  ForgotPasswordForm.js       |      50 |       50 |      25 |      50 | 10-11,19-32       
-  Navbar.js                   |      68 |    65.51 |   83.33 |      80 | 20,29-31          
-  Pagination.js               |    12.5 |        0 |   28.57 |    12.5 | 8-18,27-46        
-  Search.js                   |     100 |      100 |     100 |     100 |                   
-  UserMenu.js                 |      50 |       50 |      20 |   55.55 | 10,14-15,24       
-  UserSettings.js             |       0 |        0 |       0 |       0 | 11-94             
-  WorkoutDetails.js           |    7.69 |        0 |       0 |    9.09 | 8-39              
-  WorkoutForm.js              |   22.22 |    21.05 |   14.28 |      25 | 14-32,37-39       
- src/context                  |   55.17 |       25 |   57.14 |   57.14 |                   
-  AuthContext.js              |   78.57 |       50 |     100 |   78.57 | 12-20             
-  WorkoutContext.js           |   33.33 |        0 |      25 |   35.71 | 6-29              
- src/hooks                    |   36.97 |    17.91 |      40 |    37.6 |                   
-  useAuthContext.js           |      75 |       50 |     100 |      75 | 7                 
-  useConfirmAccount.js        |     100 |      100 |     100 |     100 |                   
-  useCreateWorkout.js         |    37.5 |        0 |      50 |    37.5 | 11-32             
-  useCroppedImg.js            |    3.12 |        0 |       0 |    3.33 | 4-57              
-  useDeleteAllWorkouts.js     |      10 |        0 |       0 |      10 | 6-23              
-  useDeleteUser.js            |    12.5 |        0 |       0 |    12.5 | 6-20              
-  useDeleteWorkout.js         |       0 |        0 |       0 |       0 | 6-33              
-  useEditWorkout.js           |       0 |        0 |       0 |       0 | 6-35              
-  useLogin.js                 |     100 |      100 |     100 |     100 |                   
-  useLogout.js                |   41.66 |        0 |      50 |   41.66 | 9-18              
-  useResetPassword.js         |   36.36 |        0 |      50 |   36.36 | 8-23              
-  useSearch.js                |   52.63 |        0 |     100 |   52.63 | 20-30             
-  ...dPasswordResetRequest.js |   36.36 |        0 |      50 |   36.36 | 8-21              
-  useSignup.js                |     100 |      100 |     100 |     100 |                   
-  useUpdateUser.js            |    3.33 |        0 |       0 |    3.57 | 5-49              
-  useWorkoutContext.js        |      80 |       50 |     100 |      80 | 8                 
- src/mocks                    |     100 |      100 |     100 |     100 |                   
-  server.js                   |     100 |      100 |     100 |     100 |                   
- src/pages                    |   80.21 |    75.75 |   69.69 |    81.6 |                   
-  About.js                    |       0 |      100 |       0 |       0 | 6                 
-  ConfirmedAccount.js         |     100 |      100 |     100 |     100 |                   
-  Home.js                     |   65.78 |       50 |      50 |   68.57 | ...54-55,59-60,76 
-  Login.js                    |     100 |      100 |     100 |     100 |                   
-  ResetPassword.js            |   69.23 |     62.5 |      40 |   69.23 | 17-18,29-37       
-  Signup.js                   |     100 |      100 |     100 |     100 |                   
- src/utils                    |      40 |       25 |     100 |      40 |                   
-  logOutIfTokenExpired.js     |      40 |       25 |     100 |      40 | 6-13              
+File                             | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s    
+---------------------------------|---------|----------|---------|---------|----------------------
+All files                        |   66.44 |    59.92 |   67.54 |    68.5 |                      
+ src                             |       0 |        0 |       0 |       0 |                      
+  App.js                         |       0 |        0 |       0 |       0 | 6-16                 
+  index.js                       |       0 |      100 |     100 |       0 | 8-9                  
+ src/components                  |    76.4 |    74.41 |   74.13 |   81.16 |                      
+  EditWorkout.js                 |      80 |    77.77 |   72.72 |   85.71 | 16,22,47             
+  ForgotPasswordForm.js          |    87.5 |      100 |      75 |    87.5 | 20                   
+  Navbar.js                      |      68 |    65.51 |   83.33 |      80 | 20,29-31             
+  Pagination.js                  |      75 |    61.29 |     100 |     100 | 9-18                 
+  Search.js                      |     100 |      100 |     100 |     100 |                      
+  UserMenu.js                    |      70 |      100 |      60 |   66.66 | 10,14-15             
+  UserSettings.js                |   70.45 |    81.81 |   54.54 |   69.76 | ...44,52-53,57,67-69 
+  WorkoutDetails.js              |   71.42 |       75 |   66.66 |   66.66 | 12-14,69             
+  WorkoutForm.js                 |   92.59 |    89.47 |   85.71 |   95.83 | 17                   
+ src/context                     |   48.27 |       25 |   42.85 |      50 |                      
+  AuthContext.js                 |   78.57 |       50 |     100 |   78.57 | 12-20                
+  WorkoutContext.js              |      20 |        0 |       0 |   21.42 | 6-29,35-38           
+ src/hooks                       |   60.64 |     45.2 |   62.85 |   61.22 |                      
+  useAuthContext.js              |      75 |       50 |     100 |      75 | 7                    
+  useConfirmAccount.js           |     100 |      100 |     100 |     100 |                      
+  useCreateWorkout.js            |     100 |    83.33 |     100 |     100 | 31                   
+  useCroppedImg.js               |    12.5 |        0 |   14.28 |   13.33 | 5-14,19-55           
+  useDeleteAllWorkouts.js        |   38.46 |        0 |      50 |   38.46 | 10-23                
+  useDeleteUser.js               |   36.36 |        0 |      50 |   36.36 | 9-21                 
+  useDeleteWorkout.js            |   31.25 |        0 |      50 |   31.25 | 11-30                
+  useEditWorkout.js              |     100 |    83.33 |     100 |     100 | 28                   
+  useLogin.js                    |     100 |      100 |     100 |     100 |                      
+  useLogout.js                   |   41.66 |        0 |      50 |   41.66 | 9-18                 
+  useResetPassword.js            |   36.36 |        0 |      50 |   36.36 | 8-23                 
+  useSearch.js                   |       0 |        0 |       0 |       0 | 5-34                 
+  useSendPasswordResetRequest.js |     100 |      100 |     100 |     100 |                      
+  useSignup.js                   |     100 |      100 |     100 |     100 |                      
+  useUpdateUser.js               |   72.72 |       50 |     100 |   74.19 | 12-13,34-37,41,44    
+  useWorkoutContext.js           |      80 |       50 |     100 |      80 | 8                    
+ src/mocks                       |   64.28 |        0 |    87.5 |   64.28 |                      
+  handlers.js                    |   61.53 |        0 |    87.5 |   61.53 | 60-65                
+  server.js                      |     100 |      100 |     100 |     100 |                      
+ src/pages                       |   82.41 |    78.78 |   72.72 |    83.9 |                      
+  About.js                       |       0 |      100 |       0 |       0 | 6                    
+  ConfirmedAccount.js            |     100 |      100 |     100 |     100 |                      
+  Home.js                        |   71.05 |       60 |   58.33 |   74.28 | 42,46-49,54-55,59-60 
+  Login.js                       |     100 |      100 |     100 |     100 |                      
+  ResetPassword.js               |   69.23 |     62.5 |      40 |   69.23 | 17-18,29-37          
+  Signup.js                      |     100 |      100 |     100 |     100 |                      
+ src/utils                       |      20 |     12.5 |     100 |      20 |                      
+  logOutIfTokenExpired.js        |      20 |     12.5 |     100 |      20 | 4-13                 
+ src/utils/test                  |   86.66 |       80 |     100 |   85.71 |                      
+  genSampleWorkouts.js           |   86.66 |       80 |     100 |   85.71 | 30-31                            
 
 <br>
 
