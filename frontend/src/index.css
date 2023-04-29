@@ -352,6 +352,10 @@ label {
   font-size: 14px;
 }
 
+.disabled--btn{
+ text-decoration: line-through;
+}
+
 input {
   padding: 10px;
   max-width: 274px;
@@ -714,6 +718,15 @@ form.signup h4 {
 .user--settings > input {
   width: 200px;
   margin-left: 0;
+}
+
+.max-chars-error {
+  color: var(--error);
+  font-size: 12px;
+  margin: 0;
+  padding-left: 2px;
+  position: relative;
+  top: -18px;
 }
 
 .user--settings > h4 {

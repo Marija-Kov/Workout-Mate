@@ -15,6 +15,7 @@ export default function ForgotPasswordForm({ forgotPassword }) {
     <div className="form--container">
       <form aria-label="forgot password form" className="reset--password--request" onSubmit={sendEmail}>
         <span
+          aria-label= "close forgot password form"
           className="close material-symbols-outlined"
           onClick={() => forgotPassword()}
         >
@@ -31,7 +32,7 @@ export default function ForgotPasswordForm({ forgotPassword }) {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
-        <button>Proceed</button>
+        <button aria-label="submit">Proceed</button>
         {success && (
           <div role="alert" className="success">
             {success}

@@ -1,24 +1,19 @@
-import { render, screen, cleanup } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import user from "@testing-library/user-event";
 import "@testing-library/jest-dom";
 import Login from "../Login";
-import { server, rest } from "../../mocks/server";
+import { rest } from "msw";
+import { server } from "../../mocks/server";
 import { AuthContextProvider } from "../../context/AuthContext";
 
-beforeAll(() => server.listen());
-afterEach(() => {
-  server.resetHandlers();
-  cleanup();
-});
 afterAll(() => {
   global.Storage.prototype.setItem.mockReset();
   global.Storage.prototype.getItem.mockReset();
-  server.close();
 });
 
-describe("Login page", () => {
+describe("<Login />", () => {
   
-  it("should render the login form", () => {
+  it("should render login form", () => {
     render(
      <AuthContextProvider>
         <Login />
@@ -30,7 +25,7 @@ describe("Login page", () => {
     expect(forgotPassword).toBeInTheDocument();
   });
 
-  it("should focus form elements in the right order", async () => {
+  it("should focus form elements in right order", async () => {
       user.setup();
       render(
         <AuthContextProvider>
@@ -51,7 +46,7 @@ describe("Login page", () => {
       expect(loginBtn).toHaveFocus();
   });
 
-  it("should render the input value as the user types", async ()=> {
+  it("should render input value as user types", async ()=> {
    user.setup();
    render(
      <AuthContextProvider>
@@ -66,7 +61,7 @@ describe("Login page", () => {
    expect(passwordInp).toHaveValue("abc");
   });
 
-  it("should render forgot password form when the user clicks on forgot password", async () => {
+  it("should render reset password request form when user clicks on 'forgot password'", async () => {
    user.setup();
    render(
      <AuthContextProvider>
@@ -79,7 +74,7 @@ describe("Login page", () => {
    expect(forgotPasswordForm).toBeInTheDocument();
   });
 
-  it("should render error element once the login button is clicked given that the server responds with an error", async () => {
+  it("should render error element once 'log in' button is clicked given that server responds with error", async () => {
     server.use(
       rest.post("api/users/login", (req, res, ctx) => {
         return res(
@@ -99,11 +94,11 @@ describe("Login page", () => {
     const loginBtn = await screen.findByText("Log in");
     await user.click(loginBtn);
     const errorEl = await screen.findByRole("alert");
-    await expect(errorEl).toBeInTheDocument();
-    await expect(errorEl).toHaveClass("error");
+    expect(errorEl).toBeInTheDocument();
+    expect(errorEl).toHaveClass("error");
   });
 
-  it("should render home page once the user logs in given that the server responds with success", async () => {
+  it("should render Home page once 'log in' button is clicked given that server responds with success", async () => {
     user.setup();
     const mockLocalStorage = {};
     const storageUser = {
@@ -126,7 +121,7 @@ describe("Login page", () => {
           {localStorage.getItem("user") ? <MockHome /> : <Login />}
         </AuthContextProvider>
       );
-    }
+    };
     await user.logIn();
     expect(screen.getByText(/mock home/i)).toBeInTheDocument();
   });

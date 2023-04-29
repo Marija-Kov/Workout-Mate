@@ -1,39 +1,6 @@
-// src/mocks/server.js
 import { setupServer } from "msw/node";
-import { rest } from "msw";
+import { handlers } from "./handlers";
 
-const handlers = [
-  rest.post("api/users/signup", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
-        success: "Account created and pending confirmation",
-      })
-    );
-  }),
+export const server = setupServer(...handlers);
 
-  rest.get("api/users/*", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
-        success: "Account confirmed, you may log in",
-      })
-    );
-  }),
 
-  rest.post("api/users/login", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
-        id: "userid",
-        email: "email",
-        token: "authorizationToken"
-      })
-    );
-  }),
-];
-
-// This configures a request mocking server with the given request handlers.
-const server = setupServer(...handlers);
-
-export { server, rest }

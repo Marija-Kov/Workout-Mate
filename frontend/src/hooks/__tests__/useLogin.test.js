@@ -1,14 +1,8 @@
-import { renderHook, act, cleanup } from "@testing-library/react";
-import { server, rest } from "../../mocks/server";
+import { renderHook, act } from "@testing-library/react";
+import { rest } from "msw";
+import { server } from "../../mocks/server";
 import { useLogin } from "../useLogin";
 import { AuthContextProvider } from "../../context/AuthContext";
-
-beforeAll(() => server.listen());
-afterEach(() => {
-  server.resetHandlers();
-  cleanup();
-});
-afterAll(() => server.close());
 
 describe("useLogin()", () => {
   it("should have user and error state initially set to null", () => {
@@ -32,17 +26,17 @@ describe("useLogin()", () => {
     const wrapper = AuthContextProvider;
     const { result } = renderHook(useLogin, { wrapper });
     await act(async () => result.current.login());
-    await expect(result.current.error).toBeTruthy();
-    await expect(result.current.user).toBeFalsy();
+    expect(result.current.error).toBeTruthy();
+    expect(result.current.user).toBeFalsy();
   });
 
   it("should set user state to object including authorization token given that the server responded with a success message", async () => {
     const wrapper = AuthContextProvider;
     const { result } = renderHook(useLogin, { wrapper });
     await act(async () => result.current.login());
-    await expect(result.current.error).toBeFalsy();
-    await expect(result.current.user).toBeTruthy();
-    await expect(result.current.user.token).toBeTruthy();
+    expect(result.current.error).toBeFalsy();
+    expect(result.current.user).toBeTruthy();
+    expect(result.current.user.token).toBeTruthy();
   });
 
 })

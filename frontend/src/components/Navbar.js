@@ -37,7 +37,7 @@ React.useEffect(() => {
 }, [user]);
 
     return (
-      <header className={user ? "header--blur" : ""} onClick={user && logOutIfTokenExpired}>
+      <header data-testid="navbar" className={user ? "header--blur" : ""} onClick={user && logOutIfTokenExpired}>
         <div className="container">
           <h1 className={user ? "logged--in--logo" : "logo"}>
             <Link to="/">WorkoutMate</Link>

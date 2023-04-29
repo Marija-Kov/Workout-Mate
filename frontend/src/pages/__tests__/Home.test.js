@@ -1,73 +1,91 @@
 import React from 'react';
 import { render, screen, cleanup } from "@testing-library/react";
 import user from "@testing-library/user-event";
-import "@testing-library/jest-dom";
+import { AuthContext } from "../../context/AuthContext";
+import { WorkoutContext } from "../../context/WorkoutContext";
+import { jest } from "@jest/globals"
+import { genSampleWorkouts } from '../../utils/test/genSampleWorkouts';
 import Home from "../Home";
-import { server, rest } from "../../mocks/server";
-import { AuthContextProvider } from "../../context/AuthContext";
-import { WorkoutContextProvider } from "../../context/WorkoutContext";
+import Search from '../../components/Search';
+import Pagination from '../../components/Pagination';
+import WorkoutDetails from '../../components/WorkoutDetails';
+import WorkoutForm from '../../components/WorkoutForm';
 
-let mockLocalStorage;
-beforeAll(async () => {
-  server.listen();
+jest.mock("../../components/WorkoutDetails");
+jest.mock("../../components/Pagination");
+jest.mock("../../components/WorkoutForm");
+jest.mock("../../components/Search");
+jest.mock("../../hooks/useSearch", () => ({
+  useSearch: () => {
+       return {
+           search: () => {},
+           total: mockWorkouts.searchResults.length,
+           limit: mockWorkouts.resultsOnPage.length,
+           isLoading: false,
+       };
+  }
+        
+}));
+
+let mockUser;
+let mockWorkouts;
+
+beforeAll(() => {
+  mockUser = {
+    id: "userid",
+    email: "keech@mail.yu",
+    token: "authorizationToken",
+    username: undefined,
+    profileImg: undefined,
+    tokenExpires: Date.now() + 3600000,
+  };
+  mockWorkouts = genSampleWorkouts()
 });
-beforeEach(() => {
-  mockLocalStorage = {};
-  global.Storage.prototype.setItem = jest.fn((key, value) => {
-    mockLocalStorage[key] = value;
-  });
-  global.Storage.prototype.getItem = jest.fn(
-    (key) => mockLocalStorage[key]
-  );
-    const storageUser = {
-      id: "userId",
-      email: "keech@mail.yu",
-      token: "authorizationToken",
-    };
-    localStorage.setItem("user", JSON.stringify(storageUser));
-});
+
 afterEach(() => {
-  global.Storage.prototype.setItem.mockReset();
-  global.Storage.prototype.getItem.mockReset();  
-  server.resetHandlers();
   cleanup();
 });
+
 afterAll(() => {
-  server.close();
+  jest.clearAllMocks();
+  mockUser = null;
+  mockWorkouts = null;
 });
 
 describe("<Home />", () => {
-    it("should render the home page correctly", async () => {
-      render (
-          <WorkoutContextProvider>
-              <AuthContextProvider>
-                  <Home />
-              </AuthContextProvider>
-          </WorkoutContextProvider>
-      )
-      const searchBar = await screen.findByLabelText(/search/i);
+    it("should render Home page correctly given that user is authenticated", async () => {
+      render(
+        <AuthContext.Provider value={{ user: mockUser }}>
+          <WorkoutContext.Provider
+            value={{ workouts: mockWorkouts.resultsOnPage }}
+          >
+            <Home />
+          </WorkoutContext.Provider>
+        </AuthContext.Provider>
+      );
       const addWorkoutBtn = await screen.findByLabelText(/buff it up/i);
       const workouts = await screen.findByLabelText(/workouts/i);
-      const pagination = await screen.findByLabelText(/pages/i);
-      await expect(addWorkoutBtn).toBeInTheDocument();
-      await expect(searchBar).toBeInTheDocument();
-      await expect(workouts).toBeInTheDocument();
-      await expect(pagination).toBeInTheDocument();
+      expect(Search).toHaveBeenCalled();
+      expect(Pagination).toHaveBeenCalled();
+      expect(WorkoutDetails).toHaveBeenCalled();
+      expect(addWorkoutBtn).toBeInTheDocument();
+      expect(workouts).toBeInTheDocument();
     });
 
-    it("should render the add workout form after clicking buff it up", async () => {
-       user.setup()
-        render(
-          <WorkoutContextProvider>
-            <AuthContextProvider>
-              <Home />
-            </AuthContextProvider>
-          </WorkoutContextProvider>
-        );
-         const addWorkoutBtn = await screen.findByLabelText(/buff it up/i);
-         await user.click(addWorkoutBtn);
-         const addWorkoutForm = await screen.findByLabelText(/workout form/i);
-         await expect(addWorkoutForm).toBeInTheDocument();
+    it("should render WorkoutForm component when user clicks on 'Buff it up' button", async () => {
+      user.setup();
+      render(
+        <AuthContext.Provider value={{ user: mockUser }}>
+          <WorkoutContext.Provider
+            value={{ workouts: mockWorkouts.resultsOnPage }}
+          >
+            <Home />
+          </WorkoutContext.Provider>
+        </AuthContext.Provider>
+      );
+      const addWorkoutBtn = await screen.findByLabelText(/buff it up/i);
+      await user.click(addWorkoutBtn);
+      expect(WorkoutForm).toHaveBeenCalled();
     });
 
 });

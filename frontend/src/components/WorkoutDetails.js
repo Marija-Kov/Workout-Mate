@@ -17,27 +17,59 @@ export default function WorkoutDetails({id, title, reps, load, createdAt, update
     const showEdit = () => {
        setShowEditForm(prev => !prev)
     }
-    
+
+    const date = formatDistanceToNow(new Date(createdAt), { addSuffix: true});
+
     return (
-        <>
-        <div className="workout-details">
-            <h4>{title}</h4>
-            <p><strong>reps:</strong> {reps}</p>
-            <p><strong>load:</strong> {load}</p>
-            <p className='date'>{formatDistanceToNow(new Date(createdAt), { addSuffix: true})}</p>
-            <button className='material-symbols-outlined' onClick={handleDelete}>delete</button>
-            <button className='material-symbols-outlined edit' onClick={showEdit}>edit</button>
-            {error && <div role="alert" className="error">{error}</div>} 
+      <>
+        <div
+          aria-label={`details of workout ${title} created ${date}`}
+          className="workout-details"
+        >
+          <h4>{title}</h4>
+          <p>
+            <strong>reps:</strong> {reps}
+          </p>
+          <p>
+            <strong>load:</strong> {load}
+          </p>
+          <p aria-label="date" className="date">
+            {date}
+          </p>
+          <button
+            aria-label={`delete workout ${title} created ${date}`}
+            className="material-symbols-outlined"
+            onClick={handleDelete}
+          >
+            delete
+          </button>
+          <button
+            aria-label={`open ${title} edit form created ${date}`}
+            className="material-symbols-outlined edit"
+            onClick={showEdit}
+          >
+            edit
+          </button>
+          {error && (
+            <div role="alert" className="error">
+              {error}
+            </div>
+          )}
         </div>
-        {showEditForm && <EditWorkout
-                        key={id +'edit'}
-                        id = {id}
-                        title={title}
-                        reps={reps}
-                        load={load}
-                        createdAt={createdAt}
-                        showEdit={()=>showEdit()}
-                         />}
-        </>
-    )
+        {showEditForm && (
+        <React.Suspense>
+          <EditWorkout
+            key={id + "edit"}
+            id={id}
+            title={title}
+            reps={reps}
+            load={load}
+            createdAt={createdAt}
+            updatedAt={updatedAt}
+            showEdit={() => showEdit()}
+          />
+        </React.Suspense>  
+        )}
+      </>
+    );
 }

@@ -8,6 +8,10 @@ export const useCreateWorkout = () => {
    const [error, setError] = React.useState(null);
 
    const createWorkout = async (workout) => {
+      if (!user) {
+       setError("You must be logged in");
+       return;
+     }
      const response = await fetch("/api/workouts", {
        method: "POST",
        body: JSON.stringify(workout),
@@ -18,13 +22,10 @@ export const useCreateWorkout = () => {
      });
      const json = await response.json();
 
-    if (!user) {
-       setError("You must be logged in to do that");
-       return;
-     }
+
      if (!response.ok) {
        setError("Please fill out the empty fields");
-       
+       return
      }
 
          if (response.ok) {

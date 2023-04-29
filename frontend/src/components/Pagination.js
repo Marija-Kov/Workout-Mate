@@ -21,6 +21,7 @@ export default function Pagination({page, limit, flipPage, total, pageSpread}){
     return (
       <div aria-label="pages" className="page--btn--container">
         <button
+          aria-label="previous page"
           type="button"
           className="prev--page"
           disabled={page <= 0}
@@ -31,6 +32,7 @@ export default function Pagination({page, limit, flipPage, total, pageSpread}){
         {pageSpread.map((p) => {
            return (
              <button
+               aria-label={`go to page ${p}`}
                key={uuid()}
                className={pageBtnStyle(page, p)}
                onClick={() => flipPage(p)}
@@ -40,6 +42,7 @@ export default function Pagination({page, limit, flipPage, total, pageSpread}){
            );  
         })}
         <button
+          aria-label="next page"
           type="button"
           className="next--page"
           disabled={btnIsDisabled()}
