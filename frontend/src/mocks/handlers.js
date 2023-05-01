@@ -45,6 +45,15 @@ export const handlers = [
     );
   }),
 
+  rest.delete("/api/workouts/*", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        id: "mockWorkoutId"
+      })
+    );
+  }),
+
   rest.post("/api/workouts", (req, res, ctx) => {
     return res(
       ctx.status(200),
