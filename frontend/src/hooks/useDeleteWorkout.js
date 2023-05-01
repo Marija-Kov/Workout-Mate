@@ -27,7 +27,6 @@ export default function useDeleteWorkout() {
         }
         if(!response.ok){
             setError(json.error);
-          console.log(json.error)
         }
     }
   return { deleteWorkout, error }
