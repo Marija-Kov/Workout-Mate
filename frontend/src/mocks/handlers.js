@@ -45,11 +45,20 @@ export const handlers = [
     );
   }),
 
+  rest.delete("/api/workouts/", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        success: "all workouts deleted",
+      })
+    );
+  }),
+
   rest.delete("/api/workouts/*", (req, res, ctx) => {
     return res(
       ctx.status(200),
       ctx.json({
-        id: "mockWorkoutId"
+        id: "mockWorkoutId",
       })
     );
   }),
@@ -86,7 +95,7 @@ export const handlers = [
     return res(
       ctx.status(200),
       ctx.json({
-        success: "Updated successfully"
+        success: "Updated successfully",
       })
     );
   }),
