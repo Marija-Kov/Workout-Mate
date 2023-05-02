@@ -16,6 +16,8 @@ export const useLogout = () => {
      dispatch({type: 'LOGOUT'})
      // clearing the global workouts state:
      workoutsDispatch({type: 'SET_WORKOUTS', payload: null})
+
+    return "You have been logged out"
  }
 
  return { logout }

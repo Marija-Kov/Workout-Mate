@@ -16,6 +16,12 @@ export const useUpdateUser = () => {
     setError(null); 
         if (!profileImg) profileImg = user.profileImg;
         if (!username) username = user.username;
+        if (username.length > 12) { 
+            setIsLoading(false);
+            setSuccess(null);
+            setError("Invalid input");
+            return
+        }
       const response = await fetch(`/api/users/${user.id}`, {
         method: "PATCH",
         body: JSON.stringify({

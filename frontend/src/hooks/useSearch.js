@@ -7,10 +7,17 @@ export const useSearch = () => {
     const { user } = useAuthContext();
     const { dispatch } = useWorkoutContext();
     const [limit, setLimit] = React.useState(null);
-    const [total, setTotal] = React.useState(null)
+    const [total, setTotal] = React.useState(null);
+    const [error, setError] = React.useState(null);
     
     const search = async (query, page) => {
       setIsLoading(true);
+      if(!user) {
+        setIsLoading(false);
+        setError("Not authorized");
+        return
+      }
+
       const response = await fetch(`api/workouts/?search=${query}&p=${page}`, {
         headers: {
           "Authorization": `Bearer ${user.token}`
@@ -20,6 +27,7 @@ export const useSearch = () => {
       const json = await response.json();
 
       if(response.ok){
+        setError(null)
         setIsLoading(false);
         setLimit(json.limit);
         setTotal(json.allUserWorkoutsByQuery.length);
@@ -27,9 +35,9 @@ export const useSearch = () => {
       }
       if(!response.ok){
         setIsLoading(false);
-        console.log(json.error)
+        setError(json.error)
       }
       
     }
-    return { search, isLoading, limit, total}
+    return { search, isLoading, limit, total, error}
 }

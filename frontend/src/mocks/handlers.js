@@ -1,5 +1,4 @@
 import { rest } from "msw";
-import { genSampleWorkouts } from "../utils/test/genSampleWorkouts";
 
 export const handlers = [
   rest.post("/api/users/signup", (req, res, ctx) => {
@@ -45,6 +44,24 @@ export const handlers = [
     );
   }),
 
+  rest.delete("/api/workouts/", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        success: "all workouts deleted",
+      })
+    );
+  }),
+
+  rest.delete("/api/workouts/*", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        id: "mockWorkoutId",
+      })
+    );
+  }),
+
   rest.post("/api/workouts", (req, res, ctx) => {
     return res(
       ctx.status(200),
@@ -57,18 +74,13 @@ export const handlers = [
   }),
 
   rest.get("/api/workouts/*", (req, res, ctx) => {
-    const page = req.query.p || 0;
-    const search = req.query.search || null;
-    const itemsPerPage = 3;
-    const { allUserWorkoutsByQuery, workoutsChunk, noWorkoutsByQuery } =
-      genSampleWorkouts(search, page, itemsPerPage);
     return res(
       ctx.status(200),
       ctx.json({
-        allUserWorkoutsByQuery: allUserWorkoutsByQuery,
-        workoutsChunk: workoutsChunk,
-        limit: itemsPerPage,
-        noWorkoutsByQuery: noWorkoutsByQuery,
+        allUserWorkoutsByQuery: [{}, {}, {}, {}, {}, {}],
+        workoutsChunk: [{}, {}, {}],
+        limit: 3,
+        noWorkoutsByQuery: false,
       })
     );
   }),
@@ -77,7 +89,16 @@ export const handlers = [
     return res(
       ctx.status(200),
       ctx.json({
-        success: "Updated successfully"
+        success: "Updated successfully",
+      })
+    );
+  }),
+
+  rest.delete("/api/users/*", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        success: "User deleted successfully",
       })
     );
   }),
@@ -87,6 +108,15 @@ export const handlers = [
       ctx.status(200),
       ctx.json({
         success: "Reset link sent to inbox",
+      })
+    );
+  }),
+
+  rest.patch("/api/reset-password/*", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        success: "Password reset successfully",
       })
     );
   }),
