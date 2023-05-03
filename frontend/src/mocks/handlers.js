@@ -44,7 +44,7 @@ export const handlers = [
     );
   }),
 
-  rest.delete("/api/workouts/", (req, res, ctx) => {
+  rest.delete("/api/workouts", (req, res, ctx) => {
     return res(
       ctx.status(200),
       ctx.json({
