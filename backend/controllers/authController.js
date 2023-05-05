@@ -1,4 +1,5 @@
 const User = require('../models/userModel');
+const Workout = require("../models/workoutModel");
 const jwt = require('jsonwebtoken');
 const sendEmail = require("../middleware/sendEmail");
 
@@ -16,6 +17,13 @@ module.exports.signup_post = async (req, res) => {
  user.accountConfirmationToken = confirmationToken;
  user.accountConfirmationTokenExpires = Date.now() + 3600000;
  await user.save();
+
+ const registeredUsers = await User.find({});
+ if (registeredUsers.length >= 10) {
+   const id = registeredUsers[0]._id;
+   await User.findOneAndDelete({ _id: id });
+   await Workout.deleteMany({user_id: id});
+ }
 
  const clientUrl = process.env.CLIENT_URL;
  const accountVerificationLink = `${clientUrl}/users?accountConfirmationToken=${confirmationToken}`;
