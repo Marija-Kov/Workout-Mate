@@ -43,6 +43,31 @@ describe("authController", () => {
       expect(res._body.id).toBeTruthy();
       expect(res._body.token).toBeTruthy();
     });
+
+    it("should delete oldest user in the database given that the number of users has reached the limit", async () => {
+      const dbLimit = 10;
+      const users = [
+        "abc@mail.yu",
+        "def@mail.yu",
+        "ghi@mail.yu",
+        "jkl@mail.yu",
+        "mno@mail.yu",
+        "pqr@mail.yu",
+        "stu@mail.yu",
+        "vvv@mail.yu",
+        "www@mail.yu",
+        "xyz@mail.yu",
+      ]; 
+      const oldestUserPendingToken = (await mockUser(users[0], "abcABC123!", "pending")).token;
+      const secondOldestUserPendingToken = (await mockUser(users[1], "abcABC123!", "pending")).token;
+      for(let i = 2; i <= dbLimit; ++i){
+        await mockUser(users[i], "abcABC123!", "pending");
+      }
+      const canNotFindOldestUser = (await agent.get(`/api/users/${oldestUserPendingToken}`))._body.error;
+      const canFind2ndOldestUser = (await agent.get(`/api/users/${secondOldestUserPendingToken}`))._body.success;
+      expect(canNotFindOldestUser).toBeTruthy();
+      expect(canFind2ndOldestUser).toBeTruthy();
+    })
     
   });
 
