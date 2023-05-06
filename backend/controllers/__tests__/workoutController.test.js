@@ -40,6 +40,36 @@ describe("workoutController", () => {
           expect(res.error).toMatch(/workout validation failed/i);
         });
 
+        it("should delete oldest workout given that the amount of workouts exceeds the limit", async () => {
+         const user = await mockUser("buster@mail.com", "logged-in");
+         const samples = [{ title: "Oldest workout", reps: 20, load: 20 }, { title: "Second oldest workout", reps: 20, load: 20 }];
+         const oldestWorkoutId = (
+           await agent
+             .post("/api/workouts/")
+             .send(samples[0])
+             .set("Authorization", `Bearer ${user.token}`)
+         )._body._id;
+         const secondOldestWorkoutId = (
+           await agent
+             .post("/api/workouts/")
+             .send(samples[1])
+             .set("Authorization", `Bearer ${user.token}`)
+         )._body._id;
+         await maxOutWorkouts(user);
+         const canNotFindOldestWorkout = (
+           await agent
+             .delete(`/api/workouts/${oldestWorkoutId}`)
+             .set("Authorization", `Bearer ${user.token}`)
+         )._body.error;
+         const canFind2ndOldestWorkout = (
+           await agent
+             .delete(`/api/workouts/${secondOldestWorkoutId}`)
+             .set("Authorization", `Bearer ${user.token}`)
+         )._body.workout;
+         expect(canNotFindOldestWorkout).toBeTruthy();
+         expect(canFind2ndOldestWorkout).toBeTruthy();
+        });
+
         it("should respond with workout details and id given that the user is authorized and all required property values were provided", async () => {
             const user = await mockUser("buster@ploppers.com", "logged-in");
             const workout = { title: "Bench press", reps: 20, load: 20 }; 
@@ -288,6 +318,46 @@ async function mockUser(email, status) {
      }
      return { userLoggedIn, workouts };
    }  
+}
+
+async function maxOutWorkouts(user) {
+  const limit_minus = 29;
+  const sampleWorkouts = [
+    { title: "Bench Press", reps: 20, load: 20 },
+    { title: "Pushups", reps: 30, load: 0 },
+    { title: "Situps", reps: 40, load: 0 },
+    { title: "Squats", reps: 20, load: 23 },
+    { title: "Pullups", reps: 15, load: 0 },
+    { title: "Bench Press", reps: 20, load: 20 },
+    { title: "Pushups", reps: 30, load: 0 },
+    { title: "Situps", reps: 40, load: 0 },
+    { title: "Squats", reps: 20, load: 23 },
+    { title: "Pullups", reps: 15, load: 0 },
+    { title: "Bench Press", reps: 20, load: 20 },
+    { title: "Pushups", reps: 30, load: 0 },
+    { title: "Situps", reps: 40, load: 0 },
+    { title: "Squats", reps: 20, load: 23 },
+    { title: "Pullups", reps: 15, load: 0 },
+    { title: "Bench Press", reps: 20, load: 20 },
+    { title: "Pushups", reps: 30, load: 0 },
+    { title: "Situps", reps: 40, load: 0 },
+    { title: "Squats", reps: 20, load: 23 },
+    { title: "Pullups", reps: 15, load: 0 },
+    { title: "Bench Press", reps: 20, load: 20 },
+    { title: "Pushups", reps: 30, load: 0 },
+    { title: "Situps", reps: 40, load: 0 },
+    { title: "Squats", reps: 20, load: 23 },
+    { title: "Pullups", reps: 15, load: 0 },
+    { title: "Bench Press", reps: 20, load: 20 },
+    { title: "Pushups", reps: 30, load: 0 },
+    { title: "Situps", reps: 40, load: 0 }
+  ];
+  for (let i = 0; i < limit_minus; ++i) {
+    await agent
+      .post("/api/workouts/")
+      .send(sampleWorkouts[i])
+      .set("Authorization", `Bearer ${user.token}`);
+  }
 
 }
 

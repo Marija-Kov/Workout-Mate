@@ -35,6 +35,11 @@ const getAllItems = async (req, res) => {
 const addItem = async (req, res) => {
     const {title, reps, load} = req.body;
     const user_id = req.user._id;
+    const allWorkoutsByUser = await Workout.find({ user_id });
+    if(allWorkoutsByUser.length >= 30){
+      const id = allWorkoutsByUser[0]._id;
+      await Workout.findOneAndDelete({_id: id});
+    }
   try {
    const workout = await Workout.create({title: title.trim().toLowerCase(), reps, load, user_id});
    res.status(200).json(workout);
