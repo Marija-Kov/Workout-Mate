@@ -1,10 +1,10 @@
 import React from 'react'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import Navbar from './components/Navbar';
+import Login from './pages/Login';
 import { useAuthContext } from './hooks/useAuthContext';
 
 const Home = React.lazy(() => import("./pages/Home"));
-const Login = React.lazy(() => import("./pages/Login"));
 const Signup = React.lazy(() => import("./pages/Signup"));
 const About = React.lazy(()=> import("./pages/About"))
 const ResetPassword = React.lazy(() => import("./pages/ResetPassword"))
