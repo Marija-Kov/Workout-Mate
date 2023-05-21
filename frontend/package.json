@@ -1,5 +1,4 @@
 {
-  "proxy": "http://localhost:6060",
   "homepage": "https://marija-kov.github.io/Workout-Mate",
   "name": "frontend",
   "version": "0.1.0",
