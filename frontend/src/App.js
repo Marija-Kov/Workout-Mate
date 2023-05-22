@@ -16,11 +16,15 @@ function App() {
   return (
     <div className="App">
       <BrowserRouter>
-      <Navbar />
+        <Navbar />
         <div className="pages">
           <Routes>
             <Route
               path="/login"
+              element={user ? <Navigate to="/" /> : <Login />}
+            />
+            <Route
+              path="/Workout-Mate"
               element={user ? <Navigate to="/" /> : <Login />}
             />
             <Route
@@ -35,7 +39,7 @@ function App() {
               path="/"
               element={!user ? <Navigate to="/login" /> : <Home />}
             />
-            <Route path="reset-password" element={<ResetPassword />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
             <Route
               path="/:accountConfirmationToken"
               element={<ConfirmedAccount />}
