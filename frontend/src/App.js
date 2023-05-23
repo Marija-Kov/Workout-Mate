@@ -24,10 +24,6 @@ function App() {
               element={user ? <Navigate to="/" /> : <Login />}
             />
             <Route
-              path="/Workout-Mate"
-              element={user ? <Navigate to="/" /> : <Login />}
-            />
-            <Route
               path="/signup"
               element={user ? <Navigate to="/" /> : <Signup />}
             />
