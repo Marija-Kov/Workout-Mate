@@ -28,14 +28,14 @@ Workout Mate lets you be the athlete you want to be.</i>
 
 ## How did it come about? <a name = "motivation"></a>
 <p> 
-Workout Mate started off as a basic made-from-scratch CRUD course project that I decided to build on top of to create a more complete web app. I've done a lot of research, trial and error to hopefully make something that looks like a project that anybody would want to put in their portfolio to demonstrate profound understanding of the fundamentals of building a common real-world piece of software.
+Workout Mate started off as a basic made-from-scratch CRUD project that I decided to build on top of to create a more complete web app that would hopefully demonstrate solid understanding of the fundamentals of building a common real-world piece of software.
 </p>
 
 <br>
 
 ## App Features <a name = "features"></a>
 <p> 
-As the User, you can <b>create an account</b> on Workout Mate from the <b>Signup</b> page with a valid email address and a strong password. You will then be sent an email with a link to <b>confirm your account</b>. Clicking on the link, you will be redirected to the page that will inform you that your account has been confirmed successfully and you can go to the <b>Login</b> page and use your credentials to access your account. If you type in wrong credentials, you will be alerted so. Note that every clickable element in the app is also <b>keyboard focusable</b>.
+As the User, you can <b>create an account</b> on Workout Mate from the <b>Signup</b> page with a valid email address and a strong password. You will then be sent an email with a link to <b>confirm your account</b>. Clicking on the link, you will be redirected to the page that will inform you that your account has been confirmed successfully and you can go to the <b>Login</b> page and use your credentials to access your account. If you type in wrong credentials, you will be alerted so. 
  
 Once you log in successfully, you will be redirected to your <b>Home</b> page where you will see your generated default username and avatar in the Navbar section. These can be changed by clicking on the avatar or username and then clicking the "Settings" option on the dropdown menu. This will open the <b>Profile Settings</b> form where you can enter a different username and choose a <b>custom profile image</b> from your device that you can also crop to your taste within the form. All the changes that you made will be saved after clicking the "Upload" button. You can opt out of changes by clicking the X in the top right corner of the form.
  
@@ -50,7 +50,10 @@ You can finish your session with Workout Mate by clicking <b>Log Out</b> after o
 If you happen to forget your password, you will be able to recover it by first clicking on <b>Forgot password?</b> that's in the login form, which will open a <b>Reset password request</b> form that will ask you to enter your email address that you have an account with. Once you correctly enter your email address and click proceed, you will be alerted to check your inbox for an email with the <b>password reset link</b>. When you click on the password reset link, you will be redirected to the password reset page that will contain a single form asking you to type your new password in two input fields. The form will check the strength of the new password as well as whether the passwords are matching before you will be allowed to finish the password reset. Once you've successfully reset your password, you will be able to access your account with it.
  
 In case you want to delete your Workout Mate account, you will have to log in, open Profile settings from the dropdown menu and click on <b>delete account</b> at the bottom-right of the form. You will see a dialogue pop-up that will warn you about the consequences of deleting your account and will give you an option to change your mind or delete your account permanently. After you click on "Yes, delete my account permanently", all your data will be deleted from the database and you will be redirected to the Login page.
+ 
+ <b>NOTE:</b> Since the app is currently not for scale, the limits to the number of registered users (10 max) and workouts per user (30 max) have been set. If these limits are reached at any point, the app will start deleting the oldest registered user/workout from the database with each new entry.
 </p>
+
 
 <br>
 
@@ -64,6 +67,7 @@ In case you want to delete your Workout Mate account, you will have to log in, o
 - [Mongoose](https://mongoosejs.com/) - MongoDB document modelling
 - [Bcrypt](https://www.npmjs.com/package/bcrypt) - hashing passwords
 - [Dotenv](https://www.npmjs.com/package/dotenv) - secret-keeping
+- [Cors](https://github.com/expressjs/cors) - enabling CORS requests
 - [JWT](https://jwt.io/) - Authentication
 - [Validator](https://www.npmjs.com/package/validator) - request (input) validation
 - [Nodemailer](https://nodemailer.com/about/) - Email sending middleware
@@ -172,7 +176,7 @@ All files                        |   78.54 |    71.94 |   76.12 |   81.37 |
 
 ## Todos <a name = "todos"></a>
 
-- Finish UI tests
+- Make the UI responsive..
 - Add more demo gifs to readme
 - Feature: Change the pie chart role from ornamental to relevant/functional.
 
