@@ -1,6 +1,6 @@
 const express = require('express');
 require('dotenv').config();
-
+const cors = require('cors');
 
 const mongoose = require('mongoose');
 mongoose.set("strictQuery", false);
@@ -10,7 +10,9 @@ const userRoutes = require('./routes/users');
 const passwordResetRoutes = require('./routes/resetPassword')
 
 const app = express();
-
+app.use(cors({
+  origin: process.env.ORIGIN
+}))
 app.use(express.json({ limit: "50mb" })); 
 app.use(
   express.urlencoded({ limit: "50mb", extended: true, parameterLimit: 50000 })
