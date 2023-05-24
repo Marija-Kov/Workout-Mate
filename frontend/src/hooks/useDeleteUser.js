@@ -10,7 +10,7 @@ const { user } = useAuthContext();
       setError("Not authorized")
        return;
      }
-   const response = await fetch(`api/users/${id}`, {
+   const response = await fetch(`${process.env.REACT_APP_API}/api/users/${id}`, {
      method: "DELETE",
      headers: {
        Authorization: `Bearer ${user.token}`,

@@ -18,11 +18,14 @@ export const useSearch = () => {
         return
       }
 
-      const response = await fetch(`api/workouts/?search=${query}&p=${page}`, {
-        headers: {
-          "Authorization": `Bearer ${user.token}`
-        },
-      });
+      const response = await fetch(
+        `${process.env.REACT_APP_API}/api/workouts/?search=${query}&p=${page}`,
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
+      );
 
       const json = await response.json();
 

@@ -12,11 +12,11 @@ export const useDeleteAllWorkouts = () => {
       setError("You must be logged in to do that");
       return;
     }
-    const response = await fetch(`api/workouts/`, {
+    const response = await fetch(`${process.env.REACT_APP_API}/api/workouts/`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${user.token}`,
-      }
+      },
     });
 
     if(response.ok){

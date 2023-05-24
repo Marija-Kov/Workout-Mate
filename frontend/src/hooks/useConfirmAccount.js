@@ -5,7 +5,9 @@ export const useConfirmAccount = () => {
   const [error, setError] = React.useState(null);
 
   const confirmAccount = async (token) => {
-   const response = await fetch(`api/users/${token}`);
+   const response = await fetch(
+     `${process.env.REACT_APP_API}/api/users/${token}`
+   );
    const json = await response.json();
    if (response.ok) {
      setSuccess(json.success);
