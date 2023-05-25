@@ -6,7 +6,9 @@ export const useLogout = () => {
  const { dispatch: workoutsDispatch } = useWorkoutContext();
 
  const logout = () => {
-     localStorage.removeItem('user');
+     if(localStorage.getItem('user')){
+      localStorage.removeItem('user');
+     }
      if(localStorage.getItem('newImg')){
         localStorage.removeItem('newImg')
      }

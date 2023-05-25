@@ -1,10 +1,13 @@
 import React from 'react'
 import { useConfirmAccount } from '../hooks/useConfirmAccount';
+import { useLogout } from '../hooks/useLogout';
 
 export default function ConfirmedAccount() {
   const [token, setToken] = React.useState(null);
   const { confirmAccount, error, success } = useConfirmAccount();
+  const { logout } = useLogout();
    React.useEffect(() => {
+     logout();
      const start = window.location.href.indexOf("=") + 1;
      setToken(window.location.href.slice(start))  
    }, []);
