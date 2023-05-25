@@ -75,7 +75,7 @@ export default function UserSettings({closeUserSettings, changeProfileImg}) {
 
   return (
     <>
-    <div className="form--container">
+    <div className="form--container--user--settings">
       <form aria-label="change user settings" className="user--settings" onSubmit={handleUpdateProfile}>
         <button
           aria-label="close form"

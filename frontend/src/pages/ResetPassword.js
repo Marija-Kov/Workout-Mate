@@ -18,7 +18,7 @@ export default function ResetPassword(){
       await resetPassword(token, password, confirmPassword)
     }
     return (
-      <div className="form--container">
+      <div className="form--container--reset--password">
         <form className="reset--password" onSubmit={handleSubmit}>
           <label>New password:</label>
           <input

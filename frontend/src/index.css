@@ -375,14 +375,20 @@ input {
  color: var(--light-text);
 }
 
-.form--container {
+.form--container--login,
+.form--container--signup,
+.form--container--reset--password,
+.form--container--reset--password--request,
+.form--container--workout--form,
+.form--container--edit--workout--form,
+.form--container--user--settings {
  position: absolute;
 }
 
 /* Login & Signup form */
 
-.form--container:has(.login),
-.form--container:has(.signup) {
+.form--container--login,
+.form--container--signup {
     top: 0;
     left: 0;
     display: flex;
@@ -393,15 +399,15 @@ input {
     background-attachment: fixed;
 }
 
-.form--container:has(.login){
+.form--container--login {
   background-image: url("./assets/pastel-gym-1.jpeg");
 }
 
-.form--container:has(.signup) {
+.form--container--signup {
   background-image: url("./assets/pastel-gym-2.jpeg");
 }
 
-.form--container:has(.reset--password) {
+.form--container--reset--password {
   display: flex;
   width: 100vw;
   background: #c3f1fc;
@@ -482,7 +488,7 @@ form.signup h4 {
 
 /* Reset password request form (to send reset link to inbox) */
 
-.form--container:has(.reset--password--request) {
+.form--container--reset--password--request {
     background: var(--form--container--bkg); 
     z-index: 5;
     top: 0;
@@ -527,7 +533,7 @@ form.signup h4 {
 
 /* Reset password form (accessed from the reset link) */
 
-.form--container:has(.reset--password){
+.form--container--reset--password {
   display: flex;
   width: 100vw;
   height: 100vh;
@@ -567,8 +573,8 @@ form.signup h4 {
 
 /* Add & Edit workout forms */
 
-.form--container:has(.workout--form),
-.form--container:has(.edit--form){
+.form--container--workout--form,
+.form--container--edit--workout--form {
   background: var(--form--container--bkg);
   height: 100vh;
   z-index: 5;
@@ -692,7 +698,7 @@ form.signup h4 {
 
 /* User/Profile settings form */
 
-.form--container:has(.user--settings){
+.form--container--user--settings {
   background: var(--form--container--bkg); 
   height: 100vh;
   z-index: 3;

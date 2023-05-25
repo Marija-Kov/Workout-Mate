@@ -12,7 +12,7 @@ export default function ForgotPasswordForm({ forgotPassword }) {
   };
 
   return (
-    <div className="form--container">
+    <div className="form--container--reset--password--request">
       <form aria-label="forgot password form" className="reset--password--request" onSubmit={sendEmail}>
         <span
           aria-label= "close forgot password form"
