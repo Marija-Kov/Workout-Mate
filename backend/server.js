@@ -1,5 +1,6 @@
 const express = require('express');
 require('dotenv').config();
+
 const cors = require('cors');
 
 const mongoose = require('mongoose');
@@ -18,10 +19,10 @@ app.use(
   express.urlencoded({ limit: "50mb", extended: true, parameterLimit: 50000 })
 );
 
-app.use((req, res, next)=>{
-    console.log(req.path, req.method);
-    next();
-})
+// app.use((req, res, next)=>{
+//     console.log(req.path, req.method);
+//     next();
+// })
 
 mongoose.connect(process.env.MONGO_URI, {useNewUrlParser: true, useUnifiedTopology: true})
 .then(()=>{
@@ -33,8 +34,6 @@ mongoose.connect(process.env.MONGO_URI, {useNewUrlParser: true, useUnifiedTopolo
 }).catch(err => {
     console.log(`ERROR: ${err}`)
 });
-
-
 
 app.use('/api/workouts', workoutRoutes);
 app.use('/api/users', userRoutes);

@@ -29,7 +29,6 @@ export default function useEditWorkout() {
          return
        }
        if (response.ok) {
-        // console.log("workout updated", json);
          setError(null)
          closeEdit()
          dispatch({ type: "UPDATE_ONE", payload: json });
