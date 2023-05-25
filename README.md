@@ -177,6 +177,7 @@ All files                        |   78.54 |    71.94 |   76.12 |   81.37 |
 ## Todos <a name = "todos"></a>
 
 - Make the UI responsive and cross-browser compatible (some features are currently inaccessible in Firefox, for example);
+- Implement request rate limits;
 - Add more demo gifs to readme
 - Feature: Change the pie chart role from ornamental to relevant/functional.
 
