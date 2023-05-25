@@ -12,12 +12,15 @@ export default function useDeleteWorkout() {
          setError("You must be logged in to do that");
          return
         }
-        const response = await fetch(`/api/workouts/${id}`, {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${user.token}`,
-          },
-        });
+        const response = await fetch(
+          `${process.env.REACT_APP_API}/api/workouts/${id}`,
+          {
+            method: "DELETE",
+            headers: {
+              Authorization: `Bearer ${user.token}`,
+            },
+          }
+        );
 
         const json = await response.json();
         

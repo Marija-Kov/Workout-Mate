@@ -5,7 +5,7 @@ export default function useSendPasswordResetRequest() {
   const [success, setSuccess] = React.useState(null);
 
   const sendPasswordResetRequest = async (email) => {
-    const response = await fetch(`api/reset-password`, {
+    const response = await fetch(`${process.env.REACT_APP_API}/api/reset-password`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({

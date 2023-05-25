@@ -22,17 +22,20 @@ export const useUpdateUser = () => {
             setError("Invalid input");
             return
         }
-      const response = await fetch(`/api/users/${user.id}`, {
-        method: "PATCH",
-        body: JSON.stringify({
-          username: username,
-          profileImg: profileImg,
-        }),
-        headers: {
-          "Content-type": "application/json",
-          Authorization: `Bearer ${user.token}`,
-        },
-      });
+      const response = await fetch(
+        `${process.env.REACT_APP_API}/api/users/${user.id}`,
+        {
+          method: "PATCH",
+          body: JSON.stringify({
+            username: username,
+            profileImg: profileImg,
+          }),
+          headers: {
+            "Content-type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
+      );
 
       const json = await response.json();
 

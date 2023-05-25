@@ -12,7 +12,7 @@ export const useCreateWorkout = () => {
        setError("You must be logged in");
        return;
      }
-     const response = await fetch("/api/workouts", {
+     const response = await fetch(`${process.env.REACT_APP_API}/api/workouts`, {
        method: "POST",
        body: JSON.stringify(workout),
        headers: {
