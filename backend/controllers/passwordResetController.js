@@ -23,7 +23,7 @@ module.exports.reset_password_request = async (req, res) => {
   user.resetPasswordTokenExpires = Date.now() + 3600000;
   await user.save();
   
-  const clientUrl = "localhost:3000";
+  const clientUrl = process.env.CLIENT_URL;
   const resetLink = `${clientUrl}/reset-password?token=${resetToken}`;
 
   sendEmail(
