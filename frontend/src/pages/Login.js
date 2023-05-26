@@ -34,11 +34,7 @@ const Login = () => {
           <h1>
             <p></p>
           </h1>
-          <form
-            aria-label="log in"
-            className="login"
-            onSubmit={handleSubmit}
-          >
+          <form aria-label="log in" className="login" onSubmit={handleSubmit}>
             <h4>User Login</h4>
             <label>email address:</label>
             <input
@@ -60,10 +56,26 @@ const Login = () => {
               value={credentials.password}
               onChange={handleChange}
             />
-            <button type="button" className="forgot--password" onClick={forgotPassword}>
+            <button
+              type="button"
+              className="forgot--password"
+              onClick={forgotPassword}
+            >
               Forgot the password?
             </button>
-            <button className="log-in--form--btn" disabled={isLoading}>Log in</button>
+            <button className="log-in--form--btn" disabled={isLoading}>
+              Log in
+            </button>
+            {isLoading && (
+              <div className="loader--container">
+                <div className="lds-ellipsis">
+                  <div></div>
+                  <div></div>
+                  <div></div>
+                  <div></div>
+                </div>
+              </div>
+            )}
             {error && (
               <div role="alert" className="error">
                 {error}
@@ -73,7 +85,7 @@ const Login = () => {
         </div>
 
         {forgotPasswordForm && (
-           <Suspense>
+          <Suspense>
             <ForgotPasswordForm forgotPassword={forgotPassword} />
           </Suspense>
         )}
