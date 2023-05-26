@@ -21,7 +21,7 @@ const Signup = () => {
     };
 
     return (
-        <div className="form--container">
+        <div className="form--container--signup">
           <h1>
             <p></p>
           </h1>

@@ -32,7 +32,7 @@ export default function EditWorkout(props){
    ); 
  }
     return (
-      <div className="form--container">
+      <div className="form--container--edit--workout--form">
         <form
           className="edit--form"
           aria-label={`edit ${props.title} ${

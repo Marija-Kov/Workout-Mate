@@ -43,7 +43,7 @@ export default function WorkoutForm({hideForm, spreadPages, flipPage, total, lim
     });
   }
   return (
-    <div className="form--container">
+    <div className="form--container--workout--form">
     <form className="workout--form" aria-label="workout form" onSubmit={handleSubmit}>
       <button
         aria-label="close form"
