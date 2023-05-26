@@ -8,12 +8,24 @@ import { AuthContextProvider } from './context/AuthContext'
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <React.Suspense fallback={<h1>Please wait...</h1>}>
-    <AuthContextProvider>
-     <WorkoutContextProvider>
-      <App />
-     </WorkoutContextProvider>
-    </AuthContextProvider>
+    <React.Suspense
+      fallback={
+        <div className="fallback--animation--container">
+          <h1>Please wait</h1>
+            <div className="lds-ellipsis">
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+          </div>
+        </div>
+      }
+    >
+      <AuthContextProvider>
+        <WorkoutContextProvider>
+          <App />
+        </WorkoutContextProvider>
+      </AuthContextProvider>
     </React.Suspense>
   </React.StrictMode>
 );
