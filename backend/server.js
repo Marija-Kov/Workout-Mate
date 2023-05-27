@@ -3,6 +3,8 @@ require('dotenv').config();
 
 const cors = require('cors');
 
+const rateLimiters = require("./middleware/rateLimiters")
+
 const mongoose = require('mongoose');
 mongoose.set("strictQuery", false);
 
@@ -34,6 +36,10 @@ mongoose.connect(process.env.MONGO_URI, {useNewUrlParser: true, useUnifiedTopolo
 }).catch(err => {
     console.log(`ERROR: ${err}`)
 });
+
+app.use('/api/users', rateLimiters.api_users);
+app.use('/api/reset-password', rateLimiters.api_reset_password);
+app.use("/api/workouts", rateLimiters.api_workouts);
 
 app.use('/api/workouts', workoutRoutes);
 app.use('/api/users', userRoutes);
