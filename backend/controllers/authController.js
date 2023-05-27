@@ -3,7 +3,7 @@ const Workout = require("../models/workoutModel");
 const jwt = require('jsonwebtoken');
 const sendEmail = require("../middleware/sendEmail");
 
-const expiresIn = process.env.AUTH_TOKEN_EXPIRES_IN;
+const expiresIn = Number(process.env.AUTH_TOKEN_EXPIRES_IN);
 const createToken = (_id) => {
 return jwt.sign({_id}, process.env.SECRET, {expiresIn: expiresIn})
 }
@@ -19,7 +19,7 @@ module.exports.signup_post = async (req, res) => {
  await user.save();
 
  const registeredUsers = await User.find({});
- const limit = process.env.NODE_ENV !== "test" ? process.env.MAX_USERS : 5;
+ const limit = process.env.NODE_ENV !== "test" ? Number(process.env.MAX_USERS) : 5;
  if (registeredUsers.length >= limit) {
    const id = registeredUsers[0]._id;
    await User.findOneAndDelete({ _id: id });
