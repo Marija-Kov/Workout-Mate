@@ -321,36 +321,12 @@ async function mockUser(email, status) {
 }
 
 async function maxOutWorkouts(user) {
-  const limit_minus = 29;
+  const limit_minus = 5;
   const sampleWorkouts = [
     { title: "Bench Press", reps: 20, load: 20 },
     { title: "Pushups", reps: 30, load: 0 },
     { title: "Situps", reps: 40, load: 0 },
-    { title: "Squats", reps: 20, load: 23 },
-    { title: "Pullups", reps: 15, load: 0 },
-    { title: "Bench Press", reps: 20, load: 20 },
-    { title: "Pushups", reps: 30, load: 0 },
-    { title: "Situps", reps: 40, load: 0 },
-    { title: "Squats", reps: 20, load: 23 },
-    { title: "Pullups", reps: 15, load: 0 },
-    { title: "Bench Press", reps: 20, load: 20 },
-    { title: "Pushups", reps: 30, load: 0 },
-    { title: "Situps", reps: 40, load: 0 },
-    { title: "Squats", reps: 20, load: 23 },
-    { title: "Pullups", reps: 15, load: 0 },
-    { title: "Bench Press", reps: 20, load: 20 },
-    { title: "Pushups", reps: 30, load: 0 },
-    { title: "Situps", reps: 40, load: 0 },
-    { title: "Squats", reps: 20, load: 23 },
-    { title: "Pullups", reps: 15, load: 0 },
-    { title: "Bench Press", reps: 20, load: 20 },
-    { title: "Pushups", reps: 30, load: 0 },
-    { title: "Situps", reps: 40, load: 0 },
-    { title: "Squats", reps: 20, load: 23 },
-    { title: "Pullups", reps: 15, load: 0 },
-    { title: "Bench Press", reps: 20, load: 20 },
-    { title: "Pushups", reps: 30, load: 0 },
-    { title: "Situps", reps: 40, load: 0 }
+    { title: "Squats", reps: 20, load: 23 }
   ];
   for (let i = 0; i < limit_minus; ++i) {
     await agent

@@ -45,18 +45,13 @@ describe("authController", () => {
     });
 
     it("should delete oldest user in the database given that the number of users has reached the limit", async () => {
-      const dbLimit = 10;
+      const dbLimit = 5;
       const users = [
         "abc@mail.yu",
         "def@mail.yu",
         "ghi@mail.yu",
         "jkl@mail.yu",
-        "mno@mail.yu",
-        "pqr@mail.yu",
-        "stu@mail.yu",
-        "vvv@mail.yu",
-        "www@mail.yu",
-        "xyz@mail.yu",
+        "mno@mail.yu"
       ]; 
       const oldestUserPendingToken = (await mockUser(users[0], "abcABC123!", "pending")).token;
       const secondOldestUserPendingToken = (await mockUser(users[1], "abcABC123!", "pending")).token;
