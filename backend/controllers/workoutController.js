@@ -36,9 +36,10 @@ const addItem = async (req, res) => {
     const {title, reps, load} = req.body;
     const user_id = req.user._id;
     const allWorkoutsByUser = await Workout.find({ user_id });
-    if(allWorkoutsByUser.length >= 30){
+    const limit = process.env.NODE_ENV === "test" ? 6 : process.env.MAX_WORKOUTS_PER_USER;
+    if (allWorkoutsByUser.length >= limit) {
       const id = allWorkoutsByUser[0]._id;
-      await Workout.findOneAndDelete({_id: id});
+      await Workout.findOneAndDelete({ _id: id });
     }
   try {
    const workout = await Workout.create({title: title.trim().toLowerCase(), reps, load, user_id});
