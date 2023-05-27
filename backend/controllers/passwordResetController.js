@@ -20,7 +20,8 @@ module.exports.reset_password_request = async (req, res) => {
 
   const resetToken = crypto.randomBytes(32).toString("hex");
   user.resetPasswordToken = resetToken;
-  user.resetPasswordTokenExpires = Date.now() + 3600000;
+  const expiresIn = process.env.NODE_ENV !== "test" ? process.env.RESET_PASSWORD_TOKEN_EXPIRES_IN : 3600;
+  user.resetPasswordTokenExpires = Date.now() + expiresIn;
   await user.save();
   
   const clientUrl = process.env.CLIENT_URL;
