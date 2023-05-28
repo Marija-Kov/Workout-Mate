@@ -705,6 +705,7 @@ form.signup h4 {
 .add--workout {
   height: 40px;
   max-width: 140px;
+  margin-top: 10px;
   background: var(--primary);
   border: solid 1px var(--primary);
   border-radius: 50px;
@@ -1060,7 +1061,10 @@ form.signup h4 {
 /* Success and error messages */
 
 div.error {
-  margin-top: 20px;;
+  grid-area: space;
+  z-index: 3;
+  max-width: 400px;
+  margin-top: 20px;
   padding: 5px;
   background: var(--error--bkg);
   border: 1px solid var(--error);
