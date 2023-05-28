@@ -152,6 +152,7 @@ describe("workoutController", () => {
              ISO8601ToMilliseconds(firstDateOnTheQueriedPage)
            ).toBeLessThan(ISO8601ToMilliseconds(lastDateOnTheFirstPage));
         });
+
     })
 
     describe("PATCH /api/workouts/:id", () => {
@@ -209,6 +210,7 @@ describe("workoutController", () => {
              expect(res.reps).toEqual(updateWorkout.body.reps);
              expect(res.updatedAt).not.toMatch(user.workouts[1].updatedAt);
         });
+
     });
 
     describe("DELETE /api/workouts/:id", () => {
@@ -275,6 +277,23 @@ describe("workoutController", () => {
         expect(res.deletedCount).toEqual(user.workouts.length)
       })
 
+
+    });
+
+    describe("ANY /api/workouts/", () => {
+      
+       it("should respond with error if too many requests were sent in a short amount of time", async () => {
+         const user = await mockUser("icey@ploppers.com", "logged-in");
+         await maxOutRequests(user);
+         const tooManyRequests = (
+           await agent
+             .get("/api/workouts/")
+             .set("Authorization", `Bearer ${user.token}`)
+         )._body.error;
+
+        expect(tooManyRequests).toBeTruthy();
+       });        
+      
     });
 
 });
@@ -321,7 +340,7 @@ async function mockUser(email, status) {
 }
 
 async function maxOutWorkouts(user) {
-  const limit_minus = 5;
+  const limit_minus = Number(process.env.TEST_MAX_WORKOUTS_PER_USER);
   const sampleWorkouts = [
     { title: "Bench Press", reps: 20, load: 20 },
     { title: "Pushups", reps: 30, load: 0 },
@@ -335,6 +354,15 @@ async function maxOutWorkouts(user) {
       .set("Authorization", `Bearer ${user.token}`);
   }
 
+}
+
+async function maxOutRequests(user) {
+  const max = Number(process.env.TEST_MAX_API_WORKOUTS_REQS);
+  for (let i = 0; i < max; ++i) {
+    await agent
+      .get("/api/workouts/")
+      .set("Authorization", `Bearer ${user.token}`);
+  }
 }
 
 function ISO8601ToMilliseconds(ISO8601){

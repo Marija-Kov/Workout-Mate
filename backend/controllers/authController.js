@@ -19,7 +19,10 @@ module.exports.signup_post = async (req, res) => {
  await user.save();
 
  const registeredUsers = await User.find({});
- const limit = process.env.NODE_ENV !== "test" ? Number(process.env.MAX_USERS) : 5;
+ const limit =
+   process.env.NODE_ENV !== "test"
+     ? Number(process.env.MAX_USERS)
+     : Number(process.env.TEST_MAX_USERS);
  if (registeredUsers.length >= limit) {
    const id = registeredUsers[0]._id;
    await User.findOneAndDelete({ _id: id });
