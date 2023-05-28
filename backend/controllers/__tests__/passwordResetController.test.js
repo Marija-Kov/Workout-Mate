@@ -61,6 +61,20 @@ describe("passwordResetController", () => {
           expect(res).toHaveProperty("success", "Password reset successfully");
         });
     });
+
+    describe("ANY /api/reset-password", () => {
+
+      it("should respond with error if too many requests were sent in a short amount of time", async () => {
+        const max = Number(process.env.TEST_MAX_API_RESET_PASSWORD_REQS);
+        for (let i = 0; i <= max; ++i){
+          await mockPasswordResetResponse_POST("a@b.c", "registered")
+        }
+        const res = await mockPasswordResetResponse_POST("a@b.c", "registered");
+        expect(res.error).toBeTruthy();
+        expect(res.error).toMatch(/too many requests/i);
+      });
+
+    });
 });
 
 async function mockPasswordResetResponse_POST(email, status){
