@@ -20,7 +20,10 @@ module.exports.reset_password_request = async (req, res) => {
 
   const resetToken = crypto.randomBytes(32).toString("hex");
   user.resetPasswordToken = resetToken;
-const expiresIn = process.env.NODE_ENV !== "test" ? Number(process.env.RESET_PASSWORD_TOKEN_EXPIRES_IN) : 3600;
+const expiresIn =
+  process.env.NODE_ENV !== "test"
+    ? Number(process.env.RESET_PASSWORD_TOKEN_EXPIRES_IN)
+    : Number(process.env.TEST_RESET_PASSWORD_TOKEN_EXPIRES_IN);
   user.resetPasswordTokenExpires = Date.now() + expiresIn;
   await user.save();
   
