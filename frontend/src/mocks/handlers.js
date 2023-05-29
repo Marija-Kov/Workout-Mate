@@ -1,16 +1,19 @@
 import { rest } from "msw";
 
 export const handlers = [
-  rest.post("/api/users/signup", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
-        success: "Account created and pending confirmation",
-      })
-    );
-  }),
+  rest.post(
+    `${process.env.REACT_APP_API}/api/users/signup`,
+    (req, res, ctx) => {
+      return res(
+        ctx.status(200),
+        ctx.json({
+          success: "Account created and pending confirmation",
+        })
+      );
+    }
+  ),
 
-  rest.get("/api/users/*", (req, res, ctx) => {
+  rest.get(`${process.env.REACT_APP_API}/api/users/*`, (req, res, ctx) => {
     return res(
       ctx.status(200),
       ctx.json({
@@ -19,21 +22,24 @@ export const handlers = [
     );
   }),
 
-  rest.post("/api/users/login", async (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
-        id: "userid",
-        email: "keech@mail.yu",
-        username: undefined,
-        profileImg: undefined,
-        token: "authorizationToken",
-        tokenExpires: Date.now() + 3600000,
-      })
-    );
-  }),
+  rest.post(
+    `${process.env.REACT_APP_API}/api/users/login`,
+    async (req, res, ctx) => {
+      return res(
+        ctx.status(200),
+        ctx.json({
+          id: "userid",
+          email: "keech@mail.yu",
+          username: undefined,
+          profileImg: undefined,
+          token: "authorizationToken",
+          tokenExpires: Date.now() + 3600000,
+        })
+      );
+    }
+  ),
 
-  rest.patch("/api/workouts/*", (req, res, ctx) => {
+  rest.patch(`${process.env.REACT_APP_API}/api/workouts/*`, (req, res, ctx) => {
     return res(
       ctx.status(200),
       ctx.json({
@@ -44,7 +50,7 @@ export const handlers = [
     );
   }),
 
-  rest.delete("/api/workouts", (req, res, ctx) => {
+  rest.delete(`${process.env.REACT_APP_API}/api/workouts`, (req, res, ctx) => {
     return res(
       ctx.status(200),
       ctx.json({
@@ -53,16 +59,19 @@ export const handlers = [
     );
   }),
 
-  rest.delete("/api/workouts/*", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
-        id: "mockWorkoutId",
-      })
-    );
-  }),
+  rest.delete(
+    `${process.env.REACT_APP_API}/api/workouts/*`,
+    (req, res, ctx) => {
+      return res(
+        ctx.status(200),
+        ctx.json({
+          id: "mockWorkoutId",
+        })
+      );
+    }
+  ),
 
-  rest.post("/api/workouts", (req, res, ctx) => {
+  rest.post(`${process.env.REACT_APP_API}/api/workouts`, (req, res, ctx) => {
     return res(
       ctx.status(200),
       ctx.json({
@@ -73,7 +82,7 @@ export const handlers = [
     );
   }),
 
-  rest.get("/api/workouts/*", (req, res, ctx) => {
+  rest.get(`${process.env.REACT_APP_API}/api/workouts/*`, (req, res, ctx) => {
     return res(
       ctx.status(200),
       ctx.json({
@@ -85,7 +94,7 @@ export const handlers = [
     );
   }),
 
-  rest.patch("/api/users/*", (req, res, ctx) => {
+  rest.patch(`${process.env.REACT_APP_API}/api/users/*`, (req, res, ctx) => {
     return res(
       ctx.status(200),
       ctx.json({
@@ -94,7 +103,7 @@ export const handlers = [
     );
   }),
 
-  rest.delete("/api/users/*", (req, res, ctx) => {
+  rest.delete(`${process.env.REACT_APP_API}/api/users/*`, (req, res, ctx) => {
     return res(
       ctx.status(200),
       ctx.json({
@@ -103,21 +112,27 @@ export const handlers = [
     );
   }),
 
-  rest.post("/api/reset-password", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
-        success: "Reset link sent to inbox",
-      })
-    );
-  }),
+  rest.post(
+    `${process.env.REACT_APP_API}/api/reset-password`,
+    (req, res, ctx) => {
+      return res(
+        ctx.status(200),
+        ctx.json({
+          success: "Reset link sent to inbox",
+        })
+      );
+    }
+  ),
 
-  rest.patch("/api/reset-password/*", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
-        success: "Password reset successfully",
-      })
-    );
-  }),
+  rest.patch(
+    `${process.env.REACT_APP_API}/api/reset-password/*`,
+    (req, res, ctx) => {
+      return res(
+        ctx.status(200),
+        ctx.json({
+          success: "Password reset successfully",
+        })
+      );
+    }
+  ),
 ];
