@@ -4,19 +4,16 @@ import useResetPassword from '../hooks/useResetPassword';
 
 export default function ResetPassword(){
     const { resetPassword, error, success } = useResetPassword();
-    const [password, setPassword] = React.useState('');
-    const [confirmPassword, setConfirmPassword] = React.useState('');
-    const [token, setToken] = React.useState(null);
-
-    React.useEffect(()=> {
-      const start = window.location.href.indexOf('=')+1;
-      setToken(window.location.href.slice(start))
-    }, [])
+    const password = React.useRef();
+    const confirmPassword = React.useRef();
 
     const handleSubmit = async (e) => {
       e.preventDefault();
-      await resetPassword(token, password, confirmPassword)
+      const start = window.location.href.indexOf('=')+1;
+      const token = window.location.href.slice(start);
+      await resetPassword(token, password.current.value, confirmPassword.current.value)
     }
+
     return (
       <div className="form--container--reset--password">
         <form className="reset--password" onSubmit={handleSubmit}>
@@ -25,24 +22,23 @@ export default function ResetPassword(){
             type="password"
             id="new-password"
             aria-label="new password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            ref={password}
           />
           <label>Confirm new password:</label>
           <input
             type="password"
             id="confirm-new-password"
             aria-label="confirm new password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
+            ref={confirmPassword}
           />
           {!success && <button>Save</button>}
           {error && (
             <div role="alert" className="error">
               {error}.
-            {error.match(/expired/i) && <p><Link to="/login">Go back</Link> to resend the request.</p>}
+           
             </div>
           )}
+          {error && error.match(/invalid/i) && <p><Link to="/login">Go back</Link> to resend the request.</p>}
           {success && (
             <div role="alert" className="success">
               {success}

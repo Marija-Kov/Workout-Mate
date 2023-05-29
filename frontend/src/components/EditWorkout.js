@@ -4,9 +4,9 @@ import useEditWorkout from '../hooks/useEditWorkout';
 
 export default function EditWorkout(props){
   const {editWorkout, error} = useEditWorkout();
-  const [title, setTitle] = React.useState(props.title);
-  const [reps, setReps] = React.useState(props.reps);
-  const [load, setLoad] = React.useState(props.load);
+  const title = React.useRef();
+  const reps = React.useRef();
+  const load = React.useRef();
   const [emptyFields, setEmptyFields] = React.useState([]);
 
  const closeEditForm = () => props.showEdit();
@@ -24,9 +24,9 @@ export default function EditWorkout(props){
    await editWorkout(
      props.id,
      {
-       title: title.trim().toLowerCase(),
-       reps: reps,
-       load: load,
+       title: title.current.value.trim().toLowerCase(),
+       reps: reps.current.value,
+       load: load.current.value,
      },
      closeEditForm
    ); 
@@ -55,8 +55,8 @@ export default function EditWorkout(props){
             name="title"
             id="title"
             aria-label="workout title"
-            onChange={(e) => setTitle(e.target.value)}
-            value={title}
+            defaultValue={props.title}
+            ref={title}
             className={emptyFields.includes("title") ? "error" : ""}
           />
           <label>number of reps:</label>
@@ -65,8 +65,8 @@ export default function EditWorkout(props){
             name="reps"
             id="reps"
             aria-label="number of reps"
-            onChange={(e) => setReps(e.target.value)}
-            value={reps}
+            defaultValue={props.reps}
+            ref={reps}
             className={emptyFields.includes("reps") ? "error" : ""}
           />
           <label>load (kg):</label>
@@ -75,8 +75,8 @@ export default function EditWorkout(props){
             name="load"
             id="load"
             aria-label="load in kg"
-            onChange={(e) => setLoad(e.target.value)}
-            value={load}
+            defaultValue={props.load}
+            ref={load}
             className={emptyFields.includes("load") ? "error" : ""}
           />
           <button

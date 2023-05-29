@@ -3,15 +3,19 @@ import { useCreateWorkout } from '../hooks/useCreateWorkout';
 
 export default function WorkoutForm({hideForm, spreadPages, flipPage, total, limit, getItems}){
   const { createWorkout, error } = useCreateWorkout();
-  const [workout, setWorkout] = React.useState({
-    title: "",
-    load: "",
-    reps: "",
-  });
+  const title = React.useRef();
+  const load = React.useRef();
+  const reps = React.useRef();
+
   const [emptyFields, setEmptyFields] = React.useState([]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const workout = {
+      title: title.current.value,
+      load: load.current.value,
+      reps: reps.current.value,
+    };
     await createWorkout(workout);
     if (!workout.title) {
       setEmptyFields((prev) => ["title", ...prev]);
@@ -29,19 +33,9 @@ export default function WorkoutForm({hideForm, spreadPages, flipPage, total, lim
      spreadPages(total, limit);
      flipPage(1)
      setEmptyFields([]);
-     setWorkout({ title: "", load: "", reps: "" });
     }   
   };
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setWorkout((prev) => {
-      return {
-        ...prev,
-        [name]: value,
-      };
-    });
-  }
   return (
     <div className="form--container--workout--form">
     <form className="workout--form" aria-label="workout form" onSubmit={handleSubmit}>
@@ -60,8 +54,7 @@ export default function WorkoutForm({hideForm, spreadPages, flipPage, total, lim
         id="title"
         placeholder="ex: bench press"
         aria-label="workout title"
-        onChange={handleChange}
-        value={workout.title}
+        ref={title}
         className={emptyFields.includes("title") ? "error" : ""}
       />
       <label>number of reps:</label>
@@ -70,8 +63,7 @@ export default function WorkoutForm({hideForm, spreadPages, flipPage, total, lim
         name="reps"
         id="reps"
         aria-label="number of reps"
-        onChange={handleChange}
-        value={workout.reps}
+        ref={reps}
         className={emptyFields.includes("reps") ? "error" : ""}
       />
       <label>load (kg):</label>
@@ -80,8 +72,7 @@ export default function WorkoutForm({hideForm, spreadPages, flipPage, total, lim
         name="load"
         id="load"
         aria-label="load in kg"
-        onChange={handleChange}
-        value={workout.load}
+        ref={load}
         className={emptyFields.includes("load") ? "error" : ""}
       />
         <button className="workout--form--btn" aria-label="submit workout button">Add workout</button>

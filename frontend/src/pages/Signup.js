@@ -2,23 +2,15 @@ import React from 'react';
 import { useSignup } from '../hooks/useSignup';
 
 const Signup = () => {
-    const [credentials, setCredentials] = React.useState({email:"", password:""});
+    const email = React.useRef();
+    const password = React.useRef();
     const {signup, isLoading, error, verificationNeeded} = useSignup();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        const credentials = { email: email.current.value, password: password.current.value };
         await signup(credentials);
     }
-
-    const handleChange = (e) => {
-      const { name, value } = e.target;
-      setCredentials((prev) => {
-        return {
-          ...prev,
-          [name]: value,
-        };
-      });
-    };
 
     return (
       <div className="form--container--signup">
@@ -38,8 +30,7 @@ const Signup = () => {
             name="email"
             placeholder="email address"
             aria-label="email address"
-            value={credentials.email}
-            onChange={handleChange}
+            ref={email}
           />
           <label>password:</label>
           <input
@@ -48,8 +39,7 @@ const Signup = () => {
             name="password"
             placeholder="password"
             aria-label="password"
-            value={credentials.password}
-            onChange={handleChange}
+            ref={password}
           />
           <button className="sign-up--form--btn" disabled={isLoading}>
             Sign up
