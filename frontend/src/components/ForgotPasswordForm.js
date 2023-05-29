@@ -4,11 +4,11 @@ import useSendPasswordResetRequest from '../hooks/useSendPasswordResetRequest'
 export default function ForgotPasswordForm({ forgotPassword }) {
   const { sendPasswordResetRequest, error, success } =
     useSendPasswordResetRequest();
-  const [email, setEmail] = React.useState("");
+  const email = React.useRef();
 
   const sendEmail = async (e) => {
     e.preventDefault();
-    await sendPasswordResetRequest(email)
+    await sendPasswordResetRequest(email.current.value)
   };
 
   return (
@@ -26,11 +26,10 @@ export default function ForgotPasswordForm({ forgotPassword }) {
         <input
           name="email"
           id="email"
-          type="email"
+          type="text"
           placeholder="email address"
           aria-label="email address"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          ref={email}
         />
         <button aria-label="submit">Proceed</button>
         {success && (

@@ -6,12 +6,14 @@ const ForgotPasswordForm = React.lazy(() =>
 );
 
 const Login = () => {
-    const [credentials, setCredentials] = React.useState({email:'', password:''})
+    const email = React.useRef();
+    const password = React.useRef();
     const {login, isLoading, error} = useLogin();
     const [forgotPasswordForm, setForgotPasswordForm] = React.useState(false);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        const credentials = { email: email.current.value, password: password.current.value };
         await login(credentials);
     }
 
@@ -19,15 +21,6 @@ const Login = () => {
       setForgotPasswordForm(prev=>!prev)
     }
 
-      const handleChange = (e) => {
-        const { name, value } = e.target;
-        setCredentials((prev) => {
-          return {
-            ...prev,
-            [name]: value,
-          };
-        });
-      };
     return (
       <>
         <div className="form--container--login">
@@ -43,8 +36,7 @@ const Login = () => {
               name="email"
               placeholder="email address"
               aria-label="email address"
-              value={credentials.email}
-              onChange={handleChange}
+              ref={email}
             />
             <label>password:</label>
             <input
@@ -53,8 +45,7 @@ const Login = () => {
               name="password"
               placeholder="password"
               aria-label="password"
-              value={credentials.password}
-              onChange={handleChange}
+              ref={password}
             />
             <button
               type="button"

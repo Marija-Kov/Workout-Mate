@@ -5,6 +5,10 @@ export default function useSendPasswordResetRequest() {
   const [success, setSuccess] = React.useState(null);
 
   const sendPasswordResetRequest = async (email) => {
+    if(!email.match(/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)){
+      setError("Please enter a valid email address")
+      return
+    }
     const response = await fetch(`${process.env.REACT_APP_API}/api/reset-password`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
