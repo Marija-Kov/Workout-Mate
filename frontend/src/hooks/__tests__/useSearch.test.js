@@ -72,7 +72,7 @@ describe("useSearch()", () => {
 
   it("should set error to truthy if search was not successful", async () => {
     server.use(
-      rest.get("/api/workouts/*", (req, res, ctx) => {
+      rest.get(`${process.env.REACT_APP_API}/api/workouts/*`, (req, res, ctx) => {
         return res(
           ctx.status(500),
           ctx.json({

@@ -51,7 +51,7 @@ describe("useDeleteUser()", () => {
 
     it("should set error state to 'true' if user id wasn't found", async () => {
       server.use(
-        rest.delete("/api/users/*", (req, res, ctx) => {
+        rest.delete(`${process.env.REACT_APP_API}/api/users/*`, (req, res, ctx) => {
           return res(
             ctx.status(400),
             ctx.json({

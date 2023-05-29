@@ -89,7 +89,7 @@ describe("useCreateWorkout()", () => {
 
   it("should return error state set to 'true' given that input was invalid", async () => {
     server.use(
-      rest.post("/api/workouts", (req, res, ctx) => {
+      rest.post(`${process.env.REACT_APP_API}/api/workouts`, (req, res, ctx) => {
         return res(
           ctx.status(400),
           ctx.json({

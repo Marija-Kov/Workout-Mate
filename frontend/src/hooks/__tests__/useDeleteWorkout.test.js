@@ -83,7 +83,7 @@ describe("useDeleteAllWorkouts()", () => {
 
     it("should change error state to 'true' when deleteWorkout was run with invalid workout id", async () => {
        server.use(
-         rest.delete("/api/workouts/*", (req, res, ctx) => {
+         rest.delete(`${process.env.REACT_APP_API}/api/workouts/*`, (req, res, ctx) => {
            return res(
              ctx.status(404),
              ctx.json({

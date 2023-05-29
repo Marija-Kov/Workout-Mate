@@ -15,7 +15,7 @@ describe("useResetPassword()", () => {
 
   it("should set error state to truthy and success to falsy if resetPassword was run with bad input", async () => {
     server.use(
-      rest.patch("/api/reset-password/*", (req, res, ctx) => {
+      rest.patch(`${process.env.REACT_APP_API}/api/reset-password/*`, (req, res, ctx) => {
         return res(
           ctx.status(400),
           ctx.json({

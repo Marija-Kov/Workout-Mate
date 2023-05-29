@@ -12,7 +12,7 @@ describe("useConfirmAccount()", () => {
 
  it("should set error state to true given that the server responded with an error", async () => {
     server.use(
-      rest.get("api/users/:accountConfirmationToken", (req, res, ctx) => {
+      rest.get(`${process.env.REACT_APP_API}/api/users/:accountConfirmationToken`, (req, res, ctx) => {
         return res(
           ctx.status(404),
           ctx.json({

@@ -109,14 +109,17 @@ describe("useEditWorkout()", () => {
     it("should set error state to 'true' given that input was invalid", async () => {
       const mockUpdateWorkout = { title: "", load: 15 };
       server.use(
-        rest.patch("/api/workouts/*", (req, res, ctx) => {
-          return res(
-            ctx.status(400),
-            ctx.json({
-              error: "all fields must be filled",
-            })
-          );
-        })
+        rest.patch(
+          `${process.env.REACT_APP_API}/api/workouts/*`,
+          (req, res, ctx) => {
+            return res(
+              ctx.status(400),
+              ctx.json({
+                error: "all fields must be filled",
+              })
+            );
+          }
+        )
       );
       const wrapper = ({ children }) => {
         return (
