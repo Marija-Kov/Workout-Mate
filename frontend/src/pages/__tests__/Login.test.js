@@ -76,7 +76,7 @@ describe("<Login />", () => {
 
   it("should render error element once 'log in' button is clicked given that server responds with error", async () => {
     server.use(
-      rest.post("api/users/login", (req, res, ctx) => {
+      rest.post(`${process.env.REACT_APP_API}/api/users/login`, (req, res, ctx) => {
         return res(
           ctx.status(400),
           ctx.json({
