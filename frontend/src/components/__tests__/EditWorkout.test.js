@@ -105,38 +105,7 @@ describe("<EditWorkout/>", () => {
     expect(loadInput).toHaveValue(22);
   });
 
-  it("should respond with error message when user attempts to submit edit form with invalid input value(s)", async () => {
-    user.setup();
-    server.use(
-      rest.patch(`${process.env.REACT_APP_API}/api/workouts/*`, (req, res, ctx) => {
-        return res(
-          ctx.status(400),
-          ctx.json({
-           error: "Invalid input"
-          })
-        );
-      })
-    );
-    render(
-      <AuthContext.Provider value={{ user: mockUser }}>
-        <WorkoutContext.Provider value={{ workouts: mockWorkouts }}>
-          <EditWorkout />
-        </WorkoutContext.Provider>
-      </AuthContext.Provider>
-    );
-    const titleInput = await screen.findByLabelText(/workout title/i);
-    const submitEditedWorkoutBtn = await screen.findByLabelText(
-      /submit edited workout/i
-    );
-    await user.type(titleInput, "arm curls");
-    await user.click(submitEditedWorkoutBtn);
-    const error = await screen.findByRole("alert");
-    expect(error).toHaveAttribute("class", "error");
-    expect(error).toBeInTheDocument();
-    expect(error.textContent).toMatch(/empty fields/i);
-  });
-
-  it("should not show error on submit given that all input values are valid", async () => {
+  it("should submit updated input fields given that user is authenticated", async () => {
     user.setup();
     render(
       <AuthContext.Provider value={{ user: mockUser, dispatch: () => {} }}>
@@ -151,12 +120,12 @@ describe("<EditWorkout/>", () => {
     const submitEditedWorkoutBtn = await screen.findByLabelText(
       /submit edited workout/i
     );
-    await user.type(titleInput, "arm curls");
+    await user.type(titleInput, "  ");
     await user.type(repsInput, "30");
     await user.type(loadInput, "15");
     await user.click(submitEditedWorkoutBtn);
     const error = screen.queryAllByRole("alert");
-    expect(error.length).toBe(0);
+    expect(error.length).toEqual(0);
   });
 
   it("should respond with error message if authentication token expired and user attempts to submit", async () => {

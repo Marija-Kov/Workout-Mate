@@ -7,29 +7,21 @@ export default function EditWorkout(props){
   const title = React.useRef();
   const reps = React.useRef();
   const load = React.useRef();
-  const [emptyFields, setEmptyFields] = React.useState([]);
 
  const closeEditForm = () => props.showEdit();
- const handleUpdate = async (e) => {    
+ const handleUpdate = async (e) => {  
+   const payload = {};
+   if (title.current.value && title.current.value.trim().toLowerCase()) {
+     payload.title = title.current.value.trim().toLowerCase();
+   }  
+   if(reps.current.value){
+    payload.reps = reps.current.value;
+   }
+   if(load.current.value){
+    payload.load = reps.current.value;
+   }
    e.preventDefault();
-     if (!title){
-      setEmptyFields(prev => ['title', ...prev])
-    }
-    if (!reps){
-      setEmptyFields(prev => ['reps', ...prev])
-    }
-    if (load === (undefined || null)) {
-      setEmptyFields((prev) => ["load", ...prev]);
-    }
-   await editWorkout(
-     props.id,
-     {
-       title: title.current.value.trim().toLowerCase(),
-       reps: reps.current.value,
-       load: load.current.value,
-     },
-     closeEditForm
-   ); 
+   await editWorkout(props.id, payload, closeEditForm); 
  }
     return (
       <div className="form--container--edit--workout--form">
@@ -57,7 +49,6 @@ export default function EditWorkout(props){
             aria-label="workout title"
             defaultValue={props.title}
             ref={title}
-            className={emptyFields.includes("title") ? "error" : ""}
           />
           <label>number of reps:</label>
           <input
@@ -67,7 +58,6 @@ export default function EditWorkout(props){
             aria-label="number of reps"
             defaultValue={props.reps}
             ref={reps}
-            className={emptyFields.includes("reps") ? "error" : ""}
           />
           <label>load (kg):</label>
           <input
@@ -77,7 +67,6 @@ export default function EditWorkout(props){
             aria-label="load in kg"
             defaultValue={props.load}
             ref={load}
-            className={emptyFields.includes("load") ? "error" : ""}
           />
           <button
             className="edit--form--btn"
