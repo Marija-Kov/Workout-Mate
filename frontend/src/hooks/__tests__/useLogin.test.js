@@ -14,14 +14,17 @@ describe("useLogin()", () => {
 
   it("should set error state to true given that the server responded with an error", async () => {
     server.use(
-      rest.post("api/users/login", (req, res, ctx) => {
-        return res(
-          ctx.status(400),
-          ctx.json({
-            error: "Invalid input or user not confirmed",
-          })
-        );
-      })
+      rest.post(
+        `${process.env.REACT_APP_API}/api/users/login`,
+        (req, res, ctx) => {
+          return res(
+            ctx.status(400),
+            ctx.json({
+              error: "Invalid input or user not confirmed",
+            })
+          );
+        }
+      )
     );
     const wrapper = AuthContextProvider;
     const { result } = renderHook(useLogin, { wrapper });

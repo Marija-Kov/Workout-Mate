@@ -108,7 +108,7 @@ describe("<EditWorkout/>", () => {
   it("should respond with error message when user attempts to submit edit form with invalid input value(s)", async () => {
     user.setup();
     server.use(
-      rest.patch("/api/workouts/*", (req, res, ctx) => {
+      rest.patch(`${process.env.REACT_APP_API}/api/workouts/*`, (req, res, ctx) => {
         return res(
           ctx.status(400),
           ctx.json({
@@ -161,7 +161,7 @@ describe("<EditWorkout/>", () => {
 
   it("should respond with error message if authentication token expired and user attempts to submit", async () => {
     server.use(
-      rest.patch("/api/workouts/*", (req, res, ctx) => {
+      rest.patch(`${process.env.REACT_APP_API}/api/workouts/*`, (req, res, ctx) => {
         return res(
           ctx.status(401),
           ctx.json({ error: "Not authorized, token expired."})

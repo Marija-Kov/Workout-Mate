@@ -60,7 +60,7 @@ describe("useUpdateUser()", () => {
 
   it("should set error state to truthy and success to falsy if updateUser was run with invalid input", async () => {
     server.use(
-      rest.patch("/api/users/*", (req, res, ctx) => {
+      rest.patch(`${process.env.REACT_APP_API}/api/users/*`, (req, res, ctx) => {
         return res(ctx.status(400));
       })
     );

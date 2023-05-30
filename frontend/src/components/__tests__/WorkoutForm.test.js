@@ -103,7 +103,7 @@ describe("<WorkoutForm/>", () => {
 
   it("should respond with error message when user attempts to submit form with invalid input value(s)", async () => {
     server.use(
-      rest.post("/api/workouts", (req, res, ctx) => {
+      rest.post(`${process.env.REACT_APP_API}/api/workouts`, (req, res, ctx) => {
         return res(
           ctx.status(400),
           ctx.json({
@@ -134,7 +134,7 @@ describe("<WorkoutForm/>", () => {
 
   it("should respond with error message if authentication token expired and user attempts to submit", async () => {
     server.use(
-      rest.post("/api/workouts", (req, res, ctx) => {
+      rest.post(`${process.env.REACT_APP_API}/api/workouts`, (req, res, ctx) => {
         return res(
           ctx.status(401),
           ctx.json({

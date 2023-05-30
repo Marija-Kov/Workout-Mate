@@ -44,7 +44,7 @@ describe("<ResetPassword />", () => {
 
   it("should respond with error message if passwords are not matching", async () => {
     server.use(
-      rest.patch("/api/reset-password/*", (req, res, ctx) => {
+      rest.patch(`${process.env.REACT_APP_API}/api/reset-password/*`, (req, res, ctx) => {
         return res(
           ctx.status(400),
           ctx.json({
@@ -73,7 +73,7 @@ describe("<ResetPassword />", () => {
 
   it("should respond with error message if new password is not strong enough", async () => {
     server.use(
-      rest.patch("/api/reset-password/*", (req, res, ctx) => {
+      rest.patch(`${process.env.REACT_APP_API}/api/reset-password/*`, (req, res, ctx) => {
         return res(
           ctx.status(400),
           ctx.json({
@@ -102,11 +102,11 @@ describe("<ResetPassword />", () => {
 
   it("should respond with error message if password reset token has expired", async () => {
     server.use(
-      rest.patch("/api/reset-password/*", (req, res, ctx) => {
+      rest.patch(`${process.env.REACT_APP_API}/api/reset-password/*`, (req, res, ctx) => {
         return res(
           ctx.status(400),
           ctx.json({
-            error: "Reset token expired",
+            error: "Invalid token",
           })
         );
       })
@@ -124,10 +124,11 @@ describe("<ResetPassword />", () => {
     await user.type(confirmPasswordInput, "abcABC123!");
     await user.click(saveBtn);
     const error = await screen.findByRole("alert");
+    const resend = await screen.findByText(/resend/i);
     await expect(error).toBeInTheDocument();
     expect(error).toHaveAttribute("class", "error");
-    expect(error.textContent).toMatch(/expired/i);
-    expect(error.textContent).toMatch(/resend/i);
+    expect(error.textContent).toMatch(/invalid/i);
+    expect(resend).toBeInTheDocument();
   });
 
   it("should respond with success message and render 'log in' link if password was reset successfully", async () => {

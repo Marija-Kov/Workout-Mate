@@ -16,7 +16,7 @@ describe("useSignup()", ()=> {
      it("should set error state to true given that the server responded with an error", async () => {
        server.use(
          rest.post(
-           "api/users/signup",
+           `${process.env.REACT_APP_API}/api/users/signup`,
            (req, res, ctx) => {
              return res(ctx.status(400), ctx.json({
                 error: "Invalid input"

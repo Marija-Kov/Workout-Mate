@@ -39,7 +39,7 @@ describe("<Signup />", () => {
 
   it("should render error element once 'sign up' button is clicked given that server responds with error", async () => {
      server.use(
-       rest.post("api/users/signup", (req, res, ctx) => {
+       rest.post(`${process.env.REACT_APP_API}/api/users/signup`, (req, res, ctx) => {
          return res(
            ctx.status(400),
            ctx.json({
