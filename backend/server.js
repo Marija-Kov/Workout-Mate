@@ -25,8 +25,11 @@ app.use(
 //     console.log(req.path, req.method);
 //     next();
 // })
-
-mongoose.connect(process.env.MONGO_URI, {useNewUrlParser: true, useUnifiedTopology: true})
+const dbURI =
+  process.env.NODE_ENV !== "test"
+    ? process.env.MONGO_URI
+    : process.env.TEST_MONGO_URI;
+mongoose.connect(dbURI, {useNewUrlParser: true, useUnifiedTopology: true})
 .then(()=>{
     if (process.env.NODE_ENV !== "test"){
         app.listen(process.env.PORT, () => {
