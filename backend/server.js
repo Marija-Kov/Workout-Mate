@@ -25,20 +25,23 @@ app.use(
 //     console.log(req.path, req.method);
 //     next();
 // })
-const dbURI =
-  process.env.NODE_ENV !== "test"
-    ? process.env.MONGO_URI
-    : process.env.TEST_MONGO_URI;
-mongoose.connect(dbURI, {useNewUrlParser: true, useUnifiedTopology: true})
-.then(()=>{
-    if (process.env.NODE_ENV !== "test"){
-        app.listen(process.env.PORT, () => {
-        console.log(`connected to db & listening on port ${process.env.PORT}`)
-      }); 
-    } 
-}).catch(err => {
-    console.log(`ERROR: ${err}`)
-});
+
+if (process.env.NODE_ENV !== "test") {
+  mongoose
+    .connect(process.env.MONGO_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    })
+    .then(() => {
+      app.listen(process.env.PORT, () => {
+        console.log(`connected to db & listening on port ${process.env.PORT}`);
+      });
+    })
+    .catch((err) => {
+      console.log(`ERROR: ${err}`);
+    });
+}
+  
 
 app.use('/api/users', rateLimiters.api_users);
 app.use('/api/reset-password', rateLimiters.api_reset_password);
