@@ -1,13 +1,13 @@
 const request = require("supertest");
 const app = require("../../server");
-const db = require("../../database.config");
+const {connect, clear, close } = require("../../database.config");
 
 const agent = request.agent(app);
 
-beforeAll(async () => await db.connect());
+beforeAll(async () => await connect());
 afterAll(async () => {
-  await db.clear();
-  await db.close();
+  await clear();
+  await close();
 });
 
 describe("passwordResetController", () => {
