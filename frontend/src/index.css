@@ -185,17 +185,6 @@ header a {
 
 /* Logged-out Navbar */
 
-.signup,
-.login {
-  background: var(--signup--form--bkg);
-  width: 250px;
-  box-shadow: none;
-}
-
-.login {
-background-color: var(--login--form--bkg);
-}
-
 .login--btn,
 .signup--btn,
 .about--btn {
@@ -212,6 +201,34 @@ background-color: var(--login--form--bkg);
   border: solid 1px var(--primary);
   border-radius: 20px;
   transition: 0.3s;
+}
+
+@media screen and (max-width: 400px) {
+ .login--btn,
+ .signup--btn,
+ .about--btn {
+  margin-left: 5px;
+  font-size: 1.2em;
+ }
+
+ header > .container {
+  padding: 0 10px;
+ }
+
+ header > .container > div {
+  padding-right: 0px;
+  position: relative;
+  top: -15px
+ }
+
+ .logo {
+  margin: 0;
+ }
+
+ .logo > a {
+  font-size: 0.7em;
+ }
+ 
 }
 
 .login--btn,
@@ -281,6 +298,17 @@ background-color: var(--login--form--bkg);
   height: fit-content;
   top: 100px;
   left: 10%;
+}
+
+@media screen and (max-width: 555px) {
+  .about--container {
+    max-width: 400px;
+    padding-right: 50px;;
+  }
+
+  .github {
+    display: inline-block;
+  }
 }
 
 .about--container > p {
@@ -417,22 +445,21 @@ input {
 
 .login,
 .signup {
-  min-width: 300px; 
-  max-width: 400px;
-  height: fit-content;
-  text-align: center;
-  padding: 20px;
-  z-index: 10;
-  position: fixed;
-  top: 100px;
-  padding-top: 5px;
   position: absolute;
-  z-index: 0;
-  top: 0;
-  padding: 0 50px;
-  min-width: unset;
-  left: 0;
+  width: 250px;
   height: 100%;
+  text-align: center;
+  top: 100px;
+  z-index: 0;
+  padding: 0 50px;
+  box-shadow: none;
+  top: 0;
+  left: 0;
+  background: var(--signup--form--bkg);
+}
+
+.login {
+background: var(--login--form--bkg);
 }
 
 .login > label,
@@ -467,6 +494,36 @@ form.signup h4 {
   background: var(--login--signup--form--btn--bkg--hover);
   color: var(--primary);
 }
+
+@media screen and (max-width: 600px) {
+  .form--container--login,
+  .form--container--signup {
+   background-image: none;
+   display: flex;
+   justify-content: center;;
+  }
+ 
+  .form--container--login {
+   background: var(--login--form--bkg);
+  }
+ 
+  .form--container--signup {
+   background: var(--signup--form--bkg)
+  }
+
+  .signup,
+  .login {
+    background: none; 
+    position: relative;
+    left: unset;
+    padding: 0;
+  }
+
+  .log-in--form--btn,
+  .sign-up--form--btn {
+    margin: 0 auto;
+  }
+ }
 
 /* Loader */
 
