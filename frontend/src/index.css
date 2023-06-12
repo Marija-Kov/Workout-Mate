@@ -203,34 +203,6 @@ header a {
   transition: 0.3s;
 }
 
-@media screen and (max-width: 400px) {
- .login--btn,
- .signup--btn,
- .about--btn {
-  margin-left: 5px;
-  font-size: 1.2em;
- }
-
- header > .container {
-  padding: 0 10px;
- }
-
- header > .container > div {
-  padding-right: 0px;
-  position: relative;
-  top: -15px
- }
-
- .logo {
-  margin: 0;
- }
-
- .logo > a {
-  font-size: 0.7em;
- }
- 
-}
-
 .login--btn,
 .about--btn {
   border: solid 1px transparent;
@@ -286,6 +258,8 @@ header a {
   'pagination pagination chart chart chart'
 }
 
+
+  
 .space {
   grid-area: space;
 }
@@ -298,17 +272,6 @@ header a {
   height: fit-content;
   top: 100px;
   left: 10%;
-}
-
-@media screen and (max-width: 555px) {
-  .about--container {
-    max-width: 400px;
-    padding-right: 50px;;
-  }
-
-  .github {
-    display: inline-block;
-  }
 }
 
 .about--container > p {
@@ -494,36 +457,6 @@ form.signup h4 {
   background: var(--login--signup--form--btn--bkg--hover);
   color: var(--primary);
 }
-
-@media screen and (max-width: 600px) {
-  .form--container--login,
-  .form--container--signup {
-   background-image: none;
-   display: flex;
-   justify-content: center;;
-  }
- 
-  .form--container--login {
-   background: var(--login--form--bkg);
-  }
- 
-  .form--container--signup {
-   background: var(--signup--form--bkg)
-  }
-
-  .signup,
-  .login {
-    background: none; 
-    position: relative;
-    left: unset;
-    padding: 0;
-  }
-
-  .log-in--form--btn,
-  .sign-up--form--btn {
-    margin: 0 auto;
-  }
- }
 
 /* Loader */
 
@@ -1233,6 +1166,8 @@ input.error {
 .chart--container {
   grid-area: chart;
   width: 100%;
+  display: flex;
+  flex-direction: column;
 }
 .chart--container > h3 {
   position: relative;
@@ -1251,16 +1186,28 @@ input.error {
   box-shadow: var(--chart--shadow);
   
 }
-.chart--container > p {
+
+.chart--legend {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+  margin: 10px auto;
+  gap: 0;
+}
+
+.chart--legend > p {
   width: fit-content;
   font-size: 0.8em;
   font-weight: 500;
-  padding-left: 50px;
+  margin: 0 0 5px 0;
   color:var(--chart-legend--text);
 }
 
 .stats--upper-bod > span,
 .stats--lower-bod > span {
+  position: relative;
+  top: 3px;
   display: inline-block;
   height: 20px;
   width: 20px;
@@ -1270,4 +1217,187 @@ input.error {
 
 .stats--lower-bod > span {
   background: var(--chart--color-2);
+}
+
+@media screen and (max-width: 450px) {
+  .login--btn,
+  .signup--btn,
+  .about--btn {
+   margin-left: 5px;
+   font-size: 1.2em;
+  }
+ 
+  header > .container {
+   padding: 0 10px;
+  }
+ 
+  header > .container > div {
+   padding-right: 0px;
+   position: relative;
+   top: -15px
+  }
+ 
+  .logo,
+  .logged--in--logo {
+   margin: 0;
+  }
+ 
+  .logo > a,
+  .logged--in--logo > a {
+   font-size: 0.6em;
+  }
+
+
+  /* Logged in */
+
+  .home {
+    min-width: unset;
+    grid-template-columns: auto;
+    height: fit-content;
+    grid-template-areas:
+    'chart chart'
+    'chart chart'
+    'chart chart'
+    'space space'
+    'add-btn add-btn'  
+    'search search'
+    'workouts workouts'
+    'workouts workouts'
+    'workouts workouts'
+    'workouts workouts'
+    'pagination pagination' 
+
+   }
+
+  .hello--user {
+    top: 25px;
+    font-size: 0.8em;
+  }
+
+  .avatar-wrapper {
+   width: 30px;
+   height: 30px;
+  }
+
+  .avatar {
+    width: 30px;
+  }
+
+  .stats--upper-bod > span,
+  .stats--lower-bod > span {
+   height: 15px;
+   width: 15px;
+  } 
+  
+  .chart {
+   width: 170px;
+   height: 170px;
+   margin-bottom: 15px;
+  }
+
+  .chart--legend {
+   margin: 0 auto;
+   display: flex;
+   flex-direction: row;
+   gap: 20px;
+  }
+
+  .chart--container > h3 {
+    font-size: 1em;
+  }
+
+  .chart--legend > p {
+    font-size: 0.7em;
+
+  }
+
+  .add--workout {
+    margin: 20px auto 10px auto;
+    max-width: 200px;
+    min-width: 100px;
+    width: 100%;
+    background: #373737ed;
+    z-index: 3;
+  }
+
+  .search--bar {
+    left: 10px;
+    margin: 10px auto 0 auto;
+  }
+
+  .workouts--container {
+    display: inline-block;
+    margin-left: 0;
+    height: fit-content;
+  }
+
+  .workout-details {
+    margin-left: auto;
+    margin-right: auto;
+    width: 300px;
+  }
+
+  .page--btn--container {
+    margin-bottom: 20px;
+  }
+
+  .form--container--workout--form,
+  .form--container--edit--workout--form {
+   left: 0;
+   height: calc(100% + 70px);
+  }
+
+  .edit--form,
+  .workout--form {
+   min-width: unset;
+   width: 250px;
+   padding: 10px;
+   margin: 0 10%;
+  }
+  
+ }
+
+@media screen and (max-width: 555px) {
+  .about--container {
+    max-width: 400px;
+    padding-right: 50px;
+  }
+  .github {
+    display: inline-block;
+  }
+}
+
+ @media screen and (max-width: 600px) {
+  .form--container--login,
+  .form--container--signup {
+   background-image: none;
+   display: flex;
+   justify-content: center;;
+  }
+ 
+  .form--container--login {
+   background: var(--login--form--bkg);
+  }
+ 
+  .form--container--signup {
+   background: var(--signup--form--bkg)
+  }
+
+  .signup,
+  .login {
+    background: none; 
+    position: relative;
+    left: unset;
+    padding: 0;
+  }
+
+  .log-in--form--btn,
+  .sign-up--form--btn {
+    margin: 0 auto;
+  }
+ }
+
+@media screen and (max-width: 700px) {
+  
+
 }
