@@ -1226,15 +1226,20 @@ input.error {
    margin-left: 5px;
    font-size: 1.2em;
   }
+
+  header {
+    height: 50px;
+  }
  
   header > .container {
    padding: 0 10px;
   }
  
-  header > .container > div {
+ .about--login--signup--nav {
    padding-right: 0px;
    position: relative;
-   top: -15px
+   top: -15px;
+   right: -12px;
   }
  
   .logo,
@@ -1270,8 +1275,8 @@ input.error {
    }
 
   .hello--user {
-    top: 25px;
     font-size: 0.8em;
+    right: -15px;
   }
 
   .avatar-wrapper {
@@ -1281,6 +1286,20 @@ input.error {
 
   .avatar {
     width: 30px;
+  }
+
+  .user--menu {
+    top: 51px;
+    padding: 15px;
+  }
+
+  .user--settings {
+   right: 50px;
+   min-width: 250px
+  }
+
+  .delete--account--btn {
+   left: 160px;
   }
 
   .stats--upper-bod > span,
@@ -1353,6 +1372,16 @@ input.error {
    width: 250px;
    padding: 10px;
    margin: 0 10%;
+  }
+  
+  .delete--account--dialogue {
+    width: 280px;
+  }
+
+  .delete--account--dialogue--btns {
+    gap: 10px;
+    margin-top: 5px;
+    font-size: 0.8em;
   }
   
  }

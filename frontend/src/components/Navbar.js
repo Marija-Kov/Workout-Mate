@@ -59,7 +59,7 @@ React.useEffect(() => {
             </div>
           )}
           {!user && (
-            <div>
+            <div className="about--login--signup--nav">
               <Link to="/about" aria-label="about workout mate">
                 <span  className="about--btn">
                   About
