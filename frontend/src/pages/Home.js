@@ -122,12 +122,15 @@ export default function Home() {
           <div className="chart--container">
             <h3>Routine Balance</h3>
             <div className="chart"></div>
+            <div className="chart--legend">
             <p className="stats--upper-bod">
-              <span></span> Upper body - 36%
+              <span></span> Upper body: 64%
             </p>
             <p className="stats--lower-bod">
-              <span></span> Lower body - 64%
-            </p>
+              <span></span> Lower body: 36%
+            </p>              
+            </div>
+
           </div>
         </div>
       </div>
