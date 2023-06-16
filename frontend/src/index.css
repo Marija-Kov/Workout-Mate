@@ -713,6 +713,52 @@ form.signup h4 {
   color: var(--primary);
 } 
 
+.no--workouts--yet {
+  animation: no--workouts--yet 3s ease-in-out infinite;
+}
+
+@keyframes no--workouts--yet {
+  0% {
+    background: var(--primary);
+    color: var(--all--form--btn--text);  
+  }
+  50% {
+    background:var(--all--form--btn--bkg--hover);
+    color: var(--primary);
+  }
+  100% {
+    background: var(--primary);
+    color: var(--all--form--btn--text);  
+  }
+}
+
+.get--started,
+.loading--workouts {
+ text-align: center;
+ color: var(--chart-title--color);
+ font-weight: 600;
+}
+
+.get--started > span {
+  font-size: 24px;
+}
+
+.loading--workouts{
+  animation: loading--workouts .5s ease-in-out infinite;
+}
+
+@keyframes loading--workouts {
+  0% {
+    color: var(--chart--color-1);
+  }
+  50% {
+    color: var(--chart--color-2);  
+  }
+  100% {
+    color: var(--chart--color-1);
+  }
+}
+
 /* User menu */
 
 .user--menu {
