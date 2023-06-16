@@ -18,7 +18,7 @@ export default function EditWorkout(props){
     payload.reps = reps.current.value;
    }
    if(load.current.value){
-    payload.load = reps.current.value;
+    payload.load = load.current.value;
    }
    e.preventDefault();
    await editWorkout(props.id, payload, closeEditForm); 
