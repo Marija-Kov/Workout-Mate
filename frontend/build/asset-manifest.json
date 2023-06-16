@@ -1,8 +1,8 @@
 {
   "files": {
-    "main.css": "/static/css/main.43946661.css",
-    "main.js": "/static/js/main.9549f1d6.js",
-    "static/js/314.e2331171.chunk.js": "/static/js/314.e2331171.chunk.js",
+    "main.css": "/static/css/main.f8f87129.css",
+    "main.js": "/static/js/main.a8d714cf.js",
+    "static/js/314.1b97232e.chunk.js": "/static/js/314.1b97232e.chunk.js",
     "static/js/737.11ed8ee2.chunk.js": "/static/js/737.11ed8ee2.chunk.js",
     "static/js/78.4517bd77.chunk.js": "/static/js/78.4517bd77.chunk.js",
     "static/js/506.5104e440.chunk.js": "/static/js/506.5104e440.chunk.js",
@@ -15,9 +15,9 @@
     "static/media/pastel-gym-1.jpeg": "/static/media/pastel-gym-1.12cc806d260b1eeff4b2.jpeg",
     "static/media/default-avatar.png": "/static/media/default-avatar.48d862927d370d620924.png",
     "index.html": "/index.html",
-    "main.43946661.css.map": "/static/css/main.43946661.css.map",
-    "main.9549f1d6.js.map": "/static/js/main.9549f1d6.js.map",
-    "314.e2331171.chunk.js.map": "/static/js/314.e2331171.chunk.js.map",
+    "main.f8f87129.css.map": "/static/css/main.f8f87129.css.map",
+    "main.a8d714cf.js.map": "/static/js/main.a8d714cf.js.map",
+    "314.1b97232e.chunk.js.map": "/static/js/314.1b97232e.chunk.js.map",
     "737.11ed8ee2.chunk.js.map": "/static/js/737.11ed8ee2.chunk.js.map",
     "78.4517bd77.chunk.js.map": "/static/js/78.4517bd77.chunk.js.map",
     "506.5104e440.chunk.js.map": "/static/js/506.5104e440.chunk.js.map",
@@ -27,7 +27,7 @@
     "125.a043c7bf.chunk.js.map": "/static/js/125.a043c7bf.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.43946661.css",
-    "static/js/main.9549f1d6.js"
+    "static/css/main.f8f87129.css",
+    "static/js/main.a8d714cf.js"
   ]
 }

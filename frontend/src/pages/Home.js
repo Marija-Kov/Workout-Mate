@@ -73,6 +73,7 @@ export default function Home() {
               </div>
             )}
           <div aria-label="workouts" className="workouts--container">
+            {isLoading && <h4 className="loading--workouts"> Fetching data...</h4>}
             {workouts &&
               workouts.map((workout) => (
                 <WorkoutDetails
@@ -90,24 +91,39 @@ export default function Home() {
                   limit={limit}
                 />
               ))}
+              
+            {workouts && !workouts.length && !isLoading && 
+              <h4 className="get--started">
+                {!query && <>Buff it up to get started.<br></br>No pressure <span>🥤</span></>} 
+                {query && <>No "{query}" workouts found.</>} 
+              </h4>}
           </div>
           {!addWorkoutForm && (
             <button
               aria-label="buff it up"
-              className="add--workout"
+              className={workouts && workouts.length ? 
+                           "add--workout" : (
+                            query ? 
+                            "add--workout" : (
+                            isLoading ?
+                            "add--workout" : "add--workout no--workouts--yet" 
+                            )
+                         )}
               onClick={() => setAddWorkoutForm(true)}
             >
               + Buff It Up
             </button>
           )}
+
+          {workouts && workouts.length > 0 &&
           <Pagination
             page={page}
             pageSpread={pageSpread}
             total={total}
             limit={limit}
             flipPage={flipPage}
-          />
-
+          />}
+          
           {addWorkoutForm && (
             <WorkoutForm
               hideForm={hideForm}
