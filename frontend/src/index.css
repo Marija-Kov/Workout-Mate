@@ -1300,6 +1300,10 @@ input.error {
 
 
   /* Logged in */
+  
+  .home--container {
+    height: 160vh;
+  }
 
   .home {
     min-width: unset;

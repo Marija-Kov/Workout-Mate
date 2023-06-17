@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.css": "/static/css/main.f8f87129.css",
+    "main.css": "/static/css/main.696cabaa.css",
     "main.js": "/static/js/main.c0198d0c.js",
     "static/js/314.1b97232e.chunk.js": "/static/js/314.1b97232e.chunk.js",
     "static/js/737.11ed8ee2.chunk.js": "/static/js/737.11ed8ee2.chunk.js",
@@ -15,7 +15,7 @@
     "static/media/pastel-gym-1.jpeg": "/static/media/pastel-gym-1.12cc806d260b1eeff4b2.jpeg",
     "static/media/default-avatar.png": "/static/media/default-avatar.48d862927d370d620924.png",
     "index.html": "/index.html",
-    "main.f8f87129.css.map": "/static/css/main.f8f87129.css.map",
+    "main.696cabaa.css.map": "/static/css/main.696cabaa.css.map",
     "main.c0198d0c.js.map": "/static/js/main.c0198d0c.js.map",
     "314.1b97232e.chunk.js.map": "/static/js/314.1b97232e.chunk.js.map",
     "737.11ed8ee2.chunk.js.map": "/static/js/737.11ed8ee2.chunk.js.map",
@@ -27,7 +27,7 @@
     "125.a043c7bf.chunk.js.map": "/static/js/125.a043c7bf.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.f8f87129.css",
+    "static/css/main.696cabaa.css",
     "static/js/main.c0198d0c.js"
   ]
 }
