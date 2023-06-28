@@ -33,7 +33,7 @@ const getAllItems = async (req, res) => {
 };
 
 const addItem = async (req, res) => {
-    const {title, reps, load} = req.body;
+    const {title, muscle_group, reps, load} = req.body;
     const user_id = req.user._id;
     const allWorkoutsByUser = await Workout.find({ user_id });
     const limit =
@@ -45,7 +45,7 @@ const addItem = async (req, res) => {
       await Workout.findOneAndDelete({ _id: id });
     }
   try {
-   const workout = await Workout.create({title: title.trim().toLowerCase(), reps, load, user_id});
+   const workout = await Workout.create({title: title.trim().toLowerCase(), muscle_group, reps, load, user_id});
    res.status(200).json(workout);
   } catch(error){
    res.status(400).json({error: error.message})
