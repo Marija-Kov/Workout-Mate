@@ -16,7 +16,7 @@ describe("workoutController", () => {
    
         it("should respond with error if no authorization token was found", async () => {
          const user = await mockUser("chocula@thepark.yu", "confirmed");
-         const workout = { title: "Situps", reps: 30, load: 0 };
+         const workout = { title: "Situps", muscle_group: "ab", reps: 30, load: 0 };
          const res = (
            await agent
              .post("/api/workouts/")
@@ -29,7 +29,7 @@ describe("workoutController", () => {
 
         it("should respond with error if the user is authorized, but at least one required property value is not provided", async () => {
           const user = await mockUser("poozh@ploppers.com", "logged-in");
-          const workout = { title: "Pullups", reps: undefined, load: 20 };
+          const workout = { title: "Pullups",  muscle_group: "forearm and grip", reps: undefined, load: 20 };
           const res = (
             await agent
               .post("/api/workouts/")
@@ -42,7 +42,7 @@ describe("workoutController", () => {
 
         it("should delete oldest workout given that the amount of workouts exceeds the limit", async () => {
          const user = await mockUser("buster@mail.com", "logged-in");
-         const samples = [{ title: "Oldest workout", reps: 20, load: 20 }, { title: "Second oldest workout", reps: 20, load: 20 }];
+         const samples = [{ title: "Oldest workout", muscle_group: "chest", reps: 20, load: 20 }, { title: "Second oldest workout", muscle_group: "chest", reps: 20, load: 20 }];
          const oldestWorkoutId = (
            await agent
              .post("/api/workouts/")
@@ -72,7 +72,7 @@ describe("workoutController", () => {
 
         it("should respond with workout details and id given that the user is authorized and all required property values were provided", async () => {
             const user = await mockUser("buster@ploppers.com", "logged-in");
-            const workout = { title: "Bench press", reps: 20, load: 20 }; 
+            const workout = { title: "Bench press", muscle_group:"chest", reps: 20, load: 20 }; 
             const res = (
               await agent
                 .post("/api/workouts/")
@@ -82,6 +82,7 @@ describe("workoutController", () => {
             expect(res).toHaveProperty("title", `${workout.title.toLowerCase()}`)
             expect(res).toHaveProperty("reps", workout.reps);
             expect(res).toHaveProperty("load", workout.load);
+            expect(res).toHaveProperty("muscle_group", workout.muscle_group);
             expect(res._id).toBeTruthy();
         });
 
@@ -318,11 +319,11 @@ async function mockUser(email, status) {
 
   async function addWorkouts() {
      const sampleWorkouts = [
-       { title: "Bench Press", reps: 20, load: 20 },
-       { title: "Pushups", reps: 30, load: 0 },
-       { title: "Situps", reps: 40, load: 0 },
-       { title: "Squats", reps: 20, load: 23 },
-       { title: "Pullups", reps: 15, load: 0 },
+       { title: "Bench Press", muscle_group:"chest", reps: 20, load: 20 },
+       { title: "Pushups", muscle_group:"chest", reps: 30, load: 0 },
+       { title: "Situps", muscle_group:"ab", reps: 40, load: 0 },
+       { title: "Squats", muscle_group:"leg", reps: 20, load: 23 },
+       { title: "Pullups", muscle_group:"forearm and grip", reps: 15, load: 0 },
      ];
      const workouts = [];
      let len = sampleWorkouts.length;
@@ -342,10 +343,10 @@ async function mockUser(email, status) {
 async function maxOutWorkouts(user) {
   const limit_minus = Number(process.env.TEST_MAX_WORKOUTS_PER_USER);
   const sampleWorkouts = [
-    { title: "Bench Press", reps: 20, load: 20 },
-    { title: "Pushups", reps: 30, load: 0 },
-    { title: "Situps", reps: 40, load: 0 },
-    { title: "Squats", reps: 20, load: 23 }
+    { title: "Bench Press", muscle_group: "chest", reps: 20, load: 20 },
+    { title: "Pushups", muscle_group: "chest", reps: 30, load: 0 },
+    { title: "Situps", muscle_group: "ab", reps: 40, load: 0 },
+    { title: "Squats", muscle_group: "leg", reps: 20, load: 23 }
   ];
   for (let i = 0; i < limit_minus; ++i) {
     await agent
