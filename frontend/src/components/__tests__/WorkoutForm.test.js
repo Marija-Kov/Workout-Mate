@@ -41,12 +41,14 @@ describe("<WorkoutForm/>", () => {
           );
       const workoutForm = await screen.findByLabelText(/workout form/i);
       const titleInput = await screen.findByLabelText(/workout title/i);
+      const muscleGroupSelect = await screen.findByLabelText(/muscle group/i);
       const repsInput = await screen.findByLabelText(/number of reps/i);
       const loadInput = await screen.findByLabelText(/load in kg/i);
       const closeForm = await screen.findByLabelText(/close form/i);
       const submitWorkoutBtn = await screen.findByLabelText(/submit workout button/i);
       expect(workoutForm).toBeInTheDocument();
       expect(titleInput).toBeInTheDocument();
+      expect(muscleGroupSelect).toBeInTheDocument();
       expect(repsInput).toBeInTheDocument();
       expect(loadInput).toBeInTheDocument();
       expect(submitWorkoutBtn).toBeInTheDocument();
@@ -63,6 +65,7 @@ describe("<WorkoutForm/>", () => {
       </AuthContext.Provider>
     );
      const titleInput = await screen.findByLabelText(/workout title/i);
+     const muscleGroupSelect = await screen.findByLabelText(/muscle group/i);
      const repsInput = await screen.findByLabelText(/number of reps/i);
      const loadInput = await screen.findByLabelText(/load in kg/i);
      const closeForm = await screen.findByLabelText(/close form/i);
@@ -74,6 +77,8 @@ describe("<WorkoutForm/>", () => {
     await user.tab();
     expect(titleInput).toHaveFocus();
     await user.tab();
+    expect(muscleGroupSelect).toHaveFocus();
+    await user.tab();
     expect(repsInput).toHaveFocus();
     await user.tab();
     expect(loadInput).toHaveFocus();
@@ -81,7 +86,7 @@ describe("<WorkoutForm/>", () => {
     expect(submitWorkoutBtn).toHaveFocus();
   });
 
-  it("should update input value when user types", async () => {
+  it("should update input/select value when user types/selects", async () => {
     user.setup();
     render(
       <AuthContext.Provider value={{ user: mockUser }}>
@@ -91,12 +96,15 @@ describe("<WorkoutForm/>", () => {
       </AuthContext.Provider>
     );
     const titleInput = await screen.findByLabelText(/workout title/i);
+    const muscleGroupSelect = await screen.findByLabelText(/muscle group/i);
     const repsInput = await screen.findByLabelText(/number of reps/i);
     const loadInput = await screen.findByLabelText(/load in kg/i);
     await user.type(titleInput, "squats");
+    await user.selectOptions(muscleGroupSelect, "leg");
     await user.type(repsInput, "30");
     await user.type(loadInput, "22");
     expect(titleInput).toHaveValue("squats");
+    expect(muscleGroupSelect).toHaveValue("leg");
     expect(repsInput).toHaveValue(30);
     expect(loadInput).toHaveValue(22);
   });
