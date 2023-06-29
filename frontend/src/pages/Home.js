@@ -6,6 +6,7 @@ import Pagination from '../components/Pagination';
 import { useSearch } from '../hooks/useSearch';
 import Search from '../components/Search';
 import { logOutIfTokenExpired } from '../utils/logOutIfTokenExpired';
+import { Chart } from '../components/Chart';
 
 export default function Home() {
     const [addWorkoutForm, setAddWorkoutForm] = React.useState(false);
@@ -136,19 +137,7 @@ export default function Home() {
             />
           )}
           <div className="space"></div>
-          <div className="chart--container">
-            <h3>Routine Balance</h3>
-            <div className="chart"></div>
-            <div className="chart--legend">
-            <p className="stats--upper-bod">
-              <span></span> Upper body: 64%
-            </p>
-            <p className="stats--lower-bod">
-              <span></span> Lower body: 36%
-            </p>              
-            </div>
-
-          </div>
+          <Chart />
         </div>
       </div>
     );
