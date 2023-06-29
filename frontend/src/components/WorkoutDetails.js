@@ -4,7 +4,7 @@ import useDeleteWorkout from '../hooks/useDeleteWorkout';
 
 const EditWorkout = React.lazy(() => import("../components/EditWorkout"));
 
-export default function WorkoutDetails({id, title, reps, load, createdAt, updatedAt, page, getItems, total, limit, spreadPages}){
+export default function WorkoutDetails({id, title, muscle_group, reps, load, createdAt, updatedAt, page, getItems, total, limit, spreadPages}){
     const [showEditForm, setShowEditForm] = React.useState(false);
     const {deleteWorkout, error} = useDeleteWorkout();
 
@@ -62,6 +62,7 @@ export default function WorkoutDetails({id, title, reps, load, createdAt, update
             key={id + "edit"}
             id={id}
             title={title}
+            muscle_group={muscle_group}
             reps={reps}
             load={load}
             createdAt={createdAt}
