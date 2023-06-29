@@ -5,6 +5,7 @@ import useEditWorkout from '../hooks/useEditWorkout';
 export default function EditWorkout(props){
   const {editWorkout, error} = useEditWorkout();
   const title = React.useRef();
+  const muscle_group = React.useRef();
   const reps = React.useRef();
   const load = React.useRef();
 
@@ -14,6 +15,9 @@ export default function EditWorkout(props){
    if (title.current.value && title.current.value.trim().toLowerCase()) {
      payload.title = title.current.value.trim().toLowerCase();
    }  
+   if(muscle_group.current.value){
+    payload.muscle_group = muscle_group.current.value;
+   }
    if(reps.current.value){
     payload.reps = reps.current.value;
    }
@@ -50,6 +54,20 @@ export default function EditWorkout(props){
             defaultValue={props.title}
             ref={title}
           />
+          <label htmlFor="muscle_group">muscle group:</label>
+          <select ref={muscle_group} aria-label="workout title" name="muscle_group" id="muscle_group">
+              <option value="">{props.muscle_group}</option>
+              <option value="chest">chest</option>
+              <option value="shoulder">shoulder</option>
+              <option value="biceps">biceps</option>
+              <option value="triceps">triceps</option>
+              <option value="leg">leg</option>
+              <option value="back">back</option>
+              <option value="glute">glute</option>
+              <option value="ab">ab</option>
+              <option value="calf">calf</option>
+              <option value="forearm and grip">forearm and grip</option>
+            </select>
           <label>number of reps:</label>
           <input
             type="number"
