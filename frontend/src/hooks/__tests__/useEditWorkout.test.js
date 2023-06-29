@@ -28,6 +28,7 @@ beforeAll(() => {
   mockOldWorkout = {
     id: "mockId",
     title: "lunges",
+    muscle_group: "leg",
     reps: "44",
     load: "21",
     user_id: mockUser.id
