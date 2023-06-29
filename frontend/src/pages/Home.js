@@ -80,6 +80,7 @@ export default function Home() {
                   key={workout._id}
                   id={workout._id}
                   title={workout.title}
+                  muscle_group={workout.muscle_group}
                   reps={workout.reps}
                   load={workout.load}
                   createdAt={workout.createdAt}
