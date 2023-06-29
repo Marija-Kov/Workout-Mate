@@ -657,6 +657,13 @@ form.signup h4 {
   border-radius: 20px;
   margin: 0 32%;
 }
+.edit--form > select,
+.workout--form > select {
+ margin-bottom: 10px;
+ border-radius: 2px;
+ border: unset;
+ padding: 2px;
+}
 
 .edit--form > label,
 .workout--form > label {
@@ -1115,8 +1122,10 @@ div.success {
   font-size: 14px;
 }
 
-input.error {
+input.error,
+select.error {
   border: 1px solid var(--error);
+  outline: 1px solid var(--error);
 }
 
 .material-symbols-outlined {
