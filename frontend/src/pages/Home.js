@@ -11,7 +11,7 @@ import { Chart } from '../components/Chart';
 export default function Home() {
     const [addWorkoutForm, setAddWorkoutForm] = React.useState(false);
     const { workouts } = useWorkoutContext(); 
-    const { search, total, limit, isLoading, error } = useSearch();
+    const { search, total, limit, allWorkoutsMuscleGroups, isLoading, error } = useSearch();
     const [page, setPage] = React.useState(0);
     const [pageSpread, setPageSpread] = React.useState([]);
     const [query, setQuery] = React.useState("");
@@ -59,6 +59,8 @@ export default function Home() {
       setPage(0);
    }
 
+   const muscleGroups = React.useMemo(() => allWorkoutsMuscleGroups, [allWorkoutsMuscleGroups.length])
+
     return (
       <div className="home--container" onClick={logOutIfTokenExpired}>
         <div className="home">
@@ -93,13 +95,13 @@ export default function Home() {
                   limit={limit}
                 />
               ))}
-              
-            {workouts && !workouts.length && !isLoading && 
+             {workouts && !workouts.length && !isLoading && 
               <h4 className="get--started">
                 {!query && <>Buff it up to get started.<br></br>No pressure <span>🥤</span></>} 
                 {query && <>No "{query}" workouts found.</>} 
               </h4>}
-          </div>
+           </div>
+          {workouts && <Chart muscleGroups={muscleGroups} />}
           {!addWorkoutForm && (
             <button
               aria-label="buff it up"
@@ -137,7 +139,7 @@ export default function Home() {
             />
           )}
           <div className="space"></div>
-          <Chart />
+          
         </div>
       </div>
     );
