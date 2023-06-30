@@ -8,6 +8,7 @@ const getAllItems = async (req, res) => {
  const user_id = req.user._id; 
 
  try {
+  const allUserWorkoutsMuscleGroups = (await Workout.find({ user_id })).map(workout => workout.muscle_group);
    const allUserWorkoutsByQuery = await Workout.find(
      search
        ? { user_id, title: new RegExp(`^${search.toLowerCase()}`) }
@@ -22,7 +23,8 @@ const getAllItems = async (req, res) => {
    res
      .status(200)
      .json({
-       allUserWorkoutsByQuery: allUserWorkoutsByQuery,
+       total: allUserWorkoutsByQuery.length,
+       allUserWorkoutsMuscleGroups: allUserWorkoutsMuscleGroups,
        workoutsChunk: workoutsChunk,
        limit: itemsPerPage,
        noWorkoutsByQuery: allUserWorkoutsByQuery.length ? false : `No workouts found by query '${search}'`,
