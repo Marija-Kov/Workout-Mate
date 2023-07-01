@@ -1,4 +1,9 @@
 import { useEffect, useState } from 'react'
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import { Doughnut } from "react-chartjs-2";
+import CustomLegend from "./CustomLegend.js"
+
+ChartJS.register(ArcElement, Tooltip, Legend);
 
 export const Chart = ({muscleGroups}) => {
    const [chest, setChest] = useState(null);
@@ -15,8 +20,6 @@ export const Chart = ({muscleGroups}) => {
    useEffect(() => routineBalance(muscleGroups), [muscleGroups])
 
    const routineBalance = (muscleGroups) => {
-    // const all = workouts.map(workout => workout.muscle_group);
-    console.log('routineBalance runs')
     const all = muscleGroups;
     const total = all.length;
     const chest = all.filter(e => e === 'chest').length * 100 / total;
@@ -41,19 +44,68 @@ export const Chart = ({muscleGroups}) => {
     setForearmAndGrip(forearmAndGrip.toFixed(1));
     return 
    }
-      
+
+  const data = {
+    labels: ["Chest", "Shoulder", "Biceps", "Triceps", "Leg", "Back", "Glute", "Ab", "Calf", "Forearm and Grip"],
+    datasets: [
+      {
+        data: [chest, shoulder, biceps, triceps, leg, back, glute, ab, calf, forearmAndGrip],
+        backgroundColor: [
+          "rgb(219, 162, 215, 0.7)", 
+          "rgb(212, 122, 147, 0.7)", 
+          "rgb(162, 122, 212, 0.7)", 
+          "rgb(122, 131, 212, 0.7)", 
+          "rgb(99, 148, 255, 0.7)", 
+          "rgb(99, 224, 255, 0.7)", 
+          "rgb(99, 255, 239, 0.7)", 
+          "rgb(99, 255, 140, 0.7)", 
+          "rgb(255, 206, 99, 0.7)", 
+          "rgb(255, 127, 99, 0.7)"
+        ],
+        borderWidth: 1,
+        borderColor: "rgb(255,255,255,0.001)"
+      }
+    ]
+  }
+
+  Tooltip.positioners.myCustomPositioner = (elements, eventPosition) => { 
+    return {x: 100, y: 150};
+  };
+
+  const options = {
+    plugins: {
+      legend: false,
+      tooltip: {
+        position: 'myCustomPositioner',
+        displayColors:false,
+        callbacks: {
+         
+        },
+        backgroundColor: "rgb(255, 255, 255, 0.0)",
+        titleColor: "rgb(48, 48, 48)",
+        bodyColor: "rgb(48, 48, 48)",
+        titleFont: {
+          family: "Poppins",
+          weight: 600,
+          size: 14
+        },
+        bodyFont: {
+          family: "Poppins",
+          weight: 600,
+          size: 14
+        }
+      }
+    }
+  
+  }
+
   return (
     <div className="chart--container">
-     <h3>Routine Balance</h3>
-     <div className="chart"></div>
-     <div className="chart--legend">
-       <p className="stats--upper-bod">
-        <span></span> chest:{chest}%
-       </p>
-       <p className="stats--lower-bod">
-        <span></span> Lower body: 36%
-       </p>              
-     </div>
+      <h3>Routine balance</h3>
+      <div className="chart">  
+         <Doughnut data={data} options={options} />
+         <CustomLegend labels={data.labels} colors={data.datasets[0].backgroundColor}/>
+      </div>
     </div>
   )
 }
