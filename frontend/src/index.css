@@ -1224,55 +1224,51 @@ select.error {
   display: flex;
   flex-direction: column;
 }
+
+.chart {
+ position: relative;
+ margin: 25px auto 0 auto;
+ width: 300px;
+}
+
 .chart--container > h3 {
   position: relative;
-  margin: 20px auto 0 auto;
+  margin: 10px auto 0 auto;
   color:var(--chart-title--color);
   width: fit-content;
 }
 
-.chart {
-  position: relative;
-  margin: 25px auto 0 auto;
-  width: 220px;
-  height: 220px;
-  background-image: conic-gradient(var(--chart--color-1) 64%, var(--chart--color-2) 36%);
-  border-radius: 50%;
-  box-shadow: var(--chart--shadow);
-  
+.custom--legend {
+ display: flex;
+ flex-wrap: wrap;
+ justify-content: center;
+ gap: 3px;
+ padding:0;
 }
 
-.chart--legend {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  width: fit-content;
-  margin: 10px auto;
-  gap: 0;
+.muscle--group {
+ list-style: none;
+ font-size: 12px;
+ color: var(--primary);
+ font-weight: 500;
+ margin-right: 5px;
+ cursor: pointer;
 }
 
-.chart--legend > p {
-  width: fit-content;
-  font-size: 0.8em;
-  font-weight: 500;
-  margin: 0 0 5px 0;
-  color:var(--chart-legend--text);
+.muscle--group:hover {
+ filter:saturate(2);
+ text-decoration: underline;
 }
 
-.stats--upper-bod > span,
-.stats--lower-bod > span {
+.muscle--group > span {
   position: relative;
-  top: 3px;
-  display: inline-block;
-  height: 20px;
-  width: 20px;
+  top: -2px;
+  font-size: 8px;
+  padding: 0px 5px;
   border-radius: 20px;
-  background: var(--chart--color-1);
+  margin: 0 2px;
 }
 
-.stats--lower-bod > span {
-  background: var(--chart--color-2);
-}
 
 @media screen and (max-width: 450px) {
   .login--btn,
@@ -1360,33 +1356,20 @@ select.error {
   .delete--account--btn {
    left: 160px;
   }
-
-  .stats--upper-bod > span,
-  .stats--lower-bod > span {
-   height: 15px;
-   width: 15px;
-  } 
   
   .chart {
-   width: 170px;
-   height: 170px;
+   width: 200px;
+   height:280px;
    margin-bottom: 15px;
-  }
-
-  .chart--legend {
-   margin: 0 auto;
-   display: flex;
-   flex-direction: row;
-   gap: 20px;
   }
 
   .chart--container > h3 {
     font-size: 1em;
   }
 
-  .chart--legend > p {
-    font-size: 0.7em;
-
+  .custom--legend {
+    /* display: none */
+    width: 100%;
   }
 
   .add--workout {
