@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import { Chart as ChartJS, ArcElement, Tooltip } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 import CustomLegend from "./CustomLegend.js"
 
-ChartJS.register(ArcElement, Tooltip, Legend);
+ChartJS.register(ArcElement, Tooltip);
 
 export const Chart = ({muscleGroups}) => {
    const [chest, setChest] = useState(null);
@@ -63,26 +63,26 @@ export const Chart = ({muscleGroups}) => {
           "rgb(255, 127, 99, 0.7)"
         ],
         borderWidth: 1,
-        borderColor: "rgb(255,255,255,0.001)"
+        borderColor: "rgb(255, 255, 255, 0.001)"
       }
     ]
   }
 
-  Tooltip.positioners.myCustomPositioner = (elements, eventPosition) => { 
-    return {x: 100, y: 150};
+  Tooltip.positioners.myCustomPositioner = () => { 
+    return window.innerWidth <= 450 ? {x: 80, y: 100} : {x: 100, y: 150};
   };
 
   const options = {
+    onHover: (event, chartElement) => {
+      event.native.target.style.cursor = chartElement.length ? "pointer" : "default";
+    },
     plugins: {
       legend: false,
       tooltip: {
         position: 'myCustomPositioner',
-        displayColors:false,
-        callbacks: {
-         
-        },
-        backgroundColor: "rgb(255, 255, 255, 0.0)",
-        titleColor: "rgb(48, 48, 48)",
+        displayColors: false,
+        backgroundColor: "rgb(255, 255, 255, 0.7)",
+        titleColor: "rgb(112, 98, 109)",
         bodyColor: "rgb(48, 48, 48)",
         titleFont: {
           family: "Poppins",
@@ -93,7 +93,8 @@ export const Chart = ({muscleGroups}) => {
           family: "Poppins",
           weight: 600,
           size: 14
-        }
+        },
+        
       }
     }
   
@@ -101,10 +102,14 @@ export const Chart = ({muscleGroups}) => {
 
   return (
     <div className="chart--container">
-      <h3>Routine balance</h3>
+      <h3>Routine balance (%)</h3>
       <div className="chart">  
          <Doughnut data={data} options={options} />
-         <CustomLegend labels={data.labels} colors={data.datasets[0].backgroundColor}/>
+         <CustomLegend 
+          labels={data.labels} 
+          colors={data.datasets[0].backgroundColor} 
+          percentage={data.datasets[0].data}
+          />
       </div>
     </div>
   )
