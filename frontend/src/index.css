@@ -1252,12 +1252,14 @@ select.error {
  color: var(--primary);
  font-weight: 500;
  margin-right: 5px;
- cursor: pointer;
 }
 
 .muscle--group:hover {
- filter:saturate(2);
- text-decoration: underline;
+ filter:saturate(4);
+}
+
+.zero--percent {
+  color: var(--light-text);
 }
 
 .muscle--group > span {
