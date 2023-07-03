@@ -10,7 +10,7 @@ let mockUser;
 let mockWorkouts;
 
 beforeAll(() => {
- mockWorkout = { title: "squats", reps: 20, load: 15};
+ mockWorkout = { title: "squats", muscle_group: "leg", reps: 20, load: 15};
    mockWorkouts = {
      allUserWorkoutsByQuery: [],
      workoutsChunk: [],
@@ -69,7 +69,7 @@ describe("useCreateWorkout()", () => {
   });
 
   it("should set error state to 'true' given that request wasn't authorized", async () => {
-    const mockWorkout = { title: "squats", reps: 20, load: 15 };
+    const mockWorkout = { title: "squats", muscle_group: "leg", reps: 20, load: 15 };
     const wrapper = ({ children }) => {
       return (
         <AuthContext.Provider value={{ user: null }}>
@@ -98,7 +98,7 @@ describe("useCreateWorkout()", () => {
         );
       })
     );
-    const mockWorkout = { title: "squats", reps: 20 };
+    const mockWorkout = { title: "squats", muscle_group: "leg", reps: 20 };
     const wrapper = ({ children }) => {
       return (
         <AuthContext.Provider value={{ user: mockUser }}>

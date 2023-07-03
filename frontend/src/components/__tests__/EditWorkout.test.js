@@ -44,6 +44,7 @@ describe("<EditWorkout/>", () => {
   );
 
   const titleInput = await screen.findByLabelText(/workout title/i);
+  const muscleGroupSelect = await screen.findByLabelText(/muscle group/i);
   const repsInput = await screen.findByLabelText(/number of reps/i);
   const loadInput = await screen.findByLabelText(/load in kg/i);
   const closeForm = await screen.findByLabelText(/close form/i);
@@ -51,6 +52,7 @@ describe("<EditWorkout/>", () => {
     /submit edited workout/i
   );
   expect(titleInput).toBeInTheDocument();
+  expect(muscleGroupSelect).toBeInTheDocument();
   expect(repsInput).toBeInTheDocument();
   expect(loadInput).toBeInTheDocument();
   expect(submitEditedWorkoutBtn).toBeInTheDocument();
@@ -67,6 +69,7 @@ describe("<EditWorkout/>", () => {
       </AuthContext.Provider>
     );
      const titleInput = await screen.findByLabelText(/workout title/i);
+     const muscleGroupSelect = await screen.findByLabelText(/muscle group/i);
      const repsInput = await screen.findByLabelText(/number of reps/i);
      const loadInput = await screen.findByLabelText(/load in kg/i);
      const closeForm = await screen.findByLabelText(/close form/i);
@@ -77,6 +80,8 @@ describe("<EditWorkout/>", () => {
     expect(closeForm).toHaveFocus();
     await user.tab();
     expect(titleInput).toHaveFocus();
+    await user.tab();
+    expect(muscleGroupSelect).toHaveFocus();
     await user.tab();
     expect(repsInput).toHaveFocus();
     await user.tab();
@@ -95,9 +100,11 @@ describe("<EditWorkout/>", () => {
       </AuthContext.Provider>
     );
     const titleInput = await screen.findByLabelText(/workout title/i);
+    const muscleGroupSelect = await screen.findByLabelText(/muscle group/i);
     const repsInput = await screen.findByLabelText(/number of reps/i);
     const loadInput = await screen.findByLabelText(/load in kg/i);
     await user.type(titleInput, "squats");
+    await user.selectOptions(muscleGroupSelect, "leg");
     await user.type(repsInput, "30");
     await user.type(loadInput, "22");
     expect(titleInput).toHaveValue("squats");

@@ -4,6 +4,7 @@ import { useCreateWorkout } from '../hooks/useCreateWorkout';
 export default function WorkoutForm({hideForm, spreadPages, flipPage, total, limit, getItems}){
   const { createWorkout, error } = useCreateWorkout();
   const title = React.useRef();
+  const muscle_group = React.useRef();
   const load = React.useRef();
   const reps = React.useRef();
 
@@ -13,12 +14,16 @@ export default function WorkoutForm({hideForm, spreadPages, flipPage, total, lim
     e.preventDefault();
     const workout = {
       title: title.current.value,
+      muscle_group: muscle_group.current.value,
       load: load.current.value,
       reps: reps.current.value,
     };
     await createWorkout(workout);
     if (!workout.title) {
       setEmptyFields((prev) => ["title", ...prev]);
+    }
+    if (!workout.muscle_group) {
+      setEmptyFields((prev) => ["muscle group", ...prev]);
     }
     if (!workout.reps) {
       setEmptyFields((prev) => ["reps", ...prev]);
@@ -27,7 +32,7 @@ export default function WorkoutForm({hideForm, spreadPages, flipPage, total, lim
       setEmptyFields((prev) => ["load", ...prev]);
     }
 
-    if(workout.title && workout.reps && workout.load){
+    if(workout.title && workout.muscle_group && workout.reps && workout.load){
      hideForm();
      await getItems("", 0);
      spreadPages(total, limit);
@@ -57,6 +62,20 @@ export default function WorkoutForm({hideForm, spreadPages, flipPage, total, lim
         ref={title}
         className={emptyFields.includes("title") ? "error" : ""}
       />
+      <label htmlFor="muscle_group">muscle group:</label>
+      <select ref={muscle_group} aria-label="workout title" name="muscle_group" id="muscle_group" className={emptyFields.includes("muscle group") ? "error" : ""}>
+        <option value="">-please select-</option>
+        <option value="chest">chest</option>
+        <option value="shoulder">shoulder</option>
+        <option value="biceps">biceps</option>
+        <option value="triceps">triceps</option>
+        <option value="leg">leg</option>
+        <option value="back">back</option>
+        <option value="glute">glute</option>
+        <option value="ab">ab</option>
+        <option value="calf">calf</option>
+        <option value="forearm and grip">forearm and grip</option>
+      </select>
       <label>number of reps:</label>
       <input
         type="number"

@@ -9,6 +9,7 @@ export const useSearch = () => {
     const [limit, setLimit] = React.useState(null);
     const [total, setTotal] = React.useState(null);
     const [error, setError] = React.useState(null);
+    const [allWorkoutsMuscleGroups, setAllWorkoutsMuscleGroups] = React.useState([]);
     
     const search = async (query, page) => {
       setIsLoading(true);
@@ -33,7 +34,8 @@ export const useSearch = () => {
         setError(null)
         setIsLoading(false);
         setLimit(json.limit);
-        setTotal(json.allUserWorkoutsByQuery.length);
+        setTotal(json.total);
+        setAllWorkoutsMuscleGroups(json.allUserWorkoutsMuscleGroups)
         dispatch({type: "SET_WORKOUTS", payload: json.workoutsChunk})
       }
       if(!response.ok){
@@ -42,5 +44,5 @@ export const useSearch = () => {
       }
       
     }
-    return { search, isLoading, limit, total, error}
+    return { search, isLoading, limit, total, allWorkoutsMuscleGroups, error }
 }

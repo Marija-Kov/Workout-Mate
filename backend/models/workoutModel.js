@@ -8,6 +8,10 @@ const workoutSchema = new Schema({
         type: String,
         required: true
     },
+    muscle_group: {
+        type: String,
+        required: true
+    },
     reps: {
         type: Number,
         required:true
