@@ -5,41 +5,13 @@ import { useCreateWorkout } from "../useCreateWorkout";
 import { AuthContext } from "../../context/AuthContext";
 import { WorkoutContext } from "../../context/WorkoutContext";
 
-let mockWorkout;
-let mockUser;
-let mockWorkouts;
-
-beforeAll(() => {
- mockWorkout = { title: "squats", muscle_group: "leg", reps: 20, load: 15};
-   mockWorkouts = {
-     allUserWorkoutsByQuery: [],
-     workoutsChunk: [],
-     limit: 3,
-     noWorkoutsByQuery: false,
-   };
-   mockUser = {
-     id: "userid",
-     email: "keech@mail.yu",
-     token: "authorizationToken",
-     username: undefined,
-     profileImg: undefined,
-     tokenExpires: Date.now() + 3600000,
-   };
-})
-
-afterAll(() => {
- mockWorkout = null;
- mockUser = null;
- mockWorkouts = null;
-})
-
 describe("useCreateWorkout()", () => {
   it("should return createWorkout function and error state set to 'false'", async () => {
     const wrapper = ({ children }) => {
       return (
-        <AuthContext.Provider value={{ user: mockUser }}>
+        <AuthContext.Provider value={{ user: {} }}>
           <WorkoutContext.Provider
-            value={{ workouts: mockWorkouts }}
+            value={{ workouts: [] }}
           >
             {children}
           </WorkoutContext.Provider>
@@ -52,11 +24,12 @@ describe("useCreateWorkout()", () => {
   });
 
   it("should not change default error state (false) when createWorkout was run with authorization and valid input", async () => {
+    const mockWorkout = { title: "squats", muscle_group: "leg", reps: 20, load: 15};
     const wrapper = ({ children }) => {
       return (
-        <AuthContext.Provider value={{ user: mockUser }}>
+        <AuthContext.Provider value={{ user: {} }}>
           <WorkoutContext.Provider
-            value={{ workouts: mockWorkouts, dispatch: () => {} }}
+            value={{ workouts: [], dispatch: () => {} }}
           >
             {children}
           </WorkoutContext.Provider>
@@ -74,7 +47,7 @@ describe("useCreateWorkout()", () => {
       return (
         <AuthContext.Provider value={{ user: null }}>
           <WorkoutContext.Provider
-            value={{ workouts: mockWorkouts, dispatch: () => {} }}
+            value={{ workouts: [], dispatch: () => {} }}
           >
             {children}
           </WorkoutContext.Provider>
@@ -101,8 +74,8 @@ describe("useCreateWorkout()", () => {
     const mockWorkout = { title: "squats", muscle_group: "leg", reps: 20 };
     const wrapper = ({ children }) => {
       return (
-        <AuthContext.Provider value={{ user: mockUser }}>
-          <WorkoutContext.Provider value={{ workouts: mockWorkouts, dispatch: () => {} }}>
+        <AuthContext.Provider value={{ user: {} }}>
+          <WorkoutContext.Provider value={{ workouts: [], dispatch: () => {} }}>
             {children}
           </WorkoutContext.Provider>
         </AuthContext.Provider>

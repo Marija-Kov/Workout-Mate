@@ -55,7 +55,7 @@ export default function EditWorkout(props){
             ref={title}
           />
           <label htmlFor="muscle_group">muscle group:</label>
-          <select ref={muscle_group} aria-label="workout title" name="muscle_group" id="muscle_group">
+          <select ref={muscle_group} aria-label="muscle group" name="muscle_group" id="muscle_group">
               <option value="">{props.muscle_group}</option>
               <option value="chest">chest</option>
               <option value="shoulder">shoulder</option>

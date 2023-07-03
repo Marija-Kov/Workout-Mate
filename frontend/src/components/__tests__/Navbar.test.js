@@ -7,7 +7,6 @@ import { AuthContext } from "../../context/AuthContext";
 import { WorkoutContext } from "../../context/WorkoutContext";
 
 let mockUser;
-let mockWorkouts;
 
 beforeAll(() => {
   mockUser = {
@@ -18,17 +17,10 @@ beforeAll(() => {
     profileImg: undefined,
     tokenExpires: Date.now() + 3600000,
   };
-  mockWorkouts = {
-    allUserWorkoutsByQuery: [],
-    workoutsChunk: [],
-    limit: 3,
-    noWorkoutsByQuery: false,
-  };
 });
 
 afterAll(() => {
   mockUser = null;
-  mockWorkouts = null;
 });
 
 describe("<Navbar />", ()=>{
@@ -88,7 +80,7 @@ describe("<Navbar />", ()=>{
     it("should render User menu once user clicks on avatar", async () => {
       user.setup();
       render(
-        <WorkoutContext.Provider value={{ workouts: mockWorkouts }}>
+        <WorkoutContext.Provider value={{ workouts: [] }}>
           <AuthContext.Provider value={{ user: mockUser }}>
             <BrowserRouter>
               <Navbar />
