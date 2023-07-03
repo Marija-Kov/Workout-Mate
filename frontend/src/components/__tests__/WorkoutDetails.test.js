@@ -5,50 +5,23 @@ import { AuthContext } from "../../context/AuthContext";
 import { WorkoutContext } from "../../context/WorkoutContext";
 import WorkoutDetails from "../WorkoutDetails";
 
-let mockUser;
-let mockWorkouts;
-let mockWorkout;
-
-beforeAll(() => {
-      mockUser = {
-        id: "userid",
-        email: "keech@mail.yu",
-        token: "authorizationToken",
-        username: undefined,
-        profileImg: undefined,
-        tokenExpires: Date.now() + 3600000,
-      };
-      mockWorkouts = {
-        allUserWorkoutsByQuery: [],
-        workoutsChunk: [],
-        limit: 3,
-        noWorkoutsByQuery: false,
-      };
-      mockWorkout = {
-        id: "workoutId",
-        title: "bench press",
-        reps: 22,
-        load: 23,
-        createdAt: "2023-04-10T13:01:15.208+00:00",
-        updatedAt: "2023-04-13T17:27:28.820+00:00",
-      };
-});
-
 afterEach(() => {
   cleanup();
 });
 
-afterAll(() => {
-  mockUser = null;
-  mockWorkouts = null;
-  mockWorkout = null;
-})
-
 describe("<WorkoutDetails />", () => {
   it("should render WorkoutDetails component properly", async () => {
+   let mockWorkout = {
+      id: "workoutId",
+      title: "bench press",
+      reps: 22,
+      load: 23,
+      createdAt: "2023-04-10T13:01:15.208+00:00",
+      updatedAt: "2023-04-13T17:27:28.820+00:00",
+    };
     render(
-      <AuthContext.Provider value={{ user: mockUser }}>
-        <WorkoutContext.Provider value={{ workouts: mockWorkouts }}>
+      <AuthContext.Provider value={{ user: {} }}>
+        <WorkoutContext.Provider value={{ workouts: [] }}>
           <WorkoutDetails
             id={mockWorkout.id}
             title={mockWorkout.title}
@@ -81,9 +54,17 @@ describe("<WorkoutDetails />", () => {
 
   it("should focus elements in right order", async () => {
     user.setup();
+    let mockWorkout = {
+      id: "workoutId",
+      title: "bench press",
+      reps: 22,
+      load: 23,
+      createdAt: "2023-04-10T13:01:15.208+00:00",
+      updatedAt: "2023-04-13T17:27:28.820+00:00",
+    };
     render(
-      <AuthContext.Provider value={{ user: mockUser }}>
-        <WorkoutContext.Provider value={{ workouts: mockWorkouts }}>
+      <AuthContext.Provider value={{ user: {} }}>
+        <WorkoutContext.Provider value={{ workouts: [] }}>
           <WorkoutDetails
             id={mockWorkout.id}
             title={mockWorkout.title}
@@ -110,9 +91,17 @@ describe("<WorkoutDetails />", () => {
 
   it("should open EditWorkout when 'edit' button is clicked", async () => {
     user.setup();
+    let mockWorkout = {
+      id: "workoutId",
+      title: "bench press",
+      reps: 22,
+      load: 23,
+      createdAt: "2023-04-10T13:01:15.208+00:00",
+      updatedAt: "2023-04-13T17:27:28.820+00:00",
+    };
     render(
-      <AuthContext.Provider value={{ user: mockUser }}>
-        <WorkoutContext.Provider value={{ workouts: mockWorkouts }}>
+      <AuthContext.Provider value={{ user: {} }}>
+        <WorkoutContext.Provider value={{ workouts: [] }}>
           <WorkoutDetails
             id={mockWorkout.id}
             title={mockWorkout.title}

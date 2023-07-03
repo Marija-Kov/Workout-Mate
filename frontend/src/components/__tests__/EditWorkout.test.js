@@ -7,37 +7,11 @@ import { WorkoutContext } from "../../context/WorkoutContext";
 import { rest } from "msw";
 import { server } from "../../mocks/server";
 
-let mockUser;
-let mockWorkouts;
-
-beforeAll(() => {
-  mockUser = {
-    id: "userid",
-    email: "keech@mail.yu",
-    token: "authorizationToken",
-    username: undefined,
-    profileImg: undefined,
-    tokenExpires: Date.now() + 3600000,
-  };
-    mockWorkouts = {
-      allUserWorkoutsByQuery: [],
-      workoutsChunk: [],
-      limit: 3,
-      noWorkoutsByQuery: false,
-    };
-});
-
-afterAll(() => {
-  mockUser = null;
-  mockWorkouts = null;
-});
-
-
 describe("<EditWorkout/>", () => {
   it("should render Edit workout form given that user is authenticated", async () => {
   render(
-    <AuthContext.Provider value={{ user: mockUser }}>
-      <WorkoutContext.Provider value={{ workouts: mockWorkouts }}>
+    <AuthContext.Provider value={{ user: {} }}>
+      <WorkoutContext.Provider value={{ workouts: [] }}>
         <EditWorkout />
       </WorkoutContext.Provider>
     </AuthContext.Provider>
@@ -62,8 +36,8 @@ describe("<EditWorkout/>", () => {
   it("should focus input fields in the right order", async () => {
         user.setup();
     render(
-      <AuthContext.Provider value={{ user: mockUser }}>
-        <WorkoutContext.Provider value={{ workouts: mockWorkouts }}>
+      <AuthContext.Provider value={{ user: {} }}>
+        <WorkoutContext.Provider value={{ workouts: [] }}>
           <EditWorkout />
         </WorkoutContext.Provider>
       </AuthContext.Provider>
@@ -93,8 +67,8 @@ describe("<EditWorkout/>", () => {
   it("should update input value when user types", async () => {
     user.setup();
     render(
-      <AuthContext.Provider value={{ user: mockUser }}>
-        <WorkoutContext.Provider value={{ workouts: mockWorkouts }}>
+      <AuthContext.Provider value={{ user: {} }}>
+        <WorkoutContext.Provider value={{ workouts: [] }}>
           <EditWorkout />
         </WorkoutContext.Provider>
       </AuthContext.Provider>
@@ -115,8 +89,8 @@ describe("<EditWorkout/>", () => {
   it("should submit updated input fields given that user is authenticated", async () => {
     user.setup();
     render(
-      <AuthContext.Provider value={{ user: mockUser, dispatch: () => {} }}>
-        <WorkoutContext.Provider value={{ workouts: mockWorkouts, dispatch: () => {} }}>
+      <AuthContext.Provider value={{ user: {}, dispatch: () => {} }}>
+        <WorkoutContext.Provider value={{ workouts: [], dispatch: () => {} }}>
           <EditWorkout showEdit={()=>{}}/>
         </WorkoutContext.Provider>
       </AuthContext.Provider>

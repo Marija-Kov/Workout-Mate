@@ -6,35 +6,11 @@ import { server } from "../../mocks/server";
 import { AuthContext } from "../../context/AuthContext";
 import { WorkoutContext } from "../../context/WorkoutContext";
 
-let mockUser;
-let mockWorkouts;
-beforeAll(() => {
-  mockUser = {
-    id: "userid",
-    email: "keech@mail.yu",
-    token: "authorizationToken",
-    username: undefined,
-    profileImg: undefined,
-    tokenExpires: Date.now() + 3600000
-  };
-  mockWorkouts = {
-    allUserWorkoutsByQuery: [],
-    workoutsChunk: [],
-    limit: 3,
-    noWorkoutsByQuery: false,
-  };
-});
-
-afterAll(() => {
-  mockUser = null;
-  mockWorkouts=null;
-});
-
 describe("<WorkoutForm/>", () => {
   it("should render Workout form given that user is authenticated", async () => {
           render(
-            <AuthContext.Provider value={{ user: mockUser }}>
-              <WorkoutContext.Provider value={{ workouts: mockWorkouts }}>
+            <AuthContext.Provider value={{ user: {} }}>
+              <WorkoutContext.Provider value={{ workouts: [] }}>
                 <WorkoutForm />
               </WorkoutContext.Provider>
             </AuthContext.Provider>
@@ -58,8 +34,8 @@ describe("<WorkoutForm/>", () => {
   it("should focus input fields in the right order", async () => {
     user.setup();
     render(
-      <AuthContext.Provider value={{ user: mockUser }}>
-        <WorkoutContext.Provider value={{ workouts: mockWorkouts }}>
+      <AuthContext.Provider value={{ user: {} }}>
+        <WorkoutContext.Provider value={{ workouts: [] }}>
           <WorkoutForm />
         </WorkoutContext.Provider>
       </AuthContext.Provider>
@@ -89,8 +65,8 @@ describe("<WorkoutForm/>", () => {
   it("should update input/select value when user types/selects", async () => {
     user.setup();
     render(
-      <AuthContext.Provider value={{ user: mockUser }}>
-        <WorkoutContext.Provider value={{ workouts: mockWorkouts }}>
+      <AuthContext.Provider value={{ user: {} }}>
+        <WorkoutContext.Provider value={{ workouts: [] }}>
           <WorkoutForm />
         </WorkoutContext.Provider>
       </AuthContext.Provider>
@@ -122,8 +98,8 @@ describe("<WorkoutForm/>", () => {
     );
     user.setup();
     render(
-      <AuthContext.Provider value={{ user: mockUser }}>
-        <WorkoutContext.Provider value={{ workouts: mockWorkouts}}>
+      <AuthContext.Provider value={{ user: {} }}>
+        <WorkoutContext.Provider value={{ workouts: []}}>
           <WorkoutForm />
         </WorkoutContext.Provider>
       </AuthContext.Provider>
@@ -183,9 +159,9 @@ describe("<WorkoutForm/>", () => {
   it("should not respond with error when user submits form with valid input", async () => {
     user.setup();
     render(
-      <AuthContext.Provider value={{ user: mockUser }}>
+      <AuthContext.Provider value={{ user: {} }}>
         <WorkoutContext.Provider
-          value={{ workouts: mockWorkouts, dispatch: () => {} }}
+          value={{ workouts: [], dispatch: () => {} }}
         >
           <WorkoutForm
             hideForm={() => {}}

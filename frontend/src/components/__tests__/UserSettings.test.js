@@ -4,36 +4,11 @@ import { render, screen } from "@testing-library/react";
 import { WorkoutContext } from "../../context/WorkoutContext";
 import { AuthContext } from "../../context/AuthContext";
 
-let mockUser;
-let mockWorkouts;
-
-beforeAll(() => {
-  mockUser = {
-    id: "userid",
-    email: "keech@mail.yu",
-    token: "authorizationToken",
-    username: undefined,
-    profileImg: undefined,
-    tokenExpires: Date.now() + 3600000,
-  };
-  mockWorkouts = {
-    allUserWorkoutsByQuery: [],
-    workoutsChunk: [],
-    limit: 3,
-    noWorkoutsByQuery: false,
-  };
-});
-
-afterAll(() => {
-  mockUser = null;
-  mockWorkouts = null;
-});
-
 describe("<UserSettings/>", () => {
     it("should render UserSettings component correctly", async () => {
       render(
-      <AuthContext.Provider value={{user: mockUser}}>
-        <WorkoutContext.Provider value={{workouts: mockWorkouts}}>
+      <AuthContext.Provider value={{user: {}}}>
+        <WorkoutContext.Provider value={{workouts: []}}>
             <UserSettings />
           </WorkoutContext.Provider>
         </AuthContext.Provider>
@@ -55,8 +30,8 @@ describe("<UserSettings/>", () => {
     it("should focus elements in correct order", async () => {
       user.setup();
       render(
-        <AuthContext.Provider value={{ user: mockUser }}>
-          <WorkoutContext.Provider value={{ workouts: mockWorkouts }}>
+        <AuthContext.Provider value={{ user: {} }}>
+          <WorkoutContext.Provider value={{ workouts: [] }}>
             <UserSettings />
           </WorkoutContext.Provider>
         </AuthContext.Provider>
@@ -81,8 +56,8 @@ describe("<UserSettings/>", () => {
     it("should update new username input value when user types", async () => {
       user.setup();
       render(
-        <AuthContext.Provider value={{ user: mockUser }}>
-          <WorkoutContext.Provider value={{ workouts: mockWorkouts }}>
+        <AuthContext.Provider value={{ user: {} }}>
+          <WorkoutContext.Provider value={{ workouts: [] }}>
             <UserSettings />
           </WorkoutContext.Provider>
         </AuthContext.Provider>
@@ -95,8 +70,8 @@ describe("<UserSettings/>", () => {
     it("should render error message and disable upload button if name is too long", async () => {
       user.setup();
       render(
-        <AuthContext.Provider value={{ user: mockUser }}>
-          <WorkoutContext.Provider value={{ workouts: mockWorkouts }}>
+        <AuthContext.Provider value={{ user: {} }}>
+          <WorkoutContext.Provider value={{ workouts: [] }}>
             <UserSettings />
           </WorkoutContext.Provider>
         </AuthContext.Provider>
@@ -114,9 +89,9 @@ describe("<UserSettings/>", () => {
     it("should respond with success message if profile was updated successfully", async () => {
       user.setup();
       render(
-        <AuthContext.Provider value={{ user: mockUser, dispatch: () => {} }}>
+        <AuthContext.Provider value={{ user: {}, dispatch: () => {} }}>
           <WorkoutContext.Provider
-            value={{ workouts: mockWorkouts, dispatch: () => {} }}
+            value={{ workouts: [], dispatch: () => {} }}
           >
             <UserSettings />
           </WorkoutContext.Provider>
@@ -133,8 +108,8 @@ describe("<UserSettings/>", () => {
     it("should render delete account dialogue component when 'delete account' button is clicked", async () => {
       user.setup();
       render(
-        <AuthContext.Provider value={{ user: mockUser }}>
-          <WorkoutContext.Provider value={{ workouts: mockWorkouts }}>
+        <AuthContext.Provider value={{ user: {} }}>
+          <WorkoutContext.Provider value={{ workouts: [] }}>
             <UserSettings />
           </WorkoutContext.Provider>
         </AuthContext.Provider>
