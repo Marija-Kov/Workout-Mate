@@ -1,4 +1,4 @@
-<h1 align="center">Workout Mate</h1>
+<h1 align="center"><a href="https://workout-mate.onrender.com/">Workout Mate</a></h1>
 <h3 align="center">A MERN stack app with authentication</h3>
 <br>
 <div align="center"><img src="./demo/wm-login.gif" alt="logging into app" /></div> 
@@ -28,7 +28,7 @@ Workout Mate lets you be the athlete you want to be.</i>
 
 ## How did it come about? <a name = "motivation"></a>
 <p> 
-Workout Mate started off as a basic made-from-scratch CRUD project that I decided to build on top of to create a more complete web app that would hopefully demonstrate solid understanding of the fundamentals of building a common real-world piece of software.
+Workout Mate started off as a basic made-from-scratch CRUD project that I decided to build on top of to create a more complete web app.
 </p>
 
 <br>
@@ -73,6 +73,7 @@ In case you want to delete your Workout Mate account, you will have to log in, o
 - [Nodemailer](https://nodemailer.com/about/) - Email sending middleware
 - [Handlebars](https://handlebarsjs.com/) - Email templates
 - [Ethereal email](https://ethereal.email/) - Mock SMTP service
+- [Express rate limit](https://github.com/express-rate-limit/express-rate-limit) - Request rate limiting
 
 #### Dev Dependencies
 
@@ -87,6 +88,8 @@ In case you want to delete your Workout Mate account, you will have to log in, o
 - [React router](https://reactrouter.com/en/main) - Browser routing
 - [React easy crop](https://www.npmjs.com/package/react-easy-crop) - Image cropping
 - [Date-fns](https://date-fns.org/) - Date formatting
+- [ChartJS](https://www.chartjs.org/) - Charting library
+- [React ChartJS](https://react-chartjs-2.js.org/) - ChartJS library for React
 - [CSS](https://developer.mozilla.org/en-US/docs/Web/CSS) - Styling
 
 <br>
@@ -175,10 +178,7 @@ All files                        |   78.54 |    71.94 |   76.12 |   81.37 |
 <br>
 
 ## Todos <a name = "todos"></a>
-
-- Make the UI responsive (mobile-friendly);
-- Feature: Change the pie chart role from ornamental to relevant/functional.
-
+☕
 <br>
 
 ## Resources <a name = "resources"></a>
