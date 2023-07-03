@@ -7,10 +7,12 @@ import { jest } from "@jest/globals"
 import { genSampleWorkouts } from '../../utils/test/genSampleWorkouts';
 import Home from "../Home";
 import Search from '../../components/Search';
+import { Chart } from '../../components/Chart';
 import Pagination from '../../components/Pagination';
 import WorkoutDetails from '../../components/WorkoutDetails';
 import WorkoutForm from '../../components/WorkoutForm';
 
+jest.mock('../../components/Chart')
 jest.mock("../../components/WorkoutDetails");
 jest.mock("../../components/Pagination");
 jest.mock("../../components/WorkoutForm");
@@ -21,24 +23,16 @@ jest.mock("../../hooks/useSearch", () => ({
            search: () => {},
            total: mockWorkouts.searchResults.length,
            limit: mockWorkouts.resultsOnPage.length,
+           allWorkoutsMuscleGroups: mockWorkouts.allWorkoutsMuscleGroups,
            isLoading: false,
        };
   }
         
 }));
 
-let mockUser;
 let mockWorkouts;
 
 beforeAll(() => {
-  mockUser = {
-    id: "userid",
-    email: "keech@mail.yu",
-    token: "authorizationToken",
-    username: undefined,
-    profileImg: undefined,
-    tokenExpires: Date.now() + 3600000,
-  };
   mockWorkouts = genSampleWorkouts()
 });
 
@@ -48,14 +42,13 @@ afterEach(() => {
 
 afterAll(() => {
   jest.clearAllMocks();
-  mockUser = null;
   mockWorkouts = null;
 });
 
 describe("<Home />", () => {
     it("should render Home page correctly given that user is authenticated", async () => {
       render(
-        <AuthContext.Provider value={{ user: mockUser }}>
+        <AuthContext.Provider value={{ user: {}}}>
           <WorkoutContext.Provider
             value={{ workouts: mockWorkouts.resultsOnPage }}
           >
@@ -64,8 +57,9 @@ describe("<Home />", () => {
         </AuthContext.Provider>
       );
       const addWorkoutBtn = await screen.findByLabelText(/buff it up/i);
-      const workouts = await screen.findByLabelText(/workouts/i);
+      const workouts = await screen.findByLabelText("workouts");
       expect(Search).toHaveBeenCalled();
+      expect(Chart).toHaveBeenCalled();
       expect(Pagination).toHaveBeenCalled();
       expect(WorkoutDetails).toHaveBeenCalled();
       expect(addWorkoutBtn).toBeInTheDocument();
@@ -75,7 +69,7 @@ describe("<Home />", () => {
     it("should render WorkoutForm component when user clicks on 'Buff it up' button", async () => {
       user.setup();
       render(
-        <AuthContext.Provider value={{ user: mockUser }}>
+        <AuthContext.Provider value={{ user: {} }}>
           <WorkoutContext.Provider
             value={{ workouts: mockWorkouts.resultsOnPage }}
           >
