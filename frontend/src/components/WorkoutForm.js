@@ -63,7 +63,7 @@ export default function WorkoutForm({hideForm, spreadPages, flipPage, total, lim
         className={emptyFields.includes("title") ? "error" : ""}
       />
       <label htmlFor="muscle_group">muscle group:</label>
-      <select ref={muscle_group} aria-label="workout title" name="muscle_group" id="muscle_group" className={emptyFields.includes("muscle group") ? "error" : ""}>
+      <select ref={muscle_group} aria-label="muscle group" name="muscle_group" id="muscle_group" className={emptyFields.includes("muscle group") ? "error" : ""}>
         <option value="">-please select-</option>
         <option value="chest">chest</option>
         <option value="shoulder">shoulder</option>
