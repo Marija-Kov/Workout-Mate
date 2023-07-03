@@ -6,38 +6,12 @@ import { WorkoutContext } from "../../context/WorkoutContext";
 import { server } from "../../mocks/server";
 import { useSearch } from "../useSearch";
 
-let mockUser;
-let mockWorkouts;
-
-beforeAll(() => {
-  
-  mockWorkouts = {
-    allUserWorkoutsByQuery: [],
-    workoutsChunk: [],
-    limit: 3,
-    noWorkoutsByQuery: false,
-  };
-  mockUser = {
-    id: "userid",
-    email: "keech@mail.yu",
-    token: "authorizationToken",
-    username: undefined,
-    profileImg: undefined,
-    tokenExpires: Date.now() + 3600000,
-  };
-});
-
-afterAll(() => {
-  mockUser = null;
-  mockWorkouts = null;
-});
-
 describe("useSearch()", () => {
   it("should return search function and all states set to default values (falsy)", () => {
     const wrapper = ({ children }) => {
       return (
-        <AuthContext.Provider value={{ user: mockUser }}>
-          <WorkoutContext.Provider value={{ workouts: mockWorkouts }}>
+        <AuthContext.Provider value={{ user: {} }}>
+          <WorkoutContext.Provider value={{ workouts: [] }}>
             {children}
           </WorkoutContext.Provider>
         </AuthContext.Provider>
@@ -45,10 +19,11 @@ describe("useSearch()", () => {
     };
     const { result } = renderHook(useSearch, { wrapper });
     expect(result.current.search).toBeTruthy();
-    expect(result.current.isLoading).toBeFalsy();
-    expect(result.current.limit).toBeFalsy();
-    expect(result.current.total).toBeFalsy();
-    expect(result.current.error).toBeFalsy();
+    expect(result.current.isLoading).toBe(null);
+    expect(result.current.limit).toBe(null);
+    expect(result.current.allWorkoutsMuscleGroups.length).toBe(0);
+    expect(result.current.total).toBe(null);
+    expect(result.current.error).toBe(null);
   });
 
   it("should set error to truthy if search was run without authorization", async () => {
@@ -56,7 +31,7 @@ describe("useSearch()", () => {
       return (
         <AuthContext.Provider value={{ user: null }}>
           <WorkoutContext.Provider
-            value={{ workouts: mockWorkouts, dispatch: () => {} }}
+            value={{ workouts: [], dispatch: () => {} }}
           >
             {children}
           </WorkoutContext.Provider>
@@ -65,7 +40,7 @@ describe("useSearch()", () => {
     };
     const { result } = renderHook(useSearch, { wrapper });
     await act(() => result.current.search("pu", 0));
-    expect(result.current.isLoading).toBeFalsy();
+    expect(result.current.isLoading).toBe(false);
     expect(result.current.error).toBeTruthy();
     expect(result.current.error).toMatch(/not authorized/i);
   });
@@ -83,9 +58,9 @@ describe("useSearch()", () => {
     );
     const wrapper = ({ children }) => {
       return (
-        <AuthContext.Provider value={{ user: mockUser }}>
+        <AuthContext.Provider value={{ user: {} }}>
           <WorkoutContext.Provider
-            value={{ workouts: mockWorkouts, dispatch: () => {} }}
+            value={{ workouts: [], dispatch: () => {} }}
           >
             {children}
           </WorkoutContext.Provider>
@@ -94,7 +69,8 @@ describe("useSearch()", () => {
     };
     const { result } = renderHook(useSearch, { wrapper });
     await act(() => result.current.search("pu", 0));
-    expect(result.current.isLoading).toBeFalsy();
+    expect(result.current.isLoading).toBe(false);
+    expect(result.current.allWorkoutsMuscleGroups.length).toBe(0);
     expect(result.current.error).toBeTruthy();
     expect(result.current.error).toMatch(/something went wrong/i);
   });
@@ -102,9 +78,9 @@ describe("useSearch()", () => {
   it("should run search function and update total and limit states to truthy", async () => {
     const wrapper = ({ children }) => {
       return (
-        <AuthContext.Provider value={{ user: mockUser }}>
+        <AuthContext.Provider value={{ user: {} }}>
           <WorkoutContext.Provider
-            value={{ workouts: mockWorkouts, dispatch: () => {} }}
+            value={{ workouts: [], dispatch: () => {} }}
           >
             {children}
           </WorkoutContext.Provider>
@@ -113,8 +89,9 @@ describe("useSearch()", () => {
     };
     const { result } = renderHook(useSearch, { wrapper });
     await act(() => result.current.search("pu", 0));
-    expect(result.current.isLoading).toBeFalsy();
-    expect(result.current.error).toBeFalsy();
+    expect(result.current.isLoading).toBe(false);
+    expect(result.current.error).toBe(null);
+    expect(result.current.allWorkoutsMuscleGroups.length).not.toBe(0);
     expect(result.current.limit).toBeTruthy();
     expect(result.current.total).toBeTruthy();
   });
