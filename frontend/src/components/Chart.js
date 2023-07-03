@@ -103,7 +103,7 @@ export const Chart = ({muscleGroups}) => {
   return (
     <div className="chart--container">
       <h3>Routine balance (%)</h3>
-      <div className="chart">  
+      <div className="chart" aria-label="routine balance chart">  
          <Doughnut data={data} options={options} />
          <CustomLegend 
           labels={data.labels} 
