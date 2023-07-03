@@ -76,6 +76,7 @@ export const handlers = [
       ctx.status(200),
       ctx.json({
         title: "workout title",
+        muscle_group: "leg",
         reps: "workout reps",
         load: "workout loads",
       })
@@ -86,8 +87,9 @@ export const handlers = [
     return res(
       ctx.status(200),
       ctx.json({
-        allUserWorkoutsByQuery: [{}, {}, {}, {}, {}, {}],
         workoutsChunk: [{}, {}, {}],
+        allUserWorkoutsMuscleGroups: ["leg", "ab", "back", "leg", "biceps"],
+        total: 5,
         limit: 3,
         noWorkoutsByQuery: false,
       })
