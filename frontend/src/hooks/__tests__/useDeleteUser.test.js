@@ -4,28 +4,11 @@ import { server } from "../../mocks/server";
 import { AuthContext } from "../../context/AuthContext";
 import { useDeleteUser } from "../useDeleteUser";
 
-let mockUser;
-
-beforeAll(() => {
-  mockUser = {
-    id: "userid",
-    email: "keech@mail.yu",
-    token: "authorizationToken",
-    username: undefined,
-    profileImg: undefined,
-    tokenExpires: Date.now() + 3600000,
-  };
-});
-
-afterAll(() => {
-  mockUser = null;
-});
-
 describe("useDeleteUser()", () => {
   it("should return deleteUser function and error set to default state (false)", () => {
     const wrapper = ({ children }) => {
       return (
-        <AuthContext.Provider value={{ user: mockUser }}>
+        <AuthContext.Provider value={{ user: {} }}>
           {children}
         </AuthContext.Provider>
       );
@@ -44,7 +27,7 @@ describe("useDeleteUser()", () => {
       );
     };
     const { result } = renderHook(useDeleteUser, { wrapper });
-    await act(() => result.current.deleteUser(mockUser.id));
+    await act(() => result.current.deleteUser("userid"));
     expect(result.current.error).toBeTruthy();
     expect(result.current.error).toMatch(/not authorized/i);
   });
@@ -62,7 +45,7 @@ describe("useDeleteUser()", () => {
       );
       const wrapper = ({ children }) => {
         return (
-          <AuthContext.Provider value={{ user: mockUser }}>
+          <AuthContext.Provider value={{ user: {} }}>
             {children}
           </AuthContext.Provider>
         );
@@ -76,13 +59,13 @@ describe("useDeleteUser()", () => {
     it("should run deleteUser function successfully given that the user is authorized", async () => {
       const wrapper = ({ children }) => {
         return (
-          <AuthContext.Provider value={{ user: mockUser }}>
+          <AuthContext.Provider value={{ user: {} }}>
             {children}
           </AuthContext.Provider>
         );
       };
       const { result } = renderHook(useDeleteUser, { wrapper });
-      await act(() => result.current.deleteUser(mockUser.id));
+      await act(() => result.current.deleteUser("userid"));
       expect(result.current.error).toBeFalsy();
     });
 });

@@ -4,28 +4,11 @@ import { server } from "../../mocks/server";
 import { AuthContext } from "../../context/AuthContext";
 import { useUpdateUser } from "../useUpdateUser";
 
-let mockUser;
-
-beforeAll(() => {
-  mockUser = {
-    id: "userid",
-    email: "keech@mail.yu",
-    token: "authorizationToken",
-    username: undefined,
-    profileImg: undefined,
-    tokenExpires: Date.now() + 3600000,
-  };
-});
-
-afterAll(() => {
-  mockUser = null;
-});
-
 describe("useUpdateUser()", () => {
   it("should return updateUser function and default values of states: error, isLoading and success (null)", () => {
     const wrapper = ({ children }) => {
       return (
-        <AuthContext.Provider value={{ user: mockUser }}>
+        <AuthContext.Provider value={{ user: {} }}>
           {children}
         </AuthContext.Provider>
       );
@@ -66,7 +49,7 @@ describe("useUpdateUser()", () => {
     );
     const wrapper = ({ children }) => {
       return (
-        <AuthContext.Provider value={{ user: mockUser, dispatch: () => {} }}>
+        <AuthContext.Provider value={{ user: {}, dispatch: () => {} }}>
           {children}
         </AuthContext.Provider>
       );
@@ -85,7 +68,7 @@ describe("useUpdateUser()", () => {
     };
     const wrapper = ({ children }) => {
       return (
-        <AuthContext.Provider value={{ user: mockUser, dispatch: () => {} }}>
+        <AuthContext.Provider value={{ user: {}, dispatch: () => {} }}>
           {children}
         </AuthContext.Provider>
       );
