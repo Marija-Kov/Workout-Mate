@@ -8,6 +8,7 @@ import Search from '../components/Search';
 import { logOutIfTokenExpired } from '../utils/logOutIfTokenExpired';
 import { Chart } from '../components/Chart';
 import { ChartPlaceholder } from '../components/ChartPlaceholder';
+import { WorkoutsPlaceholder } from '../components/WorkoutsPlaceholder';
 
 export default function Home() {
     const [addWorkoutForm, setAddWorkoutForm] = React.useState(false);
@@ -77,8 +78,7 @@ export default function Home() {
               </div>
             )}
           <div aria-label="workouts" className="workouts--container">
-            {isLoading && <h4 className="loading--workouts"> Fetching data...</h4>}
-            {workouts &&
+            {workouts ?
               workouts.map((workout) => (
                 <WorkoutDetails
                   key={workout._id}
@@ -95,7 +95,7 @@ export default function Home() {
                   total={total}
                   limit={limit}
                 />
-              ))}
+              )) : <WorkoutsPlaceholder />}
              {workouts && !workouts.length && !isLoading && 
               <h4 className="get--started">
                 {!query && <>Buff it up to get started.<br></br>No pressure <span>🥤</span></>} 

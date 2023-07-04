@@ -258,8 +258,6 @@ header a {
   'pagination pagination chart chart chart'
 }
 
-
-  
 .space {
   grid-area: space;
 }
@@ -1035,10 +1033,29 @@ form.signup h4 {
 
  .workouts--container {
    grid-area: workouts;
-   margin-left:40px;
+   margin-left: 40px;
    height: 500px;
    padding-bottom: 0;
    overflow-y: hidden;
+ }
+
+ .workouts--placeholder {
+  grid-area: workouts;
+  width: 280px;
+  filter:opacity(0.7);
+  position: relative;
+  /* top: -495px; */
+ }
+
+ .workouts--placeholder > div {
+  color: white;
+  font-size: 1em;
+  max-width: 250px;
+  height: 120px;
+  margin: 0 0 15px 0;
+  padding: 15px;
+  border-radius: 20px;
+  animation: placeholder--animation 1s ease-in-out infinite;
  }
 
 /* Workout details component */
@@ -1229,7 +1246,7 @@ select.error {
   flex-direction: column;
   gap: 10px;
   align-items: center;
-  filter:opacity(0.7)
+  filter:opacity(0.7);
 }
 
 @keyframes placeholder--animation {
@@ -1457,15 +1474,10 @@ select.error {
     height: fit-content;
   }
 
-  .loading--workouts{
-   top: 450px;
-   left: 35%;
-   }
-
-  .workout-details {
+  .workout-details,
+  .workouts--placeholder {
     margin-left: auto;
     margin-right: auto;
-    width: 300px;
   }
 
   .page--btn--container {
