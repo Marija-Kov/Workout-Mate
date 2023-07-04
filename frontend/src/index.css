@@ -751,7 +751,11 @@ form.signup h4 {
 }
 
 .loading--workouts{
-  animation: loading--workouts .5s ease-in-out infinite;
+  position: absolute;
+  top: 50px;
+  left: 180px;
+  z-index: 5;
+  animation: loading--workouts 1s ease-in-out infinite;
 }
 
 @keyframes loading--workouts {
@@ -1216,6 +1220,60 @@ select.error {
   background: var(--primary);
 }
 
+/* Chart placeholder*/
+
+.chart--placeholder {
+  grid-area: chart;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+  filter:opacity(0.7)
+}
+
+@keyframes placeholder--animation {
+  0% {
+    background: var(--chart--color-1);
+  }
+  50% {
+    background: var(--chart--color-2);  
+  }
+  100% {
+    background: var(--chart--color-1);
+  }
+}
+
+.chart--placeholder--title {
+ height: 20px;
+ width: 200px;
+ border-radius: 2px;
+ animation: placeholder--animation 1s ease-in-out infinite;
+}
+
+.chart--placeholder--circle {
+  height: 300px;
+  width: 300px;
+  border-radius: 100%;
+  animation: placeholder--animation 1s ease-in-out infinite;
+}
+
+.chart--placeholder--legend {
+  width: 200px;
+  display:flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.chart--placeholder--legend > span {
+  width: 60px;
+  height: 10px;
+  border-radius: 2px;
+  animation: placeholder--animation 1s ease-in-out infinite;
+}
+
 /* Chart */
 
 .chart--container {
@@ -1358,6 +1416,11 @@ select.error {
   .delete--account--btn {
    left: 160px;
   }
+
+  .chart--placeholder--circle {
+   height: 200px;
+   width: 200px;
+  }
   
   .chart {
    width: 200px;
@@ -1373,7 +1436,7 @@ select.error {
     /* display: none */
     width: 100%;
   }
-
+  
   .add--workout {
     margin: 20px auto 10px auto;
     max-width: 200px;
@@ -1393,6 +1456,11 @@ select.error {
     margin-left: 0;
     height: fit-content;
   }
+
+  .loading--workouts{
+   top: 450px;
+   left: 35%;
+   }
 
   .workout-details {
     margin-left: auto;

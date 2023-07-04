@@ -7,6 +7,7 @@ import { useSearch } from '../hooks/useSearch';
 import Search from '../components/Search';
 import { logOutIfTokenExpired } from '../utils/logOutIfTokenExpired';
 import { Chart } from '../components/Chart';
+import { ChartPlaceholder } from '../components/ChartPlaceholder';
 
 export default function Home() {
     const [addWorkoutForm, setAddWorkoutForm] = React.useState(false);
@@ -101,7 +102,7 @@ export default function Home() {
                 {query && <>No "{query}" workouts found.</>} 
               </h4>}
            </div>
-          {workouts && <Chart muscleGroups={muscleGroups} />}
+          {workouts ? <Chart muscleGroups={muscleGroups}/> : <ChartPlaceholder />}
           {!addWorkoutForm && (
             <button
               aria-label="buff it up"
