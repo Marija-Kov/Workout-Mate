@@ -111,10 +111,11 @@ export default function Home() {
                             query ? 
                             "add--workout" : (
                             isLoading ?
-                            "add--workout" : "add--workout no--workouts--yet" 
+                            "add--workout is--loading" : "add--workout no--workouts--yet" 
                             )
                          )}
               onClick={() => setAddWorkoutForm(true)}
+              disabled={isLoading}
             >
               + Buff It Up
             </button>
