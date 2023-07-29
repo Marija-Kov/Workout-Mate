@@ -1,0 +1,136 @@
+@use '../vars';
+@use '../fonts';
+
+header {
+  position: fixed;
+  left: 0;
+  z-index: 5;
+  top: 0;
+  width: 100vw;
+  height: 60px;
+}
+
+/* Logged-in Header */
+
+.header--blur{
+  background: rgba(255, 255, 255, 0);
+  backdrop-filter: blur(4px);
+  box-shadow: 1px 1px 5px vars.$header--shadow;
+}
+
+header > .container {
+  position: relative;
+  padding: 0px 20px;
+  padding-right: 10px;
+  display: flex;
+  justify-content: space-between;
+  height: fit-content;
+}
+
+header > .container > div {
+ padding-right: 20px;
+}
+
+header a {
+  color: vars.$header--link--text;
+  text-decoration: none;
+  font-size: 0.6em;
+}
+
+.logo > a {
+  font-family: 'Yellowtail', cursive;
+  font-size: 0.8em;
+  color: vars.$logo--link;
+}
+
+.logo {
+  margin: 15px 0;
+}
+
+.logged--in--logo {
+  display: inline-block;
+  margin: 0;
+}
+
+.logged--in--logo > a {
+  font-family: 'Yellowtail', cursive;
+  font-size: 20px;
+  color: vars.$logo--link--logged--in;
+}
+
+.hello--user {
+  color: vars.$primary;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  z-index: 1;
+  position: relative;
+  top: 10px;
+  font-size: 0.9em;
+  background: unset;
+  border:unset;
+  border-radius: unset;
+  transition:unset;
+}
+
+.hello--user > span:nth-child(1){
+  display: inline-block;
+  font-weight: 400;
+
+}
+.hello--user > span:nth-child(1) > strong{
+  display: inline-block;
+  font-weight: 600;
+}
+
+.avatar-wrapper {
+  position: relative;
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  font-size: 10px;
+  border-radius: 100%;
+  overflow: hidden;
+}
+
+.avatar {
+  width: 40px;
+}
+
+/* Logged-out Header */
+
+.login--btn,
+.signup--btn,
+.about--btn {
+  background: transparent;
+  padding: 6px;
+  position: relative;
+  margin-left: 20px;
+  top: 30px;
+  cursor: pointer;
+  width: fit-content;
+  text-align: center;
+  font-size: 1.3em;
+  font-weight: 500;
+  border: solid 1px vars.$primary;
+  border-radius: 20px;
+  transition: 0.3s;
+}
+
+.login--btn,
+.about--btn {
+  border: solid 1px transparent;
+}
+
+.signup--btn:hover{
+  background: vars.$signup--form--bkg;
+}
+
+.login--btn:hover {
+ background: vars.$login--form--bkg;
+}
+
+.about--btn:hover{
+  background:vars.$about--link--bkg--hover;
+}

@@ -1,0 +1,42 @@
+@use '../vars';
+@use '../fonts';
+
+.home--container {
+    margin: 0;
+    background: vars.$home--bkg;
+    background-image: url('../../assets/gym-pattern.png');
+    width: 100vw;
+    height: 100vh;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position-y: 40%;
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+  
+  .home {
+    position: relative;
+    height: 500px;
+    top: 70px;
+    margin: 0 auto;
+    max-width: 900px;
+    min-width: 800px;
+    display: grid; 
+    grid-template-columns: 250px auto;
+    grid-template-areas:
+    'search search space space space'
+    'search search space space space'
+    'workouts workouts add-btn add-btn add-btn'
+    'workouts workouts chart chart chart'
+    'workouts workouts chart chart chart'
+    'workouts workouts chart chart chart'
+    'workouts workouts chart chart chart'
+    'workouts workouts chart chart chart'
+    'pagination pagination chart chart chart'
+  }
+
+  .space {
+    grid-area: space;
+  }

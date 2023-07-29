@@ -1,0 +1,39 @@
+@use 'vars';
+@use 'fonts';
+
+div.error {
+    grid-area: space;
+    z-index: 3;
+    max-width: 400px;
+    margin-top: 20px;
+    padding: 5px;
+    background: vars.$error--bkg;
+    border: 1px solid vars.$error;
+    color: vars.$error;
+    text-align: center;
+    font-size: 14px;
+  }
+  
+  div.success {
+    margin-top: 20px;
+    padding: 5px;
+    text-align: center;
+    background: vars.$success--bkg;
+    border: 1px solid vars.$success;
+    color: vars.$success;
+    font-size: 14px;
+  }
+  
+  input.error,
+  select.error {
+    border: 1px solid vars.$error;
+    outline: 1px solid vars.$error;
+  }
+  
+  .material-symbols-outlined {
+    font-variation-settings:
+    'FILL' 0,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 48
+  }

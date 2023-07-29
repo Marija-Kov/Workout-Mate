@@ -1,0 +1,109 @@
+@use '../vars';
+@use '../fonts';
+
+.chart--placeholder {
+  grid-area: chart;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+  filter:opacity(0.7);
+}
+
+@keyframes placeholder--animation {
+  0% {
+    background: vars.$chart--color-1;
+  }
+  50% {
+    background: vars.$chart--color-2;  
+  }
+  100% {
+    background: vars.$chart--color-1;
+  }
+}
+
+.chart--placeholder--title {
+ height: 20px;
+ width: 200px;
+ border-radius: 2px;
+ animation: placeholder--animation 1s ease-in-out infinite;
+}
+
+.chart--placeholder--circle {
+  height: 300px;
+  width: 300px;
+  border-radius: 100%;
+  animation: placeholder--animation 1s ease-in-out infinite;
+}
+
+.chart--placeholder--legend {
+  width: 200px;
+  display:flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.chart--placeholder--legend > span {
+  width: 60px;
+  height: 10px;
+  border-radius: 2px;
+  animation: placeholder--animation 1s ease-in-out infinite;
+}
+
+/* Chart */
+
+.chart--container {
+  grid-area: chart;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.chart {
+ position: relative;
+ margin: 25px auto 0 auto;
+ width: 300px;
+}
+
+.chart--container > h3 {
+  position: relative;
+  margin: 10px auto 0 auto;
+  color:vars.$chart-title--color;
+  width: fit-content;
+}
+
+.custom--legend {
+ display: flex;
+ flex-wrap: wrap;
+ justify-content: center;
+ gap: 3px;
+ padding:0;
+}
+
+.muscle--group {
+ list-style: none;
+ font-size: 12px;
+ color: vars.$primary;
+ font-weight: 500;
+ margin-right: 5px;
+}
+
+.muscle--group:hover {
+ filter:saturate(4);
+}
+
+.zero--percent {
+  color: vars.$light-text;
+}
+
+.muscle--group > span {
+  position: relative;
+  top: -2px;
+  font-size: 8px;
+  padding: 0px 5px;
+  border-radius: 20px;
+  margin: 0 2px;
+}

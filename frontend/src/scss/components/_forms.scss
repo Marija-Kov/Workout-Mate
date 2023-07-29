@@ -1,0 +1,439 @@
+@use '../fonts';
+@use '../vars';
+
+label,
+input {
+  display: block;
+  color: vars.$primary;
+}
+
+label {
+  font-size: 14px;
+}
+
+.disabled--btn{
+ text-decoration: line-through;
+}
+
+input {
+  padding: 10px;
+  max-width: 274px;
+  height: 30px;
+  margin: 0 auto;
+  margin-top: 6px;
+  margin-bottom: 20px;
+  width: 100%;
+  border: none;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+::placeholder {
+ color: vars.$light-text;
+}
+
+.form--container--login,
+.form--container--signup,
+.form--container--reset--password,
+.form--container--reset--password--request,
+.form--container--workout--form,
+.form--container--edit--workout--form,
+.form--container--user--settings {
+ position: absolute;
+}
+
+/* Login & Signup form */
+
+.form--container--login,
+.form--container--signup {
+    top: 0;
+    left: 0;
+    display: flex;
+    width: 100vw;
+    height: 100%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+.form--container--login {
+  background-image: url("../../assets/pastel-gym-1.jpeg");
+}
+
+.form--container--signup {
+  background-image: url("../../assets/pastel-gym-2.jpeg");
+}
+
+.form--container--reset--password {
+  display: flex;
+  width: 100vw;
+  background: #c3f1fc;
+  z-index: 5;
+}
+
+.login,
+.signup {
+  position: absolute;
+  width: 250px;
+  height: 100%;
+  text-align: center;
+  top: 100px;
+  z-index: 0;
+  padding: 0 50px;
+  box-shadow: none;
+  top: 0;
+  left: 0;
+  background: vars.$signup--form--bkg;
+}
+
+.login {
+background: vars.$login--form--bkg;
+}
+
+.login > label,
+.signup > label {
+color: vars.$login--signup--form--text;
+font-size: 0.9em;
+}
+
+form.login h4,
+form.signup h4 {
+ margin-top: 200px;
+ color: vars.$login--signup--form--text;
+ font-weight: 500;
+ font-size: 20px;
+ border-bottom: solid 1px vars.$login--signup--form--text;
+}
+
+.log-in--form--btn,
+.sign-up--form--btn {
+  background: vars.$primary;
+  border: solid 1px vars.$primary;
+  color: vars.$login--signup--form--text;
+  padding: 10px 30px;
+  font-family: "Poppins";
+  border-radius: 50px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.log-in--form--btn:hover,
+.sign-up--form--btn:hover {
+  background: vars.$login--signup--form--btn--bkg--hover;
+  color: vars.$primary;
+}
+
+/* Forgot password button */
+
+.forgot--password {
+    padding: 10px 30px;
+    font-family: "Poppins";
+    color: vars.$forgot-password--btn--text;
+    font-size: 0.8em;
+    position: relative;
+    top: -15px;
+    cursor: pointer;
+    text-decoration: underline;
+    border: unset;
+    background: unset;
+  }
+  
+  .forgot--password:hover{
+    color: vars.$forgot--password--btn--text--hover;
+  }
+
+  /* Reset password request form (to send reset link to inbox) */
+
+.form--container--reset--password--request {
+    background: vars.$form--container--bkg; 
+    z-index: 5;
+    top: 0;
+    left: 0;
+    display: flex;
+    width: 100vw;
+    height: 100%;
+}
+
+.reset--password--request {
+  text-align: center;
+  padding: 20px;
+  top: 180px;
+  background: vars.$reset-password-request--form--bkg;
+  width: 300px; 
+  height: fit-content;
+  position: relative;
+  margin: 0 auto;
+  border-radius: 20px;
+  box-shadow: vars.$reset-password-request--form--shadow;
+}
+
+.reset--password--request > h4 {
+  border-bottom: vars.$reset-password-request--form--h4--border;
+}
+
+.reset--password--request > button {
+  background: vars.$primary;
+  border: solid 1px vars.$primary;
+  color: rgb(255, 255, 255);
+  padding: 8px 28px;
+  font-family: "Poppins";
+  border-radius: 50px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.reset--password--request > button:hover {
+  background: vars.$reset-password-request--form--btn--bkg--hover;
+  color: vars.$primary;
+}
+
+/* Reset password form (accessed from the reset link) */
+
+.form--container--reset--password {
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    top:0;
+    left:0;
+    text-align: center;
+    z-index: 5;
+  }
+  
+  .reset--password {
+    top: 180px;
+    background: vars.$reset-password--form--bkg;
+    width: 300px;
+    height: fit-content;
+    position: relative;
+    margin: 0 auto;
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: vars.$reset-password--form--shadow;
+  }
+  
+  .reset--password > button {
+    background: vars.$primary;
+    border: solid 1px vars.$primary;
+    color: vars.$all--form--btn--text;
+    padding: 8px 28px;
+    font-family: "Poppins";
+    border-radius: 50px;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+  
+  .reset--password> button:hover {
+    background: vars.$all--form--btn--bkg--hover;
+    color: vars.$primary;
+  }
+
+  /* Add & Edit workout forms */
+
+.form--container--workout--form,
+.form--container--edit--workout--form {
+  background: vars.$form--container--bkg;
+  height: 100vh;
+  z-index: 5;
+  top: -70px;
+  left: -22%;
+  display: flex;
+  width: 150%;
+    
+}
+
+.workout--form > h4,
+.edit--form > h4 {
+  font-size: 1.2em;
+  font-weight: 600;
+  padding: 0;
+  margin: 20px 0;
+  border-bottom: solid 1px rgb(188, 188, 188);
+}
+
+.edit--form,
+.workout--form {
+  background: vars.$workout--form--bkg;
+  min-width: 300px; 
+  max-width: 400px;
+  height: fit-content;
+  text-align: center;
+  padding: 20px;
+  position: relative;
+  top: 100px;
+  box-shadow: 5px 5px 25px 5px rgba(22, 22, 22, 0.307);
+  border-radius: 20px;
+  margin: 0 32%;
+}
+.edit--form > select,
+.workout--form > select {
+ margin-bottom: 10px;
+ border-radius: 2px;
+ border: unset;
+ padding: 2px;
+}
+
+.edit--form > label,
+.workout--form > label {
+  font-weight: 500;
+}
+
+.edit--form > input,
+.workout--form > input {
+  width: 70%;
+}
+
+.edit--form {
+  background: vars.$edit--form--bkg;
+}
+
+.workout--form--btn,
+.edit--form--btn {
+  background: vars.$primary;
+  border: solid 1px vars.$primary;
+  border-radius: 50px;
+  color: vars.$all--form--btn--text;
+  padding: 10px 30px;
+  margin: 10px;
+  font-family: "Poppins";
+  cursor: pointer;
+  transition: 0.2s;
+
+}
+
+.workout--form--btn:hover,
+.edit--form--btn:hover {
+  background: vars.$all--form--btn--bkg--hover;
+  color: vars.$primary;
+}
+
+.add--workout {
+  height: 40px;
+  max-width: 140px;
+  margin-top: 10px;
+  background: vars.$primary;
+  border: solid 1px vars.$primary;
+  border-radius: 50px;
+  color: vars.$all--form--btn--text;
+  font-family: "Poppins";
+  font-weight: 500;
+  font-size: .9em;
+  cursor: pointer;
+  transition: 0.2s;
+  grid-area: add-btn;
+}
+
+.is--loading {
+    filter: opacity(0.7);
+    cursor: default
+  }
+
+  .add--workout:hover {
+    background:vars.$all--form--btn--bkg--hover;
+    color: vars.$primary;
+  } 
+
+  /* User/Profile settings form */
+
+.form--container--user--settings {
+  background: vars.$form--container--bkg; 
+  height: 100vh;
+  z-index: 3;
+  top: 0;
+  left: 0;
+  display: flex;
+  width: 100vw;
+}
+
+.user--settings {
+  position: absolute;
+  top: 70px;
+  background: vars.$user-settings-form--bkg;
+  right: 18%;
+  height: fit-content;
+  min-width: 300px; 
+  max-width: 400px;
+  text-align: left;
+  border-radius: 20px;
+  padding: 20px;
+  padding-left: 50px; 
+  box-shadow: vars.$user-settings-form--shadow; 
+}
+
+.user--settings > input {
+  width: 200px;
+  margin-left: 0;
+}
+
+.max-chars-error {
+  color: vars.$error;
+  font-size: 12px;
+  margin: 0;
+  padding-left: 2px;
+  position: relative;
+  top: -18px;
+}
+
+.user--settings > h4 {
+ color: vars.$primary;
+ border-bottom: vars.$user-settings-form--h4--border;
+}
+
+.user--settings > label {
+  font-weight: 500;
+  font-size: 0.8em;
+}
+
+.upload--image{
+  padding: 30px 0;
+}
+
+.upload--btn{
+  background: vars.$primary;
+  border: solid 1px vars.$primary;
+  color: vars.$all--form--btn--text;
+  padding: 10px 30px;
+  font-family: "Poppins";
+  border-radius: 50px;
+  cursor: pointer;
+  transition: 0.2s;
+  height: 30px;
+  padding: 5px 20px;
+}
+
+.upload--btn:hover{
+  background:vars.$all--form--btn--bkg--hover;
+  color: vars.$primary;
+}
+
+.remove--profile--img {
+  font-size: small;
+}
+
+.close{
+  position: absolute;
+  right: 20px;
+  height: 1em;
+  width: 1em;
+  color: vars.$primary;
+  cursor: pointer;
+  background: unset;
+  padding: 0;
+  border:unset;
+  transition:unset;
+}
+
+.close:hover{
+  background: unset;
+}
+
+.user--settings > img {
+  display: block;
+  padding-bottom: 20px;
+}
+
+.cropper--wrapper {
+  display:block;
+  position:relative;
+  height: 250px;
+  margin-bottom: 20px;
+}

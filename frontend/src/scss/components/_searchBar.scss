@@ -1,0 +1,51 @@
+@use '../vars';
+@use '../fonts';
+
+.search--bar {
+    z-index: 3;
+    position:relative;
+    top: 0;
+    width: 180px;
+    left: 40px;
+    display: flex;
+    box-shadow: none;
+    height: unset;
+    min-width: unset;
+    padding: unset;
+    background: none;
+    grid-area: search;
+  }
+  
+  .search--bar > button {
+   background: vars.$primary;
+   font-family: "Poppins";
+   height: 25px;
+   width: 25px;
+   padding: 3px 3px 0 3px;
+   margin: 6px 0;
+   position: relative;
+   left: -20px;
+   color: vars.$all--form--btn--text;
+   font-family: "Poppins";
+   border: solid 1px vars.$primary;
+   border-radius: 50px;
+   border-bottom-right-radius: 20px;
+   cursor: pointer;
+   transition: 0.2s;
+  }
+  
+  .search--bar > button:hover {
+   background: vars.$all--form--btn--bkg--hover;
+   color: vars.$primary;
+  }
+  
+  .search--bar > button > span {
+    font-size: 1.4em;
+  }
+  
+  .search--bar > input{
+    font-size: 0.75em;
+    height: 25px;
+    border-radius: 20px;
+    border: solid 1px vars.$light-text;
+  }

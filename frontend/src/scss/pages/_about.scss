@@ -1,0 +1,28 @@
+@use '../vars';
+@use '../fonts';
+
+.about--container {
+    position: relative;
+    font-size: 0.8em;
+    height: fit-content;
+    top: 100px;
+    left: 10%;
+  }
+  
+  .about--container > p {
+    max-width: 450px;
+  }
+  
+  .github {
+    height: 30px;
+    margin-top: 40px;
+    transition: 0.2s;
+  }
+  
+  .about--gym--pattern--bkg {
+    background: vars.$about--bkg;
+    position: fixed;
+    top:0;
+    z-index:-1;
+    right: 0;
+  }

@@ -1,0 +1,59 @@
+@use '../vars';
+@use '../fonts';
+
+.page--btn--container {
+  position: relative;
+  left: 50px;
+  z-index: 2;
+  display: flex;
+  gap: 5px;
+  grid-area: pagination;
+  width: fit-content;
+}
+
+.page--btn--container > button {
+  cursor: pointer;
+  border: solid 1px vars.$primary;
+  border-radius: 4px;
+  padding: 0;
+  color: vars.$primary;
+  background: transparent;
+  transition: 0.2s;
+  height: 20px;
+}
+
+.dots-left::before,
+.dots-right::after {
+  display: inline-block;
+  content:"...";
+  font-size: larger;
+  color: vars.$pagination-dots--color;
+}
+
+.page--btn--container > button > span {
+  font-size: 1.3em;
+}
+
+.page--btn--container > button:hover {
+  background: vars.$primary;
+  color: vars.$all--form--btn--text;
+}
+.page--btn--container > button:disabled {
+  border: solid 1px vars.$light-text;
+  color: vars.$light-text;
+  background: transparent;
+  cursor: default
+}
+.page--btn--container > .num--page {
+  font-size: 0.8em;
+  padding: 0 5px;
+}
+
+.page--btn--container > .current {
+  background: vars.$primary;
+  color: vars.$all--form--btn--text;
+}
+
+.page--btn--container > .invisible {
+ display: none;
+}
