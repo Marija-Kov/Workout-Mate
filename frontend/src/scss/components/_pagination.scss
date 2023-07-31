@@ -57,3 +57,11 @@
 .page--btn--container > .invisible {
  display: none;
 }
+
+@media screen and (max-width: 450px) {
+  
+  .page--btn--container {
+    margin-bottom: 20px;
+  }
+
+}

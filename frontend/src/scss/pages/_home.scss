@@ -40,3 +40,30 @@
   .space {
     grid-area: space;
   }
+
+  @media screen and (max-width: 450px) {
+     
+    .home--container {
+      height: 160vh;
+    }
+  
+    .home {
+      min-width: unset;
+      grid-template-columns: auto;
+      height: fit-content;
+      grid-template-areas:
+      'chart chart'
+      'chart chart'
+      'chart chart'
+      'space space'
+      'add-btn add-btn'  
+      'search search'
+      'workouts workouts'
+      'workouts workouts'
+      'workouts workouts'
+      'workouts workouts'
+      'pagination pagination' 
+  
+     }
+ 
+   }

@@ -49,3 +49,12 @@
     border-radius: 20px;
     border: solid 1px vars.$light-text;
   }
+
+  @media screen and (max-width: 450px) {
+
+    .search--bar {
+      left: 10px;
+      margin: 10px auto 0 auto;
+    }
+
+  }

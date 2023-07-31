@@ -107,3 +107,26 @@
   border-radius: 20px;
   margin: 0 2px;
 }
+
+@media screen and (max-width: 450px) {
+
+  .chart--placeholder--circle {
+    height: 200px;
+    width: 200px;
+   }
+   
+   .chart {
+    width: 200px;
+    height:280px;
+    margin-bottom: 15px;
+   }
+ 
+   .chart--container > h3 {
+     font-size: 1em;
+   }
+ 
+   .custom--legend {
+     /* display: none */
+     width: 100%;
+   }
+}

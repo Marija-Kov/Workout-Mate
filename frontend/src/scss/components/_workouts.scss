@@ -139,3 +139,19 @@
 .date {
   color: vars.$light-text;
 }
+
+@media screen and (max-width: 450px) {
+
+  .workouts--container {
+    display: inline-block;
+    margin-left: 0;
+    height: fit-content;
+  }
+
+  .workout-details,
+  .workouts--placeholder {
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+ }

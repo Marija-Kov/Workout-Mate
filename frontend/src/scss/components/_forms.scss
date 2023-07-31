@@ -139,7 +139,7 @@ form.signup h4 {
   }
   
   .forgot--password:hover{
-    color: vars.$forgot--password--btn--text--hover;
+    color: vars.$forgot-password--btn--text--hover;
   }
 
   /* Reset password request form (to send reset link to inbox) */
@@ -437,3 +437,60 @@ form.signup h4 {
   height: 250px;
   margin-bottom: 20px;
 }
+
+@media screen and (max-width: 450px) {
+ 
+  .add--workout {
+    margin: 20px auto 10px auto;
+    max-width: 200px;
+    min-width: 100px;
+    width: 100%;
+    background: #373737ed;
+    z-index: 3;
+  }
+
+  .form--container--workout--form,
+  .form--container--edit--workout--form {
+   left: 0;
+   height: calc(100% + 70px);
+  }
+
+  .edit--form,
+  .workout--form {
+   min-width: unset;
+   width: 250px;
+   padding: 10px;
+   margin: 0 10%;
+  }
+
+}
+
+@media screen and (max-width: 600px) {
+  .form--container--login,
+  .form--container--signup {
+   background-image: none;
+   display: flex;
+   justify-content: center;;
+  }
+ 
+  .form--container--login {
+   background: vars.$login--form--bkg;
+  }
+ 
+  .form--container--signup {
+   background: vars.$signup--form--bkg;
+  }
+
+  .signup,
+  .login {
+    background: none; 
+    position: relative;
+    left: unset;
+    padding: 0;
+  }
+
+  .log-in--form--btn,
+  .sign-up--form--btn {
+    margin: 0 auto;
+  }
+ }

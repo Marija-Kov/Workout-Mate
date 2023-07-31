@@ -134,3 +134,52 @@ header a {
 .about--btn:hover{
   background:vars.$about--link--bkg--hover;
 }
+
+@media screen and (max-width: 450px) {
+  .login--btn,
+  .signup--btn,
+  .about--btn {
+   margin-left: 5px;
+   font-size: 1.2em;
+  }
+
+  header {
+    height: 50px;
+  }
+ 
+  header > .container {
+   padding: 0 10px;
+  }
+ 
+ .about--login--signup--nav {
+   padding-right: 0px;
+   position: relative;
+   top: -15px;
+   right: -12px;
+  }
+ 
+  .logo,
+  .logged--in--logo {
+   margin: 0;
+  }
+ 
+  .logo > a,
+  .logged--in--logo > a {
+   font-size: 0.6em;
+  }
+
+  .hello--user {
+    font-size: 0.8em;
+    right: -15px;
+  }
+
+  .avatar-wrapper {
+   width: 30px;
+   height: 30px;
+  }
+
+  .avatar {
+    width: 30px;
+  }
+
+ }

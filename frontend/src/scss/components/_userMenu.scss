@@ -31,3 +31,11 @@
   .user--menu--item:hover{
     color: vars.$user-menu-item--text--hover;
   }
+
+  @media screen and (max-width: 450px) {
+
+   .user--menu {
+    top: 52px;
+   }
+
+  }

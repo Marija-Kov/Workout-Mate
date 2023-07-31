@@ -69,3 +69,17 @@
    background-color: vars.$delete-account-dialogue--change-my-mind--btn--bkg;
    border-radius: 5px;
   }
+
+  @media screen and (max-width: 450px) {
+   
+    .delete--account--dialogue {
+      width: 280px;
+    }
+  
+    .delete--account--dialogue--btns {
+      gap: 10px;
+      margin-top: 5px;
+      font-size: 0.8em;
+    }
+
+  }
