@@ -4,3 +4,4 @@ node_modules
 .gitattributes
 .DS_Store
 package-lock.json
+frontend/build
