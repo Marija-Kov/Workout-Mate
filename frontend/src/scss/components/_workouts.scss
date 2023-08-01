@@ -1,0 +1,157 @@
+@use '../fonts';
+@use '../vars';
+
+.no--workouts--yet {
+    animation: no--workouts--yet 3s ease-in-out infinite;
+  }
+  
+  @keyframes no--workouts--yet {
+    0% {
+      background: vars.$primary;
+      color: vars.$all--form--btn--text;  
+    }
+    50% {
+      background:vars.$all--form--btn--bkg--hover;
+      color: vars.$primary;
+    }
+    100% {
+      background: vars.$primary;
+      color: vars.$all--form--btn--text;  
+    }
+  }
+  
+  .get--started,
+  .loading--workouts {
+   text-align: center;
+   color: vars.$chart-title--color;
+   font-weight: 600;
+  }
+  
+  .get--started > span {
+    font-size: 24px;
+  }
+  
+  .loading--workouts{
+    position: absolute;
+    top: 50px;
+    left: 180px;
+    z-index: 5;
+    animation: loading--workouts 1s ease-in-out infinite;
+  }
+  
+  @keyframes loading--workouts {
+    0% {
+      color: vars.$chart--color-1;
+    }
+    50% {
+      color: vars.$chart--color-2;  
+    }
+    100% {
+      color: vars.$chart--color-1;
+    }
+  }
+
+/* Workouts container */
+
+.workouts--container {
+  grid-area: workouts;
+  margin-left: 40px;
+  height: 500px;
+  padding-bottom: 0;
+  overflow-y: hidden;
+}
+
+.workouts--placeholder {
+ grid-area: workouts;
+ width: 280px;
+ filter:opacity(0.7);
+ position: relative;
+ /* top: -495px; */
+}
+
+.workouts--placeholder > div {
+ color: white;
+ font-size: 1em;
+ max-width: 250px;
+ height: 120px;
+ margin: 0 0 15px 0;
+ padding: 15px;
+ border-radius: 20px;
+ animation: placeholder--animation 1s ease-in-out infinite;
+}
+
+/* Workout details component */
+
+.workout-details {
+  background: vars.$workout-details--bkg;
+  margin: 0 0 15px 0;
+  height: 120px;
+  padding: 15px;
+  max-width: 250px;
+  border-radius: 20px;
+  position: relative;
+  box-shadow: vars.$workout-details--shadow;
+}
+
+.workout-details h4 {
+  margin: 0 0 8px 0;
+  font-weight: 700;
+  text-transform: capitalize;
+  font-size: 1em;
+  padding-bottom: 10px;
+  padding-left: 20px;
+  border-bottom: vars.$workout-details--h4--border;
+  color: vars.$primary;
+  
+}
+
+.workout-details p {
+  margin: 0;
+  font-size: 0.8em;
+  padding: 3px 20px;
+}
+
+.workout-details > button {
+  position: absolute;
+  top: 110px;
+  right: 15px;
+  cursor: pointer;
+  color: vars.$light-text;
+  font-size: 1.3em;
+  background: unset;
+  border:unset;
+  border-radius: unset;
+  transition:unset;
+}
+
+.workout-details > button:hover {
+ color: vars.$light-text--hover;
+}
+
+.workout-details p > strong {
+  font-weight: 600;
+}
+
+.workout-details .edit {
+  right: 45px;
+}
+
+.date {
+  color: vars.$light-text;
+}
+
+@media screen and (max-width: 450px) {
+
+  .workouts--container {
+    display: inline-block;
+    margin-left: 0;
+    height: fit-content;
+  }
+
+  .workout-details,
+  .workouts--placeholder {
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+ }

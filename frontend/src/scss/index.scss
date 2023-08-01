@@ -1,0 +1,41 @@
+@use 'components/chart';
+@use 'components/forms';
+@use 'components/header';
+@use 'components/pagination';
+@use 'components/searchBar';
+@use 'components/userMenu';
+@use 'components/workouts';
+@use 'components/deleteAccount';
+@use 'pages/about';
+@use 'pages/home';
+@use 'fonts';
+@use 'successAndErrorMessages';
+@use 'vars';
+@use 'loader';
+
+body {
+    background: vars.$home--bkg;
+    overflow-x: hidden;
+    margin: 0;
+    padding: 0;
+    font-family: "Poppins";
+  }
+
+  .fallback--animation--container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height:100vh;
+  }
+  
+  .fallback--animation--container h1 {
+   color: vars.$primary;
+  }
+  
+  .fallback--animation--container .lds-ellipsis {
+    top: 5px;
+  }
+  
+  .fallback--animation--container .lds-ellipsis div {
+    background: vars.$primary;
+  }
