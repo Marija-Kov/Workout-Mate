@@ -1,0 +1,10 @@
+export const LOGIN_REQ = "LOGIN_REQ";
+export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
+export const LOGIN_FAIL = "LOGIN_FAIL";
+export const LOGOUT = "LOGOUT";
+export const UPDATE_USER_REQ = "UPDATE_USER_REQ";
+export const UPDATE_USER_SUCCESS = "UPDATE_USER_SUCCESS";
+export const UPDATE_USER_FAIL = "UPDATE_USER_FAIL";
+export const DELETE_USER_REQ = "DELETE_USER_REQ";
+export const DELETE_USER_SUCCESS = "DELETE_USER_SUCCESS";
+export const DELETE_USER_FAIL = "DELETE_USER_FAIL";
