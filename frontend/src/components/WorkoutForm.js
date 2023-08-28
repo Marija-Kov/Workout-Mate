@@ -1,8 +1,12 @@
 import React from 'react';
 import { useCreateWorkout } from '../hooks/useCreateWorkout';
+import { useSelector } from 'react-redux';
+import { useSearch } from '../hooks/useSearch';
 
-export default function WorkoutForm({hideForm, spreadPages, flipPage, total, limit, getItems}){
-  const { createWorkout, error } = useCreateWorkout();
+export default function WorkoutForm({hideForm}){
+  const { createWorkout } = useCreateWorkout();
+  const { createWorkoutError } = useSelector(state => state.workout);
+  const { search } = useSearch();
   const title = React.useRef();
   const muscle_group = React.useRef();
   const load = React.useRef();
@@ -34,9 +38,7 @@ export default function WorkoutForm({hideForm, spreadPages, flipPage, total, lim
 
     if(workout.title && workout.muscle_group && workout.reps && workout.load){
      hideForm();
-     await getItems("", 0);
-     spreadPages(total, limit);
-     flipPage(1)
+     await search("", 0);
      setEmptyFields([]);
     }   
   };
@@ -95,9 +97,9 @@ export default function WorkoutForm({hideForm, spreadPages, flipPage, total, lim
         className={emptyFields.includes("load") ? "error" : ""}
       />
         <button className="workout--form--btn" aria-label="submit workout button">Add workout</button>
-      {error && (
+      {createWorkoutError && (
         <div role="alert" className="error">
-          {error}
+          {createWorkoutError}
         </div>
       )}
     </form>

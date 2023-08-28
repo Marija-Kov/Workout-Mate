@@ -1,15 +1,13 @@
-import React from 'react'
-import { useWorkoutContext } from "../hooks/useWorkoutContext";
-import { useAuthContext } from "../hooks/useAuthContext";
+import { useSelector, useDispatch } from 'react-redux'; 
 
 export const useCreateWorkout = () => { 
-   const { dispatch } = useWorkoutContext();
-   const { user } = useAuthContext();
-   const [error, setError] = React.useState(null);
-
+   const dispatch = useDispatch();
+   const { user } =  useSelector(state => state.user)
+  
    const createWorkout = async (workout) => {
+      dispatch({type: "CREATE_WORKOUT_REQ"})
       if (!user) {
-       setError("You must be logged in");
+       dispatch({type: "CREATE_WORKOUT_FAIL", payload: "Not authorized"})
        return;
      }
      const response = await fetch(`${process.env.REACT_APP_API}/api/workouts`, {
@@ -22,17 +20,16 @@ export const useCreateWorkout = () => {
      });
      const json = await response.json();
 
-
      if (!response.ok) {
-       setError("Please fill out the empty fields");
+      dispatch({type: "CREATE_WORKOUT_FAIL", payload: "Please fill out the empty fields"})
        return
      }
 
-         if (response.ok) {
-           setError(null);
-           dispatch({ type: "CREATE_WORKOUT", payload: json });
-         }
+     if (response.ok) {
+       dispatch({ type: "CREATE_WORKOUT_SUCCESS", payload: json });
+       dispatch({type: "GO_TO_PAGE_NUMBER", payload: 0})
+     }
     }
 
-  return { createWorkout, error }
+  return { createWorkout }
 }
