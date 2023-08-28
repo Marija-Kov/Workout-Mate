@@ -1,25 +1,20 @@
 import React from 'react'
-import { useAuthContext } from './useAuthContext';
+import { useSelector, useDispatch } from 'react-redux';
 
 export const useUpdateUser = () => {
- const [error, setError] = React.useState(null);
- const [success, setSuccess] = React.useState(null)
- const [isLoading, setIsLoading] = React.useState(null); 
- const { user, dispatch } = useAuthContext();
+ const { user } =  useSelector(state => state.user);
+ const dispatch = useDispatch();
  
  const updateUser = React.useCallback(async (username, profileImg) => {
+    dispatch({type: "UPDATE_USER_REQ"})
      if (!user) {
-       setError("Not authorized");
+      dispatch({type: "UPDATE_USER_FAIL", payload: "You must be logged in"})
        return;
      }
-    setIsLoading(true);
-    setError(null); 
         if (!profileImg) profileImg = user.profileImg;
         if (!username) username = user.username;
         if (username.length > 12) { 
-            setIsLoading(false);
-            setSuccess(null);
-            setError("Invalid input");
+            dispatch({type: "UPDATE_USER_FAIL", payload: "Invalid input"})
             return
         }
       const response = await fetch(
@@ -40,10 +35,7 @@ export const useUpdateUser = () => {
       const json = await response.json();
 
       if (!response.ok) {
-        setIsLoading(false);
-        setError(json.error);
-        console.log(json.logError)
-        setSuccess(null)
+        dispatch({type: "UPDATE_USER_FAIL", payload: json.error})
       }
       if (response.ok) {
         if(json.profileImg){
@@ -52,12 +44,9 @@ export const useUpdateUser = () => {
         if(json.username) {
           localStorage.setItem("username", json.username); 
         }
-        const user = {id: json.id, email: json.email, token: json.token, username: json.username, profileImg: json.profileImg}
-        dispatch({ type: "UPDATE", payload: user });
-        setIsLoading(false);
-        setError(null);
-        setSuccess(json.success)
+        const updatedUser = {id: json.id, email: json.email, token: json.token, username: json.username, profileImg: json.profileImg}
+        dispatch({type: "UPDATE_USER_SUCCESS", payload: { user: updatedUser, success: json.success }});
       }
  }, [])
-  return { updateUser, isLoading, error, success }
+  return { updateUser }
 }
