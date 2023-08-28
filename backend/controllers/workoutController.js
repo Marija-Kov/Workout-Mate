@@ -27,6 +27,8 @@ const getAllItems = async (req, res) => {
        allUserWorkoutsMuscleGroups: allUserWorkoutsMuscleGroups,
        workoutsChunk: workoutsChunk,
        limit: itemsPerPage,
+       currentPage: page,
+       pageSpread: pageSpreadHelper(allUserWorkoutsByQuery.length, itemsPerPage),
        noWorkoutsByQuery: allUserWorkoutsByQuery.length ? false : `No workouts found by query '${search}'`,
      });
  } catch (error) {
@@ -92,6 +94,15 @@ const deleteAllUserItems = async (req, res) => {
   } catch (error){
    res.status(400).json({ error: error.message });
   }
+};
+
+const pageSpreadHelper = (t, l) => {
+  const pagesNum = Math.ceil(t / l);
+  let spread = [];
+  for (let i = 1; i <= pagesNum; ++i) {
+    spread.push(i);
+  }
+  return spread
 };
 
 module.exports = {

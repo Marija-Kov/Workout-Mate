@@ -108,9 +108,7 @@ describe("workoutController", () => {
                 .get("/api/workouts/")
                 .set("Authorization", `Bearer ${user.userLoggedIn.token}`)
             )._body;
-            expect(res.allUserWorkoutsByQuery).toBeTruthy();
-            expect(res.allUserWorkoutsByQuery.length).toBeTruthy();
-            expect(res.allUserWorkoutsByQuery.length).toEqual(user.workouts.length);
+            expect(res.total).toEqual(user.workouts.length);
         });
 
         it("should respond with workouts by search query provided that they exist", async () => {
@@ -121,10 +119,10 @@ describe("workoutController", () => {
               .get(`/api/workouts/?search=${query}`)
               .set("Authorization", `Bearer ${user.userLoggedIn.token}`)
           )._body;
-          expect(res.allUserWorkoutsByQuery).toBeTruthy();
-          expect(res.allUserWorkoutsByQuery[0].title).toMatch(/^pu/i);
-          expect(res.allUserWorkoutsByQuery.length).toBeTruthy();
-          expect(res.allUserWorkoutsByQuery.length).toBeLessThan(user.workouts.length);
+          expect(res.workoutsChunk.length).toBeTruthy();
+          expect(res.workoutsChunk[0].title).toMatch(/^pu/i);
+          expect(res.total).toBeTruthy();
+          expect(res.total).toBeLessThan(user.workouts.length);
         });
 
         it("should respond with no workouts if the workouts by search query don't exist", async () => {
@@ -135,20 +133,25 @@ describe("workoutController", () => {
               .get(`/api/workouts/?search=${query}`)
               .set("Authorization", `Bearer ${user.userLoggedIn.token}`)
           )._body;
-         expect(res.allUserWorkoutsByQuery.length).toEqual(0);
+         expect(res.total).toEqual(0);
          expect(res.noWorkoutsByQuery).toMatch(/no workouts found/i);
         })
 
         it("should respond with workouts from a specified page query", async () => {
            const user = await mockUser("poozh@thehouse.com", "has-workouts");
            const query = 1;
-           const res = (
+           const res1 = (
+            await agent
+              .get(`/api/workouts/`)
+              .set("Authorization", `Bearer ${user.userLoggedIn.token}`)
+          )._body;
+           const res2 = (
              await agent
                .get(`/api/workouts/?p=${query}`)
                .set("Authorization", `Bearer ${user.userLoggedIn.token}`)
            )._body;
-           const firstDateOnTheQueriedPage = res.workoutsChunk[0].createdAt;
-           const lastDateOnTheFirstPage = res.allUserWorkoutsByQuery[2].createdAt;
+           const firstDateOnTheQueriedPage = res2.workoutsChunk[0].createdAt;
+           const lastDateOnTheFirstPage = res1.workoutsChunk[2].createdAt;
            expect(
              ISO8601ToMilliseconds(firstDateOnTheQueriedPage)
            ).toBeLessThan(ISO8601ToMilliseconds(lastDateOnTheFirstPage));
