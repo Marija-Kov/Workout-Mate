@@ -105,9 +105,9 @@ module.exports.user_deletion = async (req, res) => {
   const { id } = req.params;
   try {
     const user = await User.findOneAndDelete({ _id: id });
-   res.status(200).json(user);
+   res.status(200).json({success: "Account deleted successfully"});
   } catch (error) {
-    res.status(400).json({error: error.message})
+    res.status(400).json({error: "Something went wrong. Please try later.", logError: error.message})
   }
 };
 

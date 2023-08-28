@@ -1,7 +1,6 @@
 import React from 'react';
 import WorkoutDetails from '../components/WorkoutDetails'
 import WorkoutForm from '../components/WorkoutForm'
-import { useWorkoutContext } from '../hooks/useWorkoutContext'
 import Pagination from '../components/Pagination';
 import { useSearch } from '../hooks/useSearch';
 import Search from '../components/Search';
@@ -9,6 +8,7 @@ import { logOutIfTokenExpired } from '../utils/logOutIfTokenExpired';
 import { Chart } from '../components/Chart';
 import { ChartPlaceholder } from '../components/ChartPlaceholder';
 import { WorkoutsPlaceholder } from '../components/WorkoutsPlaceholder';
+import { useSelector } from 'react-redux';
 
 export default function Home() {
     const [addWorkoutForm, setAddWorkoutForm] = React.useState(false);
@@ -16,6 +16,9 @@ export default function Home() {
     const { search, total, limit, allWorkoutsMuscleGroups, isLoading, error } = useSearch();
     const [page, setPage] = React.useState(0);
     const [pageSpread, setPageSpread] = React.useState([]);
+    const { workouts, loading, setWorkoutsError } = useSelector(state => state.workout);
+    const { total, allUserWorkoutsMuscleGroups, workoutsChunk } = workouts;
+    const { search } = useSearch();
     const [query, setQuery] = React.useState("");
 
     React.useEffect(() => {
@@ -70,16 +73,15 @@ export default function Home() {
             handleSearchChange={handleSearchChange}
             handleSearch={handleSearch}
             query={query}
-            isLoading={isLoading}
           />
-            {error && (
+            {setWorkoutsError && (
               <div role="alert" className="error">
-                {error}
+                {setWorkoutsError}
               </div>
             )}
           <div aria-label="workouts" className="workouts--container">
-            {workouts ?
-              workouts.map((workout) => (
+            {workoutsChunk ?
+              workoutsChunk.map((workout) => (
                 <WorkoutDetails
                   key={workout._id}
                   id={workout._id}
@@ -96,26 +98,26 @@ export default function Home() {
                   limit={limit}
                 />
               )) : <WorkoutsPlaceholder />}
-             {workouts && !workouts.length && !isLoading && 
+             {workoutsChunk && !workoutsChunk.length && !loading && 
               <h4 className="get--started">
-                {!query && <>Buff it up to get started.<br></br>No pressure <span>🥤</span></>} 
+                {!workoutsChunk && !query && <>Buff it up to get started.<br></br>No pressure <span>🥤</span></>} 
                 {query && <>No "{query}" workouts found.</>} 
               </h4>}
            </div>
-          {workouts ? <Chart muscleGroups={muscleGroups}/> : <ChartPlaceholder />}
+          {workoutsChunk ? <Chart muscleGroups={muscleGroups}/> : <ChartPlaceholder />}
           {!addWorkoutForm && (
             <button
               aria-label="buff it up"
-              className={workouts && workouts.length ? 
+              className={workoutsChunk && workoutsChunk.length ? 
                            "add--workout" : (
                             query ? 
                             "add--workout" : (
-                            isLoading ?
+                            loading ?
                             "add--workout is--loading" : "add--workout no--workouts--yet" 
                             )
                          )}
               onClick={() => setAddWorkoutForm(true)}
-              disabled={isLoading}
+              disabled={loading}
             >
               + Buff It Up
             </button>
