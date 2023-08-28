@@ -5,15 +5,16 @@ import { useCroppedImg } from '../hooks/useCroppedImg';
 import { useDeleteUser } from "../hooks/useDeleteUser";
 import { useDeleteAllWorkouts } from "../hooks/useDeleteAllWorkouts";
 import { useLogout } from "../hooks/useLogout";
-import { useAuthContext } from "../hooks/useAuthContext";
+import { useSelector } from 'react-redux';
+
 
 export default function UserSettings({closeUserSettings, changeProfileImg}) {
-    const {updateUser, isLoading, error, success} = useUpdateUser();
+    const { updateUser } = useUpdateUser();
     const { getCroppedImg } = useCroppedImg();
     const { deleteUser } = useDeleteUser();
     const { deleteAllWorkouts } = useDeleteAllWorkouts();
     const { logout } = useLogout();
-    const { user } = useAuthContext();
+    const { user, loading, error, success } =  useSelector(state => state.user)
 
     const [newUsername, setNewUsername] = React.useState('');
 
@@ -122,12 +123,12 @@ export default function UserSettings({closeUserSettings, changeProfileImg}) {
             />
           </div>
         )}
-        <button aria-label="update profile button" disabled={isLoading || newUsername.length > 12} className={newUsername.length > 12 ? "disabled--btn upload--btn" : "upload--btn"}>
+        <button aria-label="update profile button" disabled={loading || newUsername.length > 12} className={newUsername.length > 12 ? "disabled--btn upload--btn" : "upload--btn"}>
           Upload
         </button>
         {error && <div role="alert" className="error">{error}</div>}
         {success && <div role="alert" className="success">{success}</div>}
-        {isLoading && <h3 style={{ zIndex: "10" }}>Uploading..</h3>}
+        {loading && <h3 style={{ zIndex: "10" }}>Uploading..</h3>}
         <button aria-label="delete account button" type="button" className="delete--account--btn" onClick={showDeleteAccount}>
           delete account
         </button>
