@@ -1,14 +1,16 @@
 import React, { Suspense } from 'react';
 import { useLogin } from '../hooks/useLogin';
+import { useSelector } from 'react-redux';
 
 const ForgotPasswordForm = React.lazy(() =>
   import("../components/ForgotPasswordForm")
 );
 
 const Login = () => {
+    const { error, loading } = useSelector(state => state.user);
     const email = React.useRef();
     const password = React.useRef();
-    const {login, isLoading, error} = useLogin();
+    const { login } = useLogin();
     const [forgotPasswordForm, setForgotPasswordForm] = React.useState(false);
 
     const handleSubmit = async (e) => {
@@ -54,10 +56,10 @@ const Login = () => {
             >
               Forgot the password?
             </button>
-            <button className="log-in--form--btn" disabled={isLoading}>
+            <button className="log-in--form--btn" disabled={loading}>
               Log in
             </button>
-            {isLoading && (
+            {loading && (
               <div className="loader--container">
                 <div className="lds-ellipsis">
                   <div></div>
