@@ -1,6 +1,12 @@
-import React from 'react'
+import { useDispatch, useSelector } from 'react-redux';
 import uuid from "react-uuid"
-export default function Pagination({page, limit, flipPage, total, pageSpread}){
+
+
+export default function Pagination(){
+  const dispatch = useDispatch();
+  const { workouts } = useSelector(state => state.workout);
+  const page = useSelector(state => state.page);
+  const { total, limit, pageSpread } = workouts;
 
   const btnIsDisabled = () => (page+1) * limit >= total ;
 
@@ -25,7 +31,7 @@ export default function Pagination({page, limit, flipPage, total, pageSpread}){
           type="button"
           className="prev--page"
           disabled={page <= 0}
-          onClick={() => flipPage(-1)}
+          onClick={() => dispatch({type: "PREV_PAGE"})}
         >
           <span className="material-symbols-outlined">chevron_left</span>
         </button>
@@ -35,7 +41,7 @@ export default function Pagination({page, limit, flipPage, total, pageSpread}){
                aria-label={`go to page ${p}`}
                key={uuid()}
                className={pageBtnStyle(page, p)}
-               onClick={() => flipPage(p)}
+               onClick={() => dispatch({type: "GO_TO_PAGE_NUMBER", payload: p-1})}
              >
                {p}
              </button>
@@ -46,7 +52,7 @@ export default function Pagination({page, limit, flipPage, total, pageSpread}){
           type="button"
           className="next--page"
           disabled={btnIsDisabled()}
-          onClick={() => flipPage([1])}
+          onClick={() => dispatch({type: "NEXT_PAGE"})}
         >
           <span className="material-symbols-outlined">chevron_right</span>
         </button>
