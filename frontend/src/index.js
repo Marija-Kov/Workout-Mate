@@ -1,12 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { Provider } from 'react-redux'
+import store from './redux/store'
 import './scss/index.scss'
 import App from './App';
-import { WorkoutContextProvider } from './context/WorkoutContext'
-import { AuthContextProvider } from './context/AuthContext'
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
+ <Provider store={store}>
   <React.StrictMode>
     <React.Suspense
       fallback={
@@ -21,12 +22,9 @@ root.render(
         </div>
       }
     >
-      <AuthContextProvider>
-        <WorkoutContextProvider>
           <App />
-        </WorkoutContextProvider>
-      </AuthContextProvider>
     </React.Suspense>
   </React.StrictMode>
+ </Provider>
 );
 
