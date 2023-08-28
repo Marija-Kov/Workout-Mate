@@ -1,8 +1,8 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import Navbar from './components/Navbar';
 import Login from './pages/Login';
-import { useAuthContext } from './hooks/useAuthContext';
 
 const Home = React.lazy(() => import("./pages/Home"));
 const Signup = React.lazy(() => import("./pages/Signup"));
@@ -11,7 +11,7 @@ const ResetPassword = React.lazy(() => import("./pages/ResetPassword"))
 const ConfirmedAccount = React.lazy(()=>import("./pages/ConfirmedAccount"))
 
 function App() {
-  const { user } = useAuthContext();
+  const { user } =  useSelector(state => state.user)
 
   return (
     <div className="App">

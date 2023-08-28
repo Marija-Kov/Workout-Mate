@@ -1,11 +1,11 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
-import { useAuthContext } from '../hooks/useAuthContext';
 import { logOutIfTokenExpired } from '../utils/logOutIfTokenExpired';
 import UserMenu from './UserMenu'
+import { useSelector } from 'react-redux';
 
 export default function Navbar(){
-  const { user } = useAuthContext();
+  const { user } = useSelector(state => state.user);
   const [showUserMenu, setShowUserMenu] = React.useState(false);
   const [username, setUsername] = React.useState('who are you?');
   const [profileImg, setProfileImg] = React.useState(
