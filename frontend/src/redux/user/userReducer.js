@@ -62,7 +62,7 @@ export const userReducer = (state = init, action) => {
           user: null, 
           loading: false,
           error: null,
-          success: null
+          success: action.payload
         };
       case a.DELETE_USER_FAIL:
         return {
