@@ -33,7 +33,6 @@ export const workoutReducer = (state = init, action) => {
                 loading: true
             }; 
         case a.CREATE_WORKOUT_SUCCESS:
-            // after workout is created, page: 1
             ++state.workouts.total;
             return {
                 workouts: {...state.workouts, 
@@ -78,9 +77,6 @@ export const workoutReducer = (state = init, action) => {
                 loading: true
             };
         case a.DELETE_ONE_SUCCESS:
-            // TODO: workoutsChunk should never be [] unless total is 0 .
-            // currently, if items are deleted from the last page, workoutsChunk ends up as [] eventually, 
-            // although total is not 0
             --state.workouts.total;
             const newWorkoutsChunk = state.workouts.workoutsChunk.filter(e => e._id !== action.payload._id );
             const prevMuscleGroupIndex = state.workouts.allUserWorkoutsMuscleGroups.indexOf((state.workouts.workoutsChunk.filter(e => e._id === action.payload._id ))[0].muscle_group);   
