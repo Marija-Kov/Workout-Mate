@@ -1,9 +1,11 @@
 import React from 'react';
 import useEditWorkout from '../hooks/useEditWorkout';
+import { useSelector } from 'react-redux';
 
 
 export default function EditWorkout(props){
-  const {editWorkout, error} = useEditWorkout();
+  const { editWorkout } = useEditWorkout();
+  const { updateWorkoutError } = useSelector(state => state.workout)
   const title = React.useRef();
   const muscle_group = React.useRef();
   const reps = React.useRef();
@@ -93,9 +95,9 @@ export default function EditWorkout(props){
           >
             Save changes
           </button>
-          {error && (
+          {updateWorkoutError && (
             <div role="alert" className="error">
-              {error}
+              {updateWorkoutError}
             </div>
           )}
         </form>

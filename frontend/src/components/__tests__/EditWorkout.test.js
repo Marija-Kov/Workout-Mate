@@ -1,20 +1,28 @@
 import React from "react";
 import EditWorkout from "../EditWorkout";
 import user from "@testing-library/user-event";
-import { render, screen } from "@testing-library/react";
-import { AuthContext } from "../../context/AuthContext";
-import { WorkoutContext } from "../../context/WorkoutContext";
+import { render, screen } from "@testing-library/react"; 
 import { rest } from "msw";
 import { server } from "../../mocks/server";
+import { Provider } from "react-redux";
+import store from "../../redux/store";
+
+let dispatch;
+
+beforeAll(() => {
+  dispatch = store.dispatch
+})
+
+afterAll(() => {
+  dispatch = null
+})
 
 describe("<EditWorkout/>", () => {
   it("should render Edit workout form given that user is authenticated", async () => {
   render(
-    <AuthContext.Provider value={{ user: {} }}>
-      <WorkoutContext.Provider value={{ workouts: [] }}>
-        <EditWorkout />
-      </WorkoutContext.Provider>
-    </AuthContext.Provider>
+    <Provider store={store}>
+      <EditWorkout />
+    </Provider> 
   );
 
   const titleInput = await screen.findByLabelText(/workout title/i);
@@ -36,11 +44,9 @@ describe("<EditWorkout/>", () => {
   it("should focus input fields in the right order", async () => {
         user.setup();
     render(
-      <AuthContext.Provider value={{ user: {} }}>
-        <WorkoutContext.Provider value={{ workouts: [] }}>
-          <EditWorkout />
-        </WorkoutContext.Provider>
-      </AuthContext.Provider>
+      <Provider store={store}>
+        <EditWorkout />
+      </Provider> 
     );
      const titleInput = await screen.findByLabelText(/workout title/i);
      const muscleGroupSelect = await screen.findByLabelText(/muscle group/i);
@@ -67,11 +73,9 @@ describe("<EditWorkout/>", () => {
   it("should update input value when user types", async () => {
     user.setup();
     render(
-      <AuthContext.Provider value={{ user: {} }}>
-        <WorkoutContext.Provider value={{ workouts: [] }}>
-          <EditWorkout />
-        </WorkoutContext.Provider>
-      </AuthContext.Provider>
+      <Provider store={store}>
+        <EditWorkout />
+      </Provider> 
     );
     const titleInput = await screen.findByLabelText(/workout title/i);
     const muscleGroupSelect = await screen.findByLabelText(/muscle group/i);
@@ -88,12 +92,12 @@ describe("<EditWorkout/>", () => {
 
   it("should submit updated input fields given that user is authenticated", async () => {
     user.setup();
+    dispatch({type: "LOGIN_SUCCESS", payload: {}})
+    dispatch({type: "UPDATE_ONE_SUCCESS", payload: {}})
     render(
-      <AuthContext.Provider value={{ user: {}, dispatch: () => {} }}>
-        <WorkoutContext.Provider value={{ workouts: [], dispatch: () => {} }}>
-          <EditWorkout showEdit={()=>{}}/>
-        </WorkoutContext.Provider>
-      </AuthContext.Provider>
+      <Provider store={store}>
+        <EditWorkout showEdit={()=>{}}/>
+      </Provider> 
     );
     const titleInput = await screen.findByLabelText(/workout title/i);
     const repsInput = await screen.findByLabelText(/number of reps/i);
@@ -107,6 +111,8 @@ describe("<EditWorkout/>", () => {
     await user.click(submitEditedWorkoutBtn);
     const error = screen.queryAllByRole("alert");
     expect(error.length).toEqual(0);
+    dispatch({type: "LOGOUT"});
+    dispatch({type: "SET_WORKOUTS_SUCCESS", payload: []})
   });
 
   it("should respond with error message if authentication token expired and user attempts to submit", async () => {
@@ -120,11 +126,9 @@ describe("<EditWorkout/>", () => {
     );
     user.setup();
     render(
-      <AuthContext.Provider value={{ user: undefined }}>
-        <WorkoutContext.Provider value={{ workouts: undefined }}>
-          <EditWorkout />
-        </WorkoutContext.Provider>
-      </AuthContext.Provider>
+      <Provider store={store}>
+        <EditWorkout />
+      </Provider> 
     );
     const titleInput = await screen.findByLabelText(/workout title/i);
     const repsInput = await screen.findByLabelText(/number of reps/i);
