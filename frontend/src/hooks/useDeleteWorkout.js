@@ -1,15 +1,13 @@
-import React from "react";
-import { useWorkoutContext } from "./useWorkoutContext";
-import { useAuthContext } from "./useAuthContext";
+import { useSelector, useDispatch } from "react-redux";
 
 export default function useDeleteWorkout() {
-       const [error, setError] = React.useState(null);
-       const { dispatch } = useWorkoutContext();
-       const { user } = useAuthContext();
-
+       const dispatch = useDispatch();
+       const { user } = useSelector(state => state.user);
+       const { workouts } = useSelector(state => state.workout);
+       const { workoutsChunk } = workouts;
     const deleteWorkout = async (id) => {
         if (!user) {
-         setError("You must be logged in to do that");
+         dispatch({type: "DELETE_ONE_FAIL", payload: "You must be logged in to do that"});
          return
         }
         const response = await fetch(
@@ -25,12 +23,12 @@ export default function useDeleteWorkout() {
         const json = await response.json();
         
         if(response.ok){
-          dispatch({ type: "DELETE_ONE", payload: json.workout}); 
-          setError(null) 
+          if(workoutsChunk.length===1) dispatch({type: "PREV_PAGE"})
+          dispatch({ type: "DELETE_ONE_SUCCESS", payload: json.workout}); 
         }
         if(!response.ok){
-            setError(json.error);
+          dispatch({ type: "DELETE_ONE_FAIL", payload: json.error});
         }
     }
-  return { deleteWorkout, error }
+  return { deleteWorkout }
 }

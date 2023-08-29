@@ -4,15 +4,9 @@ import useDeleteWorkout from '../hooks/useDeleteWorkout';
 
 const EditWorkout = React.lazy(() => import("../components/EditWorkout"));
 
-export default function WorkoutDetails({id, title, muscle_group, reps, load, createdAt, updatedAt, page, getItems, total, limit, spreadPages}){
+export default function WorkoutDetails({id, title, muscle_group, reps, load, createdAt, updatedAt }){
     const [showEditForm, setShowEditForm] = React.useState(false);
-    const {deleteWorkout, error} = useDeleteWorkout();
-
-    const handleDelete = async () => {
-      await deleteWorkout(id)
-      await getItems('', page)
-      spreadPages(total, limit)
-    }
+    const { deleteWorkout } = useDeleteWorkout();
 
     const showEdit = () => {
        setShowEditForm(prev => !prev)
@@ -39,7 +33,7 @@ export default function WorkoutDetails({id, title, muscle_group, reps, load, cre
           <button
             aria-label={`delete workout ${title} created ${date}`}
             className="material-symbols-outlined"
-            onClick={handleDelete}
+            onClick={() => deleteWorkout(id)}
           >
             delete
           </button>
@@ -50,11 +44,6 @@ export default function WorkoutDetails({id, title, muscle_group, reps, load, cre
           >
             edit
           </button>
-          {error && (
-            <div role="alert" className="error">
-              {error}
-            </div>
-          )}
         </div>
         {showEditForm && (
         <React.Suspense>
@@ -67,7 +56,7 @@ export default function WorkoutDetails({id, title, muscle_group, reps, load, cre
             load={load}
             createdAt={createdAt}
             updatedAt={updatedAt}
-            showEdit={() => showEdit()}
+            showEdit={showEdit}
           />
         </React.Suspense>  
         )}
