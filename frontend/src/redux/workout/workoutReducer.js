@@ -101,7 +101,7 @@ export const workoutReducer = (state = init, action) => {
             }
         case a.DELETE_ALL_WORKOUTS_SUCCESS:
             return {
-                workouts: {},
+                workouts: { total: 0, limit: 3, allUserWorkoutsMuscleGroups: [], workoutsChunk: [], pageSpread: [1], page: 0},
                 loading: false,
                 deleteAllWorkoutsSuccess: true,
                 deleteAllWorkoutsError: null
