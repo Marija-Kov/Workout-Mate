@@ -89,11 +89,13 @@ module.exports.user_update_patch = async (req, res) => {
    res
      .status(200)
      .json({
-       id: user.id,
-       email: user.email,
-       username: user.username,
-       profileImg: user.profileImg,
-       token: token,
+      user: {
+        id: user.id,
+        email: user.email,
+        username: user.username,
+        profileImg: user.profileImg,
+        token: token,
+      },
        success: "Profile updated.",
      });
   } catch (error) {

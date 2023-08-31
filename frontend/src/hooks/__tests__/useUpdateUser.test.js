@@ -1,64 +1,70 @@
 import { renderHook, act } from "@testing-library/react";
 import { rest } from "msw";
 import { server } from "../../mocks/server";
-import { AuthContext } from "../../context/AuthContext";
 import { useUpdateUser } from "../useUpdateUser";
+import { Provider } from "react-redux";
+import store from "../../redux/store";
+
+let wrapper;
+let dispatch;
+let mockUser;
+
+beforeAll(() => {
+  wrapper = ({ children }) => {
+    return (
+      <Provider store={store}>
+          {children}
+      </Provider>
+    );
+  };
+  dispatch = store.dispatch;
+  mockUser = {
+    id: "userid",
+    email: "keech@mail.yu",
+    token: "authorizationToken",
+    username: undefined,
+    profileImg: undefined,
+    tokenExpires: Date.now() + 3600000,
+  };
+})
+
+afterAll(() => {
+  wrapper = null;
+  dispatch = null;
+  mockUser = null;
+})
 
 describe("useUpdateUser()", () => {
-  it("should return updateUser function and default values of states: error, isLoading and success (null)", () => {
-    const wrapper = ({ children }) => {
-      return (
-        <AuthContext.Provider value={{ user: {} }}>
-          {children}
-        </AuthContext.Provider>
-      );
-    };
+  it("should return updateUser function", () => {
     const { result } = renderHook(useUpdateUser, { wrapper });
     expect(result.current.updateUser).toBeTruthy();
-    expect(result.current.isLoading).toBeFalsy();
-    expect(result.current.error).toBeFalsy();
-    expect(result.current.success).toBeFalsy();
+    expect(typeof result.current.updateUser).toBe("function");
+
   });
 
-  it("should set error state to truthy and success to falsy if updateUser was run without authorization", async () => {
+  it("should set updateUserError given that updateUser was run without authorization", async () => {
     const newData = {
       username: "keechrr",
       profileImg: "profileImgString",
-    };
-    const wrapper = ({ children }) => {
-      return (
-        <AuthContext.Provider value={{ user: null }}>
-          {children}
-        </AuthContext.Provider>
-      );
     };
     const { result } = renderHook(useUpdateUser, { wrapper });
     await act(() =>
       result.current.updateUser(newData.username, newData.profileImg)
     );
-    expect(result.current.error).toBeTruthy();
-    expect(result.current.success).toBeFalsy();
-    expect(result.current.error).toMatch(/not authorized/i);
+    let state = store.getState();
+    expect(state.user.updateUserError).toBeTruthy();
+    expect(state.user.updateUserError).toMatch(/not authorized/i);
   });
 
-  it("should set error state to truthy and success to falsy if updateUser was run with invalid input", async () => {
-    server.use(
-      rest.patch(`${process.env.REACT_APP_API}/api/users/*`, (req, res, ctx) => {
-        return res(ctx.status(400));
-      })
-    );
-    const wrapper = ({ children }) => {
-      return (
-        <AuthContext.Provider value={{ user: {}, dispatch: () => {} }}>
-          {children}
-        </AuthContext.Provider>
-      );
-    };
+  it("should set updateUserError given that updateUser was run with invalid input", async () => {
+    dispatch({ type: "LOGIN_SUCCESS", payload: mockUser });
     const { result } = renderHook(useUpdateUser, { wrapper });
     await act(() => result.current.updateUser("thisUsernameIsTooLong444555"));
-    expect(result.current.error).toBeTruthy();
-    expect(result.current.success).toBeFalsy();
-    expect(result.current.error).toMatch(/invalid input/i);
+    let state = store.getState();
+    expect(state.user.user.username).toBe(mockUser.username);
+    expect(state.user.updateUserError).toBeTruthy();
+    expect(state.user.updateUserError).toMatch(/invalid input/i);
+    dispatch({type: "LOGOUT"});
   });
 
   it("should run updateUser, set success state to 'true', error state to 'false' given that user is authorized and input is valid", async () => {
@@ -66,19 +72,35 @@ describe("useUpdateUser()", () => {
       username: "keechrr",
       profileImg: "profileImgString",
     };
-    const wrapper = ({ children }) => {
-      return (
-        <AuthContext.Provider value={{ user: {}, dispatch: () => {} }}>
-          {children}
-        </AuthContext.Provider>
-      );
-    };
+    server.use(
+      rest.patch(`${process.env.REACT_APP_API}/api/users/*`, (req, res, ctx) => {
+        return res(
+          ctx.status(200),
+          ctx.json({
+             user: {
+               id: mockUser.id,
+               email: mockUser.email,
+               token: mockUser.token,
+               username: newData.username,
+               profileImg: newData.profileImg,
+               tokenExpires: mockUser.tokenExpires,
+             },
+              success: "Profile updated",
+          })
+        );
+      }),
+    );
+    dispatch({ type: "LOGIN_SUCCESS", payload: mockUser });
     const { result } = renderHook(useUpdateUser, { wrapper });
     await act(() =>
       result.current.updateUser(newData.username, newData.profileImg)
     );
-    expect(result.current.error).toBeFalsy();
-    expect(result.current.success).toBeTruthy();
-    expect(result.current.success).toMatch(/updated successfully/i);
+    let state = store.getState();
+    expect(state.user.user.username).toBe(newData.username);
+    expect(state.user.user.profileImg).toBe(newData.profileImg);
+    expect(state.user.success).toBeTruthy();
+    expect(state.user.updateUserError).toBeFalsy();
+    expect(state.user.success).toMatch(/profile updated/i);
+    dispatch({type: "LOGOUT"});
   });
 });

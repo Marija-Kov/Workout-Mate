@@ -181,7 +181,7 @@ describe("authController", () => {
           .set("Authorization", `Bearer ${userLoggedIn.token}`)
           .send({ username: newUsername })
       )._body;
-      expect(res).toHaveProperty("username", newUsername);
+      expect(res.user).toHaveProperty("username", newUsername);
     });
 
     it("should respond with user details updated with the new profile image given that the user is authorized and a new image is submitted", async () => {
@@ -198,7 +198,7 @@ describe("authController", () => {
           .set("Authorization", `Bearer ${userLoggedIn.token}`)
           .send({ profileImg: newProfileImg })
       )._body;
-      expect(res).toHaveProperty("profileImg", newProfileImg);
+      expect(res.user).toHaveProperty("profileImg", newProfileImg);
     });
   });
 

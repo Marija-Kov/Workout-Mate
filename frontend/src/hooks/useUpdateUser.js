@@ -8,7 +8,7 @@ export const useUpdateUser = () => {
  const updateUser = React.useCallback(async (username, profileImg) => {
     dispatch({type: "UPDATE_USER_REQ"})
      if (!user) {
-      dispatch({type: "UPDATE_USER_FAIL", payload: "You must be logged in"})
+      dispatch({type: "UPDATE_USER_FAIL", payload: "Not authorized"})
        return;
      }
         if (!profileImg) profileImg = user.profileImg;
@@ -44,8 +44,7 @@ export const useUpdateUser = () => {
         if(json.username) {
           localStorage.setItem("username", json.username); 
         }
-        const updatedUser = {id: json.id, email: json.email, token: json.token, username: json.username, profileImg: json.profileImg}
-        dispatch({type: "UPDATE_USER_SUCCESS", payload: { user: updatedUser, success: json.success }});
+        dispatch({type: "UPDATE_USER_SUCCESS", payload: { user: json.user, success: json.success }});
       }
  }, [])
   return { updateUser }
