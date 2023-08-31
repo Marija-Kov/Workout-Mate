@@ -41,7 +41,7 @@ module.exports.signup_post = async (req, res) => {
      "../templates/verifySignup.handlebars"
    );
 
- res.status(200).json({id, token: confirmationToken});
+  res.status(200).json({id, token: confirmationToken, success: "Account created and pending confirmation. Please check your inbox."});
   } catch(err){
   res.status(400).json({error: err.message});
   }

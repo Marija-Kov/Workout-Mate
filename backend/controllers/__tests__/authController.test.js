@@ -37,11 +37,13 @@ describe("authController", () => {
       expect(res.error).toBeTruthy();
     });
 
-    it("should respond with the user id and account confirmation token given that email is valid and password strong enough", async () => {
+    it("should respond with the user id and account confirmation token and success message given that email is valid and password strong enough", async () => {
       const user = { email: "keech@validemail.com", password: "abcABC123!" };
       const res = await agent.post("/api/users/signup").send(user);
       expect(res._body.id).toBeTruthy();
       expect(res._body.token).toBeTruthy();
+      expect(res._body.success).toBeTruthy();
+      expect(res._body.success).toMatch(/pending confirmation/i);
     });
 
     it("should delete oldest user in the database given that the number of users has reached the limit", async () => {

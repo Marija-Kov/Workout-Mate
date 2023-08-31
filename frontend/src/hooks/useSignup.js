@@ -1,13 +1,10 @@
-import React from 'react';
+import { useDispatch } from "react-redux";
 
 export const useSignup = () => {
-    const [error, setError] = React.useState(null);
-    const [isLoading, setIsLoading] = React.useState(null); 
-    const [verificationNeeded, setVerificationNeeded] = React.useState(null);
+   const dispatch = useDispatch();
 
-    const signup = async (credentials) => {
-        setIsLoading(true);
-        setError(null);
+    const signup = async (credentials) => { 
+      dispatch({type: "SIGNUP_REQ"});
         const response = await fetch(
           `${process.env.REACT_APP_API}/api/users/signup`,
           {
@@ -19,18 +16,14 @@ export const useSignup = () => {
         const json = await response.json();
 
         if (!response.ok){
-            setIsLoading(false);
-            setError(json.error);
-            setVerificationNeeded(false);
+         dispatch({type: "SIGNUP_FAIL", payload: json.error})
         }
         if (response.ok) {
-            setIsLoading(false)
-            setError(null);
-            setVerificationNeeded(true);
+         dispatch({type: "SIGNUP_SUCCESS", payload: json.success})
         }
     }
 
-   return { signup, isLoading, error, verificationNeeded } 
+   return { signup } 
 }
 
 

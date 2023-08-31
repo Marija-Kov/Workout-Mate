@@ -1,20 +1,30 @@
-import { render, screen, cleanup } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import user from "@testing-library/user-event";
 import Signup from "../Signup";
 import { rest } from "msw";
 import { server } from "../../mocks/server";
+import { Provider } from "react-redux";
+import store from "../../redux/store";
 
 describe("<Signup />", () => {   
   it("should render signup form", () => {
-    render(<Signup />);
+    render(
+      <Provider store={store}>
+        <Signup />
+      </Provider>
+    );
     const signupForm = screen.getByLabelText("create an account");
     expect(signupForm).toBeInTheDocument();
   });
 
   it("should focus form elements in right order", async () => {
     user.setup();
-    render(<Signup />);
+    render(
+      <Provider store={store}>
+        <Signup />
+      </Provider>
+    );
     const emailInp = screen.getByPlaceholderText("email address");
     const passwordInp = screen.getByPlaceholderText("password");
     const signupBtn = screen.getByRole("button", { name: /sign up/i });
@@ -28,7 +38,11 @@ describe("<Signup />", () => {
 
   it("should render input value as user types", async ()=> {
    user.setup();
-   render(<Signup />);
+   render(
+    <Provider store={store}>
+      <Signup />
+    </Provider>
+  );
    const emailInp = screen.getByPlaceholderText("email address");
    const passwordInp = screen.getByPlaceholderText("password");
    await user.type(emailInp, "keech@mail.yu");
@@ -49,7 +63,11 @@ describe("<Signup />", () => {
        })
      ); 
     user.setup();
-    render(<Signup />);
+    render(
+      <Provider store={store}>
+        <Signup />
+      </Provider>
+    );
     const signupBtn = await screen.findByText("Sign up");
     await user.click(signupBtn);
     const errorEl = await screen.findByRole("alert");
@@ -59,7 +77,11 @@ describe("<Signup />", () => {
 
   it("should render success element once 'sign up' button is clicked given that server responds with success message", async () => {
       user.setup();
-      render(<Signup />)
+      render(
+        <Provider store={store}>
+          <Signup />
+        </Provider>
+      );
       const signupBtn = await screen.findByText("Sign up")
       await user.click(signupBtn);
       const successEl = await screen.findByRole("alert");    

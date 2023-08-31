@@ -1,10 +1,12 @@
 import React from 'react';
 import { useSignup } from '../hooks/useSignup';
+import { useSelector } from 'react-redux';
 
 const Signup = () => {
     const email = React.useRef();
     const password = React.useRef();
-    const {signup, isLoading, error, verificationNeeded} = useSignup();
+    const { signup } = useSignup();
+    const { signupError, success, loading } = useSelector(state => state.user);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -41,10 +43,10 @@ const Signup = () => {
             aria-label="password"
             ref={password}
           />
-          <button className="sign-up--form--btn" disabled={isLoading}>
+          <button className="sign-up--form--btn" disabled={loading}>
             Sign up
           </button>
-          {isLoading && (
+          {loading && (
             <div className="loader--container">
               <div className="lds-ellipsis">
                 <div></div>
@@ -54,14 +56,14 @@ const Signup = () => {
               </div>
             </div>
           )}
-          {error && (
+          {signupError && (
             <div role="alert" className="error">
-              {error}
+              {signupError}
             </div>
           )}
-          {!error && verificationNeeded && (
+          {success && (
             <div role="alert" className="success">
-              Account created and pending confirmation. Please check your inbox.
+              {success}
             </div>
           )}
         </form>
