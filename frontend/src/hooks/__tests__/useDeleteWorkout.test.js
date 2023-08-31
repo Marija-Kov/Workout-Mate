@@ -1,87 +1,151 @@
 import { renderHook, act } from "@testing-library/react";
 import { rest } from "msw";
 import { server } from "../../mocks/server";
-import { AuthContext } from "../../context/AuthContext";
-import { WorkoutContext } from "../../context/WorkoutContext";
 import useDeleteWorkout from "../useDeleteWorkout";
+import { Provider } from "react-redux";
+import store from '../../redux/store';
 
-describe("useDeleteAllWorkouts()", () => {
-  it("should return deleteWorkout function and default error state (false)", () => {
-    const wrapper = ({ children }) => {
-      return (
-        <AuthContext.Provider value={{ user: {} }}>
-          <WorkoutContext.Provider value={{ workouts: [] }}>
-            {children}
-          </WorkoutContext.Provider>
-        </AuthContext.Provider>
-      );
-    };
+let wrapper;
+let dispatch;
+let mockUser;
+let mockWorkouts;
+
+beforeAll(() => {
+  wrapper = ({ children }) => {
+    return (
+      <Provider store={store}>
+          {children}
+      </Provider>
+    );
+  };
+  dispatch = store.dispatch;
+  mockUser = {
+    id: "userid",
+    email: "keech@mail.yu",
+    token: "authorizationToken",
+    username: undefined,
+    profileImg: undefined,
+    tokenExpires: Date.now() + 3600000,
+  };
+  mockWorkouts =[{
+    _id: "mockId1",
+    title: "lunges",
+    muscle_group: "leg",
+    reps: "44",
+    load: "21",
+    user_id: "userid"
+   },
+   {
+    _id: "mockId2",
+    title: "situps",
+    muscle_group: "ab",
+    reps: "44",
+    load: "21",
+    user_id: "userid"
+   }] ;
+})
+
+afterAll(() => {
+  wrapper = null;
+  dispatch = null;
+  mockUser = null;
+  mockWorkouts = null;
+})
+
+describe("useDeleteWorkout()", () => {
+  it("should return deleteWorkout function", () => {
     const { result } = renderHook(useDeleteWorkout, { wrapper });
     expect(result.current.deleteWorkout).toBeTruthy();
-    expect(result.current.error).toBeFalsy();
+    expect(typeof result.current.deleteWorkout).toBe("function");
   });
 
-  it("should not change default error state (false) when deleteWorkout was run with authorization and valid workout id", async () => {
-    const wrapper = ({ children }) => {
-      return (
-        <AuthContext.Provider value={{ user: {} }}>
-          <WorkoutContext.Provider
-            value={{ workouts: [], dispatch: () => {} }}
-          >
-            {children}
-          </WorkoutContext.Provider>
-        </AuthContext.Provider>
-      );
-    };
+  it("should delete a workout given that deleteWorkout was run with authorization and valid workout id", async () => {
+    server.use(
+      rest.delete(
+        `${process.env.REACT_APP_API}/api/workouts/*`,
+        (req, res, ctx) => {
+          return res(
+            ctx.status(200),
+            ctx.json({
+              workout: mockWorkouts[1]
+            })
+          );
+        }
+      )
+    );
+    dispatch({type: "LOGIN_SUCCESS", payload: mockUser})
+    for(let i = 0; i < mockWorkouts.length; ++i){
+     dispatch({type: "CREATE_WORKOUT_SUCCESS", payload: mockWorkouts[i]}); 
+    }  
+    let state = store.getState();
+    expect(state.workout.workouts.total).toBe(2);
+    expect(state.workout.workouts.workoutsChunk[0]._id).toBe(mockWorkouts[1]._id); 
     const { result } = renderHook(useDeleteWorkout, { wrapper });
-    await act(() => result.current.deleteWorkout("mockWorkoutId"));
-    expect(result.current.error).toBeFalsy();
+    await act(() => result.current.deleteWorkout(mockWorkouts[1]._id));
+    state = store.getState();
+    expect(state.workout.workouts.total).toBe(1);
+    expect(state.workout.workouts.workoutsChunk[0]._id).toBe(mockWorkouts[0]._id);
+    dispatch({type: "DELETE_ALL_WORKOUTS_SUCCESS", payload: "success"});
+    dispatch({type: "LOGOUT"})
   });
 
-  it("should change error state to 'true' when deleteWorkout was run without authorization", async () => {
-    const wrapper = ({ children }) => {
-      return (
-        <AuthContext.Provider value={{ user: null }}>
-          <WorkoutContext.Provider
-            value={{ workouts: [], dispatch: () => {} }}
-          >
-            {children}
-          </WorkoutContext.Provider>
-        </AuthContext.Provider>
-      );
-    };
+  it("should set deleteWorkoutError message given that deleteWorkout was run without authorization", async () => {
+    server.use(
+      rest.delete(
+        `${process.env.REACT_APP_API}/api/workouts/*`,
+        (req, res, ctx) => {
+          return res(
+            ctx.status(200),
+            ctx.json({
+              error: "Not authorized"
+            })
+          );
+        }
+      )
+    );
+    dispatch({type: "LOGIN_SUCCESS", payload: mockUser})
+    for(let i = 0; i < mockWorkouts.length; ++i){
+     dispatch({type: "CREATE_WORKOUT_SUCCESS", payload: mockWorkouts[i]}); 
+    }  
+    let state = store.getState();
+    expect(state.workout.workouts.total).toBe(2);
+    expect(state.workout.workouts.workoutsChunk[0]._id).toBe(mockWorkouts[1]._id); 
+    dispatch({type: "LOGOUT"})
     const { result } = renderHook(useDeleteWorkout, { wrapper });
-    await act(() => result.current.deleteWorkout("mockWorkoutId"));
-    expect(result.current.error).toBeTruthy();
-    expect(result.current.error).toMatch(/must be logged in/i);
+    await act(() => result.current.deleteWorkout(mockWorkouts[1]._id));
+    state = store.getState();
+    expect(state.workout.deleteWorkoutError).toBeTruthy();
+    expect(state.workout.deleteWorkoutError).toMatch(/not authorized/i);
+    dispatch({type: "LOGIN_SUCCESS", payload: mockUser})
+    dispatch({type: "DELETE_ALL_WORKOUTS_SUCCESS", payload: "success"});
+    dispatch({type: "LOGOUT"})
   });
 
-    it("should change error state to 'true' when deleteWorkout was run with invalid workout id", async () => {
-       server.use(
-         rest.delete(`${process.env.REACT_APP_API}/api/workouts/*`, (req, res, ctx) => {
-           return res(
-             ctx.status(404),
-             ctx.json({
-               error: "Invalid workout id"
-             })
-           );
-         })
-       );
-        const wrapper = ({ children }) => {
-        return (
-          <AuthContext.Provider value={{ user: {} }}>
-            <WorkoutContext.Provider
-              value={{ workouts: [], dispatch: () => {} }}
-            >
-              {children}
-            </WorkoutContext.Provider>
-          </AuthContext.Provider>
-        );
-      };
-      const { result } = renderHook(useDeleteWorkout, { wrapper });
-      await act(() => result.current.deleteWorkout("invalidWorkoutId"));
-      expect(result.current.error).toBeTruthy();
-      expect(result.current.error).toMatch(/invalid workout id/i);
-    });
+  it("should set deleteWorkoutError message given that deleteWorkout was run with invalid workout id", async () => {
+     server.use(
+       rest.delete(`${process.env.REACT_APP_API}/api/workouts/*`, (req, res, ctx) => {
+         return res(
+           ctx.status(404),
+           ctx.json({
+             error: "Invalid workout id"
+           })
+         );
+       })
+     );
+     dispatch({type: "LOGIN_SUCCESS", payload: mockUser})
+     for(let i = 0; i < mockWorkouts.length; ++i){
+      dispatch({type: "CREATE_WORKOUT_SUCCESS", payload: mockWorkouts[i]}); 
+     }  
+    let state = store.getState();
+    expect(state.workout.workouts.total).toBe(2);
+    const { result } = renderHook(useDeleteWorkout, { wrapper });
+    await act(() => result.current.deleteWorkout("invalidWorkoutId"));
+    state = store.getState();
+    expect(state.workout.workouts.total).toBe(2);
+    expect(state.workout.deleteWorkoutError).toBeTruthy();
+    expect(state.workout.deleteWorkoutError).toMatch(/invalid workout id/i);
+    dispatch({type: "DELETE_ALL_WORKOUTS_SUCCESS", payload: "success"});
+    dispatch({type: "LOGOUT"})
+  });
 
 })
