@@ -3,12 +3,53 @@ import * as a from "./userActionTypes";
 const init = {
  user: JSON.parse(localStorage.getItem("user")) || null,
  loading: false,
- error: null,
+ signupError: null,
+ confirmAccountError: null,
+ loginError: null,
+ updateUserError: null,
+ deleteUserError: null,
  success: false
 };
 
 export const userReducer = (state = init, action) => {
     switch (action.type) {
+      case a.SIGNUP_REQ:
+        return {
+          ...state,
+          loading: true,
+        };
+      case a.SIGNUP_SUCCESS:
+        return {
+          ...state,
+          loading: false,
+          success: action.payload,
+          signupError: null
+        };
+      case a.SIGNUP_FAIL:
+        return {
+          ...state,
+          loading: false,
+          success: false,
+          signupError: action.payload
+        };
+      case a.CONFIRM_ACCOUNT_REQ:
+        return {
+          ...state,
+          loading: true,
+        };
+      case a.CONFIRM_ACCOUNT_SUCCESS:
+        return {
+          ...state,
+          loading: false,
+          success: action.payload,
+          confirmAccountError: null
+        };
+      case a.CONFIRM_ACCOUNT_FAIL:
+        return {
+          ...state,
+          loading: false,
+          confirmAccountError: action.payload
+        };
       case a.LOGIN_REQ:
         return {
           ...state,
@@ -18,20 +59,19 @@ export const userReducer = (state = init, action) => {
         return {
           user: action.payload,
           loading: false,
-          error: null
+          loginError: null
         };
       case a.LOGIN_FAIL:
         return {
           user: null,
           loading: false,
-          error: action.payload,
-          success: null
+          loginError: action.payload,
         };
       case a.LOGOUT:
         return {
+          ...state,
           user: null,
           loading: false,
-          error: null
         };
       case a.UPDATE_USER_REQ:
         return {
@@ -42,14 +82,14 @@ export const userReducer = (state = init, action) => {
         return {
           user: action.payload.user,
           loading: false,
-          error: null,
+          updateUserError:null,
           success: action.payload.success
         };
       case a.UPDATE_USER_FAIL:
         return {
           ...state,
           loading: false,
-          error: action.payload,
+          updateUserError: action.payload,
           success: null
         };
       case a.DELETE_USER_REQ:
@@ -61,14 +101,14 @@ export const userReducer = (state = init, action) => {
         return {
           user: null, 
           loading: false,
-          error: null,
+          deleteUserError: null,
           success: action.payload
         };
       case a.DELETE_USER_FAIL:
         return {
           ...state,
           loading: false,
-          error: action.payload
+          deleteUserError: action.payload
         };
       default:
         return state;
