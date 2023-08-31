@@ -7,7 +7,7 @@ const ForgotPasswordForm = React.lazy(() =>
 );
 
 const Login = () => {
-    const { error, loading } = useSelector(state => state.user);
+    const { loginError, loading } = useSelector(state => state.user);
     const email = React.useRef();
     const password = React.useRef();
     const { login } = useLogin();
@@ -69,9 +69,9 @@ const Login = () => {
                 </div>
               </div>
             )}
-            {error && (
+            {loginError && (
               <div role="alert" className="error">
-                {error}
+                {loginError}
               </div>
             )}
           </form>
