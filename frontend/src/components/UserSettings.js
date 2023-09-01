@@ -14,7 +14,7 @@ export default function UserSettings({closeUserSettings, changeProfileImg}) {
     const { deleteUser } = useDeleteUser();
     const { deleteAllWorkouts } = useDeleteAllWorkouts();
     const { logout } = useLogout();
-    const { user, loading, error, success } =  useSelector(state => state.user)
+    const { user, loading, updateUserError, success } =  useSelector(state => state.user)
 
     const [newUsername, setNewUsername] = React.useState('');
 
@@ -126,7 +126,7 @@ export default function UserSettings({closeUserSettings, changeProfileImg}) {
         <button aria-label="update profile button" disabled={loading || newUsername.length > 12} className={newUsername.length > 12 ? "disabled--btn upload--btn" : "upload--btn"}>
           Upload
         </button>
-        {error && <div role="alert" className="error">{error}</div>}
+        {updateUserError && <div role="alert" className="error">{updateUserError}</div>}
         {success && <div role="alert" className="success">{success}</div>}
         {loading && <h3 style={{ zIndex: "10" }}>Uploading..</h3>}
         <button aria-label="delete account button" type="button" className="delete--account--btn" onClick={showDeleteAccount}>
