@@ -1,7 +1,9 @@
 import React from "react";
 import useSendPasswordResetRequest from '../hooks/useSendPasswordResetRequest'
+import { useDispatch } from "react-redux";
 
-export default function ForgotPasswordForm({ forgotPassword }) {
+export default function ForgotPasswordForm() {
+  const dispatch = useDispatch();
   const { sendPasswordResetRequest, error, success } =
     useSendPasswordResetRequest();
   const email = React.useRef();
@@ -17,7 +19,7 @@ export default function ForgotPasswordForm({ forgotPassword }) {
         <span
           aria-label= "close forgot password form"
           className="close material-symbols-outlined"
-          onClick={() => forgotPassword()}
+          onClick={() => dispatch({type: "HIDE_COMPONENT"})}
         >
           close
         </span>
