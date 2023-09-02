@@ -109,7 +109,7 @@ export const handlers = [
     return res(
       ctx.status(200),
       ctx.json({
-        success: "User deleted successfully",
+        success: "Account deleted successfully",
       })
     );
   }),
