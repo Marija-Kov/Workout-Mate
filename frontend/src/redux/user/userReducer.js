@@ -57,21 +57,28 @@ export const userReducer = (state = init, action) => {
         };
       case a.LOGIN_SUCCESS:
         return {
+          ...state,
           user: action.payload,
           loading: false,
           loginError: null
         };
       case a.LOGIN_FAIL:
         return {
+          ...state,
           user: null,
           loading: false,
           loginError: action.payload,
         };
       case a.LOGOUT:
         return {
-          ...state,
           user: null,
           loading: false,
+          signupError: null,
+          confirmAccountError: null,
+          loginError: null,
+          updateUserError: null,
+          deleteUserError: null,
+          success: false
         };
       case a.UPDATE_USER_REQ:
         return {
@@ -80,6 +87,7 @@ export const userReducer = (state = init, action) => {
         };
       case a.UPDATE_USER_SUCCESS:
         return {
+          ...state,
           user: action.payload.user,
           loading: false,
           updateUserError:null,
