@@ -1,8 +1,7 @@
 import { useDispatch } from 'react-redux';
 
 export const useLogout = () => {
- const
- dispatch = useDispatch();
+ const dispatch = useDispatch();
 
  const logout = () => {
      if(localStorage.getItem('user')){
@@ -15,8 +14,8 @@ export const useLogout = () => {
        localStorage.removeItem("username");
      }
      dispatch({type: 'LOGOUT'})
-     // clearing the global workouts state:
-     dispatch({type: 'SET_WORKOUTS_SUCCESS', payload: []})
+     dispatch({type: 'SET_WORKOUTS_SUCCESS', payload: []});
+     dispatch({type: "HIDE_COMPONENT"});
 
     return "You have been logged out"
  }

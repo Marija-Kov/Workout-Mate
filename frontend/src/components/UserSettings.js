@@ -5,19 +5,18 @@ import { useCroppedImg } from '../hooks/useCroppedImg';
 import { useDeleteUser } from "../hooks/useDeleteUser";
 import { useDeleteAllWorkouts } from "../hooks/useDeleteAllWorkouts";
 import { useLogout } from "../hooks/useLogout";
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
-
-export default function UserSettings({closeUserSettings, changeProfileImg}) {
+export default function UserSettings({changeProfileImg}) {
+    const dispatch = useDispatch();
     const { updateUser } = useUpdateUser();
     const { getCroppedImg } = useCroppedImg();
     const { deleteUser } = useDeleteUser();
     const { deleteAllWorkouts } = useDeleteAllWorkouts();
     const { logout } = useLogout();
     const { user, loading, updateUserError, success } =  useSelector(state => state.user)
-
+    const { showDeleteAccountDialogue } = useSelector(state => state.showComponent)
     const [newUsername, setNewUsername] = React.useState('');
-
     const [fileInputState, setFileInputState] = React.useState();
     const [selectedFile, setSelectedFile] = React.useState(); 
 
@@ -25,9 +24,6 @@ export default function UserSettings({closeUserSettings, changeProfileImg}) {
     const [zoom, setZoom] = React.useState(1);
     const [croppedAreaPixels, setCroppedAreaPixels] = React.useState(null);
     
-    const [deleteAccountDialogue, setDeleteAccountDialogue] =
-      React.useState(false);
-
     const handleFileInputChange = (e) => {
         const file = e.target.files[0]
         previewFile(file) 
@@ -70,10 +66,6 @@ export default function UserSettings({closeUserSettings, changeProfileImg}) {
      logout();
    };
 
-   const showDeleteAccount = () => {
-     setDeleteAccountDialogue((prev) => !prev);
-   };
-
   return (
     <>
     <div className="form--container--user--settings">
@@ -81,7 +73,7 @@ export default function UserSettings({closeUserSettings, changeProfileImg}) {
         <button
           aria-label="close form"
           className="close material-symbols-outlined"
-          onClick={closeUserSettings}
+          onClick={() => dispatch({type: "HIDE_COMPONENT"})}
         >
           close
         </button>
@@ -129,11 +121,11 @@ export default function UserSettings({closeUserSettings, changeProfileImg}) {
         {updateUserError && <div role="alert" className="error">{updateUserError}</div>}
         {success && <div role="alert" className="success">{success}</div>}
         {loading && <h3 style={{ zIndex: "10" }}>Uploading..</h3>}
-        <button aria-label="delete account button" type="button" className="delete--account--btn" onClick={showDeleteAccount}>
+        <button aria-label="delete account button" type="button" className="delete--account--btn" onClick={() => dispatch({type: "SHOW_DELETE_ACCOUNT_DIALOGUE"})}>
           delete account
         </button>
       </form>
-       {deleteAccountDialogue && (
+       {showDeleteAccountDialogue && (
         <div className="delete--account--dialogue" aria-label="delete account dialogue">
           <h4>This is irreversible.</h4>
           <p>We won't be able to recover any of your data.</p>
@@ -142,7 +134,7 @@ export default function UserSettings({closeUserSettings, changeProfileImg}) {
             <button aria-label="confirm account deletion" type="button" onClick={deleteAccount}>
               Yes, delete my account permanently 💀
             </button>
-            <button aria-label="keep account and close dialogue" type="button" onClick={showDeleteAccount}>
+            <button aria-label="keep account and close dialogue" type="button" onClick={() => dispatch({type: "HIDE_COMPONENT"})}>
               No, I changed my mind
             </button>
           </div>
