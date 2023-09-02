@@ -1,42 +1,46 @@
 import React from "react";
 import user from "@testing-library/user-event";
-import { render, screen, cleanup } from "@testing-library/react";
-import { AuthContext } from "../../context/AuthContext";
-import { WorkoutContext } from "../../context/WorkoutContext";
+import { render, screen, cleanup } from "@testing-library/react"; 
 import WorkoutDetails from "../WorkoutDetails";
+import { Provider } from "react-redux";
+import store from "../../redux/store";
+
+let mockWorkout;
+
+beforeAll(() => {
+  mockWorkout = {
+    id: "workoutId",
+    title: "bench press",
+    muscle_group: "chest",
+    reps: 22,
+    load: 23,
+    createdAt: "2023-04-10T13:01:15.208+00:00",
+    updatedAt: "2023-04-13T17:27:28.820+00:00",
+  };
+})
 
 afterEach(() => {
   cleanup();
 });
 
+afterAll(() => {
+  mockWorkout = null
+})
+
 describe("<WorkoutDetails />", () => {
   it("should render WorkoutDetails component properly", async () => {
-   let mockWorkout = {
-      id: "workoutId",
-      title: "bench press",
-      reps: 22,
-      load: 23,
-      createdAt: "2023-04-10T13:01:15.208+00:00",
-      updatedAt: "2023-04-13T17:27:28.820+00:00",
-    };
     render(
-      <AuthContext.Provider value={{ user: {} }}>
-        <WorkoutContext.Provider value={{ workouts: [] }}>
+      <Provider store={store}>
           <WorkoutDetails
             id={mockWorkout.id}
             title={mockWorkout.title}
+            muscle_group={mockWorkout.muscle_group}
             reps={mockWorkout.reps}
             load={mockWorkout.load}
             createdAt={mockWorkout.createdAt}
             updatedAt={mockWorkout.updatedAt}
-            page={0}
-            getItems={() => {}}
-            spreadPages={() => {}}
-            total={1}
-            limit={3}
           />
-        </WorkoutContext.Provider>
-      </AuthContext.Provider>
+      </Provider>
     );
     const title = await screen.findByText(mockWorkout.title);
     const reps = await screen.findByText(mockWorkout.reps);
@@ -54,32 +58,18 @@ describe("<WorkoutDetails />", () => {
 
   it("should focus elements in right order", async () => {
     user.setup();
-    let mockWorkout = {
-      id: "workoutId",
-      title: "bench press",
-      reps: 22,
-      load: 23,
-      createdAt: "2023-04-10T13:01:15.208+00:00",
-      updatedAt: "2023-04-13T17:27:28.820+00:00",
-    };
     render(
-      <AuthContext.Provider value={{ user: {} }}>
-        <WorkoutContext.Provider value={{ workouts: [] }}>
+      <Provider store={store}>
           <WorkoutDetails
             id={mockWorkout.id}
             title={mockWorkout.title}
+            muscle_group={mockWorkout.muscle_group}
             reps={mockWorkout.reps}
             load={mockWorkout.load}
             createdAt={mockWorkout.createdAt}
             updatedAt={mockWorkout.updatedAt}
-            page={0}
-            getItems={() => {}}
-            spreadPages={() => {}}
-            total={1}
-            limit={3}
           />
-        </WorkoutContext.Provider>
-      </AuthContext.Provider>
+      </Provider>
     );
     const openEditWorkoutFormBtn = await screen.findByText(/edit/i);
     const deleteWorkoutBtn = await screen.findByText(/delete/i);
@@ -91,37 +81,23 @@ describe("<WorkoutDetails />", () => {
 
   it("should open EditWorkout when 'edit' button is clicked", async () => {
     user.setup();
-    let mockWorkout = {
-      id: "workoutId",
-      title: "bench press",
-      reps: 22,
-      load: 23,
-      createdAt: "2023-04-10T13:01:15.208+00:00",
-      updatedAt: "2023-04-13T17:27:28.820+00:00",
-    };
     render(
-      <AuthContext.Provider value={{ user: {} }}>
-        <WorkoutContext.Provider value={{ workouts: [] }}>
+      <Provider store={store}>
           <WorkoutDetails
             id={mockWorkout.id}
             title={mockWorkout.title}
+            muscle_group={mockWorkout.muscle_group}
             reps={mockWorkout.reps}
             load={mockWorkout.load}
             createdAt={mockWorkout.createdAt}
             updatedAt={mockWorkout.updatedAt}
-            page={0}
-            getItems={() => {}}
-            spreadPages={() => {}}
-            total={1}
-            limit={3}
           />
-        </WorkoutContext.Provider>
-      </AuthContext.Provider>
+      </Provider>
     );
     const openEditWorkoutFormBtn = await screen.findByText(/edit/i);
     await user.click(openEditWorkoutFormBtn);
-    const regExp = new RegExp(`edit ${mockWorkout.title}`)
-    const editWorkoutForm = await screen.findByLabelText(regExp);
+    const editWorkoutFormLabel = new RegExp(`edit ${mockWorkout.title}`)
+    const editWorkoutForm = await screen.findByLabelText(editWorkoutFormLabel);
     expect(editWorkoutForm).toBeInTheDocument()
   });
 });
