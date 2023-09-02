@@ -8,10 +8,11 @@ import { logOutIfTokenExpired } from '../utils/logOutIfTokenExpired';
 import { Chart } from '../components/Chart';
 import { ChartPlaceholder } from '../components/ChartPlaceholder';
 import { WorkoutsPlaceholder } from '../components/WorkoutsPlaceholder';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 export default function Home() {
-    const [addWorkoutForm, setAddWorkoutForm] = React.useState(false);
+    const dispatch = useDispatch();
+    const { showCreateWorkoutForm } = useSelector(state => state.showComponent)
     const { workouts, loading, setWorkoutsError } = useSelector(state => state.workout);
     const page = useSelector(state => state.page);
     const query = useSelector(state => state.query);
@@ -21,10 +22,6 @@ export default function Home() {
     React.useEffect(() => {
       search(query, page);
     }, [query, page]);
-
-   const hideForm = () => {
-       setAddWorkoutForm(false)
-   }
 
    const muscleGroups = React.useMemo(() => allUserWorkoutsMuscleGroups, [allUserWorkoutsMuscleGroups])
 
@@ -62,7 +59,8 @@ export default function Home() {
 
           {workoutsChunk ? <Chart muscleGroups={muscleGroups}/> : <ChartPlaceholder />}
           
-          {!addWorkoutForm && (
+          {showCreateWorkoutForm ?
+            <WorkoutForm /> :
             <button
               aria-label="buff it up"
               className={workoutsChunk && workoutsChunk.length ? 
@@ -73,16 +71,14 @@ export default function Home() {
                             "add--workout is--loading" : "add--workout no--workouts--yet" 
                             )
                          )}
-              onClick={() => setAddWorkoutForm(true)}
+              onClick={() => dispatch({type: "SHOW_CREATE_WORKOUT_FORM"})}
               disabled={loading}
             >
               + Buff It Up
             </button>
-          )}
+          }
 
           {total && <Pagination />}
-          
-          {addWorkoutForm && <WorkoutForm hideForm={hideForm}/>}
 
           <div className="space"></div>
           

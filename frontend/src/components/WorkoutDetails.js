@@ -1,17 +1,13 @@
 import React from 'react';
 import formatDistanceToNow from 'date-fns/formatDistanceToNow';
 import useDeleteWorkout from '../hooks/useDeleteWorkout';
-
+import { useSelector, useDispatch } from 'react-redux';
 const EditWorkout = React.lazy(() => import("../components/EditWorkout"));
 
 export default function WorkoutDetails({id, title, muscle_group, reps, load, createdAt, updatedAt }){
-    const [showEditForm, setShowEditForm] = React.useState(false);
+    const dispatch = useDispatch();
+    const { showEditWorkoutForm } = useSelector(state => state.showComponent);
     const { deleteWorkout } = useDeleteWorkout();
-
-    const showEdit = () => {
-       setShowEditForm(prev => !prev)
-    }
-
     const date = formatDistanceToNow(new Date(createdAt), { addSuffix: true});
 
     return (
@@ -40,12 +36,12 @@ export default function WorkoutDetails({id, title, muscle_group, reps, load, cre
           <button
             aria-label={`open ${title} edit form created ${date}`}
             className="material-symbols-outlined edit"
-            onClick={showEdit}
+            onClick={() => dispatch({type: "SHOW_EDIT_WORKOUT_FORM"})}
           >
             edit
           </button>
         </div>
-        {showEditForm && (
+        {showEditWorkoutForm && (
         <React.Suspense>
           <EditWorkout
             key={id + "edit"}
@@ -56,7 +52,6 @@ export default function WorkoutDetails({id, title, muscle_group, reps, load, cre
             load={load}
             createdAt={createdAt}
             updatedAt={updatedAt}
-            showEdit={showEdit}
           />
         </React.Suspense>  
         )}

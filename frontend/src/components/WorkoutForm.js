@@ -1,9 +1,10 @@
 import React from 'react';
 import { useCreateWorkout } from '../hooks/useCreateWorkout';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useSearch } from '../hooks/useSearch';
 
-export default function WorkoutForm({hideForm}){
+export default function WorkoutForm(){
+  const dispatch = useDispatch();
   const { createWorkout } = useCreateWorkout();
   const { createWorkoutError } = useSelector(state => state.workout);
   const { search } = useSearch();
@@ -37,7 +38,7 @@ export default function WorkoutForm({hideForm}){
     }
 
     if(workout.title && workout.muscle_group && workout.reps && workout.load){
-     hideForm();
+     dispatch({type: "HIDE_COMPONENT"})
      await search("", 0);
      setEmptyFields([]);
     }   
@@ -49,7 +50,7 @@ export default function WorkoutForm({hideForm}){
       <button
         aria-label="close form"
         className="close material-symbols-outlined"
-        onClick={hideForm}
+        onClick={() => dispatch({type: "HIDE_COMPONENT"})}
       >       
         close
       </button>

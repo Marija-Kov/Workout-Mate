@@ -1,9 +1,10 @@
 import React from 'react';
 import useEditWorkout from '../hooks/useEditWorkout';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 
 export default function EditWorkout(props){
+  const dispatch = useDispatch();
   const { editWorkout } = useEditWorkout();
   const { updateWorkoutError } = useSelector(state => state.workout)
   const title = React.useRef();
@@ -11,7 +12,6 @@ export default function EditWorkout(props){
   const reps = React.useRef();
   const load = React.useRef();
 
- const closeEditForm = () => props.showEdit();
  const handleUpdate = async (e) => {  
    const payload = {};
    if (title.current.value && title.current.value.trim().toLowerCase()) {
@@ -27,7 +27,7 @@ export default function EditWorkout(props){
     payload.load = load.current.value;
    }
    e.preventDefault();
-   await editWorkout(props.id, payload, closeEditForm); 
+   await editWorkout(props.id, payload); 
  }
     return (
       <div className="form--container--edit--workout--form">
@@ -42,7 +42,7 @@ export default function EditWorkout(props){
           <button
             aria-label="close form"
             className="close material-symbols-outlined"
-            onClick={() => props.showEdit()}
+            onClick={() => dispatch({type: "HIDE_COMPONENT"})}
           >
             close
           </button>

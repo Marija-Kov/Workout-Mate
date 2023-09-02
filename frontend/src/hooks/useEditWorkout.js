@@ -27,7 +27,7 @@ export default function useEditWorkout() {
          return
        }
        if (response.ok) {
-         closeEdit()
+         dispatch({type: "HIDE_COMPONENT"});
          dispatch({ type: "UPDATE_ONE_SUCCESS", payload: json });
        }
   }
