@@ -7,6 +7,7 @@ const init = {
  confirmAccountError: null,
  loginError: null,
  updateUserError: null,
+ sendPasswordResetLinkError: null,
  resetPasswordError: null,
  deleteUserError: null,
  success: false
@@ -100,6 +101,24 @@ export const userReducer = (state = init, action) => {
           loading: false,
           updateUserError: action.payload,
           success: null
+        };
+      case a.SEND_PASSWORD_RESET_LINK_REQ:
+        return {
+          ...state,
+          loading: true,
+        };
+      case a.SEND_PASSWORD_RESET_LINK_SUCCESS:
+        return {
+          ...state,
+          loading: false,
+          sendPasswordResetLinkError: null,
+          success: action.payload
+        };
+      case a.SEND_PASSWORD_RESET_LINK_FAIL:
+        return {
+          ...state,
+          loading: false,
+          sendPasswordResetLinkError: action.payload
         };
       case a.RESET_PASSWORD_REQ:
         return {

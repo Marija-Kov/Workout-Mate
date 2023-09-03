@@ -1,28 +1,28 @@
 import React from "react";
-import useSendPasswordResetRequest from '../hooks/useSendPasswordResetRequest'
-import { useDispatch } from "react-redux";
+import useSendPasswordResetLink from '../hooks/useSendPasswordResetLink'
+import { useDispatch, useSelector } from "react-redux";
 
 export default function ForgotPasswordForm() {
   const dispatch = useDispatch();
-  const { sendPasswordResetRequest, error, success } =
-    useSendPasswordResetRequest();
+  const { sendPasswordResetLinkError, success } = useSelector(state => state.user);
+  const { sendPasswordResetLink } = useSendPasswordResetLink();
   const email = React.useRef();
 
   const sendEmail = async (e) => {
     e.preventDefault();
-    await sendPasswordResetRequest(email.current.value)
+    await sendPasswordResetLink(email.current.value)
   };
 
   return (
     <div className="form--container--reset--password--request">
       <form aria-label="forgot password form" className="reset--password--request" onSubmit={sendEmail}>
-        <span
+        <button
           aria-label= "close forgot password form"
           className="close material-symbols-outlined"
           onClick={() => dispatch({type: "HIDE_COMPONENT"})}
         >
           close
-        </span>
+        </button>
         <h4>Reset Password</h4>
         <label>Please enter your email address</label>
         <input
@@ -39,9 +39,9 @@ export default function ForgotPasswordForm() {
             {success}
           </div>
         )}
-        {error && (
+        {sendPasswordResetLinkError && (
           <div role="alert" className="error">
-            {error}
+            {sendPasswordResetLinkError}
           </div>
         )}
       </form>
