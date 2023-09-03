@@ -16,14 +16,12 @@ export default function Home() {
     const { workouts, loading, setWorkoutsError } = useSelector(state => state.workout);
     const page = useSelector(state => state.page);
     const query = useSelector(state => state.query);
-    const { total, allUserWorkoutsMuscleGroups, workoutsChunk } = workouts;
+    const { total, workoutsChunk } = workouts;
     const { search } = useSearch();
 
     React.useEffect(() => {
       search(query, page);
     }, [query, page]);
-
-   const muscleGroups = React.useMemo(() => allUserWorkoutsMuscleGroups, [allUserWorkoutsMuscleGroups])
 
     return (
       <div className="home--container" onClick={logOutIfTokenExpired}>
@@ -57,7 +55,7 @@ export default function Home() {
               </h4>}
            </div>
 
-          {workoutsChunk ? <Chart muscleGroups={muscleGroups}/> : <ChartPlaceholder />}
+          {workoutsChunk ? <Chart /> : <ChartPlaceholder />}
           
           {showCreateWorkoutForm ?
             <WorkoutForm /> :
