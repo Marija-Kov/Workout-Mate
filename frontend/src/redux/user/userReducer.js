@@ -7,6 +7,7 @@ const init = {
  confirmAccountError: null,
  loginError: null,
  updateUserError: null,
+ resetPasswordError: null,
  deleteUserError: null,
  success: false
 };
@@ -99,6 +100,24 @@ export const userReducer = (state = init, action) => {
           loading: false,
           updateUserError: action.payload,
           success: null
+        };
+      case a.RESET_PASSWORD_REQ:
+        return {
+          ...state,
+          loading: true,
+        };
+      case a.RESET_PASSWORD_SUCCESS:
+        return {
+          ...state,
+          loading: false,
+          resetPasswordError: null,
+          success: action.payload
+        };
+      case a.RESET_PASSWORD_FAIL:
+        return {
+          ...state,
+          loading: false,
+          resetPasswordError: action.payload
         };
       case a.DELETE_USER_REQ:
         return {

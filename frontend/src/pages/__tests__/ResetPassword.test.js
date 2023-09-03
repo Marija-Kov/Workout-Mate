@@ -5,10 +5,16 @@ import ResetPassword from "../ResetPassword";
 import { server } from "../../mocks/server";
 import { rest } from "msw";
 import { BrowserRouter } from "react-router-dom";
+import { Provider } from "react-redux";
+import store from "../../redux/store";
 
 describe("<ResetPassword />", () => {
-  it("should render the reset password form", () => {
-    render(<ResetPassword />);
+  it("should render reset password form", () => {
+    render(
+     <Provider store={store}>
+       <ResetPassword />
+     </Provider>
+    );
     const newPasswordInput = screen.getByLabelText("new password");
     const confirmPasswordInput = screen.getByLabelText(/confirm/i);
     const saveBtn = screen.getByText(/save/i);
@@ -17,9 +23,13 @@ describe("<ResetPassword />", () => {
     expect(saveBtn).toBeInTheDocument();
   });
 
-  it("should focus form elements in right order", async () => {
+  it("should focus form elements in the right order", async () => {
     user.setup();
-    render(<ResetPassword />);
+    render(
+      <Provider store={store}>
+        <ResetPassword />
+      </Provider>
+     );
     const newPasswordInput = screen.getByLabelText("new password");
     const confirmPasswordInput = screen.getByLabelText(/confirm/i);
     const saveBtn = screen.getByText(/save/i);
@@ -31,9 +41,13 @@ describe("<ResetPassword />", () => {
     expect(saveBtn).toHaveFocus();
   });
 
-  it("should update input value as the user types the text in", async () => {
+  it("should update input value as the user types", async () => {
     user.setup();
-    render(<ResetPassword />);
+    render(
+      <Provider store={store}>
+        <ResetPassword />
+      </Provider>
+     );
     const newPasswordInput = screen.getByLabelText("new password");
     const confirmPasswordInput = screen.getByLabelText(/confirm/i);
     await user.type(newPasswordInput, "abc");
@@ -42,7 +56,7 @@ describe("<ResetPassword />", () => {
     expect(confirmPasswordInput).toHaveValue("def");
   });
 
-  it("should respond with error message if passwords are not matching", async () => {
+  it("should show error message given that passwords are not matching", async () => {
     server.use(
       rest.patch(`${process.env.REACT_APP_API}/api/reset-password/*`, (req, res, ctx) => {
         return res(
@@ -55,9 +69,11 @@ describe("<ResetPassword />", () => {
     );
     user.setup();
     render(
-    <BrowserRouter>
-      <ResetPassword />
-    </BrowserRouter> 
+     <Provider store={store}>
+      <BrowserRouter>
+        <ResetPassword />
+      </BrowserRouter> 
+     </Provider>
     );
     const newPasswordInput = screen.getByLabelText("new password");
     const confirmPasswordInput = screen.getByLabelText(/confirm/i);
@@ -71,7 +87,7 @@ describe("<ResetPassword />", () => {
     expect(error.textContent).toMatch(/must match/i);
   });
 
-  it("should respond with error message if new password is not strong enough", async () => {
+  it("should show error message given that new password is not strong enough", async () => {
     server.use(
       rest.patch(`${process.env.REACT_APP_API}/api/reset-password/*`, (req, res, ctx) => {
         return res(
@@ -84,10 +100,12 @@ describe("<ResetPassword />", () => {
     );
     user.setup();
     render(
-    <BrowserRouter>
-      <ResetPassword />
-    </BrowserRouter> 
-    );
+      <Provider store={store}>
+       <BrowserRouter>
+         <ResetPassword />
+       </BrowserRouter> 
+      </Provider>
+     );
     const newPasswordInput = screen.getByLabelText("new password");
     const confirmPasswordInput = screen.getByLabelText(/confirm/i);
     const saveBtn = screen.getByText(/save/i);
@@ -100,7 +118,7 @@ describe("<ResetPassword />", () => {
     expect(error.textContent).toMatch(/not strong enough/i);
   });
 
-  it("should respond with error message if password reset token has expired", async () => {
+  it("should show error message given that password reset token has expired", async () => {
     server.use(
       rest.patch(`${process.env.REACT_APP_API}/api/reset-password/*`, (req, res, ctx) => {
         return res(
@@ -113,10 +131,12 @@ describe("<ResetPassword />", () => {
     );
     user.setup();
     render(
-    <BrowserRouter>
-      <ResetPassword />
-    </BrowserRouter> 
-    );
+      <Provider store={store}>
+       <BrowserRouter>
+         <ResetPassword />
+       </BrowserRouter> 
+      </Provider>
+     );
     const newPasswordInput = screen.getByLabelText("new password");
     const confirmPasswordInput = screen.getByLabelText(/confirm/i);
     const saveBtn = screen.getByText(/save/i);
@@ -131,13 +151,15 @@ describe("<ResetPassword />", () => {
     expect(resend).toBeInTheDocument();
   });
 
-  it("should respond with success message and render 'log in' link if password was reset successfully", async () => {
+  it("should set success message and render 'log in' link if password was reset successfully", async () => {
     user.setup();
     render(
-    <BrowserRouter>
-      <ResetPassword />
-    </BrowserRouter> 
-    );
+      <Provider store={store}>
+       <BrowserRouter>
+         <ResetPassword />
+       </BrowserRouter> 
+      </Provider>
+     );
     const newPasswordInput = screen.getByLabelText("new password");
     const confirmPasswordInput = screen.getByLabelText(/confirm/i);
     const saveBtn = screen.getByText(/save/i);
@@ -145,7 +167,9 @@ describe("<ResetPassword />", () => {
     await user.type(confirmPasswordInput, "abcABC123!");
     await user.click(saveBtn);
     const success = await screen.findByRole("alert");
+    const loginLink = await screen.findByText(/log in/i);
     await expect(success).toBeInTheDocument();
+    await expect(loginLink).toBeInTheDocument();
     expect(success).toHaveAttribute("class", "success");
     expect(success.textContent).toMatch(/success/i);
   })
