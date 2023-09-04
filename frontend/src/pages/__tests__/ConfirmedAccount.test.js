@@ -2,45 +2,43 @@ import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import { rest } from "msw";
 import ConfirmedAccount from "../ConfirmedAccount";
-import { AuthContextProvider } from "../../context/AuthContext";
 import { server } from "../../mocks/server";
-import { WorkoutContextProvider } from "../../context/WorkoutContext";
+import { Provider } from "react-redux";
+import store from "../../redux/store";
 
 describe("<ConfirmedAccount />", () => {
-    it("should render error message given that confirmation was not successful", async () => {
-     server.use(
+    it("should render success message given that confirmation was successful", async () => {
+      render(
+        <Provider store={store}>
+          <ConfirmedAccount />
+        </Provider> 
+      );
+      const success = await screen.findByRole("alert");
+      expect(success).toBeInTheDocument();
+      expect(success).not.toHaveClass("error");
+      expect(success.textContent).toMatch(/account confirmed/i);
+    });
+
+    it("should render error message given that confirmation token wasn't found or is expired", async () => {
+      server.use(
        rest.get(`${process.env.REACT_APP_API}/api/users/*`, (req, res, ctx) => {
          return res(
            ctx.status(404),
            ctx.json({
-             error: "Expired token or already confirmed",
+             error: "User with provided token not found",
            })
          );
        })
      );
      render(
-      <WorkoutContextProvider>
-       <AuthContextProvider>
+      <Provider store={store}>
          <ConfirmedAccount />
-       </AuthContextProvider>
-      </WorkoutContextProvider> 
+      </Provider> 
      );
      const errorEl = await screen.findByRole("alert");
-     const mayHaveAlreadyBeenConfirmed = await screen.findByText(/already been confirmed/i)
      expect(errorEl).toBeInTheDocument();
      expect(errorEl).toHaveClass("error");
-     expect(mayHaveAlreadyBeenConfirmed).toBeInTheDocument();
+     expect(errorEl.textContent).toMatch(/not found/i)
     });
 
-    it("should render success message given that confirmation was successful", async () => {
-      render(
-       <WorkoutContextProvider>
-        <AuthContextProvider>
-          <ConfirmedAccount />
-        </AuthContextProvider>
-       </WorkoutContextProvider> 
-      );
-      const success = await screen.findByText(/account has been confirmed/i);
-      expect(success).toBeInTheDocument();
-    });
 })
