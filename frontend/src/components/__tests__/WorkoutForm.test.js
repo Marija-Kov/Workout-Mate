@@ -1,6 +1,6 @@
 import WorkoutForm from "../WorkoutForm";
 import user from "@testing-library/user-event";
-import { render, screen } from "@testing-library/react";
+import { render, screen, act } from "@testing-library/react";
 import { rest } from "msw";
 import { server } from "../../mocks/server";
 import { Provider } from "react-redux"
@@ -98,7 +98,7 @@ describe("<WorkoutForm/>", () => {
     expect(loadInput).toHaveValue(22);
   });
 
-  it("should respond with error message when user attempts to submit form with invalid input value(s)", async () => {
+  it("should signal input error when user attempts to submit form with invalid input value(s)", async () => {
     server.use(
       rest.post(`${process.env.REACT_APP_API}/api/workouts`, (req, res, ctx) => {
         return res(
@@ -111,22 +111,36 @@ describe("<WorkoutForm/>", () => {
     );
     user.setup();
     dispatch({type: "LOGIN_SUCCESS", payload: mockUser})
+    dispatch({type: "SET_WORKOUTS", payload: []})
     render(
       <Provider store={store}>
           <WorkoutForm />
       </Provider>
     );
-    
-    const titleInput = await screen.findByLabelText(/workout title/i);
+    let titleInput = await screen.findByLabelText(/workout title/i);
+    let muscleGroupSelect = await screen.findByLabelText(/muscle group/i);
+    let repsInput = await screen.findByLabelText(/number of reps/i);
+    let loadInput = await screen.findByLabelText(/load in kg/i);
     const submitWorkoutBtn = await screen.findByLabelText(
       /submit workout button/i
     );
-    await user.type(titleInput, "arm curls");
+    await user.type(titleInput, "squats");
+    await user.selectOptions(muscleGroupSelect, "");
+    await user.type(repsInput, " ");
+    await user.type(loadInput, "22");
     await user.click(submitWorkoutBtn);
+    titleInput = await screen.findByLabelText(/workout title/i);
+    muscleGroupSelect = await screen.findByLabelText(/muscle group/i);
+    repsInput = await screen.findByLabelText(/number of reps/i);
+    loadInput = await screen.findByLabelText(/load in kg/i);
+    expect(titleInput).not.toHaveAttribute("class", "error");
+    expect(muscleGroupSelect).toHaveAttribute("class", "error");
+    expect(repsInput).toHaveAttribute("class", "error");
+    expect(loadInput).not.toHaveAttribute("class", "error");
     const error = await screen.findByRole("alert");
-    expect(error).toBeInTheDocument();
-    expect(error.textContent).toMatch(/empty fields/i)
-    dispatch({type: "LOGOUT"});
+    expect(error.textContent).toMatch(/please fill out the empty fields/i);
+    expect(error).toHaveAttribute("class", "error");
+    act(() => dispatch({type: "LOGOUT"}));
   });
 
   it("should respond with error message if authentication token expired and user attempts to submit", async () => {
@@ -147,17 +161,21 @@ describe("<WorkoutForm/>", () => {
       </Provider>
     );
     const titleInput = await screen.findByLabelText(/workout title/i);
+    const muscleGroupSelect = await screen.findByLabelText(/muscle group/i);
     const repsInput = await screen.findByLabelText(/number of reps/i);
     const loadInput = await screen.findByLabelText(/load in kg/i);
     const submitWorkoutBtn = await screen.findByLabelText(
       /submit workout button/i
     );
     await user.type(titleInput, "arm curls");
+    await user.selectOptions(muscleGroupSelect, "biceps");
     await user.type(repsInput, "33");
     await user.type(loadInput, "20");
     await user.click(submitWorkoutBtn);
     const error = await screen.findByRole("alert");
     expect(error.textContent).toMatch(/not authorized/i);
+    expect(error).toHaveAttribute("class", "error"); 
+    act(() => dispatch({type: "LOGOUT"}));
   });
 
   it("should not respond with error when user submits form with valid input", async () => {
@@ -169,18 +187,26 @@ describe("<WorkoutForm/>", () => {
       </Provider>
     );
     const titleInput = await screen.findByLabelText(/workout title/i);
+    const muscleGroupSelect = await screen.findByLabelText(/muscle group/i);
     const repsInput = await screen.findByLabelText(/number of reps/i);
     const loadInput = await screen.findByLabelText(/load in kg/i);
     const submitWorkoutBtn = await screen.findByLabelText(
       /submit workout button/i
     );
     await user.type(titleInput, "arm curls");
+    await user.selectOptions(muscleGroupSelect, "biceps");
     await user.type(repsInput, "33");
     await user.type(loadInput, "20");
+    let state = store.getState();
+    expect(state.workout.workouts.total).toBe(0);
     await user.click(submitWorkoutBtn);
     const error = screen.queryAllByRole("alert");
     expect(error.length).toBe(0);
-    dispatch({type: "LOGOUT"});
+    state = store.getState();
+    expect(state.workout.workouts.total).toBe(1);
+    act(() => dispatch({type: "DELETE_ALL_WORKOUTS_SUCCESS"}))
+    act(() => dispatch({type: "SET_ROUTINE_BALANCE", payload: []}))
+    act(() => dispatch({type: "LOGOUT"}));
   })
 
 });

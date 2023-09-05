@@ -1,7 +1,6 @@
 import React from 'react';
 import { useCreateWorkout } from '../hooks/useCreateWorkout';
 import { useDispatch, useSelector } from 'react-redux';
-import { useSearch } from '../hooks/useSearch';
 
 export default function WorkoutForm(){
   const dispatch = useDispatch();
@@ -22,22 +21,18 @@ export default function WorkoutForm(){
       load: load.current.value,
       reps: reps.current.value,
     };
-    if (!workout.title) {
-      setEmptyFields((prev) => ["title", ...prev]);
+
+    for (let key in workout){
+      if(!workout[key]) {
+        setEmptyFields((prev) => [key, ...prev]);
+       }  
     }
-    if (!workout.muscle_group) {
-      setEmptyFields((prev) => ["muscle group", ...prev]);
-    }
-    if (!workout.reps) {
-      setEmptyFields((prev) => ["reps", ...prev]);
-    }
-    if (!workout.load) {
-      setEmptyFields((prev) => ["load", ...prev]);
-    } 
     if(workout.title && workout.muscle_group && workout.reps && workout.load){
-     await createWorkout(workout);
-     setEmptyFields([]);
-    }   
+      await createWorkout(workout);
+      setEmptyFields([]);
+    } else {
+       dispatch({type: "CREATE_WORKOUT_FAIL", payload: "Please fill out the empty fields"})
+    }  
   };
 
   return (
@@ -62,7 +57,7 @@ export default function WorkoutForm(){
         className={emptyFields.includes("title") ? "error" : ""}
       />
       <label htmlFor="muscle_group">muscle group:</label>
-      <select ref={muscle_group} aria-label="muscle group" name="muscle_group" id="muscle_group" className={emptyFields.includes("muscle group") ? "error" : ""}>
+      <select ref={muscle_group} aria-label="muscle group" name="muscle_group" id="muscle_group" className={emptyFields.includes("muscle_group") ? "error" : ""}>
         <option value="">-please select-</option>
         <option value="chest">chest</option>
         <option value="shoulder">shoulder</option>
