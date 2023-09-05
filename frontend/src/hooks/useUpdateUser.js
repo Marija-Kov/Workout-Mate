@@ -13,7 +13,7 @@ export const useUpdateUser = () => {
      }
         if (!profileImg) profileImg = user.profileImg;
         if (!username) username = user.username;
-        if (username.length > 12) { 
+        if (username && username.length > 12) { 
             dispatch({type: "UPDATE_USER_FAIL", payload: "Invalid input"})
             return
         }
@@ -38,11 +38,11 @@ export const useUpdateUser = () => {
         dispatch({type: "UPDATE_USER_FAIL", payload: json.error})
       }
       if (response.ok) {
-        if(json.profileImg){
-         localStorage.setItem("newImg", json.profileImg); 
+        if(json.user.profileImg){
+         localStorage.setItem("newImg", json.user.profileImg); 
         }
-        if(json.username) {
-          localStorage.setItem("username", json.username); 
+        if(json.user.username) {
+          localStorage.setItem("username", json.user.username); 
         }
         dispatch({type: "UPDATE_USER_SUCCESS", payload: { user: json.user, success: json.success }});
       }

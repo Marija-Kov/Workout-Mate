@@ -1,4 +1,4 @@
-import React from 'react';
+import { useEffect, useState } from 'react';
 import {Link} from 'react-router-dom';
 import { logOutIfTokenExpired } from '../utils/logOutIfTokenExpired';
 import UserMenu from './UserMenu'
@@ -8,9 +8,9 @@ import { useSelector, useDispatch } from 'react-redux';
 export default function Navbar(){
   const dispatch = useDispatch();
   const { user } = useSelector(state => state.user);
-  const [username, setUsername] = React.useState('who are you?');
-  const [profileImg, setProfileImg] = React.useState(
   const { showUserMenu, showUserSettingsForm } = useSelector(state => state.showComponent);
+  const [username, setUsername] = useState('who are you?');
+  const [profileImg, setProfileImg] = useState(
     require("../assets/default-avatar.png")
   );
 
@@ -18,15 +18,15 @@ export default function Navbar(){
     setProfileImg(img)
   }
 
-React.useEffect(() => {
+ useEffect(() => {
   if (user) {
-    if(!user.username){
+    const username = localStorage.getItem("username");
+    if(!user.username && !username){
      const i = user.email.indexOf("@");
      setUsername(`${user.email.slice(0, i)}`); 
     } else {
-     const username = localStorage.getItem("username"); 
-     if(user.username && !username) setUsername(user.username);
      if(username) setUsername(username);
+     if(user.username && !username) setUsername(user.username); 
     }
     const newImg = localStorage.getItem('newImg');  
     if(user.profileImg && !newImg) setProfileImg(user.profileImg);
