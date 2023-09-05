@@ -2,14 +2,15 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import { logOutIfTokenExpired } from '../utils/logOutIfTokenExpired';
 import UserMenu from './UserMenu'
+import UserSettings from "./UserSettings";
 import { useSelector, useDispatch } from 'react-redux';
 
 export default function Navbar(){
   const dispatch = useDispatch();
   const { user } = useSelector(state => state.user);
-  const { showUserMenu } = useSelector(state => state.showComponent);
   const [username, setUsername] = React.useState('who are you?');
   const [profileImg, setProfileImg] = React.useState(
+  const { showUserMenu, showUserSettingsForm } = useSelector(state => state.showComponent);
     require("../assets/default-avatar.png")
   );
 
@@ -44,7 +45,7 @@ React.useEffect(() => {
               <button
                 aria-label="open user menu"
                 className="hello--user"
-                onClick={() => showUserMenu ? dispatch({type: "HIDE_COMPONENT"}) : dispatch({type: "SHOW_USER_MENU"})}
+                onClick={() => dispatch({type: "SHOW_USER_MENU"})}
               >
                 <span>
                   Hello, <strong>{username}</strong>
@@ -79,6 +80,7 @@ React.useEffect(() => {
               changeProfileImg={changeProfileImg}
             />
           )}
+          {showUserSettingsForm && <UserSettings changeProfileImg={changeProfileImg} /> }
         </div>
       </header>
     );

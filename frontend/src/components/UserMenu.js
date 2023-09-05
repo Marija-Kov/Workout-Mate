@@ -25,11 +25,7 @@ export default function UserMenu(props) {
         </button>
       </div>
 
-      {showUserSettingsForm && (
-        <UserSettings
-          changeProfileImg={props.changeProfileImg}
-        />
-      )}
+      {showUserSettingsForm && <UserSettings changeProfileImg={props.changeProfileImg} /> }
     </>
   );
 }

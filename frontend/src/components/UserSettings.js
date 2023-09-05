@@ -73,7 +73,7 @@ export default function UserSettings({changeProfileImg}) {
         <button
           aria-label="close form"
           className="close material-symbols-outlined"
-          onClick={() => dispatch({type: "HIDE_COMPONENT"})}
+          onClick={() => dispatch({type: "SHOW_USER_SETTINGS_FORM"})}
         >
           close
         </button>
@@ -134,7 +134,7 @@ export default function UserSettings({changeProfileImg}) {
             <button aria-label="confirm account deletion" type="button" onClick={deleteAccount}>
               Yes, delete my account permanently 💀
             </button>
-            <button aria-label="keep account and close dialogue" type="button" onClick={() => dispatch({type: "HIDE_COMPONENT"})}>
+            <button aria-label="keep account and close dialogue" type="button" onClick={() => dispatch({type: "SHOW_DELETE_ACCOUNT_DIALOGUE"})}>
               No, I changed my mind
             </button>
           </div>
