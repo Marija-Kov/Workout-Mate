@@ -7,7 +7,6 @@ export default function WorkoutForm(){
   const dispatch = useDispatch();
   const { createWorkout } = useCreateWorkout();
   const { createWorkoutError } = useSelector(state => state.workout);
-  const { search } = useSearch();
   const title = React.useRef();
   const muscle_group = React.useRef();
   const load = React.useRef();
@@ -37,7 +36,6 @@ export default function WorkoutForm(){
     } 
     if(workout.title && workout.muscle_group && workout.reps && workout.load){
      await createWorkout(workout);
-     //await search("", 0);
      setEmptyFields([]);
     }   
   };

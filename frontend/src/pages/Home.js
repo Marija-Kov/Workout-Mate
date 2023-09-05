@@ -14,6 +14,7 @@ export default function Home() {
     const dispatch = useDispatch();
     const { showCreateWorkoutForm } = useSelector(state => state.showComponent)
     const { workouts, loading, setWorkoutsError } = useSelector(state => state.workout);
+    const { allUserWorkoutsMuscleGroups } = workouts;
     const page = useSelector(state => state.page);
     const query = useSelector(state => state.query);
     const { total, workoutsChunk } = workouts;
@@ -34,7 +35,7 @@ export default function Home() {
             )}
 
           <div aria-label="workouts" className="workouts--container">
-            {workoutsChunk ?
+            {total ?
               workoutsChunk.map((workout) => (
                 <WorkoutDetails
                   key={workout._id}
@@ -46,16 +47,19 @@ export default function Home() {
                   createdAt={workout.createdAt}
                   updatedAt={workout.updatedAt}
                 />
-              )) : <WorkoutsPlaceholder />}
-
-             {workoutsChunk && !workoutsChunk.length && !loading && 
-              <h4 className="get--started">
-                {!workoutsChunk && !query && <>Buff it up to get started.<br></br>No pressure <span>🥤</span></>} 
-                {query && <>No "{query}" workouts found.</>} 
-              </h4>}
+              )) : (
+                loading ?
+                <WorkoutsPlaceholder /> : 
+                <h4 className="get--started">
+                  { query ? 
+                   <>No "{query}" workouts found.</> :
+                   <>Buff it up to get started.<br></br>No pressure <span>🥤</span></> // TODO: This message shouldn't flash when query length decreases and hits 0, right before search function runs.
+                  }
+              </h4>
+              )}
            </div>
-
-          {workoutsChunk ? <Chart /> : <ChartPlaceholder />}
+           
+          {allUserWorkoutsMuscleGroups && allUserWorkoutsMuscleGroups.length ? <Chart /> : <ChartPlaceholder />}
           
           {showCreateWorkoutForm ?
             <WorkoutForm /> :
@@ -76,7 +80,7 @@ export default function Home() {
             </button>
           }
 
-          {total && <Pagination />}
+          {total ? <Pagination /> : ""}
 
           <div className="space"></div>
           
