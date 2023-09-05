@@ -13,59 +13,45 @@ export const showComponentReducer = (state = init, action) => {
     switch (action.type) {
         case a.SHOW_CREATE_WORKOUT_FORM:
             return {
-                showCreateWorkoutForm: true,
+                ...state,
+                showCreateWorkoutForm: !state.showCreateWorkoutForm,
                 showEditWorkoutForm: false,
-                showForgotPasswordForm: false,
                 showUserMenu: false,
                 showUserSettingsForm: false,
                 showDeleteAccountDialogue: false  
             };
         case a.SHOW_EDIT_WORKOUT_FORM:
             return {
+                ...state,
+                showEditWorkoutForm: !state.showEditWorkoutForm,
                 showCreateWorkoutForm: false,
-                showEditWorkoutForm: true,
-                showForgotPasswordForm: false,
                 showUserMenu: false,
                 showUserSettingsForm: false,
                 showDeleteAccountDialogue: false  
             };
         case a.SHOW_FORGOT_PASSWORD_FORM:
             return {
-                showCreateWorkoutForm: false,
-                showEditWorkoutForm: false,
-                showForgotPasswordForm: true,
-                showUserMenu: false,
-                showUserSettingsForm: false,
-                showDeleteAccountDialogue: false  
+                ...state,
+                showForgotPasswordForm: !state.showForgotPasswordForm,
             };
         case a.SHOW_USER_MENU:
             return {
                 showCreateWorkoutForm: false,
                 showEditWorkoutForm: false,
-                showForgotPasswordForm: false,
-                showUserMenu: true,
-                showUserSettingsForm: false,
-                showDeleteAccountDialogue: false  
+                showUserMenu: !state.showUserMenu,
             };
         case a.SHOW_USER_SETTINGS_FORM:
             return {
-                showCreateWorkoutForm: false,
-                showEditWorkoutForm: false,
-                showForgotPasswordForm: false,
+                ...state,
                 showUserMenu: false,
-                showUserSettingsForm: true,
-                showDeleteAccountDialogue: false  
+                showUserSettingsForm: !state.showUserSettingsForm,
             };
         case a.SHOW_DELETE_ACCOUNT_DIALOGUE:
             return {
-                showCreateWorkoutForm: false,
-                showEditWorkoutForm: false,
-                showForgotPasswordForm: false,
-                showUserMenu: false,
-                showUserSettingsForm: false,
-                showDeleteAccountDialogue: true  
+                ...state,
+                showDeleteAccountDialogue: !state.showDeleteAccountDialogue  
             };
-        case a.HIDE_COMPONENT:
+        case a.HIDE_ALL_COMPONENTS:
             return {
                 showCreateWorkoutForm: false,
                 showEditWorkoutForm: false,

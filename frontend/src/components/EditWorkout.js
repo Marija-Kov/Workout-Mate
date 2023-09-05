@@ -42,7 +42,7 @@ export default function EditWorkout(props){
           <button
             aria-label="close form"
             className="close material-symbols-outlined"
-            onClick={() => dispatch({type: "HIDE_COMPONENT"})}
+            onClick={() => dispatch({type: "SHOW_EDIT_WORKOUT_FORM"})}
           >
             close
           </button>
