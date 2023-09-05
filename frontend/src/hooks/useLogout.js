@@ -15,7 +15,7 @@ export const useLogout = () => {
      }
      dispatch({type: 'LOGOUT'})
      dispatch({type: 'SET_WORKOUTS_SUCCESS', payload: []});
-     dispatch({type: "HIDE_COMPONENT"});
+     dispatch({type: "HIDE_ALL_COMPONENTS"});
 
     return "You have been logged out"
  }
