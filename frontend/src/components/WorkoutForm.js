@@ -23,7 +23,6 @@ export default function WorkoutForm(){
       load: load.current.value,
       reps: reps.current.value,
     };
-    await createWorkout(workout);
     if (!workout.title) {
       setEmptyFields((prev) => ["title", ...prev]);
     }
@@ -35,11 +34,10 @@ export default function WorkoutForm(){
     }
     if (!workout.load) {
       setEmptyFields((prev) => ["load", ...prev]);
-    }
-
+    } 
     if(workout.title && workout.muscle_group && workout.reps && workout.load){
-     dispatch({type: "HIDE_COMPONENT"})
-     await search("", 0);
+     await createWorkout(workout);
+     //await search("", 0);
      setEmptyFields([]);
     }   
   };
@@ -50,7 +48,7 @@ export default function WorkoutForm(){
       <button
         aria-label="close form"
         className="close material-symbols-outlined"
-        onClick={() => dispatch({type: "HIDE_COMPONENT"})}
+        onClick={() => dispatch({type: "SHOW_CREATE_WORKOUT_FORM"})}
       >       
         close
       </button>

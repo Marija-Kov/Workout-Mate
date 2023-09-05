@@ -10,6 +10,7 @@ export const useCreateWorkout = () => {
        dispatch({type: "CREATE_WORKOUT_FAIL", payload: "Not authorized"})
        return;
      }
+
      const response = await fetch(`${process.env.REACT_APP_API}/api/workouts`, {
        method: "POST",
        body: JSON.stringify(workout),
@@ -27,7 +28,8 @@ export const useCreateWorkout = () => {
 
      if (response.ok) {
        dispatch({ type: "CREATE_WORKOUT_SUCCESS", payload: json });
-       dispatch({type: "GO_TO_PAGE_NUMBER", payload: 0})
+       dispatch({type: "GO_TO_PAGE_NUMBER", payload: 0});
+       dispatch({type: "SHOW_CREATE_WORKOUT_FORM"});
      }
     }
 
