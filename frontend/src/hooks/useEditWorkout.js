@@ -3,8 +3,9 @@ import { useSelector, useDispatch } from 'react-redux';
 export default function useEditWorkout() {
   const dispatch = useDispatch();
   const { user } =  useSelector(state => state.user)
-
-  const editWorkout = async (id, payload, closeEdit) => {
+  const { workouts } = useSelector(state => state.workout);
+  const { allUserWorkoutsMuscleGroups } = workouts;
+  const editWorkout = async (id, payload) => {
     dispatch({type: "UPDATE_ONE_REQ"}) 
     if (!user) {
        dispatch({type: "UPDATE_ONE_FAIL", payload: "You must be logged in"})
@@ -27,8 +28,9 @@ export default function useEditWorkout() {
          return
        }
        if (response.ok) {
-         dispatch({type: "HIDE_COMPONENT"});
          dispatch({ type: "UPDATE_ONE_SUCCESS", payload: json });
+         if(payload.muscle_group) dispatch({type: "SET_ROUTINE_BALANCE", payload: allUserWorkoutsMuscleGroups})
+         dispatch({type: "SHOW_EDIT_WORKOUT_FORM"});
        }
   }
 
