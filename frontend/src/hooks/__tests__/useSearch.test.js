@@ -77,7 +77,7 @@ describe("useSearch()", () => {
     expect(state.workout.setWorkoutsError).toBeTruthy();
     expect(state.workout.setWorkoutsError).toMatch(/something went wrong/i);
     dispatch({type: "DELETE_ALL_WORKOUTS_SUCCESS", payload: "success"});
-    dispatch({type: "LOGOUT"});
+    act(() => dispatch({type: "LOGOUT"}));
   });
 
   it("should update workout state with search result workouts given that user is authorized", async () => {
@@ -124,6 +124,6 @@ describe("useSearch()", () => {
     state = store.getState();
     expect(state.workout.workouts.workoutsChunk[0].title).toBe(mockWorkouts[0].title);
     dispatch({type: "DELETE_ALL_WORKOUTS_SUCCESS", payload: "success"});
-    dispatch({type: "LOGOUT"});
+    act(() => dispatch({type: "LOGOUT"}));
   });
 });
