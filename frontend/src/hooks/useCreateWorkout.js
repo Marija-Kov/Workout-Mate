@@ -2,7 +2,9 @@ import { useSelector, useDispatch } from 'react-redux';
 
 export const useCreateWorkout = () => { 
    const dispatch = useDispatch();
-   const { user } =  useSelector(state => state.user)
+   const { user } =  useSelector(state => state.user);
+   const { workouts } = useSelector(state => state.workout)
+   const { allUserWorkoutsMuscleGroups } = workouts;
   
    const createWorkout = async (workout) => {
       dispatch({type: "CREATE_WORKOUT_REQ"})
@@ -29,6 +31,7 @@ export const useCreateWorkout = () => {
      if (response.ok) {
        dispatch({ type: "CREATE_WORKOUT_SUCCESS", payload: json });
        dispatch({type: "GO_TO_PAGE_NUMBER", payload: 0});
+       dispatch({type: "SET_ROUTINE_BALANCE", payload: [workout.muscle_group, ...allUserWorkoutsMuscleGroups]})
        dispatch({type: "SHOW_CREATE_WORKOUT_FORM"});
      }
     }

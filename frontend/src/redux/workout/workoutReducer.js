@@ -37,6 +37,7 @@ export const workoutReducer = (state = init, action) => {
             return {
                 workouts: {...state.workouts, 
                            workoutsChunk: [action.payload, ...state.workouts.workoutsChunk], 
+                           allUserWorkoutsMuscleGroups:[action.payload.muscle_group, ...state.workouts.allUserWorkoutsMuscleGroups],
                            pageSpread: pageSpreadHelper(state.workouts.total, state.workouts.limit),
                            page: 0},
                 loading: false,
