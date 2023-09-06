@@ -64,8 +64,8 @@ describe("useCreateWorkout()", () => {
     state = store.getState();
     expect(state.workout.workouts.total).toBe(1);
     expect(state.workout.workouts.workoutsChunk[0].title).toMatch(mockWorkout.title);
-    dispatch({type: "DELETE_ALL_WORKOUTS_SUCCESS", payload: "success"});
-    dispatch({type: "LOGOUT"});
+    act(() => dispatch({type: "DELETE_ALL_WORKOUTS_SUCCESS", payload: "success"}));
+    act(() => dispatch({type: "LOGOUT"}));
   });
 
   it("should set createWorkoutError message given that request wasn't authorized", async () => {
@@ -97,7 +97,7 @@ describe("useCreateWorkout()", () => {
     state = store.getState();
     expect(state.workout.createWorkoutError).toBeTruthy();
     expect(state.workout.createWorkoutError).toMatch(/empty fields/i);
-    dispatch({type: "DELETE_ALL_WORKOUTS_SUCCESS", payload: "success"});
-    dispatch({type: "LOGOUT"});
+    act(() => dispatch({type: "DELETE_ALL_WORKOUTS_SUCCESS", payload: "success"}));
+    act(() => dispatch({type: "LOGOUT"}));
   });
 });

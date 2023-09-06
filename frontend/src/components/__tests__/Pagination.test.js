@@ -1,5 +1,5 @@
 import React from "react";
-import { render, screen, cleanup } from "@testing-library/react";
+import { render, screen, act } from "@testing-library/react";
 import user from "@testing-library/user-event";
 import Pagination from "../Pagination";
 import { genSampleWorkouts } from "../../utils/test/genSampleWorkouts";
@@ -22,10 +22,6 @@ beforeAll(() => {
   };
   dispatch({type: "LOGIN_SUCCESS", payload: mockUser})
   mockWorkouts = genSampleWorkouts();
-});
-
-afterEach(() => {
-  cleanup();
 });
 
 afterAll(() => {
@@ -85,7 +81,7 @@ describe("<Pagination />", () => {
     expect(page3).toHaveFocus();   
     await user.tab()
     expect(next).toHaveFocus();
-    dispatch({type: "GO_TO_PAGE_NUMBER", payload: 0}) // this "resets" the state so that it doesn't mess with tests that run after  
+    act(() => dispatch({type: "GO_TO_PAGE_NUMBER", payload: 0}))
   });
 
   it("should highlight corresponding page when pages are changed back and forth clicking on 'next' and 'previous' buttons", async () => {
@@ -128,7 +124,7 @@ describe("<Pagination />", () => {
     expect(page2).toHaveAttribute("class", "num--page current");
     expect(page3).toHaveAttribute("class", "num--page");
     expect(next).not.toHaveAttribute("disabled");
-    dispatch({type: "GO_TO_PAGE_NUMBER", payload: 0})
+    act(() => dispatch({type: "GO_TO_PAGE_NUMBER", payload: 0}))
   });
 
   it("should highlight page number p when it is clicked", async () => {
@@ -149,6 +145,6 @@ describe("<Pagination />", () => {
     expect(page1).toHaveAttribute("class", "num--page");
     expect(page2).toHaveAttribute("class", "num--page");
     expect(page3).toHaveAttribute("class", "num--page current");
-    dispatch({type: "GO_TO_PAGE_NUMBER", payload: 0})
+    act(() => dispatch({type: "GO_TO_PAGE_NUMBER", payload: 0}))
   });
 });

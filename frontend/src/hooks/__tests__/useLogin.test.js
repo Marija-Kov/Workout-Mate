@@ -26,8 +26,7 @@ afterAll(() => {
 
 describe("useLogin()", () => {
   it("should return login function", () => {
-    const { result, props } = renderHook(useLogin, { wrapper });
-    console.log(props)
+    const { result } = renderHook(useLogin, { wrapper });
     expect(result.current.login).toBeTruthy();
     expect(typeof result.current.login).toBe("function");
   });

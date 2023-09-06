@@ -77,8 +77,8 @@ describe("useEditWorkout()", () => {
         state = store.getState()
         expect(state.workout.updateWorkoutError).toBeFalsy();
         expect(state.workout.workouts.workoutsChunk[0].title).toMatch(mockUpdate.title);
-        dispatch({type: "DELETE_ALL_WORKOUTS_SUCCESS", payload: "success"});
-        dispatch({type: "LOGOUT"})
+        act(() => dispatch({type: "DELETE_ALL_WORKOUTS_SUCCESS", payload: "success"}));
+        act(() => dispatch({type: "LOGOUT"}))
       });
   
   it("should set updateWorkoutError message given that request wasn't authorized", async () => {
@@ -95,7 +95,7 @@ describe("useEditWorkout()", () => {
     dispatch({type: "CREATE_WORKOUT_SUCCESS", payload: mockWorkout});
     let state = store.getState()
     expect(state.workout.workouts.workoutsChunk[0].title).toMatch(mockWorkout.title);
-    dispatch({type: "LOGOUT"});
+    act(() => dispatch({type: "LOGOUT"}));
     const closeEdit = () => {};
     const { result } = renderHook(useEditWorkout, { wrapper });
     await act(() =>
@@ -109,7 +109,7 @@ describe("useEditWorkout()", () => {
     expect(state.workout.workouts.workoutsChunk[0].title).toMatch(mockWorkout.title);
     expect(state.workout.updateWorkoutError).toBeTruthy();
     expect(state.workout.updateWorkoutError).toMatch(/you must be logged in/i);
-    dispatch({type: "DELETE_ALL_WORKOUTS_SUCCESS", payload: "All workouts deleted successfully"});
+    act(() => dispatch({type: "DELETE_ALL_WORKOUTS_SUCCESS", payload: "All workouts deleted successfully"}));
   });
 
 });

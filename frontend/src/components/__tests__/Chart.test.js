@@ -1,5 +1,5 @@
 import React from "react";
-import { render, screen, cleanup } from "@testing-library/react"; 
+import { render, screen, act } from "@testing-library/react"; 
 import { Chart } from "../Chart";
 import { Provider } from "react-redux";
 import store from "../../redux/store";
@@ -10,10 +10,6 @@ let dispatch;
 
 beforeAll(() => {
  dispatch = store.dispatch;
-});
-
-afterEach(() => {
-  cleanup();
 });
 
 afterAll(() => {
@@ -28,7 +24,7 @@ describe("<Chart />", () => {
              <Chart/>
            </Provider>
          )
-        dispatch({type: "SET_ROUTINE_BALANCE", payload: muscleGroups})
+        act(() => dispatch({type: "SET_ROUTINE_BALANCE", payload: muscleGroups}))
         const doughnut = await screen.findByLabelText("routine balance chart");
         const legend = await screen.findByLabelText("chart legend");
         const hasChestMuscleGroupWorkouts = await screen.findByLabelText(/12.5% chest/i);
@@ -47,6 +43,6 @@ describe("<Chart />", () => {
         expect(hasTricepsMuscleGroupWorkouts).toBeInTheDocument();
         expect(hasGluteMuscleGroupWorkouts).toBeInTheDocument();
         expect(hasNotBackMuscleGroupWorkouts).toBeInTheDocument();
-        dispatch({type: "SET_ROUTINE_BALANCE", payload: []})
+        act(() => dispatch({type: "SET_ROUTINE_BALANCE", payload: []}))
     })
 })

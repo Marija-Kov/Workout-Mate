@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, act } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import user from "@testing-library/user-event";
 import Navbar from "../Navbar";
@@ -79,7 +79,7 @@ describe("<Navbar />", ()=>{
       await user.tab();
       expect(helloUser).toBeInTheDocument();
       expect(helloUser).toHaveFocus();
-      dispatch({type: "LOGOUT"})
+      act(() => dispatch({type: "LOGOUT"}))
     });
     
     it("should render User menu once user clicks on avatar", async () => {
@@ -98,7 +98,7 @@ describe("<Navbar />", ()=>{
       const logOut = await screen.findByLabelText(/log out/i);
       expect(openUserSettings).toBeInTheDocument();
       expect(logOut).toBeInTheDocument();
-      dispatch({type: "LOGOUT"});
+      act(() => dispatch({type: "LOGOUT"}));
     });
 
 })

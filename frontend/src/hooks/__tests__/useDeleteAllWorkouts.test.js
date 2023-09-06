@@ -60,7 +60,7 @@ describe("useDeleteAllWorkouts()", () => {
   });
 
   it("should delete all workouts given that deleteAllWorkouts was run with authorization", async () => {
-    dispatch({type: "LOGIN_SUCCESS", payload: mockUser})
+    act(() => dispatch({type: "LOGIN_SUCCESS", payload: mockUser}))
     for(let i = 0; i < mockWorkouts.length; ++i){
      dispatch({type: "CREATE_WORKOUT_SUCCESS", payload: mockWorkouts[i]}); 
     }  
@@ -72,28 +72,28 @@ describe("useDeleteAllWorkouts()", () => {
     expect(state.workout.workouts.total).toBe(0);
     expect(state.workout.deleteAllWorkoutsSuccess).toBeTruthy();
     expect(state.workout.deleteAllWorkoutsError).toBeFalsy();
-    dispatch({type: "LOGOUT"});
+    act(() => dispatch({type: "LOGOUT"}));
   });
 
     it("should set deleteAllWorkoutsError message given that deleteAllWorkouts was run without authorization", async () => {
-      dispatch({type: "LOGIN_SUCCESS", payload: mockUser})
+      act(() => dispatch({type: "LOGIN_SUCCESS", payload: mockUser}))
       for(let i = 0; i < mockWorkouts.length; ++i){
        dispatch({type: "CREATE_WORKOUT_SUCCESS", payload: mockWorkouts[i]}); 
       }  
       let state = store.getState();
       expect(state.workout.workouts.total).toBe(2);
-      dispatch({type: "LOGOUT"});
+      act(() => dispatch({type: "LOGOUT"}));
       const { result } = renderHook(useDeleteAllWorkouts, { wrapper });
       await act(() => result.current.deleteAllWorkouts());
       state = store.getState();
       expect(state.workout.deleteAllWorkoutsSuccess).toBeFalsy();
       expect(state.workout.deleteAllWorkoutsError).toBeTruthy();
       expect(state.workout.deleteAllWorkoutsError).toMatch(/not authorized/i);
-      dispatch({type: "LOGIN_SUCCESS", payload: mockUser})
+      act(() => dispatch({type: "LOGIN_SUCCESS", payload: mockUser}))
       state = store.getState();
       expect(state.workout.workouts.total).toBe(2);
       dispatch({type:"DELETE_ALL_WORKOUTS_SUCCESS", payload: "All workouts deleted successfully"})
-      dispatch({type: "LOGOUT"});
+      act(() => dispatch({type: "LOGOUT"}));
     });
 
     it("should set deleteAllWorkoutsError deleteAllWorkouts was not successful", async () => {
@@ -104,7 +104,7 @@ describe("useDeleteAllWorkouts()", () => {
           );
         })
       );
-      dispatch({type: "LOGIN_SUCCESS", payload: mockUser})
+      act(() => dispatch({type: "LOGIN_SUCCESS", payload: mockUser}))
       for(let i = 0; i < mockWorkouts.length; ++i){
        dispatch({type: "CREATE_WORKOUT_SUCCESS", payload: mockWorkouts[i]}); 
       }  
@@ -117,7 +117,7 @@ describe("useDeleteAllWorkouts()", () => {
       expect(state.workout.deleteAllWorkoutsError).toBeTruthy();
       expect(state.workout.workouts.total).toBe(2);
       dispatch({type:"DELETE_ALL_WORKOUTS_SUCCESS", payload: "All workouts deleted successfully"});
-      dispatch({type: "LOGOUT"});
+      act(() => dispatch({type: "LOGOUT"}));
     });
 
 });

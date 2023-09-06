@@ -85,8 +85,8 @@ describe("useDeleteWorkout()", () => {
     state = store.getState();
     expect(state.workout.workouts.total).toBe(1);
     expect(state.workout.workouts.workoutsChunk[0]._id).toBe(mockWorkouts[0]._id);
-    dispatch({type: "DELETE_ALL_WORKOUTS_SUCCESS", payload: "success"});
-    dispatch({type: "LOGOUT"})
+    act(() => dispatch({type: "DELETE_ALL_WORKOUTS_SUCCESS", payload: "success"}));
+    act(() => dispatch({type: "LOGOUT"}))
   });
 
   it("should set deleteWorkoutError message given that deleteWorkout was run without authorization", async () => {
@@ -116,9 +116,9 @@ describe("useDeleteWorkout()", () => {
     state = store.getState();
     expect(state.workout.deleteWorkoutError).toBeTruthy();
     expect(state.workout.deleteWorkoutError).toMatch(/not authorized/i);
-    dispatch({type: "LOGIN_SUCCESS", payload: mockUser})
-    dispatch({type: "DELETE_ALL_WORKOUTS_SUCCESS", payload: "success"});
-    dispatch({type: "LOGOUT"})
+    act(() => dispatch({type: "LOGIN_SUCCESS", payload: mockUser}))
+    act(() => dispatch({type: "DELETE_ALL_WORKOUTS_SUCCESS", payload: "success"}));
+    act(() => dispatch({type: "LOGOUT"}))
   });
 
   it("should set deleteWorkoutError message given that deleteWorkout was run with invalid workout id", async () => {
@@ -144,8 +144,8 @@ describe("useDeleteWorkout()", () => {
     expect(state.workout.workouts.total).toBe(2);
     expect(state.workout.deleteWorkoutError).toBeTruthy();
     expect(state.workout.deleteWorkoutError).toMatch(/invalid workout id/i);
-    dispatch({type: "DELETE_ALL_WORKOUTS_SUCCESS", payload: "success"});
-    dispatch({type: "LOGOUT"})
+    act(() => dispatch({type: "DELETE_ALL_WORKOUTS_SUCCESS", payload: "success"}));
+    act(() => dispatch({type: "LOGOUT"}))
   });
 
 })

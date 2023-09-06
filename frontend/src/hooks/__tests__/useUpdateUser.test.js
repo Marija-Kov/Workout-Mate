@@ -64,7 +64,7 @@ describe("useUpdateUser()", () => {
     expect(state.user.user.username).toBe(mockUser.username);
     expect(state.user.updateUserError).toBeTruthy();
     expect(state.user.updateUserError).toMatch(/invalid input/i);
-    dispatch({type: "LOGOUT"});
+    act(() => dispatch({type: "LOGOUT"}));
   });
 
   it("should run updateUser, set success state to 'true', error state to 'false' given that user is authorized and input is valid", async () => {
@@ -101,6 +101,6 @@ describe("useUpdateUser()", () => {
     expect(state.user.success).toBeTruthy();
     expect(state.user.updateUserError).toBeFalsy();
     expect(state.user.success).toMatch(/profile updated/i);
-    dispatch({type: "LOGOUT"});
+    act(() => dispatch({type: "LOGOUT"}));
   });
 });

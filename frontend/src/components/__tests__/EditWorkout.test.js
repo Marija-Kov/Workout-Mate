@@ -1,7 +1,7 @@
 import React from "react";
 import EditWorkout from "../EditWorkout";
 import user from "@testing-library/user-event";
-import { render, screen } from "@testing-library/react"; 
+import { render, screen, act } from "@testing-library/react"; 
 import { rest } from "msw";
 import { server } from "../../mocks/server";
 import { Provider } from "react-redux";
@@ -111,8 +111,8 @@ describe("<EditWorkout/>", () => {
     await user.click(submitEditedWorkoutBtn);
     const error = screen.queryAllByRole("alert");
     expect(error.length).toEqual(0);
-    dispatch({type: "LOGOUT"});
-    dispatch({type: "SET_WORKOUTS_SUCCESS", payload: []})
+    act(() => dispatch({type: "SET_WORKOUTS_SUCCESS", payload: []}))
+    act(() => dispatch({type: "LOGOUT"}));
   });
 
   it("should respond with error message if authentication token expired and user attempts to submit", async () => {
