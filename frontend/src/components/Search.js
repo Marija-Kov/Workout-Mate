@@ -13,6 +13,15 @@ export default function Search() {
     await search(query, page);
   };
 
+  const handleChange = (e) => {
+    if(!loading){
+      dispatch({type: "SET_QUERY", payload: e.target.value});
+      dispatch({type: "GO_TO_PAGE_NUMBER", payload: 0})  
+    } else {
+      return
+    }
+  }
+
   return (
     <form aria-label="search bar" className={loading ? "search--bar is--loading" : "search--bar"} onSubmit={handleSearch}>
       <input
@@ -20,11 +29,7 @@ export default function Search() {
         type="search"
         placeholder="search workouts..."
         value={query}
-        onChange={(e) => {
-          dispatch({type: "SET_QUERY", payload: e.target.value});
-          dispatch({type: "GO_TO_PAGE_NUMBER", payload: 0})
-       }}
-        disabled={loading}
+        onChange={handleChange}
       ></input>
       <button aria-label="search button" disabled={loading}>
         <span className="material-symbols-outlined">search</span>

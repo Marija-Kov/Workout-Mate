@@ -5,8 +5,7 @@ export const useSearch = () => {
     const dispatch = useDispatch();
     
     const search = async (query, page) => {
-      // TODO: how to dispatch and keep focus in input ?
-       // dispatch({type: "SET_WORKOUTS_REQ"});
+       dispatch({type: "SET_WORKOUTS_REQ"});
       if(!user) {
        dispatch({type: "SET_WORKOUTS_FAIL", payload: "Not authorized"});
         return
