@@ -55,7 +55,7 @@ describe("<Search />", () => {
       act(() => dispatch({type: "SET_WORKOUTS_SUCCESS", payload: []}))
     });
 
-    it("should update input value as user types", async () => {
+    it("should update input value as user types and go to the first page of search results", async () => {
       user.setup();
       render(
         <Provider store={store}>
@@ -63,8 +63,13 @@ describe("<Search />", () => {
         </Provider>
         );
       const searchInput = await screen.findByPlaceholderText(/search workouts/i);
+      act(() => dispatch({type: "GO_TO_PAGE_NUMBER", payload: 2}))
+      let state = store.getState();
+      expect(state.page).toBe(2);
       await user.type(searchInput, "pu");
       expect(searchInput).toHaveValue("pu");
+      state = store.getState();
+      expect(state.page).toBe(0);
       act(() => dispatch({type: "SET_QUERY", payload: ""}))
     });
 })

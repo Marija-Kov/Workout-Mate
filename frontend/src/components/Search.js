@@ -22,6 +22,7 @@ export default function Search() {
         value={query}
         onChange={(e) => {
           dispatch({type: "SET_QUERY", payload: e.target.value});
+          dispatch({type: "GO_TO_PAGE_NUMBER", payload: 0})
        }}
         disabled={loading}
       ></input>
