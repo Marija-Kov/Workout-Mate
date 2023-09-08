@@ -85,7 +85,8 @@ export const userReducer = (state = init, action) => {
       case a.UPDATE_USER_REQ:
         return {
           ...state,
-          loading: true,
+          success: false,
+          loading: true
         };
       case a.UPDATE_USER_SUCCESS:
         return {
