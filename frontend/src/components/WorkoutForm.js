@@ -68,7 +68,7 @@ export default function WorkoutForm(){
         <option value="glute">glute</option>
         <option value="ab">ab</option>
         <option value="calf">calf</option>
-        <option value="forearm and grip">forearm and grip</option>
+        <option value="forearmAndGrip">forearm and grip</option>
       </select>
       <label>number of reps:</label>
       <input
