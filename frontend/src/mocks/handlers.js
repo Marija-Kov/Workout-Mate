@@ -100,6 +100,9 @@ export const handlers = [
     return res(
       ctx.status(200),
       ctx.json({
+        user: {
+          username: "daredev"
+        },
         success: "Profile updated",
       })
     );
