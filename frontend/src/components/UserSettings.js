@@ -1,4 +1,4 @@
-import React from 'react'
+import { useState, useCallback } from 'react'
 import { useUpdateUser } from '../hooks/useUpdateUser';
 import Cropper from "react-easy-crop";
 import { useCroppedImg } from '../hooks/useCroppedImg';
@@ -10,26 +10,26 @@ import { useDispatch, useSelector } from 'react-redux';
 export default function UserSettings({changeProfileImg}) {
     const dispatch = useDispatch();
     const { updateUser } = useUpdateUser();
-    const { getCroppedImg } = useCroppedImg();
+    const { croppedImg } = useCroppedImg();
     const { deleteUser } = useDeleteUser();
     const { deleteAllWorkouts } = useDeleteAllWorkouts();
     const { logout } = useLogout();
     const { user, loading, updateUserError, success } =  useSelector(state => state.user)
     const { showDeleteAccountDialogue } = useSelector(state => state.showComponent)
-    const [newUsername, setNewUsername] = React.useState('');
-    const [fileInputState, setFileInputState] = React.useState();
-    const [selectedFile, setSelectedFile] = React.useState(); 
-
-    const [crop, setCrop] = React.useState({ x: 0, y: 0 });
-    const [zoom, setZoom] = React.useState(1);
-    const [croppedAreaPixels, setCroppedAreaPixels] = React.useState(null);
+    const [newUsername, setNewUsername] = useState('');
+    const [fileInputState, setFileInputState] = useState();
+    const [selectedFile, setSelectedFile] = useState(); 
+    const [crop, setCrop] = useState({ x: 0, y: 0 });
+    const [zoom, setZoom] = useState(1);
+    const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
     
-    const handleFileInputChange = (e) => {
+   const handleFileInputChange = (e) => {
         const file = e.target.files[0]
         previewFile(file) 
-      }
+     }
 
    const previewFile = (file) => {
+     if(!file) return
      const reader = new FileReader();
      reader.readAsDataURL(file);
      reader.onloadend = () => {
@@ -37,27 +37,23 @@ export default function UserSettings({changeProfileImg}) {
      }
    }
 
-   const onCropComplete = React.useCallback((croppedArea, croppedAreaPixels) => { // must have something before croppedAreaPixels
+   const onCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
      setCroppedAreaPixels(croppedAreaPixels);
    }, []);
 
-   const readyToUpdateProfile = React.useCallback(async () => {
+   const handleUpdateProfile = async (e) => {
+    e.preventDefault();
     let croppedImage = undefined;
     let username = newUsername ? newUsername : null;
      try {
       if(selectedFile){
-       croppedImage = await getCroppedImg(selectedFile, croppedAreaPixels);
+       croppedImage = await croppedImg(selectedFile, croppedAreaPixels);
        changeProfileImg(croppedImage)
       }
       await updateUser(username, croppedImage)      
      } catch (err) {
        console.error(err);
      }
-   }, [newUsername, selectedFile, croppedAreaPixels, changeProfileImg, getCroppedImg, updateUser]);
-
-   const handleUpdateProfile = async (e) => {
-     e.preventDefault();
-     await readyToUpdateProfile();
    };
 
    const deleteAccount = async () => {

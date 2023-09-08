@@ -1,36 +1,33 @@
-import React from 'react'
 import { useSelector, useDispatch } from 'react-redux';
 
 export const useUpdateUser = () => {
  const { user } =  useSelector(state => state.user);
  const dispatch = useDispatch();
  
- const updateUser = React.useCallback(async (username, profileImg) => {
+ const updateUser = async (username, profileImg) => {
     dispatch({type: "UPDATE_USER_REQ"})
      if (!user) {
       dispatch({type: "UPDATE_USER_FAIL", payload: "Not authorized"})
        return;
      }
-        if (!profileImg) profileImg = user.profileImg;
-        if (!username) username = user.username;
-        if (username && username.length > 12) { 
-            dispatch({type: "UPDATE_USER_FAIL", payload: "Invalid input"})
-            return
-        }
-      const response = await fetch(
-        `${process.env.REACT_APP_API}/api/users/${user.id}`,
-        {
-          method: "PATCH",
-          body: JSON.stringify({
-            username: username,
-            profileImg: profileImg,
-          }),
-          headers: {
-            "Content-type": "application/json",
-            Authorization: `Bearer ${user.token}`,
-          },
-        }
-      );
+     if (username && username.length > 12) { 
+         dispatch({type: "UPDATE_USER_FAIL", payload: "Invalid input"})
+         return
+     }
+     const body = {
+       username: username, profileImg: profileImg
+     }
+     const response = await fetch(
+       `${process.env.REACT_APP_API}/api/users/${user.id}`,
+       {
+         method: "PATCH",
+         body: JSON.stringify(body),
+         headers: {
+           "Content-type": "application/json",
+           Authorization: `Bearer ${user.token}`,
+         },
+       }
+     );
 
       const json = await response.json();
 
@@ -46,6 +43,6 @@ export const useUpdateUser = () => {
         }
         dispatch({type: "UPDATE_USER_SUCCESS", payload: { user: json.user, success: json.success }});
       }
- }, [])
+ }
   return { updateUser }
 }
