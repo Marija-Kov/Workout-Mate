@@ -39,7 +39,7 @@ describe("useLogout()", () => {
    expect(typeof result.current.logout).toBe("function");  
   });
 
-  it("should set user.user to null", () => {
+  it("should log the user out properly", () => {
    dispatch({type: "LOGIN_SUCCESS", payload: mockUser});
    let state = store.getState();
    expect(state.user.user).toBeTruthy();
@@ -47,5 +47,14 @@ describe("useLogout()", () => {
    act(() => result.current.logout());
    state = store.getState();
    expect(state.user.user).toBeFalsy();
+   expect(state.workout.workouts.total).toBeFalsy();
+   for(let key in state.routineBalance){
+    expect(state.routineBalance[key]).toBe(0)
+   }
+   expect(state.page).toBe(0);
+   expect(state.query).toBe("");
+   for(let key in state.showComponent){
+    expect(state.showComponent[key]).toBeFalsy()
+   }
   });
 });
