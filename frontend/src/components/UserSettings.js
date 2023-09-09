@@ -69,7 +69,10 @@ export default function UserSettings({changeProfileImg}) {
         <button
           aria-label="close form"
           className="close material-symbols-outlined"
-          onClick={() => dispatch({type: "SHOW_USER_SETTINGS_FORM"})}
+          onClick={() => {
+            dispatch({type: "SHOW_USER_SETTINGS_FORM"})
+            dispatch({type: "RESET_ERROR_AND_SUCCESS_MESSAGES"})
+          }}
         >
           close
         </button>

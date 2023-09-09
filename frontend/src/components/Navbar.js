@@ -57,7 +57,7 @@ export default function Navbar(){
             </div>
           )}
           {!user && (
-            <div className="about--login--signup--nav">
+            <div className="about--login--signup--nav" onClick={() => dispatch({type: "RESET_ERROR_AND_SUCCESS_MESSAGES"})}>
               <Link to="/about" aria-label="about workout mate">
                 <span  className="about--btn">
                   About

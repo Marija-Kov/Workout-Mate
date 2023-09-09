@@ -19,7 +19,10 @@ export default function ForgotPasswordForm() {
         <button
           aria-label= "close forgot password form"
           className="close material-symbols-outlined"
-          onClick={() => dispatch({type: "SHOW_FORGOT_PASSWORD_FORM"})}
+          onClick={() => {
+            dispatch({type: "SHOW_FORGOT_PASSWORD_FORM"})
+            dispatch({type: "RESET_ERROR_AND_SUCCESS_MESSAGES"})
+          }}
         >
           close
         </button>
