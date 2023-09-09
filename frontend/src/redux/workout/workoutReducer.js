@@ -114,6 +114,13 @@ export const workoutReducer = (state = init, action) => {
                 loading: false,
                 deleteAllWorkoutsError: action.payload
             }
+        case a.RESET_ERROR_MESSAGES:
+            return {
+                ...state,
+                createWorkoutError: null,
+                updateWorkoutError: null,
+                deleteWorkoutError: null
+            }
         default:
             return state;       
     }   

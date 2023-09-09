@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState, useRef } from 'react';
 import { useCreateWorkout } from '../hooks/useCreateWorkout';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -6,12 +6,11 @@ export default function WorkoutForm(){
   const dispatch = useDispatch();
   const { createWorkout } = useCreateWorkout();
   const { createWorkoutError } = useSelector(state => state.workout);
-  const title = React.useRef();
-  const muscle_group = React.useRef();
-  const load = React.useRef();
-  const reps = React.useRef();
-
-  const [emptyFields, setEmptyFields] = React.useState([]);
+  const title = useRef();
+  const muscle_group = useRef();
+  const load = useRef();
+  const reps = useRef();
+  const [emptyFields, setEmptyFields] = useState([]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -41,7 +40,10 @@ export default function WorkoutForm(){
       <button
         aria-label="close form"
         className="close material-symbols-outlined"
-        onClick={() => dispatch({type: "SHOW_CREATE_WORKOUT_FORM"})}
+        onClick={() =>{
+         dispatch({type: "SHOW_CREATE_WORKOUT_FORM"})
+         dispatch({type: "RESET_ERROR_MESSAGES"})
+        }}
       >       
         close
       </button>
