@@ -1,19 +1,18 @@
 import { useEffect } from 'react'
+import { useGetAccountConfirmationToken } from '../hooks/useGetAccountConfirmationToken';
 import { useConfirmAccount } from '../hooks/useConfirmAccount';
 import { useLogout } from '../hooks/useLogout';
 import { useSelector } from 'react-redux';
 
 export default function ConfirmedAccount() {
   const { confirmAccountError, success } = useSelector(state => state.user);
+  const { getAccountConfirmationToken } = useGetAccountConfirmationToken();
   const { confirmAccount } = useConfirmAccount();
   const { logout } = useLogout();
    
    useEffect(() => {
      logout();
-     const start = window.location.href.indexOf("=") + 1;
-     const token = window.location.href.slice(start) 
-     confirmAccount(token)
-     // TODO : Figure out a different(better), testable way to get the token!
+     confirmAccount(getAccountConfirmationToken())
    }, []);
     
   return (
