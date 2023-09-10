@@ -14,7 +14,7 @@ export function genSampleWorkouts(searchFor = "", page = 1, itemsPerPage=3) {
     "lunges"
   ];
   const allWorkoutsMuscleGroups = [
-   "chest", "forearm and grip", "chest", "ab", "glute", "biceps", "ab", "leg"
+   "chest", "forearmAndGrip", "chest", "ab", "glute", "biceps", "ab", "leg"
   ];
   const workouts = [];
   for (let i = 0; i < workoutTitles.length; ++i) {
