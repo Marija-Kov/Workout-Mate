@@ -74,7 +74,7 @@ describe("<Navbar />", ()=>{
           </BrowserRouter>
         </Provider>
       );
-      const helloUser = screen.getByLabelText(/user menu/i);
+      const helloUser = screen.getByLabelText("open user menu");
       await user.tab();
       await user.tab();
       expect(helloUser).toBeInTheDocument();
@@ -92,12 +92,28 @@ describe("<Navbar />", ()=>{
             </BrowserRouter>
           </Provider>
       );   
-      const helloUser = screen.getByLabelText(/user menu/i);
-      user.click(helloUser);
+      const helloUser = screen.getByLabelText("open user menu");
+      await user.click(helloUser);
       const openUserSettings = await screen.findByLabelText(/open user settings/i);
       const logOut = await screen.findByLabelText(/log out/i);
       expect(openUserSettings).toBeInTheDocument();
       expect(logOut).toBeInTheDocument();
+      act(() => dispatch({type: "LOGOUT"}));
+    });
+
+    it("should render User Settings once showUserSettingForm state is set to true", async () => {
+      user.setup();
+      dispatch({type: "LOGIN_SUCCESS", payload: mockUser})
+      render(
+        <Provider store={store}>
+            <BrowserRouter>
+              <Navbar />
+            </BrowserRouter>
+          </Provider>
+      );   
+      await act(() => dispatch({type: "SHOW_USER_SETTINGS_FORM"}));
+      const userSettingsForm = await screen.findByLabelText(/change user settings/i);
+      expect(userSettingsForm).toBeInTheDocument();
       act(() => dispatch({type: "LOGOUT"}));
     });
 

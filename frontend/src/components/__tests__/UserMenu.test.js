@@ -34,7 +34,7 @@ describe("<UserMenu />", () => {
       expect(logoutBtn).toHaveFocus();
     })
 
-    it("should render Profile settings component when user clicks on Settings in User menu", async () => {
+    it("should set showUserSettingsForm to true when user clicks on 'Settings' in User menu", async () => {
       user.setup();
       render(
           <Provider store={store}>
@@ -43,9 +43,7 @@ describe("<UserMenu />", () => {
       );
       const openUserSettings = await screen.findByLabelText(/settings/i);
       await user.click(openUserSettings);
-      const userSettings = await screen.findByLabelText(
-        /change user settings/i
-      );
-      expect(userSettings).toBeInTheDocument();
+      let state = store.getState();
+      expect(state.showComponent.showUserSettingsForm).toBeTruthy()
     });
 })
