@@ -22,7 +22,7 @@ afterAll(() => {
 })
 
 describe("useConfirmAccount()", () => {
- it("should have success and error states initially set to null", () => {
+ it("should return confirmAccount function", () => {
     const { result } = renderHook(useConfirmAccount, { wrapper });
     expect(result.current.confirmAccount).toBeTruthy();
     expect(typeof result.current.confirmAccount).toBe("function");
