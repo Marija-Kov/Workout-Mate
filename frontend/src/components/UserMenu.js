@@ -1,12 +1,10 @@
 import React from "react";
 import { useLogout } from "../hooks/useLogout";
-import UserSettings from "./UserSettings";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
-export default function UserMenu(props) {
+export default function UserMenu() {
   const dispatch = useDispatch();
   const { logout } = useLogout();
-  const { showUserSettingsForm } = useSelector(state => state.showComponent);
 
   return (
     <>
@@ -25,7 +23,6 @@ export default function UserMenu(props) {
         </button>
       </div>
 
-      {showUserSettingsForm && <UserSettings changeProfileImg={props.changeProfileImg} /> }
     </>
   );
 }

@@ -76,9 +76,7 @@ export default function Navbar(){
             </div>
           )}
           {user && showUserMenu && (
-            <UserMenu
-              changeProfileImg={changeProfileImg}
-            />
+            <UserMenu />
           )}
           {showUserSettingsForm && <UserSettings changeProfileImg={changeProfileImg} /> }
         </div>
