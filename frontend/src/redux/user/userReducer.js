@@ -18,6 +18,8 @@ export const userReducer = (state = init, action) => {
       case a.SIGNUP_REQ:
         return {
           ...state,
+          success: false,
+          signupError: null,
           loading: true,
         };
       case a.SIGNUP_SUCCESS:
@@ -55,6 +57,7 @@ export const userReducer = (state = init, action) => {
       case a.LOGIN_REQ:
         return {
           ...state,
+          loginError: null,
           loading: true,
         };
       case a.LOGIN_SUCCESS:
