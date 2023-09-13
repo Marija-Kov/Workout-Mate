@@ -36,7 +36,7 @@ export default function ForgotPasswordForm() {
           aria-label="email address"
           ref={email}
         />
-        <button aria-label="submit">Proceed</button>
+        <button aria-label="submit" className="proceed">Proceed</button>
         {success && (
           <div role="alert" className="success">
             {success}

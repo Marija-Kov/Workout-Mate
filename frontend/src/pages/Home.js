@@ -1,4 +1,4 @@
-import React from 'react';
+import { useEffect } from 'react';
 import WorkoutDetails from '../components/WorkoutDetails'
 import WorkoutForm from '../components/WorkoutForm'
 import Pagination from '../components/Pagination';
@@ -20,7 +20,7 @@ export default function Home() {
     const { total, workoutsChunk } = workouts;
     const { search } = useSearch();
 
-    React.useEffect(() => {
+    useEffect(() => {
       search(query, page);
     }, [query, page]);
 
@@ -59,13 +59,14 @@ export default function Home() {
               )}
            </div>
            
-          {allUserWorkoutsMuscleGroups && allUserWorkoutsMuscleGroups.length ? <Chart /> : <ChartPlaceholder />}
+          {allUserWorkoutsMuscleGroups && allUserWorkoutsMuscleGroups.length ? <Chart /> : (
+          loading ? <ChartPlaceholder /> : "")}
           
           {showCreateWorkoutForm ?
             <WorkoutForm /> :
             <button
               aria-label="buff it up"
-              className={workoutsChunk && workoutsChunk.length ? 
+              className={ total ? 
                            "add--workout" : (
                             query ? 
                             "add--workout" : (
