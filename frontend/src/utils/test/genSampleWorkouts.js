@@ -18,15 +18,16 @@ export function genSampleWorkouts(searchFor = "", page = 1, itemsPerPage=3) {
   ];
   const workouts = [];
   for (let i = 0; i < workoutTitles.length; ++i) {
+    const id = uuid();
     const workout = {
-      _id: uuid(),
+      _id: id,
       title: workoutTitles[i],
       muscle_group: allWorkoutsMuscleGroups[i],
       reps: Math.floor(Math.random() * 99) + 1,
       load: Math.floor(Math.random() * 50),
       user_id: "userid",
     }
-    workouts.push(workout);
+    workouts.unshift(workout);
     dispatch({type: "CREATE_WORKOUT_SUCCESS", payload: workout })
   }
   let noWorkoutsByQuery = false;
