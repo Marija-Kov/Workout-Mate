@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, act } from "@testing-library/react";
 import user from "@testing-library/user-event";
 import { jest } from "@jest/globals"
 import { genSampleWorkouts } from '../../utils/test/genSampleWorkouts';
@@ -9,6 +9,7 @@ import { ChartPlaceholder } from '../../components/ChartPlaceholder';
 import Pagination from '../../components/Pagination';
 import WorkoutDetails from '../../components/WorkoutDetails';
 import WorkoutForm from '../../components/WorkoutForm';
+import EditWorkout from "../../components/EditWorkout";
 import { WorkoutsPlaceholder } from '../../components/WorkoutsPlaceholder';
 import { Provider } from 'react-redux';
 import store from '../../redux/store';
@@ -19,6 +20,7 @@ jest.mock("../../components/WorkoutDetails");
 jest.mock("../../components/WorkoutsPlaceholder");
 jest.mock("../../components/Pagination");
 jest.mock("../../components/WorkoutForm");
+jest.mock("../../components/EditWorkout");
 jest.mock("../../components/Search");
 jest.mock("../../hooks/useSearch", () => ({
   useSearch: () => {
@@ -62,6 +64,17 @@ describe("<Home />", () => {
       await user.click(addWorkoutBtn);
       expect(WorkoutForm).toHaveBeenCalled();
     });
+
+    it("should render EditWorkout", async () => {
+      let dispatch = store.dispatch;
+      render(
+        <Provider store={store}>
+            <Home />
+        </Provider>
+      );
+      await act(() => dispatch({type: "SHOW_EDIT_WORKOUT_FORM"}));
+      expect(EditWorkout).toHaveBeenCalled();
+    })
 
 });
 

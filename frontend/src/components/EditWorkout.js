@@ -1,16 +1,18 @@
-import React from 'react';
+import { useRef } from 'react';
 import useEditWorkout from '../hooks/useEditWorkout';
 import { useSelector, useDispatch } from 'react-redux';
 
 
-export default function EditWorkout(props){
+export default function EditWorkout(){
   const dispatch = useDispatch();
   const { editWorkout } = useEditWorkout();
+  const { prepopulateEditWorkoutForm } = useSelector(state => state.showComponent)
+  const { id, prevTitle, prevMuscleGroup, prevReps, prevLoad, createdAt, updatedAt } = prepopulateEditWorkoutForm;
   const { updateWorkoutError } = useSelector(state => state.workout)
-  const title = React.useRef();
-  const muscle_group = React.useRef();
-  const reps = React.useRef();
-  const load = React.useRef();
+  const title = useRef();
+  const muscle_group = useRef();
+  const reps = useRef();
+  const load = useRef();
 
  const handleUpdate = async (e) => {  
    const payload = {};
@@ -27,16 +29,16 @@ export default function EditWorkout(props){
     payload.load = load.current.value;
    }
    e.preventDefault();
-   await editWorkout(props.id, payload); 
+   await editWorkout(id, payload); 
  }
     return (
       <div className="form--container--edit--workout--form">
         <form
           className="edit--form"
-          aria-label={`edit ${props.title} ${
-            props.updatedAt
-              ? `updated ${props.updatedAt}`
-              : `created ${props.createdAt}`
+          aria-label={`edit ${title} ${
+            updatedAt
+              ? `updated ${updatedAt}`
+              : `created ${createdAt}`
           }`}
         >
           <button
@@ -56,12 +58,12 @@ export default function EditWorkout(props){
             name="title"
             id="title"
             aria-label="workout title"
-            defaultValue={props.title}
+            defaultValue={prevTitle}
             ref={title}
           />
           <label htmlFor="muscle_group">muscle group:</label>
           <select ref={muscle_group} aria-label="muscle group" name="muscle_group" id="muscle_group">
-              <option value="">{props.muscle_group}</option>
+              <option value="">{prevMuscleGroup}</option>
               <option value="chest">chest</option>
               <option value="shoulder">shoulder</option>
               <option value="biceps">biceps</option>
@@ -79,7 +81,7 @@ export default function EditWorkout(props){
             name="reps"
             id="reps"
             aria-label="number of reps"
-            defaultValue={props.reps}
+            defaultValue={prevReps}
             ref={reps}
           />
           <label>load (kg):</label>
@@ -88,7 +90,7 @@ export default function EditWorkout(props){
             name="load"
             id="load"
             aria-label="load in kg"
-            defaultValue={props.load}
+            defaultValue={prevLoad}
             ref={load}
           />
           <button

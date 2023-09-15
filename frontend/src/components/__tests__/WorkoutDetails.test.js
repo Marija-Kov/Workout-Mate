@@ -19,10 +19,6 @@ beforeAll(() => {
   };
 })
 
-afterEach(() => {
-  cleanup();
-});
-
 afterAll(() => {
   mockWorkout = null
 })
@@ -79,7 +75,7 @@ describe("<WorkoutDetails />", () => {
     expect(openEditWorkoutFormBtn).toHaveFocus();
   });
 
-  it("should open EditWorkout when 'edit' button is clicked", async () => {
+  it("should dispatch SHOW_EDIT_WORKOUT_FORM when 'edit' button is clicked", async () => {
     user.setup();
     render(
       <Provider store={store}>
@@ -96,8 +92,14 @@ describe("<WorkoutDetails />", () => {
     );
     const openEditWorkoutFormBtn = await screen.findByText(/edit/i);
     await user.click(openEditWorkoutFormBtn);
-    const editWorkoutFormLabel = new RegExp(`edit ${mockWorkout.title}`)
-    const editWorkoutForm = await screen.findByLabelText(editWorkoutFormLabel);
-    expect(editWorkoutForm).toBeInTheDocument()
+    let state = store.getState();
+    expect(state.showComponent.prepopulateEditWorkoutForm).toBeTruthy();
+    expect(state.showComponent.prepopulateEditWorkoutForm.id).toBe(mockWorkout.id);
+    expect(state.showComponent.prepopulateEditWorkoutForm.prevTitle).toBe(mockWorkout.title);
+    expect(state.showComponent.prepopulateEditWorkoutForm.prevMuscleGroup).toBe(mockWorkout.muscle_group);
+    expect(state.showComponent.prepopulateEditWorkoutForm.prevReps).toBe(mockWorkout.reps);
+    expect(state.showComponent.prepopulateEditWorkoutForm.prevLoad).toBe(mockWorkout.load);
+    expect(state.showComponent.prepopulateEditWorkoutForm.createdAt).toBe(mockWorkout.createdAt);
+    expect(state.showComponent.prepopulateEditWorkoutForm.updatedAt).toBe(mockWorkout.updatedAt);
   });
 });

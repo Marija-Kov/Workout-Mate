@@ -3,6 +3,7 @@ import * as a from "./showComponentActionTypes"
 const init = {
     showCreateWorkoutForm: false,
     showEditWorkoutForm: false,
+    prepopulateEditWorkoutForm: null,
     showForgotPasswordForm: false,
     showUserMenu: false,
     showUserSettingsForm: false,
@@ -24,6 +25,7 @@ export const showComponentReducer = (state = init, action) => {
             return {
                 ...state,
                 showEditWorkoutForm: !state.showEditWorkoutForm,
+                prepopulateEditWorkoutForm: action.payload || null,
                 showCreateWorkoutForm: false,
                 showUserMenu: false,
                 showUserSettingsForm: false,
@@ -55,6 +57,7 @@ export const showComponentReducer = (state = init, action) => {
             return {
                 showCreateWorkoutForm: false,
                 showEditWorkoutForm: false,
+                prepopulateEditWorkoutForm: null,
                 showForgotPasswordForm: false,
                 showUserMenu: false,
                 showUserSettingsForm: false,

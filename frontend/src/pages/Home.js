@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, lazy, Suspense } from 'react';
 import WorkoutDetails from '../components/WorkoutDetails'
 import WorkoutForm from '../components/WorkoutForm'
 import Pagination from '../components/Pagination';
@@ -9,10 +9,11 @@ import { Chart } from '../components/Chart';
 import { ChartPlaceholder } from '../components/ChartPlaceholder';
 import { WorkoutsPlaceholder } from '../components/WorkoutsPlaceholder';
 import { useDispatch, useSelector } from 'react-redux';
+const EditWorkout = lazy(() => import("../components/EditWorkout"));
 
 export default function Home() {
     const dispatch = useDispatch();
-    const { showCreateWorkoutForm } = useSelector(state => state.showComponent)
+    const { showCreateWorkoutForm, showEditWorkoutForm } = useSelector(state => state.showComponent)
     const { workouts, loading, setWorkoutsError } = useSelector(state => state.workout);
     const { allUserWorkoutsMuscleGroups } = workouts;
     const page = useSelector(state => state.page);
@@ -80,6 +81,12 @@ export default function Home() {
               + Buff It Up
             </button>
           }
+
+          {showEditWorkoutForm && (
+            <Suspense>
+              <EditWorkout />
+            </Suspense>  
+          )}
 
           {total ? <Pagination /> : ""}
 
