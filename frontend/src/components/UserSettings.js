@@ -17,12 +17,11 @@ export default function UserSettings({changeProfileImg}) {
     const { user, loading, updateUserError, success } =  useSelector(state => state.user)
     const { showDeleteAccountDialogue } = useSelector(state => state.showComponent)
     const [newUsername, setNewUsername] = useState('');
-    const [fileInputState, setFileInputState] = useState();
     const [selectedFile, setSelectedFile] = useState(); 
     const [crop, setCrop] = useState({ x: 0, y: 0 });
     const [zoom, setZoom] = useState(1);
     const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
-    
+
    const handleFileInputChange = (e) => {
         const file = e.target.files[0]
         previewFile(file) 
@@ -33,7 +32,7 @@ export default function UserSettings({changeProfileImg}) {
      const reader = new FileReader();
      reader.readAsDataURL(file);
      reader.onloadend = () => {
-      setSelectedFile(reader.result); // reader.result --> base64EncodedImage
+     setSelectedFile(reader.result);
      }
    }
 
@@ -51,8 +50,8 @@ export default function UserSettings({changeProfileImg}) {
        changeProfileImg(croppedImage)
       }
       await updateUser(username, croppedImage)      
-     } catch (err) {
-       console.error(err);
+     } catch (error) {
+       dispatch({type: "UPDATE_USER_FAIL", payload: "Bad input - JPG, PNG and SVG only"})
      }
    };
 
@@ -91,10 +90,10 @@ export default function UserSettings({changeProfileImg}) {
         <label>Change profile image:</label>
         <input
           type="file"
+          accept=".jpg, .png, .svg"
           name="profile-image"
           id="new-profile-image"
           aria-label="new profile image"
-          value={fileInputState}
           onChange={handleFileInputChange}
         />
         {selectedFile && (

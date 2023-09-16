@@ -43,6 +43,10 @@ export const useUpdateUser = () => {
         }
         dispatch({type: "UPDATE_USER_SUCCESS", payload: { user: json.user, success: json.success }});
       }
+      
+      setTimeout(() => {
+       dispatch({type: "RESET_ERROR_AND_SUCCESS_MESSAGES"})
+      }, 5000)
  }
   return { updateUser }
 }
