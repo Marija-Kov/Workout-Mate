@@ -3,6 +3,7 @@ import * as a from "./workoutActionTypes";
 const init = {
   workouts: { total: 0, limit: 3, allUserWorkoutsMuscleGroups: [], workoutsChunk: [], pageSpread: [1], page: 0},
   loading: false,
+  setWorkoutsError: null,
   createWorkoutError: null,
   updateWorkoutError: null,
   deleteWorkoutError: null,
@@ -117,6 +118,7 @@ export const workoutReducer = (state = init, action) => {
         case a.RESET_ERROR_MESSAGES:
             return {
                 ...state,
+                setWorkoutsError: null,
                 createWorkoutError: null,
                 updateWorkoutError: null,
                 deleteWorkoutError: null
