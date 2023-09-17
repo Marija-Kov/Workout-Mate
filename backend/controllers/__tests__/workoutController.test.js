@@ -27,7 +27,7 @@ describe("workoutController", () => {
          expect(res.error).toMatch(/not authorized/i);
         });
 
-        it("should respond with error if the user is authorized, but at least one required property value is not provided", async () => {
+        it("should respond with error if the user is authorized, but at least one required input value is not provided", async () => {
           const user = await mockUser("poozh@ploppers.com", "logged-in");
           const workout = { title: "Pullups",  muscle_group: "forearm and grip", reps: undefined, load: 20 };
           const res = (
@@ -37,7 +37,6 @@ describe("workoutController", () => {
               .set("Authorization", `Bearer ${user.token}`)
           )._body;
           expect(res.error).toBeTruthy();
-          expect(res.error).toMatch(/workout validation failed/i);
         });
 
         it("should delete oldest workout given that the amount of workouts exceeds the limit", async () => {
@@ -70,7 +69,7 @@ describe("workoutController", () => {
          expect(canFind2ndOldestWorkout).toBeTruthy();
         });
 
-        it("should respond with workout details and id given that the user is authorized and all required property values were provided", async () => {
+        it("should respond with workout details and id given that the user is authorized and all required input values were provided", async () => {
             const user = await mockUser("buster@ploppers.com", "logged-in");
             const workout = { title: "Bench press", muscle_group:"chest", reps: 20, load: 20 }; 
             const res = (
@@ -179,7 +178,7 @@ describe("workoutController", () => {
             expect(res.error).toMatch(/not authorized/i);
         });
 
-        it("should respond with error if there was an attempt to update with an invalid value(s)", async () => {
+        it("should respond with error if there was an attempt to update with invalid value(s)", async () => {
            const user = await mockUser("poozh@thedoor.com", "has-workouts"); 
            const updateWorkout = {
              id: user.workouts[1]._id,
@@ -269,33 +268,46 @@ describe("workoutController", () => {
        expect(res.workout._id).toMatch(deleteWorkoutId);
        expect(res.remaining).toEqual(totalWorkouts-1);
       });
+    });
 
-      it("should respond with the number of deleted workouts which should be the total number of workouts", async () => {
+    describe("DELETE /api/workouts/", () => {
+      it("should respond with error given that the user is not authorized", async () => {
+        const user = await mockUser("chook@thegate.com", "has-workouts");
+        const res = (
+          await agent
+           .delete(`/api/workouts/`)
+         )._body;
+        expect(res.deletedCount).toBeFalsy();
+        expect(res.error).toBeTruthy();
+        expect(res.error).toMatch(/not authorized/i);
+      });
+
+      it("should delete all workouts given that the user is authorized", async () => {
         const user = await mockUser("poozh@thegate.com", "has-workouts");
         const res = (
          await agent
           .delete(`/api/workouts/`)
           .set("Authorization", `Bearer ${user.userLoggedIn.token}`)
         )._body;
+        expect(res.error).toBeFalsy();
         expect(res.deletedCount).toBeTruthy();
         expect(res.deletedCount).toEqual(user.workouts.length)
       })
-
-
-    });
+    })
 
     describe("ANY /api/workouts/", () => {
       
        it("should respond with error if too many requests were sent in a short amount of time", async () => {
          const user = await mockUser("icey@ploppers.com", "logged-in");
-         await maxOutRequests(user);
-         const tooManyRequests = (
-           await agent
+         const maxReq = Number(process.env.TEST_MAX_API_WORKOUTS_REQS);
+         let res;
+         for (let i = 0; i <= maxReq + 1; ++i) {
+          res = await agent
              .get("/api/workouts/")
-             .set("Authorization", `Bearer ${user.token}`)
-         )._body.error;
-
-        expect(tooManyRequests).toBeTruthy();
+             .set("Authorization", `Bearer ${user.token}`);
+         }
+        expect(res._body.error).toBeTruthy();
+        expect(res._body.error).toMatch(/too many requests/i);
        });        
       
     });
@@ -329,12 +341,11 @@ async function mockUser(email, status) {
        { title: "Pullups", muscle_group:"forearm and grip", reps: 15, load: 0 },
      ];
      const workouts = [];
-     let len = sampleWorkouts.length;
-     while (--len + 1) {
+     for (let i = 0; i < sampleWorkouts.length; ++i) {
        let workout = (
          await agent
            .post("/api/workouts/")
-           .send(sampleWorkouts[len])
+           .send(sampleWorkouts[i])
            .set("Authorization", `Bearer ${userLoggedIn.token}`)
        )._body;
        workouts.unshift(workout);
@@ -344,29 +355,27 @@ async function mockUser(email, status) {
 }
 
 async function maxOutWorkouts(user) {
-  const limit_minus = Number(process.env.TEST_MAX_WORKOUTS_PER_USER);
+  /*
+    limit = process.env.TEST_MAX_WORKOUTS_PER_USER;
+    sampleWorkouts.length must be limit - 1
+    if the condition for deletion of the oldest entry is number of workouts being 
+    EQUAL TO limit and given that the test is asserting the existence of each of
+    the two previously posted workouts where more recent one is supposed to exist
+    and the less recent one not to exist.
+  */
   const sampleWorkouts = [
     { title: "Bench Press", muscle_group: "chest", reps: 20, load: 20 },
     { title: "Pushups", muscle_group: "chest", reps: 30, load: 0 },
     { title: "Situps", muscle_group: "ab", reps: 40, load: 0 },
     { title: "Squats", muscle_group: "leg", reps: 20, load: 23 }
   ];
-  for (let i = 0; i < limit_minus; ++i) {
+  for (let i = 0; i < sampleWorkouts.length; ++i) {
     await agent
       .post("/api/workouts/")
       .send(sampleWorkouts[i])
       .set("Authorization", `Bearer ${user.token}`);
   }
 
-}
-
-async function maxOutRequests(user) {
-  const max = Number(process.env.TEST_MAX_API_WORKOUTS_REQS);
-  for (let i = 0; i < max; ++i) {
-    await agent
-      .get("/api/workouts/")
-      .set("Authorization", `Bearer ${user.token}`);
-  }
 }
 
 function ISO8601ToMilliseconds(ISO8601){
