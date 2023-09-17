@@ -8,6 +8,9 @@ export default function useSendPasswordResetLink() {
 
     if(!email.match(/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)){
       dispatch({type: "SEND_PASSWORD_RESET_LINK_FAIL", payload: "Please enter valid email address"});
+      setTimeout(() => {
+        dispatch({type: "RESET_ERROR_AND_SUCCESS_MESSAGES"})
+      }, 5000) 
       return
     }
     const response = await fetch(`${process.env.REACT_APP_API}/api/reset-password`, {
@@ -20,6 +23,9 @@ export default function useSendPasswordResetLink() {
     const json = await response.json();
     if (!response.ok) {
       dispatch({type: "SEND_PASSWORD_RESET_LINK_FAIL", payload: json.error});
+      setTimeout(() => {
+        dispatch({type: "RESET_ERROR_AND_SUCCESS_MESSAGES"})
+        }, 5000) 
       return
     }
     if (response.ok) {

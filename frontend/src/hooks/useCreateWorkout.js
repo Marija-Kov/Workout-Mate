@@ -25,6 +25,9 @@ export const useCreateWorkout = () => {
 
      if (!response.ok) {
       dispatch({type: "CREATE_WORKOUT_FAIL", payload: "Please fill out the empty fields"})
+      setTimeout(() => {
+       dispatch({type: "RESET_ERROR_MESSAGES"})
+       }, 5000) 
        return
      }
 

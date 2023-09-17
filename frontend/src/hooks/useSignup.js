@@ -17,6 +17,9 @@ export const useSignup = () => {
 
         if (!response.ok){
          dispatch({type: "SIGNUP_FAIL", payload: json.error})
+         setTimeout(() => {
+          dispatch({type: "RESET_ERROR_AND_SUCCESS_MESSAGES"})
+          }, 5000) 
         }
         if (response.ok) {
          dispatch({type: "SIGNUP_SUCCESS", payload: json.success})

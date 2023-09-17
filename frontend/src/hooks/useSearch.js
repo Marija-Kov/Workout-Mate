@@ -27,8 +27,10 @@ export const useSearch = () => {
       }
       if(!response.ok){
         dispatch({type: "SET_WORKOUTS_FAIL", payload: json.error})
+        setTimeout(() => {
+          dispatch({type: "RESET_ERROR_MESSAGES"})
+         }, 5000)
       }
-      
     }
     
     return { search }
