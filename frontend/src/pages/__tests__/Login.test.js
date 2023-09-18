@@ -4,7 +4,8 @@ import "@testing-library/jest-dom";
 import Login from "../Login";
 import { rest } from "msw";
 import { server } from "../../mocks/server";
-import { AuthContextProvider } from "../../context/AuthContext";
+import { Provider } from "react-redux";
+import store from "../../redux/store";
 
 afterAll(() => {
   global.Storage.prototype.setItem.mockReset();
@@ -15,9 +16,9 @@ describe("<Login />", () => {
   
   it("should render login form", () => {
     render(
-     <AuthContextProvider>
+      <Provider store={store}>
         <Login />
-     </AuthContextProvider>
+     </Provider>
     );
     const loginForm = screen.getByLabelText("log in");
     const forgotPassword = screen.getByText(/forgot/i);
@@ -28,9 +29,9 @@ describe("<Login />", () => {
   it("should focus form elements in right order", async () => {
       user.setup();
       render(
-        <AuthContextProvider>
+        <Provider store={store}>
           <Login />
-        </AuthContextProvider>
+        </Provider>
       );
       const emailInp = screen.getByPlaceholderText("email address");
       const passwordInp = screen.getByPlaceholderText("password");
@@ -49,9 +50,9 @@ describe("<Login />", () => {
   it("should render input value as user types", async ()=> {
    user.setup();
    render(
-     <AuthContextProvider>
+    <Provider store={store}>
        <Login />
-     </AuthContextProvider>
+    </Provider>
    );
    const emailInp = screen.getByPlaceholderText("email address");
    const passwordInp = screen.getByPlaceholderText("password");
@@ -64,9 +65,9 @@ describe("<Login />", () => {
   it("should render reset password request form when user clicks on 'forgot password'", async () => {
    user.setup();
    render(
-     <AuthContextProvider>
+    <Provider store={store}>
        <Login />
-     </AuthContextProvider>
+    </Provider>
    );
    const forgotPasswordBtn = screen.getByRole("button", { name: /forgot/i });
    await user.click(forgotPasswordBtn);
@@ -87,9 +88,9 @@ describe("<Login />", () => {
     );
     user.setup();
     render(
-      <AuthContextProvider>
+      <Provider store={store}>
         <Login />
-      </AuthContextProvider>
+      </Provider>
     );
     const loginBtn = await screen.findByText("Log in");
     await user.click(loginBtn);
@@ -117,9 +118,9 @@ describe("<Login />", () => {
     user.logIn = () => {
       localStorage.setItem("user", JSON.stringify(storageUser));
       return render(
-        <AuthContextProvider>
+        <Provider store={store}>
           {localStorage.getItem("user") ? <MockHome /> : <Login />}
-        </AuthContextProvider>
+        </Provider>
       );
     };
     await user.logIn();

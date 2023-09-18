@@ -1,25 +1,11 @@
-import React from 'react';
 import formatDistanceToNow from 'date-fns/formatDistanceToNow';
 import useDeleteWorkout from '../hooks/useDeleteWorkout';
+import { useDispatch } from 'react-redux';
 
-const EditWorkout = React.lazy(() => import("../components/EditWorkout"));
-
-export default function WorkoutDetails({id, title, muscle_group, reps, load, createdAt, updatedAt, page, getItems, total, limit, spreadPages}){
-    const [showEditForm, setShowEditForm] = React.useState(false);
-    const {deleteWorkout, error} = useDeleteWorkout();
-
-    const handleDelete = async () => {
-      await deleteWorkout(id)
-      await getItems('', page)
-      spreadPages(total, limit)
-    }
-
-    const showEdit = () => {
-       setShowEditForm(prev => !prev)
-    }
-
+export default function WorkoutDetails({id, title, muscle_group, reps, load, createdAt, updatedAt }){
+    const dispatch = useDispatch();
+    const { deleteWorkout } = useDeleteWorkout();
     const date = formatDistanceToNow(new Date(createdAt), { addSuffix: true});
-
     return (
       <>
         <div
@@ -39,38 +25,19 @@ export default function WorkoutDetails({id, title, muscle_group, reps, load, cre
           <button
             aria-label={`delete workout ${title} created ${date}`}
             className="material-symbols-outlined"
-            onClick={handleDelete}
+            onClick={() => deleteWorkout(id)}
           >
             delete
           </button>
           <button
             aria-label={`open ${title} edit form created ${date}`}
             className="material-symbols-outlined edit"
-            onClick={showEdit}
+            onClick={() => dispatch({type: "SHOW_EDIT_WORKOUT_FORM", payload: {id, prevTitle: title, prevMuscleGroup: muscle_group, prevReps: reps, prevLoad: load, createdAt, updatedAt}})}
           >
             edit
           </button>
-          {error && (
-            <div role="alert" className="error">
-              {error}
-            </div>
-          )}
         </div>
-        {showEditForm && (
-        <React.Suspense>
-          <EditWorkout
-            key={id + "edit"}
-            id={id}
-            title={title}
-            muscle_group={muscle_group}
-            reps={reps}
-            load={load}
-            createdAt={createdAt}
-            updatedAt={updatedAt}
-            showEdit={() => showEdit()}
-          />
-        </React.Suspense>  
-        )}
+
       </>
     );
 }

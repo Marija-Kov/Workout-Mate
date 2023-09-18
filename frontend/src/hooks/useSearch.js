@@ -1,21 +1,13 @@
-import React from 'react'
-import { useWorkoutContext } from "../hooks/useWorkoutContext";
-import { useAuthContext } from "../hooks/useAuthContext";
+import { useSelector, useDispatch } from 'react-redux';
 
 export const useSearch = () => {
-    const [isLoading, setIsLoading] = React.useState(null); 
-    const { user } = useAuthContext();
-    const { dispatch } = useWorkoutContext();
-    const [limit, setLimit] = React.useState(null);
-    const [total, setTotal] = React.useState(null);
-    const [error, setError] = React.useState(null);
-    const [allWorkoutsMuscleGroups, setAllWorkoutsMuscleGroups] = React.useState([]);
+    const { user } = useSelector(state => state.user);
+    const dispatch = useDispatch();
     
     const search = async (query, page) => {
-      setIsLoading(true);
+       dispatch({type: "SET_WORKOUTS_REQ"});
       if(!user) {
-        setIsLoading(false);
-        setError("Not authorized");
+       dispatch({type: "SET_WORKOUTS_FAIL", payload: "Not authorized"});
         return
       }
 
@@ -31,18 +23,15 @@ export const useSearch = () => {
       const json = await response.json();
 
       if(response.ok){
-        setError(null)
-        setIsLoading(false);
-        setLimit(json.limit);
-        setTotal(json.total);
-        setAllWorkoutsMuscleGroups(json.allUserWorkoutsMuscleGroups)
-        dispatch({type: "SET_WORKOUTS", payload: json.workoutsChunk})
+        dispatch({type: "SET_WORKOUTS_SUCCESS", payload: json})
       }
       if(!response.ok){
-        setIsLoading(false);
-        setError(json.error)
+        dispatch({type: "SET_WORKOUTS_FAIL", payload: json.error})
+        setTimeout(() => {
+          dispatch({type: "RESET_ERROR_MESSAGES"})
+         }, 5000)
       }
-      
     }
-    return { search, isLoading, limit, total, allWorkoutsMuscleGroups, error }
+    
+    return { search }
 }

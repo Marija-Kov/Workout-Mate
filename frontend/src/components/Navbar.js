@@ -1,34 +1,32 @@
-import React from 'react';
+import { useEffect, useState } from 'react';
 import {Link} from 'react-router-dom';
-import { useAuthContext } from '../hooks/useAuthContext';
 import { logOutIfTokenExpired } from '../utils/logOutIfTokenExpired';
 import UserMenu from './UserMenu'
+import UserSettings from "./UserSettings";
+import { useSelector, useDispatch } from 'react-redux';
 
 export default function Navbar(){
-  const { user } = useAuthContext();
-  const [showUserMenu, setShowUserMenu] = React.useState(false);
-  const [username, setUsername] = React.useState('who are you?');
-  const [profileImg, setProfileImg] = React.useState(
+  const dispatch = useDispatch();
+  const { user } = useSelector(state => state.user);
+  const { showUserMenu, showUserSettingsForm } = useSelector(state => state.showComponent);
+  const [username, setUsername] = useState('who are you?');
+  const [profileImg, setProfileImg] = useState(
     require("../assets/default-avatar.png")
   );
-  
-   function userMenu(){
-       setShowUserMenu(prev => !prev)
-   }
 
   const changeProfileImg = (img) => {
     setProfileImg(img)
   }
 
-React.useEffect(() => {
+ useEffect(() => {
   if (user) {
-    if(!user.username){
+    const username = localStorage.getItem("username");
+    if(!user.username && !username){
      const i = user.email.indexOf("@");
      setUsername(`${user.email.slice(0, i)}`); 
     } else {
-     const username = localStorage.getItem("username"); 
-     if(user.username && !username) setUsername(user.username);
      if(username) setUsername(username);
+     if(user.username && !username) setUsername(user.username); 
     }
     const newImg = localStorage.getItem('newImg');  
     if(user.profileImg && !newImg) setProfileImg(user.profileImg);
@@ -47,7 +45,7 @@ React.useEffect(() => {
               <button
                 aria-label="open user menu"
                 className="hello--user"
-                onClick={() => userMenu()}
+                onClick={() => dispatch({type: "SHOW_USER_MENU"})}
               >
                 <span>
                   Hello, <strong>{username}</strong>
@@ -59,7 +57,7 @@ React.useEffect(() => {
             </div>
           )}
           {!user && (
-            <div className="about--login--signup--nav">
+            <div className="about--login--signup--nav" onClick={() => dispatch({type: "RESET_ERROR_AND_SUCCESS_MESSAGES"})}>
               <Link to="/about" aria-label="about workout mate">
                 <span  className="about--btn">
                   About
@@ -78,12 +76,9 @@ React.useEffect(() => {
             </div>
           )}
           {user && showUserMenu && (
-            <UserMenu
-              user={user}
-              changeProfileImg={changeProfileImg}
-              userMenu={userMenu}
-            />
+            <UserMenu />
           )}
+          {showUserSettingsForm && <UserSettings changeProfileImg={changeProfileImg} /> }
         </div>
       </header>
     );

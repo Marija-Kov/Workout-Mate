@@ -142,7 +142,7 @@ form.signup h4 {
     color: vars.$forgot-password--btn--text--hover;
   }
 
-  /* Reset password request form (to send reset link to inbox) */
+  /* Forgot password form */
 
 .form--container--reset--password--request {
     background: vars.$form--container--bkg; 
@@ -171,7 +171,7 @@ form.signup h4 {
   border-bottom: vars.$reset-password-request--form--h4--border;
 }
 
-.reset--password--request > button {
+.reset--password--request > .proceed {
   background: vars.$primary;
   border: solid 1px vars.$primary;
   color: rgb(255, 255, 255);
@@ -182,7 +182,7 @@ form.signup h4 {
   transition: 0.2s;
 }
 
-.reset--password--request > button:hover {
+.reset--password--request > .proceed:hover {
   background: vars.$reset-password-request--form--btn--bkg--hover;
   color: vars.$primary;
 }
@@ -452,7 +452,6 @@ form.signup h4 {
   .form--container--workout--form,
   .form--container--edit--workout--form {
    left: 0;
-   height: calc(100% + 70px);
   }
 
   .edit--form,

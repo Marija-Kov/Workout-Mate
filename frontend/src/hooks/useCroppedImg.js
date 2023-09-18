@@ -14,7 +14,7 @@ export const useCroppedImg = () => {
     return (degreeValue * Math.PI) / 180;
   }
 
-const getCroppedImg = async (imageSrc, pixelCrop, rotation = 0) => {
+const croppedImg = async (imageSrc, pixelCrop, rotation = 0) => {
 
   const image = await createImg(imageSrc);
   const canvas = document.createElement("canvas");
@@ -54,5 +54,5 @@ const getCroppedImg = async (imageSrc, pixelCrop, rotation = 0) => {
 
    return  dataURL
 }
-return {getCroppedImg}
+return {croppedImg}
 }

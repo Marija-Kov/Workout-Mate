@@ -1,46 +1,58 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, act } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import { rest } from "msw";
+import { jest } from "@jest/globals"
 import ConfirmedAccount from "../ConfirmedAccount";
-import { AuthContextProvider } from "../../context/AuthContext";
-import { server } from "../../mocks/server";
-import { WorkoutContextProvider } from "../../context/WorkoutContext";
+import { Provider } from "react-redux";
+import store from "../../redux/store";
+
+let dispatch = store.dispatch;
+
+jest.mock("../../hooks/useGetAccountConfirmationToken", () => ({
+    useGetAccountConfirmationToken: () => {
+        return {
+            getAccountConfirmationToken: () => {}
+        };
+   }
+}))
+
+jest.mock("../../hooks/useConfirmAccount", () => ({
+    useConfirmAccount: () => {
+        return {
+            confirmAccount: () => {}
+        };
+   }
+}))
+
+afterAll(() => {
+    dispatch = null
+    jest.restoreAllMocks()
+})
 
 describe("<ConfirmedAccount />", () => {
-    it("should render error message given that confirmation was not successful", async () => {
-     server.use(
-       rest.get(`${process.env.REACT_APP_API}/api/users/*`, (req, res, ctx) => {
-         return res(
-           ctx.status(404),
-           ctx.json({
-             error: "Expired token or already confirmed",
-           })
-         );
-       })
-     );
-     render(
-      <WorkoutContextProvider>
-       <AuthContextProvider>
-         <ConfirmedAccount />
-       </AuthContextProvider>
-      </WorkoutContextProvider> 
-     );
-     const errorEl = await screen.findByRole("alert");
-     const mayHaveAlreadyBeenConfirmed = await screen.findByText(/already been confirmed/i)
-     expect(errorEl).toBeInTheDocument();
-     expect(errorEl).toHaveClass("error");
-     expect(mayHaveAlreadyBeenConfirmed).toBeInTheDocument();
+    it("should render success message given that confirmation was successful", async () => {
+        render(
+        <Provider store={store}>
+          <ConfirmedAccount />
+        </Provider> 
+      );
+      await act(() => dispatch({type: "CONFIRM_ACCOUNT_SUCCESS", payload: "Account confirmed"}))
+      const success = await screen.findByRole("alert");
+      expect(success).toBeInTheDocument();
+      expect(success).not.toHaveClass("error");
+      expect(success.textContent).toMatch(/account confirmed/i);
     });
 
-    it("should render success message given that confirmation was successful", async () => {
-      render(
-       <WorkoutContextProvider>
-        <AuthContextProvider>
-          <ConfirmedAccount />
-        </AuthContextProvider>
-       </WorkoutContextProvider> 
-      );
-      const success = await screen.findByText(/account has been confirmed/i);
-      expect(success).toBeInTheDocument();
+    it("should render error message given that confirmation token wasn't found or is expired", async () => {
+     render(
+      <Provider store={store}>
+         <ConfirmedAccount />
+      </Provider> 
+     );
+     await act(() => dispatch({type: "CONFIRM_ACCOUNT_FAIL", payload: "Not found"}))
+     const errorEl = await screen.findByRole("alert");
+     expect(errorEl).toBeInTheDocument();
+     expect(errorEl).toHaveClass("error");
+     expect(errorEl.textContent).toMatch(/not found/i)
     });
+
 })

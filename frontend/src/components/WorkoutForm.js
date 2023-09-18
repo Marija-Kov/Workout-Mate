@@ -1,14 +1,16 @@
-import React from 'react';
+import { useState, useRef } from 'react';
 import { useCreateWorkout } from '../hooks/useCreateWorkout';
+import { useDispatch, useSelector } from 'react-redux';
 
-export default function WorkoutForm({hideForm, spreadPages, flipPage, total, limit, getItems}){
-  const { createWorkout, error } = useCreateWorkout();
-  const title = React.useRef();
-  const muscle_group = React.useRef();
-  const load = React.useRef();
-  const reps = React.useRef();
-
-  const [emptyFields, setEmptyFields] = React.useState([]);
+export default function WorkoutForm(){
+  const dispatch = useDispatch();
+  const { createWorkout } = useCreateWorkout();
+  const { createWorkoutError } = useSelector(state => state.workout);
+  const title = useRef();
+  const muscle_group = useRef();
+  const load = useRef();
+  const reps = useRef();
+  const [emptyFields, setEmptyFields] = useState([]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -18,27 +20,21 @@ export default function WorkoutForm({hideForm, spreadPages, flipPage, total, lim
       load: load.current.value,
       reps: reps.current.value,
     };
-    await createWorkout(workout);
-    if (!workout.title) {
-      setEmptyFields((prev) => ["title", ...prev]);
-    }
-    if (!workout.muscle_group) {
-      setEmptyFields((prev) => ["muscle group", ...prev]);
-    }
-    if (!workout.reps) {
-      setEmptyFields((prev) => ["reps", ...prev]);
-    }
-    if (!workout.load) {
-      setEmptyFields((prev) => ["load", ...prev]);
-    }
 
+    for (let key in workout){
+      if(!workout[key]) {
+        setEmptyFields((prev) => [key, ...prev]);
+       }  
+    }
     if(workout.title && workout.muscle_group && workout.reps && workout.load){
-     hideForm();
-     await getItems("", 0);
-     spreadPages(total, limit);
-     flipPage(1)
-     setEmptyFields([]);
-    }   
+      await createWorkout(workout);
+      setEmptyFields([]);
+    } else {
+       dispatch({type: "CREATE_WORKOUT_FAIL", payload: "Please fill out the empty fields"})
+       setTimeout(() => {
+        dispatch({type: "RESET_ERROR_MESSAGES"})
+        }, 5000) 
+    }  
   };
 
   return (
@@ -47,7 +43,10 @@ export default function WorkoutForm({hideForm, spreadPages, flipPage, total, lim
       <button
         aria-label="close form"
         className="close material-symbols-outlined"
-        onClick={hideForm}
+        onClick={() =>{
+         dispatch({type: "SHOW_CREATE_WORKOUT_FORM"})
+         dispatch({type: "RESET_ERROR_MESSAGES"})
+        }}
       >       
         close
       </button>
@@ -63,7 +62,7 @@ export default function WorkoutForm({hideForm, spreadPages, flipPage, total, lim
         className={emptyFields.includes("title") ? "error" : ""}
       />
       <label htmlFor="muscle_group">muscle group:</label>
-      <select ref={muscle_group} aria-label="muscle group" name="muscle_group" id="muscle_group" className={emptyFields.includes("muscle group") ? "error" : ""}>
+      <select ref={muscle_group} aria-label="muscle group" name="muscle_group" id="muscle_group" className={emptyFields.includes("muscle_group") ? "error" : ""}>
         <option value="">-please select-</option>
         <option value="chest">chest</option>
         <option value="shoulder">shoulder</option>
@@ -74,7 +73,7 @@ export default function WorkoutForm({hideForm, spreadPages, flipPage, total, lim
         <option value="glute">glute</option>
         <option value="ab">ab</option>
         <option value="calf">calf</option>
-        <option value="forearm and grip">forearm and grip</option>
+        <option value="forearmAndGrip">forearm and grip</option>
       </select>
       <label>number of reps:</label>
       <input
@@ -95,9 +94,9 @@ export default function WorkoutForm({hideForm, spreadPages, flipPage, total, lim
         className={emptyFields.includes("load") ? "error" : ""}
       />
         <button className="workout--form--btn" aria-label="submit workout button">Add workout</button>
-      {error && (
+      {createWorkoutError && (
         <div role="alert" className="error">
-          {error}
+          {createWorkoutError}
         </div>
       )}
     </form>

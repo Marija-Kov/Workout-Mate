@@ -1,24 +1,23 @@
 import React, { Suspense } from 'react';
 import { useLogin } from '../hooks/useLogin';
+import { useSelector, useDispatch } from 'react-redux';
 
 const ForgotPasswordForm = React.lazy(() =>
   import("../components/ForgotPasswordForm")
 );
 
 const Login = () => {
+  const dispatch = useDispatch();
+    const { loginError, loading } = useSelector(state => state.user);
+    const { showForgotPasswordForm } = useSelector(state => state.showComponent);
     const email = React.useRef();
     const password = React.useRef();
-    const {login, isLoading, error} = useLogin();
-    const [forgotPasswordForm, setForgotPasswordForm] = React.useState(false);
+    const { login } = useLogin();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         const credentials = { email: email.current.value, password: password.current.value };
         await login(credentials);
-    }
-
-    const forgotPassword = () => {
-      setForgotPasswordForm(prev=>!prev)
     }
 
     return (
@@ -50,14 +49,14 @@ const Login = () => {
             <button
               type="button"
               className="forgot--password"
-              onClick={forgotPassword}
+              onClick={() => dispatch({type: "SHOW_FORGOT_PASSWORD_FORM"})}
             >
               Forgot the password?
             </button>
-            <button className="log-in--form--btn" disabled={isLoading}>
+            <button className="log-in--form--btn" disabled={loading}>
               Log in
             </button>
-            {isLoading && (
+            {loading && (
               <div className="loader--container">
                 <div className="lds-ellipsis">
                   <div></div>
@@ -67,17 +66,17 @@ const Login = () => {
                 </div>
               </div>
             )}
-            {error && (
+            {loginError && (
               <div role="alert" className="error">
-                {error}
+                {loginError}
               </div>
             )}
           </form>
         </div>
 
-        {forgotPasswordForm && (
+        {showForgotPasswordForm && (
           <Suspense>
-            <ForgotPasswordForm forgotPassword={forgotPassword} />
+            <ForgotPasswordForm/>
           </Suspense>
         )}
       </>

@@ -37,11 +37,13 @@ describe("authController", () => {
       expect(res.error).toBeTruthy();
     });
 
-    it("should respond with the user id and account confirmation token given that email is valid and password strong enough", async () => {
+    it("should respond with the user id and account confirmation token and success message given that email is valid and password strong enough", async () => {
       const user = { email: "keech@validemail.com", password: "abcABC123!" };
       const res = await agent.post("/api/users/signup").send(user);
       expect(res._body.id).toBeTruthy();
       expect(res._body.token).toBeTruthy();
+      expect(res._body.success).toBeTruthy();
+      expect(res._body.success).toMatch(/pending confirmation/i);
     });
 
     it("should delete oldest user in the database given that the number of users has reached the limit", async () => {
@@ -76,7 +78,7 @@ describe("authController", () => {
   describe("GET /api/users/:accountConfirmationToken", () => {
     it("should respond with error if the confirmation token was invalid", async () => {
       const res = await agent.get(`/api/users/forgedOrExpiredToken`);
-      expect(res._body).toHaveProperty("error", "User not found.");
+      expect(res._body).toHaveProperty("error", "Couldn't find user with provided confirmation token - this might be because the account has already been confirmed");
     });
 
     it("should respond with success message if the confirmation token was valid", async () => {
@@ -181,7 +183,7 @@ describe("authController", () => {
           .set("Authorization", `Bearer ${userLoggedIn.token}`)
           .send({ username: newUsername })
       )._body;
-      expect(res).toHaveProperty("username", newUsername);
+      expect(res.user).toHaveProperty("username", newUsername);
     });
 
     it("should respond with user details updated with the new profile image given that the user is authorized and a new image is submitted", async () => {
@@ -191,15 +193,33 @@ describe("authController", () => {
         user.password,
         "logged-in"
       );
-      const newProfileImg = "selectedImageEncodedToBase64akaAVeryLargeString";
+      const newProfileImg = "data:image/jpeg;base64,/9j/4QEKRXhpZgAATU0AKgAAAAgACAEbAAUAAAABA";
       const res = (
         await agent
           .patch(`/api/users/${userLoggedIn.id}`)
           .set("Authorization", `Bearer ${userLoggedIn.token}`)
           .send({ profileImg: newProfileImg })
       )._body;
-      expect(res).toHaveProperty("profileImg", newProfileImg);
+      expect(res.user).toHaveProperty("profileImg", newProfileImg);
     });
+
+    it("should respond with error if file type is wrong", async () => {
+      const user = { email: "cecee@hello.yu", password: "5tr0ng+P@ssw0rd" };
+      const userLoggedIn = await mockUser(
+        user.email,
+        user.password,
+        "logged-in"
+      );
+      const newProfileImg = "data:image/psd;4QEKRXhpZgAATU0AKgAAAAgACAEbAAU";
+      const res = (
+        await agent
+          .patch(`/api/users/${userLoggedIn.id}`)
+          .set("Authorization", `Bearer ${userLoggedIn.token}`)
+          .send({ profileImg: newProfileImg })
+      )._body;
+      expect(res.error).toBeTruthy();
+      expect(res.error).toMatch(/bad input/i)
+    })
   });
 
   describe("DELETE /api/users/:id", () => {
@@ -243,16 +263,13 @@ describe("authController", () => {
 
     it("should respond with error if too many requests were sent in a short amount of time", async () => {
       const user = { email: "invalidemail", password: "abcABC123!" };
-      const max = process.env.TEST_MAX_API_USERS_REQS;
-      for (let i = 0; i < max; ++i){
-       await agent.post("/api/users/signup").send(user);
+      const maxReq = process.env.TEST_MAX_API_USERS_REQS;
+      let res;
+      for (let i = 0; i <= maxReq + 1; ++i){
+       res = await agent.post("/api/users/signup").send(user);
       }
-      const res = (
-        await agent.post("/api/users/signup").send(user)
-      )._body;
-
-      expect(res.error).toBeTruthy();
-      expect(res.error).toMatch(/too many requests/i);
+      expect(res._body.error).toBeTruthy();
+      expect(res._body.error).toMatch(/too many requests/i);
     });
 
   })

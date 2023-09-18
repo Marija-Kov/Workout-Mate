@@ -1,7 +1,6 @@
-import React from 'react';
+import { useEffect, lazy, Suspense } from 'react';
 import WorkoutDetails from '../components/WorkoutDetails'
 import WorkoutForm from '../components/WorkoutForm'
-import { useWorkoutContext } from '../hooks/useWorkoutContext'
 import Pagination from '../components/Pagination';
 import { useSearch } from '../hooks/useSearch';
 import Search from '../components/Search';
@@ -9,77 +8,36 @@ import { logOutIfTokenExpired } from '../utils/logOutIfTokenExpired';
 import { Chart } from '../components/Chart';
 import { ChartPlaceholder } from '../components/ChartPlaceholder';
 import { WorkoutsPlaceholder } from '../components/WorkoutsPlaceholder';
+import { useDispatch, useSelector } from 'react-redux';
+const EditWorkout = lazy(() => import("../components/EditWorkout"));
 
 export default function Home() {
-    const [addWorkoutForm, setAddWorkoutForm] = React.useState(false);
-    const { workouts } = useWorkoutContext(); 
-    const { search, total, limit, allWorkoutsMuscleGroups, isLoading, error } = useSearch();
-    const [page, setPage] = React.useState(0);
-    const [pageSpread, setPageSpread] = React.useState([]);
-    const [query, setQuery] = React.useState("");
+    const dispatch = useDispatch();
+    const { showCreateWorkoutForm, showEditWorkoutForm } = useSelector(state => state.showComponent)
+    const { workouts, loading, setWorkoutsError } = useSelector(state => state.workout);
+    const { allUserWorkoutsMuscleGroups } = workouts;
+    const page = useSelector(state => state.page);
+    const query = useSelector(state => state.query);
+    const { total, workoutsChunk } = workouts;
+    const { search } = useSearch();
 
-    React.useEffect(() => {
-      getItems(query, page);
+    useEffect(() => {
+      search(query, page);
     }, [query, page]);
-
-    React.useEffect(()=> {
-      spreadPages(total, limit)
-    },[total,limit])
-
-    const getItems = async (q,p) => {
-      await search(q, p);
-    };
-    
-    const spreadPages = (t, l) => {
-      const pagesNum = Math.ceil(t / l);
-      let spread = [];
-      for (let i = 1; i <= pagesNum; ++i) {
-        spread.push(i);
-      }
-      setPageSpread(spread);
-    };
-
-   const hideForm = () => {
-       setAddWorkoutForm(false)
-   }
-
-   const flipPage = (num) => {
-     setPage((prev) => {
-       if (num === -1) return prev + num;
-       if (num[0]) return prev + num[0];
-       return num - 1;
-     });
-   };
-
-   const handleSearch = async (e) => {
-     e.preventDefault();
-     await getItems(query, page);
-   };
-
-   const handleSearchChange = (e) => {
-      setQuery(e.target.value);
-      setPage(0);
-   }
-
-   const muscleGroups = React.useMemo(() => allWorkoutsMuscleGroups, [allWorkoutsMuscleGroups.length])
 
     return (
       <div className="home--container" onClick={logOutIfTokenExpired}>
         <div className="home">
-          <Search
-            handleSearchChange={handleSearchChange}
-            handleSearch={handleSearch}
-            query={query}
-            isLoading={isLoading}
-          />
-            {error && (
+          <Search/>
+            {setWorkoutsError && (
               <div role="alert" className="error">
-                {error}
+                {setWorkoutsError}
               </div>
             )}
+
           <div aria-label="workouts" className="workouts--container">
-            {workouts ?
-              workouts.map((workout) => (
+            {total ?
+              workoutsChunk.map((workout) => (
                 <WorkoutDetails
                   key={workout._id}
                   id={workout._id}
@@ -89,57 +47,49 @@ export default function Home() {
                   load={workout.load}
                   createdAt={workout.createdAt}
                   updatedAt={workout.updatedAt}
-                  page={page}
-                  getItems={getItems}
-                  spreadPages={spreadPages}
-                  total={total}
-                  limit={limit}
                 />
-              )) : <WorkoutsPlaceholder />}
-             {workouts && !workouts.length && !isLoading && 
-              <h4 className="get--started">
-                {!query && <>Buff it up to get started.<br></br>No pressure <span>🥤</span></>} 
-                {query && <>No "{query}" workouts found.</>} 
-              </h4>}
+              )) : (
+                loading ?
+                <WorkoutsPlaceholder /> : 
+                <h4 className="get--started">
+                  { query ? 
+                   <>No "{query}" workouts found.</> :
+                   <>Buff it up to get started.<br></br>No pressure <span>🥤</span></> // TODO: This message shouldn't flash when query length decreases and hits 0, right before search function runs.
+                  }
+              </h4>
+              )}
            </div>
-          {workouts ? <Chart muscleGroups={muscleGroups}/> : <ChartPlaceholder />}
-          {!addWorkoutForm && (
+           
+          {allUserWorkoutsMuscleGroups && allUserWorkoutsMuscleGroups.length ? <Chart /> : (
+          loading ? <ChartPlaceholder /> : "")}
+          
+          {showCreateWorkoutForm ?
+            <WorkoutForm /> :
             <button
               aria-label="buff it up"
-              className={workouts && workouts.length ? 
+              className={ total ? 
                            "add--workout" : (
                             query ? 
                             "add--workout" : (
-                            isLoading ?
+                            loading ?
                             "add--workout is--loading" : "add--workout no--workouts--yet" 
                             )
                          )}
-              onClick={() => setAddWorkoutForm(true)}
-              disabled={isLoading}
+              onClick={() => dispatch({type: "SHOW_CREATE_WORKOUT_FORM"})}
+              disabled={loading}
             >
               + Buff It Up
             </button>
+          }
+
+          {showEditWorkoutForm && (
+            <Suspense>
+              <EditWorkout />
+            </Suspense>  
           )}
 
-          {workouts && workouts.length > 0 &&
-          <Pagination
-            page={page}
-            pageSpread={pageSpread}
-            total={total}
-            limit={limit}
-            flipPage={flipPage}
-          />}
-          
-          {addWorkoutForm && (
-            <WorkoutForm
-              hideForm={hideForm}
-              getItems={getItems}
-              spreadPages={spreadPages}
-              flipPage={flipPage}
-              total={total}
-              limit={limit}
-            />
-          )}
+          {total ? <Pagination /> : ""}
+
           <div className="space"></div>
           
         </div>

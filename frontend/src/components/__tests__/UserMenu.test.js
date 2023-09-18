@@ -1,19 +1,17 @@
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import user from "@testing-library/user-event";
-import { AuthContext } from "../../context/AuthContext";
-import { WorkoutContext } from "../../context/WorkoutContext";
+import user from "@testing-library/user-event"; 
 import UserMenu from "../UserMenu";
+import { Provider } from "react-redux";
+import store from "../../redux/store";
 
 describe("<UserMenu />", () => {
     it("should render UserMenu correctly", async () => {
       user.setup();
       render(
-        <WorkoutContext.Provider value={{ workouts: [] }}>
-          <AuthContext.Provider value={{ user: {} }}>
+        <Provider store={store}>
             <UserMenu />
-          </AuthContext.Provider>
-        </WorkoutContext.Provider>
+        </Provider>
       );
       const openUserSettings = await screen.findByLabelText(/open user settings/i);
       const logoutBtn = await screen.findByLabelText(/log out/i);
@@ -24,11 +22,9 @@ describe("<UserMenu />", () => {
     it("should focus UserMenu elements in correct order", async () => {
       user.setup();
       render(
-        <WorkoutContext.Provider value={{ workouts: [] }}>
-          <AuthContext.Provider value={{ user: {} }}>
+          <Provider store={store}>
               <UserMenu />
-          </AuthContext.Provider>
-        </WorkoutContext.Provider>
+          </Provider>
       );
       const openUserSettings = await screen.findByLabelText(/open user settings/i);
       const logoutBtn = await screen.findByLabelText(/log out/i);
@@ -38,20 +34,16 @@ describe("<UserMenu />", () => {
       expect(logoutBtn).toHaveFocus();
     })
 
-    it("should render Profile settings component when user clicks on Settings in User menu", async () => {
+    it("should set showUserSettingsForm to true when user clicks on 'Settings' in User menu", async () => {
       user.setup();
       render(
-        <WorkoutContext.Provider value={{ workouts: [] }}>
-          <AuthContext.Provider value={{ user: {} }}>
+          <Provider store={store}>
               <UserMenu />
-          </AuthContext.Provider>
-        </WorkoutContext.Provider>
+          </Provider>
       );
       const openUserSettings = await screen.findByLabelText(/settings/i);
       await user.click(openUserSettings);
-      const userSettings = await screen.findByLabelText(
-        /change user settings/i
-      );
-      expect(userSettings).toBeInTheDocument();
+      let state = store.getState();
+      expect(state.showComponent.showUserSettingsForm).toBeTruthy()
     });
 })

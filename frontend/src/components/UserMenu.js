@@ -1,19 +1,10 @@
 import React from "react";
 import { useLogout } from "../hooks/useLogout";
-import UserSettings from "./UserSettings";
+import { useDispatch } from "react-redux";
 
-export default function UserMenu(props) {
+export default function UserMenu() {
+  const dispatch = useDispatch();
   const { logout } = useLogout();
-  const [userSettings, setUserSettings] = React.useState(false);
-
-  const closeUserSettings = () => {
-    setUserSettings(false)
-  }
-
-  const closeAllAndLogout = () => {
-    props.userMenu();
-    logout()
-  }
 
   return (
     <>
@@ -21,23 +12,17 @@ export default function UserMenu(props) {
         <button
           aria-label="open user settings"
           className="user--menu--item"
-          onClick={() => setUserSettings((prev) => !prev)}
+          onClick={() => dispatch({type: "SHOW_USER_SETTINGS_FORM"})}
         >
           Settings
         </button>
         <button 
           aria-label="log out"
-          className="user--menu--item" onClick={closeAllAndLogout}>
+          className="user--menu--item" onClick={() => logout()}>
           Log Out
         </button>
       </div>
 
-      {userSettings && (
-        <UserSettings
-          closeUserSettings={closeUserSettings}
-          changeProfileImg={props.changeProfileImg}
-        />
-      )}
     </>
   );
 }

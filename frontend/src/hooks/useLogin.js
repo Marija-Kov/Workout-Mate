@@ -1,15 +1,9 @@
-import React from 'react';
-import { useAuthContext } from './useAuthContext';
-
+import { useDispatch } from 'react-redux';
+ 
 export const useLogin = () => {
- const [user, setUser] = React.useState(null);
- const [error, setError] = React.useState(null);
- const [isLoading, setIsLoading] = React.useState(null); 
- const { dispatch } = useAuthContext();
-
+ const dispatch = useDispatch();
  const login = async (credentials) => {
-    setIsLoading(true);
-    setError(null); 
+ dispatch({type: "LOGIN_REQ"}) 
      const response = await fetch(
        `${process.env.REACT_APP_API}/api/users/login`,
        {
@@ -21,19 +15,19 @@ export const useLogin = () => {
         const json = await response.json();
 
         if (!response.ok){
-            setIsLoading(false);
-            setError(json.error);
+          dispatch({type: "LOGIN_FAIL", payload: json.error}) 
+          setTimeout(() => {
+            dispatch({type: "RESET_ERROR_AND_SUCCESS_MESSAGES"})
+            }, 5000) 
         }
         if (response.ok) {
             localStorage.setItem('user', JSON.stringify(json));
-            dispatch({type:'LOGIN', payload:json});
-            setIsLoading(false)
-            setError(null);
-            setUser(json)
+            dispatch({type:'LOGIN_SUCCESS', payload:json});
+
         }
 
 
  }
 
-    return { login, isLoading, error, user }
+    return { login }
 }

@@ -2,6 +2,10 @@ const Workout = require('../models/workoutModel');
 const mongoose = require('mongoose');
 
 const getAllItems = async (req, res) => {
+  if(!req.user){
+    res.status(401).json({error: "Not authorized"})
+    return
+  }
  const page = req.query.p || 0;
  const itemsPerPage = 3;
  const search = req.query.search || null;
@@ -27,6 +31,7 @@ const getAllItems = async (req, res) => {
        allUserWorkoutsMuscleGroups: allUserWorkoutsMuscleGroups,
        workoutsChunk: workoutsChunk,
        limit: itemsPerPage,
+       pageSpread: pageSpreadHelper(allUserWorkoutsByQuery.length, itemsPerPage),
        noWorkoutsByQuery: allUserWorkoutsByQuery.length ? false : `No workouts found by query '${search}'`,
      });
  } catch (error) {
@@ -35,14 +40,22 @@ const getAllItems = async (req, res) => {
 };
 
 const addItem = async (req, res) => {
+    if(!req.user){
+      res.status(401).json({error: "Not authorized"})
+      return
+    }
     const {title, muscle_group, reps, load} = req.body;
+    if(!title || !muscle_group || !String(reps) || !String(load)){
+      res.status(400).json({error: "Please fill out the empty fields"})
+      return
+    }
     const user_id = req.user._id;
     const allWorkoutsByUser = await Workout.find({ user_id });
     const limit =
       process.env.NODE_ENV !== "test"
         ? Number(process.env.MAX_WORKOUTS_PER_USER)
         : Number(process.env.TEST_MAX_WORKOUTS_PER_USER);
-    if (allWorkoutsByUser.length >= limit) {
+    if (allWorkoutsByUser.length === limit) {
       const id = allWorkoutsByUser[0]._id;
       await Workout.findOneAndDelete({ _id: id });
     }
@@ -85,6 +98,10 @@ const deleteItem = async (req, res) => {
 };
 
 const deleteAllUserItems = async (req, res) => {
+  if(!req.user){
+    res.status(401).json({error: "Not authorized"})
+    return
+  }
   const user_id = req.user._id;
   try {
    const workouts = await Workout.deleteMany({ user_id }); 
@@ -92,6 +109,15 @@ const deleteAllUserItems = async (req, res) => {
   } catch (error){
    res.status(400).json({ error: error.message });
   }
+};
+
+const pageSpreadHelper = (t, l) => {
+  const pagesNum = Math.ceil(t / l);
+  let spread = [];
+  for (let i = 1; i <= pagesNum; ++i) {
+    spread.push(i);
+  }
+  return spread
 };
 
 module.exports = {

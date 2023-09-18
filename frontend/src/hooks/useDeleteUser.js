@@ -1,13 +1,13 @@
-import React from "react";
-import { useAuthContext } from "./useAuthContext";
+import { useSelector, useDispatch } from "react-redux";
 
 export const useDeleteUser = () => {
-const [ error, setError ] = React.useState(null);
-const { user } = useAuthContext();
+const user =  useSelector(state => state.user);
+const dispatch = useDispatch(); 
 
  const deleteUser = async (id) => {
+    dispatch({type: "DELETE_USER_REQ"})
     if (!user) {
-      setError("Not authorized")
+    dispatch({type: "DELETE_USER_FAIL", payload: "You are not authorized to do that"})
        return;
      }
    const response = await fetch(`${process.env.REACT_APP_API}/api/users/${id}`, {
@@ -18,14 +18,13 @@ const { user } = useAuthContext();
    });
    const json = await response.json();
    if(response.ok){
-    setError(null)
-    return "User deleted successfully"
+    dispatch({type: "DELETE_USER_SUCCESS", payload: json.success})
    }
    if(!response.ok){
-    setError("Couldn't delete account, user id not found in the database.")
+    dispatch({type: "DELETE_USER_FAIL", payload: json.error})
     return
    }
  }
- return { deleteUser, error }
+ return { deleteUser }
 
 }

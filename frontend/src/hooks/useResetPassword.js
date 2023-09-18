@@ -1,10 +1,12 @@
-import React from 'react'
+import { useDispatch } from "react-redux";
 
 export default function useResetPassword() {
-    const [error, setError] = React.useState(null);
-    const [success, setSuccess] = React.useState(null);
-
+    const dispatch = useDispatch();
     const resetPassword = async (token, password, confirmPassword) => {
+      dispatch({type: "RESET_PASSWORD_REQ"});
+      if(!token){
+        dispatch({type: "RESET_PASSWORD_FAIL", payload: "Reset password token not found" })
+      }
       const response = await fetch(
         `${process.env.REACT_APP_API}/api/reset-password/${token}`,
         {
@@ -20,12 +22,11 @@ export default function useResetPassword() {
       );
       const json = await response.json();
       if (!response.ok) {
-        setError(json.error);
+        dispatch({type: "RESET_PASSWORD_FAIL", payload: json.error })
       } else if (response.ok) {
-        setSuccess(json.success);
-        setError(null);
+        dispatch({type: "RESET_PASSWORD_SUCCESS", payload: json.success })
       }
     };
 
-  return { resetPassword, error, success };
+  return { resetPassword };
 }

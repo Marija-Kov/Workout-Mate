@@ -1,15 +1,14 @@
-import React from 'react'
-import { useWorkoutContext } from "../hooks/useWorkoutContext";
-import { useAuthContext } from "../hooks/useAuthContext";
+import { useSelector, useDispatch } from 'react-redux';
 
 export default function useEditWorkout() {
-  const { dispatch } = useWorkoutContext();
-  const { user } = useAuthContext();
-  const [error, setError] = React.useState(null);
-  
-  const editWorkout = async (id, payload, closeEdit) => {
-     if (!user) {
-       setError("You must be logged in");
+  const dispatch = useDispatch();
+  const { user } =  useSelector(state => state.user)
+  const { workouts } = useSelector(state => state.workout);
+  const { allUserWorkoutsMuscleGroups } = workouts;
+  const editWorkout = async (id, payload) => {
+    dispatch({type: "UPDATE_ONE_REQ"}) 
+    if (!user) {
+       dispatch({type: "UPDATE_ONE_FAIL", payload: "You must be logged in"})
        return;
      }
    const response = await fetch(
@@ -25,15 +24,15 @@ export default function useEditWorkout() {
    );
    const json = await response.json(); 
        if (!response.ok) {
-         setError("Please fill out the empty fields");
+        dispatch({type: "UPDATE_ONE_FAIL", payload: json.error})
          return
        }
        if (response.ok) {
-         setError(null)
-         closeEdit()
-         dispatch({ type: "UPDATE_ONE", payload: json });
+         dispatch({ type: "UPDATE_ONE_SUCCESS", payload: json });
+         if(payload.muscle_group) dispatch({type: "SET_ROUTINE_BALANCE", payload: allUserWorkoutsMuscleGroups})
+         dispatch({type: "SHOW_EDIT_WORKOUT_FORM"});
        }
   }
 
-  return {editWorkout, error}
+  return {editWorkout}
 }

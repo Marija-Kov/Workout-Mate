@@ -1,9 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import useResetPassword from '../hooks/useResetPassword';
+import { useSelector } from 'react-redux';
 
 export default function ResetPassword(){
-    const { resetPassword, error, success } = useResetPassword();
+    const { resetPasswordError, success } = useSelector(state => state.user);
+    const { resetPassword } = useResetPassword();
     const password = React.useRef();
     const confirmPassword = React.useRef();
 
@@ -32,13 +34,13 @@ export default function ResetPassword(){
             ref={confirmPassword}
           />
           {!success && <button>Save</button>}
-          {error && (
+          {resetPasswordError && (
             <div role="alert" className="error">
-              {error}.
+              {resetPasswordError}.
            
             </div>
           )}
-          {error && error.match(/invalid/i) && <p><Link to="/login">Go back</Link> to resend the request.</p>}
+          {resetPasswordError && resetPasswordError.match(/invalid/i) && <p><Link to="/login">Go back</Link> to resend the request.</p>}
           {success && (
             <div role="alert" className="success">
               {success}
