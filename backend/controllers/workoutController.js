@@ -31,7 +31,6 @@ const getAllItems = async (req, res) => {
        allUserWorkoutsMuscleGroups: allUserWorkoutsMuscleGroups,
        workoutsChunk: workoutsChunk,
        limit: itemsPerPage,
-       page: Number(page),
        pageSpread: pageSpreadHelper(allUserWorkoutsByQuery.length, itemsPerPage),
        noWorkoutsByQuery: allUserWorkoutsByQuery.length ? false : `No workouts found by query '${search}'`,
      });

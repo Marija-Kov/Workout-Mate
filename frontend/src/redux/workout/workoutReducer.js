@@ -1,7 +1,7 @@
 import * as a from "./workoutActionTypes";
 
 const init = {
-  workouts: { total: 0, limit: 3, allUserWorkoutsMuscleGroups: [], workoutsChunk: [], pageSpread: [1], page: 0},
+  workouts: { total: 0, limit: 3, allUserWorkoutsMuscleGroups: [], workoutsChunk: [], pageSpread: [1] },
   loading: false,
   setWorkoutsError: null,
   createWorkoutError: null,
@@ -40,7 +40,7 @@ export const workoutReducer = (state = init, action) => {
                            workoutsChunk: [action.payload, ...state.workouts.workoutsChunk], 
                            allUserWorkoutsMuscleGroups:[action.payload.muscle_group, ...state.workouts.allUserWorkoutsMuscleGroups],
                            pageSpread: pageSpreadHelper(state.workouts.total, state.workouts.limit),
-                           page: 0},
+                           },
                 loading: false,
                 createWorkoutError: null
             }; 
@@ -103,7 +103,7 @@ export const workoutReducer = (state = init, action) => {
             }
         case a.DELETE_ALL_WORKOUTS_SUCCESS:
             return {
-                workouts: { total: 0, limit: 3, allUserWorkoutsMuscleGroups: [], workoutsChunk: [], pageSpread: [1], page: 0},
+                workouts: { total: 0, limit: 3, allUserWorkoutsMuscleGroups: [], workoutsChunk: [], pageSpread: [1] },
                 loading: false,
                 deleteAllWorkoutsSuccess: true,
                 deleteAllWorkoutsError: null
