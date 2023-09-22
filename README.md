@@ -1,5 +1,4 @@
 <h1 align="center"><a href="https://workout-mate.onrender.com/">Workout Mate</a></h1>
-<h3 align="center">A MERN stack app with authentication</h3>
 <br>
 <div align="center"><img src="./demo/wm-login.gif" alt="logging into app" /></div> 
 <br>
@@ -86,95 +85,17 @@ In case you want to delete your Workout Mate account, you will have to log in, o
 
 - [React](https://reactjs.org/) - User interface
 - [React router](https://reactrouter.com/en/main) - Browser routing
+- [Redux](https://redux.js.org/) - State management
 - [React easy crop](https://www.npmjs.com/package/react-easy-crop) - Image cropping
 - [Date-fns](https://date-fns.org/) - Date formatting
 - [ChartJS](https://www.chartjs.org/) - Charting library
 - [React ChartJS](https://react-chartjs-2.js.org/) - ChartJS library for React
-- [CSS](https://developer.mozilla.org/en-US/docs/Web/CSS) - Styling
+- [SASS](https://sass-lang.com/) - Styling
 
 <br>
 
-## Test coverage <a name = "test"></a>
-
-As of last update:
-
-### Backend
-
-
-File                         | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
------------------------------|---------|----------|---------|---------|-------------------
-All files                    |   95.05 |     92.3 |      92 |   95.05 |                   
- backend                     |    90.9 |       50 |   66.66 |    90.9 |                   
-  database.config.js         |     100 |      100 |     100 |     100 |                   
-  server.js                  |   84.21 |       50 |   33.33 |   84.21 | 26-31             
- backend/controllers         |   94.92 |    96.42 |     100 |   94.92 |                   
-  authController.js          |   94.64 |      100 |     100 |   94.64 | 53,88,98          
-  passwordResetController.js |     100 |      100 |     100 |     100 |                   
-  workoutController.js       |   91.11 |    93.75 |     100 |   91.11 | 31,49,72,82       
- backend/middleware          |      96 |      100 |     100 |      96 |                   
-  requireAuth.js             |     100 |      100 |     100 |     100 |                   
-  sendEmail.js               |   92.85 |      100 |     100 |   92.85 | 36                
- backend/models              |   94.73 |     90.9 |     100 |   94.73 |                   
-  userModel.js               |   94.11 |     90.9 |     100 |   94.11 | 41,67             
-  workoutModel.js            |     100 |      100 |     100 |     100 |                   
- backend/routes              |     100 |      100 |     100 |     100 |                   
-  resetPassword.js           |     100 |      100 |     100 |     100 |                   
-  users.js                   |     100 |      100 |     100 |     100 |                   
-  workouts.js                |     100 |      100 |     100 |     100 |                   
-
-
-### Frontend
-File                             | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s     
----------------------------------|---------|----------|---------|---------|-----------------------
-All files                        |   78.54 |    71.94 |   76.12 |   81.37 |                       
- src                             |       0 |        0 |       0 |       0 |                       
-  App.js                         |       0 |        0 |       0 |       0 | 6-16                  
-  index.js                       |       0 |      100 |     100 |       0 | 8-9                   
- src/components                  |    76.4 |    74.41 |   74.13 |   81.16 |                       
-  EditWorkout.js                 |      80 |    77.77 |   72.72 |   85.71 | 16,22,47              
-  ForgotPasswordForm.js          |    87.5 |      100 |      75 |    87.5 | 20                    
-  Navbar.js                      |      68 |    65.51 |   83.33 |      80 | 20,29-31              
-  Pagination.js                  |      75 |    61.29 |     100 |     100 | 9-18                  
-  Search.js                      |     100 |      100 |     100 |     100 |                       
-  UserMenu.js                    |      70 |      100 |      60 |   66.66 | 10,14-15              
-  UserSettings.js                |   70.45 |    81.81 |   54.54 |   69.76 | ...,44,52-53,57,67-69 
-  WorkoutDetails.js              |   71.42 |       75 |   66.66 |   66.66 | 12-14,69              
-  WorkoutForm.js                 |   92.59 |    89.47 |   85.71 |   95.83 | 17                    
- src/context                     |   48.27 |       25 |   42.85 |      50 |                       
-  AuthContext.js                 |   78.57 |       50 |     100 |   78.57 | 12-20                 
-  WorkoutContext.js              |      20 |        0 |       0 |   21.42 | 6-29,35-38            
- src/hooks                       |   85.39 |    80.24 |   82.85 |   86.31 |                       
-  useAuthContext.js              |      75 |       50 |     100 |      75 | 7                     
-  useConfirmAccount.js           |     100 |      100 |     100 |     100 |                       
-  useCreateWorkout.js            |     100 |    83.33 |     100 |     100 | 31                    
-  useCroppedImg.js               |    12.5 |        0 |   14.28 |   13.33 | 5-14,19-55            
-  useDeleteAllWorkouts.js        |     100 |      100 |     100 |     100 |                       
-  useDeleteUser.js               |     100 |    83.33 |     100 |     100 | 24                    
-  useDeleteWorkout.js            |     100 |      100 |     100 |     100 |                       
-  useEditWorkout.js              |     100 |    83.33 |     100 |     100 | 28                    
-  useLogin.js                    |     100 |      100 |     100 |     100 |                       
-  useLogout.js                   |   84.61 |       50 |     100 |   84.61 | 11,14                 
-  useResetPassword.js            |     100 |       75 |     100 |     100 | 21                    
-  useSearch.js                   |     100 |      100 |     100 |     100 |                       
-  useSendPasswordResetRequest.js |     100 |      100 |     100 |     100 |                       
-  useSignup.js                   |     100 |      100 |     100 |     100 |                       
-  useUpdateUser.js               |   81.57 |    68.75 |     100 |   83.33 | 40-43,47,50           
-  useWorkoutContext.js           |      80 |       50 |     100 |      80 | 8                     
- src/mocks                       |     100 |      100 |     100 |     100 |                       
-  handlers.js                    |     100 |      100 |     100 |     100 |                       
-  server.js                      |     100 |      100 |     100 |     100 |                       
- src/pages                       |   87.91 |    88.57 |   84.84 |   89.65 |                       
-  About.js                       |     100 |      100 |     100 |     100 |                       
-  ConfirmedAccount.js            |     100 |      100 |     100 |     100 |                       
-  Home.js                        |   71.05 |       60 |   58.33 |   74.28 | 42,46-49,54-55,59-60  
-  Login.js                       |     100 |      100 |     100 |     100 |                       
-  ResetPassword.js               |     100 |      100 |     100 |     100 |                       
-  Signup.js                      |     100 |      100 |     100 |     100 |                       
- src/utils                       |      20 |     12.5 |     100 |      20 |                       
-  logOutIfTokenExpired.js        |      20 |     12.5 |     100 |      20 | 4-13                  
- src/utils/test                  |   86.66 |       80 |     100 |   85.71 |                       
-  genSampleWorkouts.js           |   86.66 |       80 |     100 |   85.71 | 30-31                
-  
+## Test coverage <a name = "test"></a>            
+  Coming soon.
 <br>
 
 ## Todos <a name = "todos"></a>
