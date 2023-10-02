@@ -193,7 +193,7 @@ describe("workoutController", () => {
                .set("Authorization", `Bearer ${user.userLoggedIn.token}`)
            )._body;
            expect(res.error).toBeTruthy();
-           expect(res.error).toMatch(/validation failed/i);
+           expect(res.error).toMatch(/validation failed/i); // TODO: after implementing ApiError, this fails, returns generalized error message instead.
         });
 
         it("should respond with the updated version of the workout provided all the values are valid", async () => {
