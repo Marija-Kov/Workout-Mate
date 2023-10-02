@@ -7,16 +7,16 @@ const {
   updateItem,
   deleteAllUserItems
 } = require("../controllers/workoutController");
-
+const { tryCatch } = require("../error/tryCatch");
 const requireAuth = require('../middleware/requireAuth');
 
 router.use(requireAuth); 
 
-router.get('/', getAllItems);
-router.post('/', addItem);
-router.delete('/:id', deleteItem);
-router.delete('/', deleteAllUserItems);
-router.patch('/:id', updateItem);
+router.get('/', tryCatch(getAllItems));
+router.post('/', tryCatch(addItem));
+router.delete('/:id', tryCatch(deleteItem));
+router.delete('/', tryCatch(deleteAllUserItems));
+router.patch('/:id', tryCatch(updateItem));
 
 
 module.exports = router;
