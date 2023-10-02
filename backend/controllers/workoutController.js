@@ -2,7 +2,7 @@ const Workout = require('../models/workoutModel');
 const mongoose = require('mongoose');
 const { ApiError } = require('../error/error');
 
-const getAllItems = async (req, res) => {
+module.exports.get_all_user_workouts = async (req, res) => {
  if(!req.user){
   ApiError.notAuthorized("Not authorized")
  }
@@ -34,7 +34,7 @@ const getAllItems = async (req, res) => {
      });
 };
 
-const addItem = async (req, res) => {
+module.exports.add_workout = async (req, res) => {
  if(!req.user){
   ApiError.notAuthorized("Not authorized")
  }
@@ -56,7 +56,7 @@ const addItem = async (req, res) => {
  res.status(200).json(workout);
 };
 
-const updateItem = async (req, res) => {
+module.exports.update_workout = async (req, res) => {
  const { id } = req.params;
  if(!mongoose.Types.ObjectId.isValid(id)){
   ApiError.notFound("Invalid workout id")
@@ -65,7 +65,7 @@ const updateItem = async (req, res) => {
  res.status(200).json(workout);
 };
 
-const deleteItem = async (req, res) => {
+module.exports.delete_workout = async (req, res) => {
  const { id } = req.params;
  if(!mongoose.Types.ObjectId.isValid(id)){
   ApiError.notFound("Invalid workout id")
@@ -78,7 +78,7 @@ const deleteItem = async (req, res) => {
  res.status(200).json({workout: workout, remaining: workouts.length});
 };
 
-const deleteAllUserItems = async (req, res) => {
+module.exports.delete_all_user_workouts = async (req, res) => {
  if(!req.user){
   ApiError.notAuthorized("Not authorized")
  }
@@ -95,14 +95,6 @@ const pageSpreadHelper = (t, l) => {
  }
  return spread
 };
-
-module.exports = {
-       getAllItems,
-       addItem,
-       deleteItem,
-       updateItem,
-       deleteAllUserItems
-      }
 
 
 ////------ Handling missing input server-side -----////
