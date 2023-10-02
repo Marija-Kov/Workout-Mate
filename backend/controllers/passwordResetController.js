@@ -8,14 +8,14 @@ const { ApiError } = require("../error/error");
 module.exports.reset_password_request = async (req, res) => {
   const { email } = req.body;
   if(!email.match(/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)){
-    ApiError.badInput("Please enter your email address")
+   ApiError.badInput("Please enter your email address")
   }
   const user = await User.findOne({ email });
   if(!user){
-   ApiError.badInput("That email does not exist in our database")
+   ApiError.notFound("That email does not exist in our database")
   }
   if(user.accountConfirmationToken){
-   ApiError.badInput("The account with that email address has not yet been confirmed")
+   ApiError.notAuthorized("The account with that email address has not yet been confirmed")
   }
   const resetToken = crypto.randomBytes(32).toString("hex");
   user.resetPasswordToken = resetToken;

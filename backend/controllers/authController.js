@@ -43,13 +43,13 @@ module.exports.signup_post = async (req, res) => {
 module.exports.verify_user = async (req, res) => {
   const {accountConfirmationToken} = req.params;
   if(!accountConfirmationToken){
-    ApiError.badInput("Account confirmation token not found")
+    ApiError.notFound("Account confirmation token not found")
   }
    const user = await User.findOne({
     accountConfirmationToken: accountConfirmationToken,
   });
   if(!user){
-    ApiError.badInput("Couldn't find user with provided confirmation token - this might be because the account has already been confirmed")
+    ApiError.notFound("Couldn't find user with provided confirmation token - this might be because the account has already been confirmed")
   }
   user.accountStatus = "active";
   user.accountConfirmationToken = undefined;
@@ -72,7 +72,7 @@ module.exports.login_post = async (req, res) => {
 
 module.exports.user_update_patch = async (req, res) => {
   if(!req.user){
-    ApiError.badInput("Not authorized")
+    ApiError.notAuthorized("Not authorized")
   };
   if(req.body.username && req.body.username.length > 12){
     ApiError.badInput("Too long name")
@@ -104,7 +104,7 @@ module.exports.user_update_patch = async (req, res) => {
 module.exports.user_deletion = async (req, res) => {
   const { id } = req.params;
   if(!id){
-    ApiError.badInput("Not authorized")
+    ApiError.notAuthorized("Not authorized")
   }
   await User.findOneAndDelete({ _id: id });
   res.status(200).json({success: "Account deleted successfully"});

@@ -7,6 +7,12 @@ class ApiError extends Error {
     static badInput(message){
       throw new ApiError(400, message)
     }
+    static notAuthorized(message){
+      throw new ApiError(401, message)
+    }
+    static notFound(message){
+      throw new ApiError(404, message)
+    }
   }
 
 function errorHandler(err, req, res, next){
