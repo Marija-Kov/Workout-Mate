@@ -25,6 +25,54 @@ export default function Home() {
       search(query, page);
     }, [query, page]);
 
+    const renderWorkouts = () => {
+      return workoutsChunk.map((workout) => (
+        <WorkoutDetails
+          key={workout._id}
+          id={workout._id}
+          title={workout.title}
+          muscle_group={workout.muscle_group}
+          reps={workout.reps}
+          load={workout.load}
+          createdAt={workout.createdAt}
+          updatedAt={workout.updatedAt}
+        />
+      ))
+    };
+
+    const renderNoWorkoutsMessage = () => {
+      if(query){
+        return <>No "{query}" workouts found.</>
+      } else {
+       return <>
+               Buff it up to get started.
+               <br></br>
+               No pressure 
+               <span>🥤</span>
+              </> // TODO: This message shouldn't flash when query length decreases and hits 0, right before search function runs.
+      }
+    };
+    
+    const renderPlaceholderOrNoWorkoutsMessage = () => {
+      if(loading){
+       return <WorkoutsPlaceholder /> 
+      } else {
+       return <h4 className="get--started">
+               {renderNoWorkoutsMessage()}
+              </h4>
+      }
+    }
+    const buffItUpButtonClass = () => {
+      if(loading){
+        return "add--workout is--loading"
+      } else {
+       if(total || query){
+        return "add--workout"
+       }
+        return "add--workout no--workouts--yet"
+      }
+    };
+
     return (
       <div className="home--container" onClick={logOutIfTokenExpired}>
         <div className="home">
@@ -36,29 +84,8 @@ export default function Home() {
             )}
 
           <div aria-label="workouts" className="workouts--container">
-            {total ?
-              workoutsChunk.map((workout) => (
-                <WorkoutDetails
-                  key={workout._id}
-                  id={workout._id}
-                  title={workout.title}
-                  muscle_group={workout.muscle_group}
-                  reps={workout.reps}
-                  load={workout.load}
-                  createdAt={workout.createdAt}
-                  updatedAt={workout.updatedAt}
-                />
-              )) : (
-                loading ?
-                <WorkoutsPlaceholder /> : 
-                <h4 className="get--started">
-                  { query ? 
-                   <>No "{query}" workouts found.</> :
-                   <>Buff it up to get started.<br></br>No pressure <span>🥤</span></> // TODO: This message shouldn't flash when query length decreases and hits 0, right before search function runs.
-                  }
-              </h4>
-              )}
-           </div>
+            {total ? renderWorkouts() : renderPlaceholderOrNoWorkoutsMessage()}
+          </div>
            
           {allUserWorkoutsMuscleGroups && allUserWorkoutsMuscleGroups.length ? <Chart /> : (
           loading ? <ChartPlaceholder /> : "")}
@@ -67,14 +94,7 @@ export default function Home() {
             <WorkoutForm /> :
             <button
               aria-label="buff it up"
-              className={ total ? 
-                           "add--workout" : (
-                            query ? 
-                            "add--workout" : (
-                            loading ?
-                            "add--workout is--loading" : "add--workout no--workouts--yet" 
-                            )
-                         )}
+              className={buffItUpButtonClass()}
               onClick={() => dispatch({type: "SHOW_CREATE_WORKOUT_FORM"})}
               disabled={loading}
             >
