@@ -1,6 +1,22 @@
 @use '../fonts';
 @use '../vars';
 
+.get--started {
+  position: absolute;
+  top: 250px;
+  left: 41%;
+  width: 200px;
+  text-align: center;
+  color: vars.$chart-title--color;
+  font-weight: 600;
+}
+
+.no--workouts--found {
+  text-align: left;
+  color: vars.$chart-title--color;
+  font-weight: 600;
+}
+
 .no--workouts--yet {
     animation: no--workouts--yet 3s ease-in-out infinite;
   }
@@ -20,15 +36,10 @@
     }
   }
   
-  .get--started,
   .loading--workouts {
    text-align: center;
    color: vars.$chart-title--color;
    font-weight: 600;
-  }
-  
-  .get--started > span {
-    font-size: 24px;
   }
   
   .loading--workouts{
@@ -142,6 +153,14 @@
 
 @media screen and (max-width: 450px) {
 
+  .get--started {
+   left: 25vw;
+   top: 260px;
+  }
+
+  .no--workouts--found {
+    text-align: center;
+  }
   .workouts--container {
     display: inline-block;
     margin-left: 0;
