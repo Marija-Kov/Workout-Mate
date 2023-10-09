@@ -77,7 +77,7 @@ export default function Home() {
     return (
       <div className="home--container" onClick={logOutIfTokenExpired}>
         <div className="home">
-          <Search/>
+          {allUserWorkoutsMuscleGroups && allUserWorkoutsMuscleGroups.length ? <Search/> : ""}
             {setWorkoutsError && (
               <div role="alert" className="error">
                 {setWorkoutsError}
