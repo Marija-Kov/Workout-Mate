@@ -438,32 +438,6 @@ form.signup h4 {
   margin-bottom: 20px;
 }
 
-@media screen and (max-width: 450px) {
- 
-  .add--workout {
-    margin: 20px auto 10px auto;
-    max-width: 200px;
-    min-width: 100px;
-    width: 100%;
-    background: #373737ed;
-    z-index: 3;
-  }
-
-  .form--container--workout--form,
-  .form--container--edit--workout--form {
-   left: 0;
-  }
-
-  .edit--form,
-  .workout--form {
-   min-width: unset;
-   width: 250px;
-   padding: 10px;
-   margin: 0 10%;
-  }
-
-}
-
 @media screen and (max-width: 600px) {
   .form--container--login,
   .form--container--signup {
@@ -493,3 +467,36 @@ form.signup h4 {
     margin: 0 auto;
   }
  }
+
+@media screen and (max-width: 450px) {
+ 
+  .add--workout {
+    margin: 20px auto 10px auto;
+    max-width: 200px;
+    min-width: 100px;
+    width: 100%;
+    background: #373737ed;
+    z-index: 3;
+  }
+
+  .form--container--workout--form,
+  .form--container--edit--workout--form {
+   position: fixed;
+   left: 0;
+   background: vars.$form--container--bkg;
+   height: 100vh;
+   z-index: 5;
+   top: 0;
+   display: flex;
+   width: 100%;
+  }
+
+  .edit--form,
+  .workout--form {
+   min-width: unset;
+   width: 250px;
+   padding: 10px;
+   margin: 0 16%;
+  }
+
+}
