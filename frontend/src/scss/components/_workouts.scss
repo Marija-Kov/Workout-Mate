@@ -18,22 +18,32 @@
 }
 
 .no--workouts--yet {
-    animation: no--workouts--yet 3s ease-in-out infinite;
+   position: absolute;
+   top: 27vh;
+   left: -35px;
+   min-width: 150px;
+   animation: no--workouts--yet 20s linear infinite;
+   background-image: linear-gradient(
+    0deg,
+   rgb(219, 162, 215), 
+   rgb(212, 122, 147), 
+   rgb(162, 122, 212), 
+   rgb(122, 131, 212), 
+   rgb(99, 148, 255), 
+   rgb(99, 224, 255), 
+   rgb(99, 255, 239), 
+   rgb(99, 255, 140), 
+   rgb(255, 206, 99), 
+   rgb(255, 127, 99),
+   rgb(219, 162, 215),
+   rgb(212, 122, 147)
+   );
+   background-size: 100% 1100%;
   }
   
   @keyframes no--workouts--yet {
-    0% {
-      background: vars.$primary;
-      color: vars.$all--form--btn--text;  
-    }
-    50% {
-      background:vars.$all--form--btn--bkg--hover;
-      color: vars.$primary;
-    }
-    100% {
-      background: vars.$primary;
-      color: vars.$all--form--btn--text;  
-    }
+    0% { background-position: 0% 0%; }
+    100% { background-position: 0% 100%; }
   }
   
   .loading--workouts {
@@ -161,6 +171,12 @@
   .no--workouts--found {
     text-align: center;
   }
+
+  .no--workouts--yet {
+    top: 23vh;
+    left: 25vw;
+  }
+
   .workouts--container {
     display: inline-block;
     margin-left: 0;
