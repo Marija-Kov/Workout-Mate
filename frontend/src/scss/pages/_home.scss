@@ -10,7 +10,6 @@
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: fixed;
-    background-position-y: 40%;
     position: absolute;
     left: 0;
     top: 0;
@@ -18,7 +17,6 @@
   
   .home {
     position: relative;
-    height: 500px;
     top: 70px;
     margin: 0 auto;
     max-width: 900px;
@@ -41,16 +39,24 @@
     grid-area: space;
   }
 
+  @media screen and (max-width: 1024px) {
+
+    .home--container {
+     background-size: 1500px;
+    }
+
+  }
+
   @media screen and (max-width: 450px) {
-     
+
     .home--container {
       height: fit-content;
+      min-height: 100vh;
     }
-  
+     
     .home {
       min-width: unset;
       grid-template-columns: auto;
-      height: fit-content;
       grid-template-areas:
       'chart chart'
       'chart chart'

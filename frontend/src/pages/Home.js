@@ -42,14 +42,16 @@ export default function Home() {
 
     const renderNoWorkoutsMessage = () => {
       if(query){
-        return <>No "{query}" workouts found.</>
+        return <div className="no--workouts--found">
+               No "{query}" workouts found.
+              </div>
       } else {
-       return <>
+       return <div className="get--started">
                Buff it up to get started.
                <br></br>
                No pressure 
                <span>🥤</span>
-              </> // TODO: This message shouldn't flash when query length decreases and hits 0, right before search function runs.
+              </div> // TODO: This message shouldn't flash when query length decreases and hits 0, right before search function runs.
       }
     };
     
@@ -57,11 +59,10 @@ export default function Home() {
       if(loading){
        return <WorkoutsPlaceholder /> 
       } else {
-       return <h4 className="get--started">
-               {renderNoWorkoutsMessage()}
-              </h4>
+       return renderNoWorkoutsMessage()        
       }
-    }
+    };
+
     const buffItUpButtonClass = () => {
       if(loading){
         return "add--workout is--loading"
@@ -76,7 +77,7 @@ export default function Home() {
     return (
       <div className="home--container" onClick={logOutIfTokenExpired}>
         <div className="home">
-          <Search/>
+          {allUserWorkoutsMuscleGroups && allUserWorkoutsMuscleGroups.length ? <Search/> : ""}
             {setWorkoutsError && (
               <div role="alert" className="error">
                 {setWorkoutsError}

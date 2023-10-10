@@ -1,34 +1,55 @@
 @use '../fonts';
 @use '../vars';
 
+.get--started {
+  position: absolute;
+  top: 250px;
+  left: 41%;
+  width: 200px;
+  text-align: center;
+  color: vars.$chart-title--color;
+  font-weight: 600;
+}
+
+.no--workouts--found {
+  text-align: left;
+  color: vars.$chart-title--color;
+  font-weight: 600;
+}
+
 .no--workouts--yet {
-    animation: no--workouts--yet 3s ease-in-out infinite;
+   position: absolute;
+   top: 27vh;
+   left: -35px;
+   min-width: 150px;
+   animation: no--workouts--yet 20s linear infinite;
+   background-image: linear-gradient(
+    0deg,
+   rgb(219, 162, 215), 
+   rgb(212, 122, 147), 
+   rgb(162, 122, 212), 
+   rgb(122, 131, 212), 
+   rgb(99, 148, 255), 
+   rgb(99, 224, 255), 
+   rgb(99, 255, 239), 
+   rgb(99, 255, 140), 
+   rgb(255, 206, 99), 
+   rgb(255, 127, 99),
+   rgb(219, 162, 215),
+   rgb(212, 122, 147)
+   );
+   background-size: 100% 1100%;
   }
   
   @keyframes no--workouts--yet {
-    0% {
-      background: vars.$primary;
-      color: vars.$all--form--btn--text;  
-    }
-    50% {
-      background:vars.$all--form--btn--bkg--hover;
-      color: vars.$primary;
-    }
-    100% {
-      background: vars.$primary;
-      color: vars.$all--form--btn--text;  
-    }
+    0% { background-position: 0% 0%; }
+    100% { background-position: 0% 100%; }
   }
   
-  .get--started,
   .loading--workouts {
    text-align: center;
    color: vars.$chart-title--color;
    font-weight: 600;
-  }
-  
-  .get--started > span {
-    font-size: 24px;
   }
   
   .loading--workouts{
@@ -56,7 +77,7 @@
 .workouts--container {
   grid-area: workouts;
   margin-left: 40px;
-  height: 495px;
+  height: fit-content;
   padding-bottom: 0;
   overflow-y: hidden;
 }
@@ -91,6 +112,9 @@
   border-radius: 20px;
   position: relative;
   box-shadow: vars.$workout-details--shadow;
+  &:nth-child(4) {
+    display: none;
+  }
 }
 
 .workout-details h4 {
@@ -141,6 +165,20 @@
 }
 
 @media screen and (max-width: 450px) {
+
+  .get--started {
+   left: 25vw;
+   top: 260px;
+  }
+
+  .no--workouts--found {
+    text-align: center;
+  }
+
+  .no--workouts--yet {
+    top: 23vh;
+    left: 25vw;
+  }
 
   .workouts--container {
     display: inline-block;
