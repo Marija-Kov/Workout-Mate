@@ -41,6 +41,14 @@
     grid-area: space;
   }
 
+  @media screen and (max-width: 1024px) {
+
+    .home--container {
+     background-size: 1500px;
+    }
+
+  }
+
   @media screen and (max-width: 450px) {
      
     .home--container {
