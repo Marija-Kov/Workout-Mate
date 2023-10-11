@@ -42,6 +42,18 @@ module.exports.add_workout = async (req, res) => {
  if(!title || !muscle_group || !String(reps) || !String(load)){
   ApiError.badInput("Please fill out the empty fields")
  }
+ if(title && !title.match(/^[a-zA-Z\s]*$/)){
+  ApiError.badInput("Title may contain only letters")
+ }
+ if(title && title.length > 30){
+  ApiError.badInput("Too long title - max 30 characters")
+ }
+ if(reps && reps > 9999){
+  ApiError.badInput("Reps value too large")
+ }
+ if(load && load > 9999){
+  ApiError.badInput("Load value too large")
+ }
  const user_id = req.user._id;
  const allWorkoutsByUser = await Workout.find({ user_id });
  const limit =

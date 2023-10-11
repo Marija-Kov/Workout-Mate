@@ -27,9 +27,9 @@ describe("workoutController", () => {
          expect(res.error).toMatch(/not authorized/i);
         });
 
-        it("should respond with error if the user is authorized, but at least one required input value is not provided", async () => {
-          const user = await mockUser("poozh@ploppers.com", "logged-in");
-          const workout = { title: "Pullups",  muscle_group: "forearm and grip", reps: undefined, load: 20 };
+        it("should respond with error if at least one input value is not provided", async () => {
+          const user = await mockUser("poozh0@ploppers.com", "logged-in");
+          const workout = { title: undefined,  muscle_group: "forearm and grip", reps: undefined, load: 20 };
           const res = (
             await agent
               .post("/api/workouts/")
@@ -37,6 +37,59 @@ describe("workoutController", () => {
               .set("Authorization", `Bearer ${user.token}`)
           )._body;
           expect(res.error).toBeTruthy();
+          expect(res.error).toMatch(/please fill out the empty fields/i);
+        });
+
+        it("should respond with error if title input value is too long", async () => {
+          const user = await mockUser("poozh1@ploppers.com", "logged-in");
+          const workout = { title: "Pullupsssssssssssssssssssssssssssssssss",  muscle_group: "forearm and grip", reps: 20, load: 20 };
+          const res = (
+            await agent
+              .post("/api/workouts/")
+              .send(workout)
+              .set("Authorization", `Bearer ${user.token}`)
+          )._body;
+          expect(res.error).toBeTruthy();
+          expect(res.error).toMatch(/too long title - max 30 characters/i);
+        });
+
+        it("should respond with error if title input value contains non-alphabetical characters", async () => {
+          const user = await mockUser("poozh2@ploppers.com", "logged-in");
+          const workout = { title: "<Pullups>",  muscle_group: "forearm and grip", reps: 20, load: 20 };
+          const res = (
+            await agent
+              .post("/api/workouts/")
+              .send(workout)
+              .set("Authorization", `Bearer ${user.token}`)
+          )._body;
+          expect(res.error).toBeTruthy();
+          expect(res.error).toMatch(/title may contain only letters/i);
+        });
+
+        it("should respond with error if reps input value is too large", async () => {
+          const user = await mockUser("poozh3@ploppers.com", "logged-in");
+          const workout = { title: "Pullups",  muscle_group: "forearm and grip", reps: 20000, load: 20 };
+          const res = (
+            await agent
+              .post("/api/workouts/")
+              .send(workout)
+              .set("Authorization", `Bearer ${user.token}`)
+          )._body;
+          expect(res.error).toBeTruthy();
+          expect(res.error).toMatch(/reps value too large/i);
+        });
+
+        it("should respond with error if load input value is too large", async () => {
+          const user = await mockUser("poozh4@ploppers.com", "logged-in");
+          const workout = { title: "Pullups",  muscle_group: "forearm and grip", reps: 20, load: 20000 };
+          const res = (
+            await agent
+              .post("/api/workouts/")
+              .send(workout)
+              .set("Authorization", `Bearer ${user.token}`)
+          )._body;
+          expect(res.error).toBeTruthy();
+          expect(res.error).toMatch(/load value too large/i);
         });
 
         it("should delete oldest workout given that the amount of workouts exceeds the limit", async () => {
