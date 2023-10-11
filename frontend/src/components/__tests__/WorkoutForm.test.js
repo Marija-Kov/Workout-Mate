@@ -98,7 +98,7 @@ describe("<WorkoutForm/>", () => {
     expect(loadInput).toHaveValue(22);
   });
 
-  it("should signal input error when user attempts to submit form with invalid input value(s)", async () => {
+  it("should signal input error when user attempts to submit form with missing input value(s)", async () => {
     server.use(
       rest.post(`${process.env.REACT_APP_API}/api/workouts`, (req, res, ctx) => {
         return res(
@@ -139,6 +139,162 @@ describe("<WorkoutForm/>", () => {
     expect(loadInput).not.toHaveAttribute("class", "error");
     const error = await screen.findByRole("alert");
     expect(error.textContent).toMatch(/please fill out the empty fields/i);
+    expect(error).toHaveAttribute("class", "error");
+    act(() => dispatch({type: "LOGOUT"}));
+  });
+  
+  it("should signal input error when user attempts to submit form with too long title", async () => {
+    server.use(
+      rest.post(`${process.env.REACT_APP_API}/api/workouts`, (req, res, ctx) => {
+        return res(
+          ctx.status(400),
+          ctx.json({
+            error: "Title too long - max 30 characters"
+          })
+        );
+      })
+    );
+    user.setup();
+    dispatch({type: "LOGIN_SUCCESS", payload: mockUser})
+    dispatch({type: "SET_WORKOUTS", payload: []})
+    render(
+      <Provider store={store}>
+          <WorkoutForm />
+      </Provider>
+    );
+    let titleInput = await screen.findByLabelText(/workout title/i);
+    let muscleGroupSelect = await screen.findByLabelText(/muscle group/i);
+    let repsInput = await screen.findByLabelText(/number of reps/i);
+    let loadInput = await screen.findByLabelText(/load in kg/i);
+    const submitWorkoutBtn = await screen.findByLabelText(
+      /submit workout button/i
+    );
+    await user.type(titleInput, "adasdaasdsdfsdfdddfdfsdfsfsdfsfddsfsfsfsdfterttrtee");
+    await user.selectOptions(muscleGroupSelect, "biceps");
+    await user.type(repsInput, "22");
+    await user.type(loadInput, "22");
+    await user.click(submitWorkoutBtn);
+    titleInput = await screen.findByLabelText(/workout title/i);
+    expect(titleInput).toHaveAttribute("class", "error");
+    const error = await screen.findByRole("alert");
+    expect(error.textContent).toMatch(/max 30 characters/i);
+    expect(error).toHaveAttribute("class", "error");
+    act(() => dispatch({type: "LOGOUT"}));
+  });
+
+  it("should signal input error when user attempts to submit form with title containing non-alphabetic characters", async () => {
+    server.use(
+      rest.post(`${process.env.REACT_APP_API}/api/workouts`, (req, res, ctx) => {
+        return res(
+          ctx.status(400),
+          ctx.json({
+            error: "Title may contain only letters"
+          })
+        );
+      })
+    );
+    user.setup();
+    dispatch({type: "LOGIN_SUCCESS", payload: mockUser})
+    dispatch({type: "SET_WORKOUTS", payload: []})
+    render(
+      <Provider store={store}>
+          <WorkoutForm />
+      </Provider>
+    );
+    let titleInput = await screen.findByLabelText(/workout title/i);
+    let muscleGroupSelect = await screen.findByLabelText(/muscle group/i);
+    let repsInput = await screen.findByLabelText(/number of reps/i);
+    let loadInput = await screen.findByLabelText(/load in kg/i);
+    const submitWorkoutBtn = await screen.findByLabelText(
+      /submit workout button/i
+    );
+    await user.type(titleInput, "66768^&^*&%<>*");
+    await user.selectOptions(muscleGroupSelect, "biceps");
+    await user.type(repsInput, "22");
+    await user.type(loadInput, "22");
+    await user.click(submitWorkoutBtn);
+    titleInput = await screen.findByLabelText(/workout title/i);
+    expect(titleInput).toHaveAttribute("class", "error");
+    const error = await screen.findByRole("alert");
+    expect(error.textContent).toMatch(/may contain only letters/i);
+    expect(error).toHaveAttribute("class", "error");
+    act(() => dispatch({type: "LOGOUT"}));
+  });
+
+  it("should signal input error when user attempts to submit form with too large reps number", async () => {
+    server.use(
+      rest.post(`${process.env.REACT_APP_API}/api/workouts`, (req, res, ctx) => {
+        return res(
+          ctx.status(400),
+          ctx.json({
+            error: "Reps value too large"
+          })
+        );
+      })
+    );
+    user.setup();
+    dispatch({type: "LOGIN_SUCCESS", payload: mockUser})
+    dispatch({type: "SET_WORKOUTS", payload: []})
+    render(
+      <Provider store={store}>
+          <WorkoutForm />
+      </Provider>
+    );
+    let titleInput = await screen.findByLabelText(/workout title/i);
+    let muscleGroupSelect = await screen.findByLabelText(/muscle group/i);
+    let repsInput = await screen.findByLabelText(/number of reps/i);
+    let loadInput = await screen.findByLabelText(/load in kg/i);
+    const submitWorkoutBtn = await screen.findByLabelText(
+      /submit workout button/i
+    );
+    await user.type(titleInput, "arm curls");
+    await user.selectOptions(muscleGroupSelect, "biceps");
+    await user.type(repsInput, "23848394829");
+    await user.type(loadInput, "22");
+    await user.click(submitWorkoutBtn);
+    repsInput = await screen.findByLabelText(/number of reps/i);
+    expect(repsInput).toHaveAttribute("class", "error");
+    const error = await screen.findByRole("alert");
+    expect(error.textContent).toMatch(/reps value too large/i);
+    expect(error).toHaveAttribute("class", "error");
+    act(() => dispatch({type: "LOGOUT"}));
+  });
+
+  it("should signal input error when user attempts to submit form with too large load number", async () => {
+    server.use(
+      rest.post(`${process.env.REACT_APP_API}/api/workouts`, (req, res, ctx) => {
+        return res(
+          ctx.status(400),
+          ctx.json({
+            error: "Load value too large"
+          })
+        );
+      })
+    );
+    user.setup();
+    dispatch({type: "LOGIN_SUCCESS", payload: mockUser})
+    dispatch({type: "SET_WORKOUTS", payload: []})
+    render(
+      <Provider store={store}>
+          <WorkoutForm />
+      </Provider>
+    );
+    let titleInput = await screen.findByLabelText(/workout title/i);
+    let muscleGroupSelect = await screen.findByLabelText(/muscle group/i);
+    let repsInput = await screen.findByLabelText(/number of reps/i);
+    let loadInput = await screen.findByLabelText(/load in kg/i);
+    const submitWorkoutBtn = await screen.findByLabelText(
+      /submit workout button/i
+    );
+    await user.type(titleInput, "arm curls");
+    await user.selectOptions(muscleGroupSelect, "biceps");
+    await user.type(repsInput, "22");
+    await user.type(loadInput, "284738378");
+    await user.click(submitWorkoutBtn);
+    loadInput = await screen.findByLabelText(/load in kg/i);
+    expect(loadInput).toHaveAttribute("class", "error");
+    const error = await screen.findByRole("alert");
+    expect(error.textContent).toMatch(/load value too large/i);
     expect(error).toHaveAttribute("class", "error");
     act(() => dispatch({type: "LOGOUT"}));
   });
