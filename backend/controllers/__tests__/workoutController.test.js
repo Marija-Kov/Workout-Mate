@@ -53,7 +53,7 @@ describe("workoutController", () => {
           expect(res.error).toMatch(/too long title - max 30 characters/i);
         });
 
-        it("should respond with error if title input value contains non-alphabetical characters", async () => {
+        it("should respond with error if title input value contains non-alphabetic characters", async () => {
           const user = await mockUser("poozh2@ploppers.com", "logged-in");
           const workout = { title: "<Pullups>",  muscle_group: "forearm and grip", reps: 20, load: 20 };
           const res = (
@@ -231,12 +231,12 @@ describe("workoutController", () => {
             expect(res.error).toMatch(/not authorized/i);
         });
 
-        it("should respond with error if there was an attempt to update with invalid value(s)", async () => {
+        it("should respond with error if there was an attempt to update with title value that is too long", async () => {
            const user = await mockUser("poozh@thedoor.com", "has-workouts"); 
            const updateWorkout = {
              id: user.workouts[1]._id,
              body: {
-               reps: "",
+               title: "Pullupsssssssssssssssssssssssssssssssss",
              },
            };
            const res = (
@@ -246,7 +246,61 @@ describe("workoutController", () => {
                .set("Authorization", `Bearer ${user.userLoggedIn.token}`)
            )._body;
            expect(res.error).toBeTruthy();
-           expect(res.error).toMatch(/validation failed/i); // TODO: after implementing ApiError, this fails, returns generalized error message instead.
+           expect(res.error).toMatch(/too long title - max 30 characters/i);
+        });
+
+        it("should respond with error if there was an attempt to update with title value that contains non-alphabetic characters", async () => {
+           const user = await mockUser("poozh@thedoor.com", "has-workouts"); 
+           const updateWorkout = {
+             id: user.workouts[1]._id,
+             body: {
+               title: "<Pullups>",
+             },
+           };
+           const res = (
+             await agent
+               .patch(`/api/workouts/${updateWorkout.id}`)
+               .send(updateWorkout.body)
+               .set("Authorization", `Bearer ${user.userLoggedIn.token}`)
+           )._body;
+           expect(res.error).toBeTruthy();
+           expect(res.error).toMatch(/title may contain only letters/i);
+        });
+
+        it("should respond with error if there was an attempt to update with reps value that is too large", async () => {
+           const user = await mockUser("poozh@thedoor.com", "has-workouts"); 
+           const updateWorkout = {
+             id: user.workouts[1]._id,
+             body: {
+               reps: 20000,
+             },
+           };
+           const res = (
+             await agent
+               .patch(`/api/workouts/${updateWorkout.id}`)
+               .send(updateWorkout.body)
+               .set("Authorization", `Bearer ${user.userLoggedIn.token}`)
+           )._body;
+           expect(res.error).toBeTruthy();
+           expect(res.error).toMatch(/reps value too large/i);
+        });
+
+        it("should respond with error if there was an attempt to update with load value that is too large", async () => {
+           const user = await mockUser("poozh@thedoor.com", "has-workouts"); 
+           const updateWorkout = {
+             id: user.workouts[1]._id,
+             body: {
+               load: 20000,
+             },
+           };
+           const res = (
+             await agent
+               .patch(`/api/workouts/${updateWorkout.id}`)
+               .send(updateWorkout.body)
+               .set("Authorization", `Bearer ${user.userLoggedIn.token}`)
+           )._body;
+           expect(res.error).toBeTruthy();
+           expect(res.error).toMatch(/load value too large/i);
         });
 
         it("should respond with the updated version of the workout provided all the values are valid", async () => {

@@ -71,7 +71,20 @@ module.exports.add_workout = async (req, res) => {
 module.exports.update_workout = async (req, res) => {
  const { id } = req.params;
  if(!mongoose.Types.ObjectId.isValid(id)){
-  ApiError.notFound("Invalid workout id")
+   ApiError.notFound("Invalid workout id")
+  }
+ const {title, reps, load} = req.body;
+ if(title && !title.match(/^[a-zA-Z\s]*$/)){
+  ApiError.badInput("Title may contain only letters")
+ }
+ if(title && title.length > 30){
+  ApiError.badInput("Too long title - max 30 characters")
+ }
+ if(reps && reps > 9999){
+  ApiError.badInput("Reps value too large")
+ }
+ if(load && load > 9999){
+  ApiError.badInput("Load value too large")
  }
  const workout = await Workout.findOneAndUpdate({_id: id}, req.body, {new: true, runValidators: true}); 
  res.status(200).json(workout);
