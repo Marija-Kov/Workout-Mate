@@ -1,7 +1,6 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import useEditWorkout from '../hooks/useEditWorkout';
 import { useSelector, useDispatch } from 'react-redux';
-
 
 export default function EditWorkout(){
   const dispatch = useDispatch();
@@ -13,20 +12,31 @@ export default function EditWorkout(){
   const muscle_group = useRef();
   const reps = useRef();
   const load = useRef();
+  const [badInput, setBadInput] = useState([]);
 
  const handleUpdate = async (e) => {  
    const payload = {};
+   setBadInput([]);
    if (title.current.value && title.current.value.trim().toLowerCase()) {
      payload.title = title.current.value.trim().toLowerCase();
+     if(!payload.title.match(/^[a-zA-Z\s]*$/) || payload.title.length > 30){
+      setBadInput((prev) => ["title", ...prev]);
+     }
    }  
    if(muscle_group.current.value){
     payload.muscle_group = muscle_group.current.value;
    }
    if(reps.current.value){
     payload.reps = reps.current.value;
+    if(payload.reps > 9999){
+      setBadInput((prev) => ["reps", ...prev]);
+    }
    }
    if(load.current.value){
     payload.load = load.current.value;
+    if(payload.load > 9999){
+      setBadInput((prev) => ["load", ...prev]);
+    }
    }
    e.preventDefault();
    await editWorkout(id, payload); 
@@ -60,6 +70,7 @@ export default function EditWorkout(){
             aria-label="workout title"
             defaultValue={prevTitle}
             ref={title}
+            className={badInput.includes("title") ? "error" : ""}
           />
           <label htmlFor="muscle_group">muscle group:</label>
           <select ref={muscle_group} aria-label="muscle group" name="muscle_group" id="muscle_group">
@@ -83,6 +94,7 @@ export default function EditWorkout(){
             aria-label="number of reps"
             defaultValue={prevReps}
             ref={reps}
+            className={badInput.includes("reps") ? "error" : ""}
           />
           <label>load (kg):</label>
           <input
@@ -92,6 +104,7 @@ export default function EditWorkout(){
             aria-label="load in kg"
             defaultValue={prevLoad}
             ref={load}
+            className={badInput.includes("load") ? "error" : ""}
           />
           <button
             className="edit--form--btn"
