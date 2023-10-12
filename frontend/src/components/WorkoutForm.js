@@ -10,7 +10,7 @@ export default function WorkoutForm(){
   const muscle_group = useRef();
   const load = useRef();
   const reps = useRef();
-  const [emptyFields, setEmptyFields] = useState([]);
+  const [badInput, setBadInput] = useState([]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -20,21 +20,20 @@ export default function WorkoutForm(){
       load: load.current.value,
       reps: reps.current.value,
     };
-
-    for (let key in workout){
-      if(!workout[key]) {
-        setEmptyFields((prev) => [key, ...prev]);
-       }  
+    setBadInput([]);
+    if(!workout.title || !workout.title.match(/^[a-zA-Z\s]*$/) || workout.title.length > 30){
+      setBadInput((prev) => ["title", ...prev]);
     }
-    if(workout.title && workout.muscle_group && workout.reps && workout.load){
-      await createWorkout(workout);
-      setEmptyFields([]);
-    } else {
-       dispatch({type: "CREATE_WORKOUT_FAIL", payload: "Please fill out the empty fields"})
-       setTimeout(() => {
-        dispatch({type: "RESET_ERROR_MESSAGES"})
-        }, 5000) 
-    }  
+    if(!workout.muscle_group){
+      setBadInput((prev) => ["muscle_group", ...prev]);
+    }
+    if(!workout.load || workout.load > 9999){
+      setBadInput((prev) => ["load", ...prev]);
+    }
+    if(!workout.reps || workout.reps > 9999){
+      setBadInput((prev) => ["reps", ...prev]);
+    }
+    await createWorkout(workout);
   };
 
   return (
@@ -59,10 +58,10 @@ export default function WorkoutForm(){
         placeholder="ex: bench press"
         aria-label="workout title"
         ref={title}
-        className={emptyFields.includes("title") ? "error" : ""}
+        className={badInput.includes("title") ? "error" : ""}
       />
       <label htmlFor="muscle_group">muscle group:</label>
-      <select ref={muscle_group} aria-label="muscle group" name="muscle_group" id="muscle_group" className={emptyFields.includes("muscle_group") ? "error" : ""}>
+      <select ref={muscle_group} aria-label="muscle group" name="muscle_group" id="muscle_group" className={badInput.includes("muscle_group") ? "error" : ""}>
         <option value="">-please select-</option>
         <option value="chest">chest</option>
         <option value="shoulder">shoulder</option>
@@ -82,7 +81,7 @@ export default function WorkoutForm(){
         id="reps"
         aria-label="number of reps"
         ref={reps}
-        className={emptyFields.includes("reps") ? "error" : ""}
+        className={badInput.includes("reps") ? "error" : ""}
       />
       <label>load (kg):</label>
       <input
@@ -91,7 +90,7 @@ export default function WorkoutForm(){
         id="load"
         aria-label="load in kg"
         ref={load}
-        className={emptyFields.includes("load") ? "error" : ""}
+        className={badInput.includes("load") ? "error" : ""}
       />
         <button className="workout--form--btn" aria-label="submit workout button">Add workout</button>
       {createWorkoutError && (
