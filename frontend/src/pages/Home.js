@@ -22,7 +22,10 @@ export default function Home() {
     const { search } = useSearch();
 
     useEffect(() => {
-      search(query, page);
+      const runSearch = setTimeout(() => {
+        search(query, page)
+      }, 500);
+      return () => clearTimeout(runSearch)
     }, [query, page]);
 
     const renderWorkouts = () => {
