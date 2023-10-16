@@ -84,7 +84,6 @@
 
 .workouts--placeholder {
  grid-area: workouts;
- width: 280px;
  filter:opacity(0.7);
  position: relative;
  /* top: -495px; */
@@ -191,4 +190,7 @@
     margin-right: auto;
   }
   
+  .workouts--placeholder {
+    width: 280px;
+  }
  }

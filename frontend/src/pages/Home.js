@@ -20,6 +20,11 @@ export default function Home() {
     const query = useSelector(state => state.query);
     const { total, workoutsChunk } = workouts;
     const { search } = useSearch();
+    const muscleGroups = allUserWorkoutsMuscleGroups && allUserWorkoutsMuscleGroups.length;
+    
+    useEffect(() => {
+     dispatch({type: "SET_WORKOUTS_REQ"})
+    }, [])
 
     useEffect(() => {
       const runSearch = setTimeout(() => {
@@ -27,6 +32,7 @@ export default function Home() {
       }, 500);
       return () => clearTimeout(runSearch)
     }, [query, page]);
+
 
     const renderWorkouts = () => {
       return workoutsChunk.map((workout) => (
@@ -42,37 +48,37 @@ export default function Home() {
         />
       ))
     };
-
-    const renderNoWorkoutsMessage = () => {
-      if(query){
-        return <div className="no--workouts--found">
+    
+    const renderPlaceholderOrNoWorkoutsMessage = () => {
+      if(loading){
+       return <WorkoutsPlaceholder /> 
+      } else if(query){
+       return <div className="no--workouts--found">
                No "{query}" workouts found.
-              </div>
-      } else {
+              </div>// TODO: Shouldn't show "no X query" before it fetches with X query parameter, should show loading before "no X query" message
+      } else if(!muscleGroups){
        return <div className="get--started">
                Buff it up to get started.
                <br></br>
                No pressure 
                <span>🥤</span>
-              </div> // TODO: This message shouldn't flash when query length decreases and hits 0, right before search function runs.
-      }
-    };
-    
-    const renderPlaceholderOrNoWorkoutsMessage = () => {
-      if(loading){
-       return <WorkoutsPlaceholder /> 
-      } else {
-       return renderNoWorkoutsMessage()        
-      }
+              </div> 
+      } else if(muscleGroups){
+       return <WorkoutsPlaceholder />
+      }          
     };
 
     const buffItUpButtonClass = () => {
-      if(loading){
+      if(loading && !muscleGroups){
+        return "no--button"
+      }
+      if(loading && muscleGroups){
         return "add--workout is--loading"
-      } else {
-       if(total || query){
+      } 
+      if(!loading && muscleGroups){
         return "add--workout"
-       }
+      } 
+      if(!loading && !muscleGroups){
         return "add--workout no--workouts--yet"
       }
     };
@@ -80,7 +86,7 @@ export default function Home() {
     return (
       <div className="home--container" onClick={logOutIfTokenExpired}>
         <div className="home">
-          {allUserWorkoutsMuscleGroups && allUserWorkoutsMuscleGroups.length ? <Search/> : ""}
+          {muscleGroups ? <Search/> : ""}
             {setWorkoutsError && (
               <div role="alert" className="error">
                 {setWorkoutsError}
@@ -88,10 +94,10 @@ export default function Home() {
             )}
 
           <div aria-label="workouts" className="workouts--container">
-            {total ? renderWorkouts() : renderPlaceholderOrNoWorkoutsMessage()}
+            {total && muscleGroups ? renderWorkouts() : renderPlaceholderOrNoWorkoutsMessage()}
           </div>
            
-          {allUserWorkoutsMuscleGroups && allUserWorkoutsMuscleGroups.length ? <Chart /> : (
+          {muscleGroups ? <Chart /> : (
           loading ? <ChartPlaceholder /> : "")}
           
           {showCreateWorkoutForm ?
