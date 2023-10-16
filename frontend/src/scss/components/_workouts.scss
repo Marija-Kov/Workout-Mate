@@ -12,9 +12,10 @@
 }
 
 .no--workouts--found {
-  text-align: left;
+  text-align: center;
   color: vars.$chart-title--color;
   font-weight: 600;
+  width: 170px;
 }
 
 .no--workouts--yet {
@@ -172,6 +173,7 @@
 
   .no--workouts--found {
     text-align: center;
+    margin: 0 auto;
   }
 
   .no--workouts--yet {

@@ -15,7 +15,7 @@ export default function Home() {
     const dispatch = useDispatch();
     const { showCreateWorkoutForm, showEditWorkoutForm } = useSelector(state => state.showComponent)
     const { workouts, loading, setWorkoutsError } = useSelector(state => state.workout);
-    const { allUserWorkoutsMuscleGroups } = workouts;
+    const { allUserWorkoutsMuscleGroups, noWorkoutsByQuery } = workouts;
     const page = useSelector(state => state.page);
     const query = useSelector(state => state.query);
     const { total, workoutsChunk } = workouts;
@@ -52,20 +52,22 @@ export default function Home() {
     const renderPlaceholderOrNoWorkoutsMessage = () => {
       if(loading){
        return <WorkoutsPlaceholder /> 
-      } else if(query){
-       return <div className="no--workouts--found">
-               No "{query}" workouts found.
-              </div>// TODO: Shouldn't show "no X query" before it fetches with X query parameter, should show loading before "no X query" message
-      } else if(!muscleGroups){
-       return <div className="get--started">
+      } 
+      if(!muscleGroups){
+         return <div className="get--started">
                Buff it up to get started.
                <br></br>
                No pressure 
                <span>🥤</span>
               </div> 
-      } else if(muscleGroups){
-       return <WorkoutsPlaceholder />
-      }          
+      } else {
+        if(noWorkoutsByQuery){
+         return <div className="no--workouts--found">
+                 {noWorkoutsByQuery}
+                </div>         
+        }
+         return <WorkoutsPlaceholder />       
+      }         
     };
 
     const buffItUpButtonClass = () => {
