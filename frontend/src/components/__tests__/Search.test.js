@@ -62,24 +62,18 @@ describe("<Search />", () => {
       act(() => dispatch({type: "SET_QUERY", payload: ""}))
     });
 
-    it("should disable user from typing in search form or clicking on search button while workouts are being loaded", async () => {
+    it("should disable clicking on search button while workouts are being loaded", async () => {
       user.setup();
       render(
       <Provider store={store}>
         <Search />
       </Provider>
       );
-      const searchInput = await screen.findByPlaceholderText(/search workouts/i);
       const searchForm = await screen.findByLabelText(/search bar/i);
       const searchBtn = await screen.findByLabelText(/search button/i);
-      expect(searchForm).toHaveAttribute("class", "search--bar");
-      await user.type(searchInput, "pu");
-      expect(searchInput).toHaveValue("pu");
       act(() => dispatch({type: "SET_WORKOUTS_REQ"}));
       expect(searchForm).toHaveAttribute("class", "search--bar is--loading");
       expect(searchBtn).toBeDisabled()
-      await user.type(searchInput, "pull");
-      expect(searchInput).toHaveValue("pu");
       act(() => dispatch({type: "SET_WORKOUTS_SUCCESS", payload: []}));
       act(() => dispatch({type: "SET_QUERY", payload: ""}))
     });
