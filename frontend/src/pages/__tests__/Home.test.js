@@ -27,16 +27,45 @@ jest.mock("../../hooks/useSearch", () => ({
        return {
            search: () => {}
        };
-  }
-        
+  }        
 }));
+
+afterEach(() => {
+ store.dispatch({type: "DELETE_ALL_WORKOUTS_SUCCESS"});
+});
 
 afterAll(() => {
   jest.clearAllMocks();
 });
 
 describe("<Home />", () => {
-    it("should render Home page correctly given that user is authenticated", async () => {
+    it("should render placeholders while workouts are loading", async () => {
+      render(
+        <Provider store={store}>
+          <Home />
+        </Provider>
+      );
+      const state = store.getState();
+      expect(state.workout.loading).toBeTruthy();
+      expect(ChartPlaceholder).toHaveBeenCalled();
+      expect(WorkoutsPlaceholder).toHaveBeenCalled();
+    });
+
+    it("should render Home page correctly given that user has not posted yet", async () => {
+      render(
+        <Provider store={store}>
+          <Home />
+        </Provider>
+      );
+      await act(() => store.dispatch({type: "SET_WORKOUTS_SUCCESS", payload: []}))
+      const getStarted = await screen.findByText(/get started/i);
+      const addWorkoutBtn = await screen.findByLabelText(/buff it up/i);
+      expect(getStarted).toBeInTheDocument();
+      expect(addWorkoutBtn).toBeInTheDocument();
+      expect(addWorkoutBtn).toHaveClass("no--workouts--yet");
+    });
+
+    it("should render Home page correctly given that user has posted workouts", async () => {
       genSampleWorkouts();
       render(
         <Provider store={store}>
@@ -52,7 +81,7 @@ describe("<Home />", () => {
       expect(addWorkoutBtn).toBeInTheDocument();
       expect(workouts).toBeInTheDocument();
     });
-    //TODO: It should show placeholders while the workouts are still loading
+
     it("should render WorkoutForm component when user clicks on 'Buff it up' button", async () => {
       user.setup();
       render(
@@ -60,21 +89,20 @@ describe("<Home />", () => {
             <Home />
         </Provider>
       );
+      await act(() => store.dispatch({type: "SET_WORKOUTS_SUCCESS", payload:[]}));
       const addWorkoutBtn = await screen.findByLabelText(/buff it up/i);
-      await user.click(addWorkoutBtn);
-      expect(WorkoutForm).toHaveBeenCalled();
+      await user.click(addWorkoutBtn); 
+      expect(WorkoutForm).toHaveBeenCalled()     
     });
 
     it("should render EditWorkout", async () => {
-      let dispatch = store.dispatch;
       render(
         <Provider store={store}>
             <Home />
         </Provider>
       );
-      await act(() => dispatch({type: "SHOW_EDIT_WORKOUT_FORM"}));
+      await act(() => store.dispatch({type: "SHOW_EDIT_WORKOUT_FORM"}));
       expect(EditWorkout).toHaveBeenCalled();
     })
-
 });
 

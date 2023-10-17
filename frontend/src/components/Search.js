@@ -14,12 +14,8 @@ export default function Search() {
   };
 
   const handleChange = (e) => {
-    if(!loading){
       dispatch({type: "SET_QUERY", payload: e.target.value});
       dispatch({type: "GO_TO_PAGE_NUMBER", payload: 0})  
-    } else {
-      return
-    }
   }
 
   return (

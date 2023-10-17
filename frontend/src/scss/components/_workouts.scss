@@ -12,9 +12,10 @@
 }
 
 .no--workouts--found {
-  text-align: left;
+  text-align: center;
   color: vars.$chart-title--color;
   font-weight: 600;
+  width: 170px;
 }
 
 .no--workouts--yet {
@@ -84,7 +85,6 @@
 
 .workouts--placeholder {
  grid-area: workouts;
- width: 280px;
  filter:opacity(0.7);
  position: relative;
  /* top: -495px; */
@@ -173,6 +173,7 @@
 
   .no--workouts--found {
     text-align: center;
+    margin: 0 auto;
   }
 
   .no--workouts--yet {
@@ -191,4 +192,8 @@
     margin-right: auto;
   }
   
+  .workouts--placeholder {
+    width: 280px;
+    top: 50px;
+  }
  }
