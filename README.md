@@ -17,10 +17,11 @@ Workout Mate lets you be the athlete you want to be.</i>
 1. [How did it come about?](#motivation)
 2. [App Features](#features)
 3. [Tools and Dependencies](#tools)
-4. [Test coverage](#test)
-5. [Todos](#todos)
-6. [Resources](#resources)
-7. [Author](#author)
+4. [Environment variables](#environment-variables)
+5. [Test coverage](#test)
+6. [Todos](#todos)
+7. [Resources](#resources)
+8. [Author](#author)
 
 ---
 <br>
@@ -91,6 +92,49 @@ In case you want to delete your Workout Mate account, you will have to log in, o
 - [ChartJS](https://www.chartjs.org/) - Charting library
 - [React ChartJS](https://react-chartjs-2.js.org/) - ChartJS library for React
 - [SASS](https://sass-lang.com/) - Styling
+
+<br>
+
+## Environment variables <a name = "environment-variables"></a>
+If you want to run the app in your local environment, you'll need to create a .env file in each of the second-level directories and provide values for the variables below.<br>
+### Backend .env
+MONGO_URI = <br>
+PORT= <br>
+SECRET= <br>
+SALT= <br>
+EMAIL_HOST= <br>
+EMAIL_USERNAME= <br>
+EMAIL_PASSWORD= <br>
+CLIENT_URL= <br>
+ORIGIN= <br>
+AUTH_TOKEN_EXPIRES_IN= <br>
+RESET_PASSWORD_TOKEN_EXPIRES_IN= <br>
+TEST_RESET_PASSWORD_TOKEN_EXPIRES_IN= <br>
+
+#--- DATABASE LIMITS: <br>
+MAX_USERS= <br>
+TEST_MAX_USERS= <br>
+MAX_WORKOUTS_PER_USER= <br>
+TEST_MAX_WORKOUTS_PER_USER= <br>
+
+ #--- RATE LIMITER: <br>
+MAX_API_WORKOUTS_REQS= <br>
+TEST_MAX_API_WORKOUTS_REQS= <br>
+MAX_API_USERS_REQS= <br>
+TEST_MAX_API_USERS_REQS= <br>
+MAX_API_RESET_PASSWORD_REQS= <br>
+TEST_MAX_API_RESET_PASSWORD_REQS= <br>
+
+ #--- WINDOWS (RATE LIMITER): <br>
+API_WORKOUTS_WINDOW_MS= <br>
+TEST_API_WORKOUTS_WINDOW_MS= <br>
+API_USERS_WINDOW_MS= <br>
+TEST_API_USERS_WINDOW_MS= <br>
+API_RESET_PASSWORD_WINDOW_MS= <br>
+TEST_API_RESET_PASSWORD_WINDOW_MS= <br>
+
+### Frontend .env
+REACT_APP_API= <br>
 
 <br>
 
