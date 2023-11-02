@@ -40,3 +40,40 @@ body {
   .fallback--animation--container .lds-ellipsis div {
     background: vars.$primary;
   }
+
+  .spun--down--server--alert {
+    z-index: 5;
+    position: fixed;
+    bottom: 25px;
+    max-width: 320px;
+    font-size: 12px;
+    text-align: center;
+    color: rgb(13, 56, 91);
+    background: rgba(255, 255, 255, 0.624);
+    border: solid 1px rgb(13, 56, 91);
+    border-left: none;
+    padding: 5px 10px;
+
+    p {
+      margin: 5px 3px;
+    }
+
+    button {
+      background: rgb(13, 56, 91);
+      border: solid 1px vars.$primary;
+      color: vars.$login--signup--form--text;
+      padding: 3px 10px;
+      font-family: "Poppins";
+      font-size: 12px;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+  }
+
+  @media screen and (max-width: 450px) {
+    .spun--down--server--alert {
+      max-width: none;
+      width: 95%;
+    }
+  }
