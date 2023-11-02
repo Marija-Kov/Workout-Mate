@@ -7,7 +7,8 @@ const init = {
     showForgotPasswordForm: false,
     showUserMenu: false,
     showUserSettingsForm: false,
-    showDeleteAccountDialogue: false
+    showDeleteAccountDialogue: false,
+    showSpunDownServerAlert: false
 }
 
 export const showComponentReducer = (state = init, action) => {
@@ -53,6 +54,11 @@ export const showComponentReducer = (state = init, action) => {
                 ...state,
                 showDeleteAccountDialogue: !state.showDeleteAccountDialogue  
             };
+        case a.SHOW_SPUN_DOWN_SERVER_ALERT:
+            return {
+                ...state,
+                showSpunDownServerAlert: true  
+            };
         case a.HIDE_ALL_COMPONENTS:
             return {
                 showCreateWorkoutForm: false,
@@ -61,7 +67,8 @@ export const showComponentReducer = (state = init, action) => {
                 showForgotPasswordForm: false,
                 showUserMenu: false,
                 showUserSettingsForm: false,
-                showDeleteAccountDialogue: false  
+                showDeleteAccountDialogue: false,
+                showSpunDownServerAlert: false  
             };
         default:
             return state;
