@@ -155,6 +155,7 @@ TEST_API_RESET_PASSWORD_WINDOW_MS= <br>
 
 ### Frontend .env
 REACT_APP_API= <br>
+REACT_APP_WEB_SERVICE=localhost <br>
 
 <br>
 
