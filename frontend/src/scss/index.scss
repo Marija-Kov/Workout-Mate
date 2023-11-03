@@ -15,65 +15,67 @@
 @use 'loader';
 
 body {
-    background: vars.$home--bkg;
-    overflow-x: hidden;
-    margin: 0;
-    padding: 0;
-    font-family: "Poppins";
+  overflow-x: hidden;
+  background: vars.$home--bkg;
+  margin: 0;
+  padding: 0;
+  font-family: "Poppins";
+}
+
+.fallback--animation--container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height:100vh;
+}
+
+.fallback--animation--container h1 {
+  color: vars.$primary;
+}
+
+.fallback--animation--container .lds-ellipsis {
+  top: 5px;
+}
+
+.fallback--animation--container .lds-ellipsis div {
+  background: vars.$primary;
+}
+
+.spun--down--server--alert {
+  z-index: 5;
+  text-align: center;
+  position: fixed;
+  bottom: 25px;
+  max-width: 320px;
+  padding: 5px 10px;
+  background: rgba(255, 255, 255, 0.624);
+  border: solid 1px rgb(13, 56, 91);
+  border-left: none;
+  font-size: 12px;
+  color: rgb(13, 56, 91);
+
+  p {
+    margin: 5px 3px;
   }
 
-  .fallback--animation--container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height:100vh;
+  button {
+    padding: 3px 10px;
+    background: rgb(13, 56, 91);
+    border: solid 1px vars.$primary;
+    border-radius: 50px;
+    font-size: 12px;
+    font-family: "Poppins";
+    color: vars.$login--signup--form--text;
+    cursor: pointer;
+    transition: 0.2s;
   }
-  
-  .fallback--animation--container h1 {
-   color: vars.$primary;
-  }
-  
-  .fallback--animation--container .lds-ellipsis {
-    top: 5px;
-  }
-  
-  .fallback--animation--container .lds-ellipsis div {
-    background: vars.$primary;
-  }
+}
+
+@media screen and (max-width: 450px) {
 
   .spun--down--server--alert {
-    z-index: 5;
-    position: fixed;
-    bottom: 25px;
-    max-width: 320px;
-    font-size: 12px;
-    text-align: center;
-    color: rgb(13, 56, 91);
-    background: rgba(255, 255, 255, 0.624);
-    border: solid 1px rgb(13, 56, 91);
-    border-left: none;
-    padding: 5px 10px;
-
-    p {
-      margin: 5px 3px;
-    }
-
-    button {
-      background: rgb(13, 56, 91);
-      border: solid 1px vars.$primary;
-      color: vars.$login--signup--form--text;
-      padding: 3px 10px;
-      font-family: "Poppins";
-      font-size: 12px;
-      border-radius: 50px;
-      cursor: pointer;
-      transition: 0.2s;
-    }
+    width: 95%;
+    max-width: none;
   }
 
-  @media screen and (max-width: 450px) {
-    .spun--down--server--alert {
-      max-width: none;
-      width: 95%;
-    }
-  }
+}

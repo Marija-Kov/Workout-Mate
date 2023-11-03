@@ -2,74 +2,73 @@
 @use '../fonts';
 
 .home--container {
-    margin: 0;
-    background: vars.$home--bkg;
-    background-image: url('../../assets/gym-pattern.png');
-    width: 100vw;
-    height: 100vh;
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    position: absolute;
-    left: 0;
-    top: 0;
-  }
-  
-  .home {
-    position: relative;
-    top: 70px;
-    margin: 0 auto;
-    max-width: 900px;
-    min-width: 800px;
-    display: grid; 
-    grid-template-columns: 250px auto;
-    grid-template-areas:
-    'search search space space space'
-    'search search space space space'
-    'workouts workouts add-btn add-btn add-btn'
-    'workouts workouts chart chart chart'
-    'workouts workouts chart chart chart'
-    'workouts workouts chart chart chart'
-    'workouts workouts chart chart chart'
-    'workouts workouts chart chart chart'
-    'pagination pagination chart chart chart'
-  }
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  margin: 0;
+  background: vars.$home--bkg;
+  background-image: url('../../assets/gym-pattern.png');
+  background-attachment: fixed;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
 
-  .space {
-    grid-area: space;
-  }
+.home {
+  display: grid; 
+  grid-template-columns: 250px auto;
+  grid-template-areas:
+  'search search space space space'
+  'search search space space space'
+  'workouts workouts add-btn add-btn add-btn'
+  'workouts workouts chart chart chart'
+  'workouts workouts chart chart chart'
+  'workouts workouts chart chart chart'
+  'workouts workouts chart chart chart'
+  'workouts workouts chart chart chart'
+  'pagination pagination chart chart chart';
+  position: relative;
+  top: 70px;
+  max-width: 900px;
+  min-width: 800px;
+  margin: 0 auto;
+}
 
-  @media screen and (max-width: 1024px) {
+.space {
+  grid-area: space;
+}
 
-    .home--container {
-     background-size: 1500px;
-    }
+@media screen and (max-width: 1024px) {
 
+  .home--container {
+    background-size: 1500px;
   }
 
-  @media screen and (max-width: 450px) {
+}
 
-    .home--container {
-      height: fit-content;
-      min-height: 100vh;
-    }
-     
-    .home {
-      min-width: unset;
-      grid-template-columns: auto;
-      grid-template-areas:
-      'chart chart'
-      'chart chart'
-      'chart chart'
-      'space space'
-      'add-btn add-btn'  
-      'search search'
-      'workouts workouts'
-      'workouts workouts'
-      'workouts workouts'
-      'workouts workouts'
-      'pagination pagination' 
-  
-     }
- 
+ @media screen and (max-width: 450px) {
+
+   .home--container {
+     height: fit-content;
+     min-height: 100vh;
    }
+    
+   .home {
+     grid-template-columns: auto;
+     grid-template-areas:
+     'chart chart'
+     'chart chart'
+     'chart chart'
+     'space space'
+     'add-btn add-btn'  
+     'search search'
+     'workouts workouts'
+     'workouts workouts'
+     'workouts workouts'
+     'workouts workouts'
+     'pagination pagination';  
+     min-width: unset;
+    }
+
+}

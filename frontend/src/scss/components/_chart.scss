@@ -3,11 +3,11 @@
 
 .chart--placeholder {
   grid-area: chart;
-  height: 100%;
   display: flex;
   flex-direction: column;
   gap: 10px;
   align-items: center;
+  height: 100%;
   filter:opacity(0.7);
 }
 
@@ -38,17 +38,17 @@
 }
 
 .chart--placeholder--legend {
-  width: 200px;
   display:flex;
   flex-wrap: wrap;
   gap: 5px;
   justify-content: center;
+  width: 200px;
   margin-top: 10px;
 }
 
 .chart--placeholder--legend > span {
-  width: 60px;
   height: 10px;
+  width: 60px;
   border-radius: 2px;
   animation: placeholder--animation 1s ease-in-out infinite;
 }
@@ -57,22 +57,22 @@
 
 .chart--container {
   grid-area: chart;
-  width: 100%;
   display: flex;
   flex-direction: column;
+  width: 100%;
 }
 
 .chart {
  position: relative;
- margin: 25px auto 0 auto;
  width: 300px;
+ margin: 25px auto 0 auto;
 }
 
 .chart--container > h3 {
   position: relative;
+  width: fit-content;
   margin: 10px auto 0 auto;
   color:vars.$chart-title--color;
-  width: fit-content;
 }
 
 .custom--legend {
@@ -84,11 +84,11 @@
 }
 
 .muscle--group {
- list-style: none;
- font-size: 12px;
- color: vars.$primary;
- font-weight: 500;
- margin-right: 5px;
+  margin-right: 5px;
+  font-size: 12px;
+  font-weight: 500;
+  color: vars.$primary;
+  list-style: none;
 }
 
 .muscle--group:hover {
@@ -102,10 +102,10 @@
 .muscle--group > span {
   position: relative;
   top: -2px;
-  font-size: 8px;
+  margin: 0 2px;
   padding: 0px 5px;
   border-radius: 20px;
-  margin: 0 2px;
+  font-size: 8px;
 }
 
 @media screen and (max-width: 450px) {
@@ -116,8 +116,8 @@
    }
    
    .chart {
-    width: 200px;
     height:280px;
+    width: 200px;
     margin-bottom: 15px;
    }
  
@@ -126,7 +126,6 @@
    }
  
    .custom--legend {
-     /* display: none */
      width: 100%;
    }
 }
