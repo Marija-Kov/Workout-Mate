@@ -2,115 +2,114 @@
 @use '../vars';
 
 .get--started {
+  text-align: center;
   position: absolute;
   top: 250px;
   left: 41%;
   width: 200px;
-  text-align: center;
-  color: vars.$chart-title--color;
   font-weight: 600;
+  color: vars.$chart-title--color;
 }
 
 .no--workouts--found {
   text-align: center;
-  color: vars.$chart-title--color;
-  font-weight: 600;
   width: 170px;
+  font-weight: 600;
+  color: vars.$chart-title--color;
 }
 
 .no--workouts--yet {
-   position: absolute;
-   top: 27vh;
-   left: -35px;
-   min-width: 150px;
-   animation: no--workouts--yet 20s linear infinite;
-   background-image: linear-gradient(
+  position: absolute;
+  top: 27vh;
+  left: -35px;
+  min-width: 150px;
+  background-image: linear-gradient(
     0deg,
-   rgb(219, 162, 215), 
-   rgb(212, 122, 147), 
-   rgb(162, 122, 212), 
-   rgb(122, 131, 212), 
-   rgb(99, 148, 255), 
-   rgb(99, 224, 255), 
-   rgb(99, 255, 239), 
-   rgb(99, 255, 140), 
-   rgb(255, 206, 99), 
-   rgb(255, 127, 99),
-   rgb(219, 162, 215),
-   rgb(212, 122, 147)
-   );
-   background-size: 100% 1100%;
-  }
+    rgb(219, 162, 215), 
+    rgb(212, 122, 147), 
+    rgb(162, 122, 212), 
+    rgb(122, 131, 212), 
+    rgb(99, 148, 255), 
+    rgb(99, 224, 255), 
+    rgb(99, 255, 239), 
+    rgb(99, 255, 140), 
+    rgb(255, 206, 99), 
+    rgb(255, 127, 99),
+    rgb(219, 162, 215),
+    rgb(212, 122, 147)
+    );
+  background-size: 100% 1100%;
+  animation: no--workouts--yet 20s linear infinite;
+}
   
-  @keyframes no--workouts--yet {
-    0% { background-position: 0% 0%; }
-    100% { background-position: 0% 100%; }
+@keyframes no--workouts--yet {
+  0% { background-position: 0% 0%; }
+  100% { background-position: 0% 100%; }
+}
+
+.loading--workouts {
+  text-align: center;
+  font-weight: 600;
+  color: vars.$chart-title--color;
+}
+
+.loading--workouts{
+  z-index: 5;
+  position: absolute;
+  top: 50px;
+  left: 180px;
+  animation: loading--workouts 1s ease-in-out infinite;
+}
+
+@keyframes loading--workouts {
+  0% {
+    color: vars.$chart--color-1;
   }
-  
-  .loading--workouts {
-   text-align: center;
-   color: vars.$chart-title--color;
-   font-weight: 600;
+  50% {
+    color: vars.$chart--color-2;  
   }
-  
-  .loading--workouts{
-    position: absolute;
-    top: 50px;
-    left: 180px;
-    z-index: 5;
-    animation: loading--workouts 1s ease-in-out infinite;
+  100% {
+    color: vars.$chart--color-1;
   }
-  
-  @keyframes loading--workouts {
-    0% {
-      color: vars.$chart--color-1;
-    }
-    50% {
-      color: vars.$chart--color-2;  
-    }
-    100% {
-      color: vars.$chart--color-1;
-    }
-  }
+}
 
 /* Workouts container */
 
 .workouts--container {
   grid-area: workouts;
-  margin-left: 40px;
   height: fit-content;
-  padding-bottom: 0;
   overflow-y: hidden;
+  margin-left: 40px;
+  padding-bottom: 0;
 }
 
 .workouts--placeholder {
- grid-area: workouts;
- filter:opacity(0.7);
- position: relative;
- /* top: -495px; */
+  grid-area: workouts;
+  position: relative;
+  filter:opacity(0.7);
 }
 
 .workouts--placeholder > div {
- color: white;
- font-size: 1em;
- max-width: 250px;
- height: 120px;
- margin: 0 0 15px 0;
- padding: 15px;
- border-radius: 20px;
- animation: placeholder--animation 1s ease-in-out infinite;
+  height: 120px;
+  max-width: 250px;
+  margin: 0 0 15px 0;
+  padding: 15px;
+  border-radius: 20px;
+  font-size: 1em;
+  color: white;
+  animation: placeholder--animation 1s ease-in-out infinite;
 }
 
 /* Workout details component */
 
 .workout-details {
-  background: vars.$workout-details--bkg;
-  margin: 0 0 15px 0;
-  height: 120px;
-  padding: 15px;
-  max-width: 250px;
-  border-radius: 20px;
   position: relative;
+  height: 120px;
+  max-width: 250px;
+  margin: 0 0 15px 0;
+  padding: 15px;
+  background: vars.$workout-details--bkg;
+  border-radius: 20px;
   box-shadow: vars.$workout-details--shadow;
   &:nth-child(n+4) {
     display: none;
@@ -119,37 +118,36 @@
 
 .workout-details h4 {
   margin: 0 0 8px 0;
-  font-weight: 700;
-  text-transform: capitalize;
-  font-size: 1em;
   padding-bottom: 10px;
   padding-left: 20px;
   border-bottom: vars.$workout-details--h4--border;
-  color: vars.$primary;
-  
+  font-size: 1em;
+  font-weight: 700;
+  color: vars.$primary; 
+  text-transform: capitalize;
 }
 
 .workout-details p {
   margin: 0;
-  font-size: 0.8em;
   padding: 3px 20px;
+  font-size: 0.8em;
 }
 
 .workout-details > button {
   position: absolute;
   top: 110px;
   right: 15px;
-  cursor: pointer;
-  color: vars.$light-text;
-  font-size: 1.3em;
   background: unset;
   border:unset;
   border-radius: unset;
+  font-size: 1.3em;
+  color: vars.$light-text;
+  cursor: pointer;
   transition:unset;
 }
 
 .workout-details > button:hover {
- color: vars.$light-text--hover;
+  color: vars.$light-text--hover;
 }
 
 .workout-details p > strong {
@@ -167,8 +165,8 @@
 @media screen and (max-width: 450px) {
 
   .get--started {
-   left: 25vw;
-   top: 260px;
+    top: 260px;
+    left: 25vw;
   }
 
   .no--workouts--found {
@@ -193,7 +191,7 @@
   }
   
   .workouts--placeholder {
-    width: 280px;
     top: 50px;
+    width: 280px;
   }
  }

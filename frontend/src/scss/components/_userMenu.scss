@@ -2,40 +2,40 @@
 @use '../fonts';
 
 .user--menu {
-    position: absolute;
-    background: vars.$user-menu--bkg;
-    top: 61px;
-    right: 20px;
-    padding: 20px;
-    box-shadow: vars.$user-menu--shadow;
-    display: flex;
-    justify-content: space-around;
-    border-bottom-left-radius:15px;
-    border-bottom-right-radius:15px;
-  }
+  display: flex;
+  justify-content: space-around;
+  position: absolute;
+  top: 61px;
+  right: 20px;
+  padding: 20px;
+  background: vars.$user-menu--bkg;
+  border-bottom-left-radius:15px;
+  border-bottom-right-radius:15px;
+  box-shadow: vars.$user-menu--shadow;
+}
   
-  .user--menu--item {
-   font-size: 0.8em;
-   font-weight: 600;
-   margin-right: 2px;
-   color: vars.$primary;
-   cursor: pointer;
-   background: unset;
-   border:unset;
-  }
+.user--menu--item {
+  margin-right: 2px;
+  background: unset;
+  border:unset;
+  font-size: 0.8em;
+  font-weight: 600;
+  color: vars.$primary;
+  cursor: pointer;
+}
   
-  .user--menu--item:nth-child(1){
-   border-right: vars.$user-menu-item--border;
-  }
-  
-  .user--menu--item:hover{
-    color: vars.$user-menu-item--text--hover;
-  }
+.user--menu--item:nth-child(1){
+  border-right: vars.$user-menu-item--border;
+}
 
-  @media screen and (max-width: 450px) {
+.user--menu--item:hover{
+  color: vars.$user-menu-item--text--hover;
+}
 
-   .user--menu {
+@media screen and (max-width: 450px) {
+
+  .user--menu {
     top: 52px;
-   }
-
   }
+
+}

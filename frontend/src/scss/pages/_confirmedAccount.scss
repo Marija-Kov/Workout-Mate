@@ -1,20 +1,20 @@
 @use '../vars';
 
 .confirmed--container {
-    margin-top: 80px;
-    padding: 20px;
-  }
-  
-  .confirmed--account--success {
-    background: vars.$success--bkg;
-    padding: 20px 40px;
-  }
-  
-  .already--confirmed {
-    border: solid 5px vars.$success--bkg;
-    padding: 20px;
-    margin-top: 20px;
-    color: vars.$primary;
-    font-size: 1em;
-    max-width: 480px;
-  }
+  margin-top: 80px;
+  padding: 20px;
+}
+
+.confirmed--account--success {
+  padding: 20px 40px;
+  background: vars.$success--bkg;
+}
+
+.already--confirmed {
+  max-width: 480px;
+  margin-top: 20px;
+  padding: 20px;
+  border: solid 5px vars.$success--bkg;
+  font-size: 1em;
+  color: vars.$primary;
+}

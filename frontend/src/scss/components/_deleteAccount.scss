@@ -4,50 +4,50 @@
 .delete--account--btn {
     display: block;
     position: relative;
-    padding: 0;
-    line-height: 90%;
     left: 200px;
+    margin-top: 20px;
+    padding: 0;
     background: unset;
-    color: vars.$primary;
     border: unset;
     border-bottom: 1px solid vars.$primary;
-    margin-top: 20px;
+    color: vars.$primary;
+    line-height: 90%;
     cursor: pointer;
   }
   
   .delete--account--btn:hover {
-    color: vars.$delete-account-dialogue--accent;
     border-bottom: 1px solid vars.$delete-account-dialogue--accent;
+    color: vars.$delete-account-dialogue--accent;
   }
   
   .delete--account--dialogue {
-    position: absolute;
     z-index: 15;
+    display: flex;
+    flex-direction: column;
+    position: absolute;
     text-align: center;
-    padding: 20px;
     top: 300px;
     right: 50px;
     width: fit-content;
-    display: flex;
-    flex-direction: column;
+    padding: 20px;
     background: pink;
-    border-radius: 10px;
     border: solid 1px vars.$delete-account-dialogue--accent;
+    border-radius: 10px;
     box-shadow: 2px 2px 60px rgba(54, 21, 21, 0.884);
   }
   
   .delete--account--dialogue > p {
-    padding: 8px;
     margin: 0;
+    padding: 8px;
     font-size: 0.8em;
     font-weight: 500;
   }
   
   .delete--account--dialogue > h4 {
-   position:relative;
-   margin: 0 auto;
-   width: fit-content;
-   border-bottom: solid 2px vars.$delete-account-dialogue--accent;
+    position:relative;
+    width: fit-content;
+    margin: 0 auto;
+    border-bottom: solid 2px vars.$delete-account-dialogue--accent;
   }
   
   .delete--account--dialogue--btns {
@@ -57,17 +57,17 @@
   }
   
   .delete--account--dialogue--btns > button {
+    padding: 3px 8px;
+    background: vars.$primary;
     font-size: 0.9em;
     font-family: 'Poppins', sans-serif;
-    cursor: pointer;
-    padding: 3px 8px;
     color: vars.$all--form--btn--text;
-    background: vars.$primary;
+    cursor: pointer;
   }
   
   .delete--account--dialogue--btns > button:nth-child(2) {
-   background-color: vars.$delete-account-dialogue--change-my-mind--btn--bkg;
-   border-radius: 5px;
+    background-color: vars.$delete-account-dialogue--change-my-mind--btn--bkg;
+    border-radius: 5px;
   }
 
   @media screen and (max-width: 450px) {

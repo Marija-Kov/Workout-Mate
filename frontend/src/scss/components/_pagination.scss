@@ -2,30 +2,30 @@
 @use '../fonts';
 
 .page--btn--container {
-  position: relative;
-  left: 50px;
+  grid-area: pagination;
   z-index: 2;
   display: flex;
   gap: 5px;
-  grid-area: pagination;
+  position: relative;
+  left: 50px;
   width: fit-content;
 }
 
 .page--btn--container > button {
-  cursor: pointer;
+  height: 20px;
+  padding: 0;
+  background: transparent;
   border: solid 1px vars.$primary;
   border-radius: 4px;
-  padding: 0;
   color: vars.$primary;
-  background: transparent;
+  cursor: pointer;
   transition: 0.2s;
-  height: 20px;
 }
 
 .dots-left::before,
 .dots-right::after {
-  display: inline-block;
   content:"...";
+  display: inline-block;
   font-size: larger;
   color: vars.$pagination-dots--color;
 }
@@ -39,14 +39,14 @@
   color: vars.$all--form--btn--text;
 }
 .page--btn--container > button:disabled {
+  background: transparent;
   border: solid 1px vars.$light-text;
   color: vars.$light-text;
-  background: transparent;
   cursor: default
 }
 .page--btn--container > .num--page {
-  font-size: 0.8em;
   padding: 0 5px;
+  font-size: 0.8em;
 }
 
 .page--btn--container > .current {
@@ -55,7 +55,7 @@
 }
 
 .page--btn--container > .invisible {
- display: none;
+  display: none;
 }
 
 @media screen and (max-width: 450px) {
