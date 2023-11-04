@@ -24,10 +24,10 @@
 }
 
 .chart--placeholder--title {
- height: 20px;
- width: 200px;
- border-radius: 2px;
- animation: placeholder--animation 1s ease-in-out infinite;
+  height: 20px;
+  width: 200px;
+  border-radius: 2px;
+  animation: placeholder--animation 1s ease-in-out infinite;
 }
 
 .chart--placeholder--circle {
@@ -63,9 +63,9 @@
 }
 
 .chart {
- position: relative;
- width: 300px;
- margin: 25px auto 0 auto;
+  position: relative;
+  width: 300px;
+  margin: 25px auto 0 auto;
 }
 
 .chart--container > h3 {
@@ -76,11 +76,11 @@
 }
 
 .custom--legend {
- display: flex;
- flex-wrap: wrap;
- justify-content: center;
- gap: 3px;
- padding:0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 3px;
+  padding:0;
 }
 
 .muscle--group {
@@ -92,7 +92,7 @@
 }
 
 .muscle--group:hover {
- filter:saturate(4);
+  filter:saturate(4);
 }
 
 .zero--percent {
@@ -110,15 +110,15 @@
 
 @media screen and (max-width: 450px) {
 
-  .chart--placeholder--circle {
-    height: 200px;
-    width: 200px;
+   .chart--placeholder--circle {
+     height: 200px;
+     width: 200px;
    }
    
    .chart {
-    height:280px;
-    width: 200px;
-    margin-bottom: 15px;
+     height:280px;
+     width: 200px;
+     margin-bottom: 15px;
    }
  
    .chart--container > h3 {
@@ -128,4 +128,5 @@
    .custom--legend {
      width: 100%;
    }
+   
 }
