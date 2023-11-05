@@ -14,21 +14,20 @@ Workout Mate lets you be the athlete you want to be.</i>
 
 ## Table of Contents
 
-1. [How did it come about?](#motivation)
-2. [App Features](#features)
-3. [Tools and Dependencies](#tools)
-4. [Environment variables](#environment-variables)
-5. [Test coverage](#test)
+1. [Motivation](#motivation)
+2. [App Features and Limitations](#features)
+3. [Local Usage](#localUsage)
+4. [Tools and Dependencies](#tools)
+5. [Environment variables](#environment-variables)
 6. [Todos](#todos)
-7. [Resources](#resources)
-8. [Author](#author)
+7. [Author](#author)
 
 ---
 <br>
 
-## How did it come about? <a name = "motivation"></a>
+## Motivation <a name = "motivation"></a>
 <p> 
-Workout Mate started off as a basic made-from-scratch CRUD project that I decided to build on top of to create a more complete web app.
+ Workout Mate is a CRUD project that I built on top of over time to solidify and expand my web development skills using a popular tech stack.
 </p>
 
 <br>
@@ -71,11 +70,27 @@ If you happen to forget your password, you will be able to recover it by first c
 <br><br>
 In case you want to delete your Workout Mate account, you will have to log in, open "Profile Settings" from the dropdown menu and click on "delete account" at the bottom-right of the form. You will see a dialogue pop-up that will warn you about the consequences of deleting your account and will give you an option to change your mind or delete your account permanently. After you click on "Yes, delete my account permanently", all your data will be deleted from the database and you will be redirected to the Login page.
  <br><br>
- <b>NOTE:</b> The limits to the number of registered users and workouts per user have been set. If these limits are reached at any point, the app will start deleting the oldest registered user/workout from the database with each new entry.
+ 
+ ### Limitations
+ 
+<p>
+ All users and posts are subject to automated deletion, oldest first, when the limits set on their quantity in the database are exceeded.
+ If too many requests are sent to the server within a set timeframe, the server will respond with an error and reject further requests for a while. 
 </p>
 
-
 <br>
+
+## Local Usage <a name = "localUsage"></a>
+
+1. Clone the repo;
+2. While in root directory, copy-paste and run:
+
+```
+cd backend && npm install && npm run dev && cd ../frontend && npm install && npm start
+```
+### Test command
+```npm run test``` 
+to run backend and frontend tests in corresponding directories.
 
 ## Tools and Dependencies <a name = "tools"></a>
 
@@ -159,21 +174,13 @@ REACT_APP_WEB_SERVICE=localhost <br>
 
 <br>
 
-## Test coverage <a name = "test"></a>            
-  Coming soon.
-<br>
-
 ## Todos <a name = "todos"></a>
  - Capacity management mechanism should involve automated deletion of accounts after a period of inactivity.
  - Users should be adequatly informed about the capacity management mechanism.
  - Users should have an option to commit to using their account and posting workouts to avoid automated deletion.
+ - Fix EditWorkout.test.js
 <br>
 
-## Resources <a name = "resources"></a>
-
-You can start building the app from scratch by following along [this tutorial](https://www.youtube.com/watch?v=98BzS5Oz5E4&list=PL4cUxeGkcC9iJ_KkrkBZWZRHVwnzLIoUE) (beginner-friendly).
-
-<br>
 
 ## Author <a name = "author"></a>
 
