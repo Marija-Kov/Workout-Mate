@@ -7,7 +7,7 @@ import { server } from "../../mocks/server";
 import { Provider } from "react-redux";
 import store from "../../redux/store";
 
-describe("<Signup />", () => {   
+describe("<Signup />", () => {
   it("should render signup form", () => {
     render(
       <Provider store={store}>
@@ -36,32 +36,35 @@ describe("<Signup />", () => {
     expect(signupBtn).toHaveFocus();
   });
 
-  it("should render input value as user types", async ()=> {
-   user.setup();
-   render(
-    <Provider store={store}>
-      <Signup />
-    </Provider>
-  );
-   const emailInp = screen.getByPlaceholderText("email address");
-   const passwordInp = screen.getByPlaceholderText("password");
-   await user.type(emailInp, "keech@mail.yu");
-   await user.type(passwordInp, "abc");
-   expect(emailInp).toHaveValue("keech@mail.yu");
-   expect(passwordInp).toHaveValue("abc");
+  it("should render input value as user types", async () => {
+    user.setup();
+    render(
+      <Provider store={store}>
+        <Signup />
+      </Provider>
+    );
+    const emailInp = screen.getByPlaceholderText("email address");
+    const passwordInp = screen.getByPlaceholderText("password");
+    await user.type(emailInp, "keech@mail.yu");
+    await user.type(passwordInp, "abc");
+    expect(emailInp).toHaveValue("keech@mail.yu");
+    expect(passwordInp).toHaveValue("abc");
   });
 
   it("should render error element once 'sign up' button is clicked given that server responds with error", async () => {
-     server.use(
-       rest.post(`${process.env.REACT_APP_API}/api/users/signup`, (req, res, ctx) => {
-         return res(
-           ctx.status(400),
-           ctx.json({
-             error: "Invalid input",
-           })
-         );
-       })
-     ); 
+    server.use(
+      rest.post(
+        `${process.env.REACT_APP_API}/api/users/signup`,
+        (req, res, ctx) => {
+          return res(
+            ctx.status(400),
+            ctx.json({
+              error: "Invalid input",
+            })
+          );
+        }
+      )
+    );
     user.setup();
     render(
       <Provider store={store}>
@@ -76,17 +79,16 @@ describe("<Signup />", () => {
   });
 
   it("should render success element once 'sign up' button is clicked given that server responds with success message", async () => {
-      user.setup();
-      render(
-        <Provider store={store}>
-          <Signup />
-        </Provider>
-      );
-      const signupBtn = await screen.findByText("Sign up")
-      await user.click(signupBtn);
-      const successEl = await screen.findByRole("alert");    
-      expect(successEl).toBeInTheDocument();
-      expect(successEl).toHaveClass("success");
+    user.setup();
+    render(
+      <Provider store={store}>
+        <Signup />
+      </Provider>
+    );
+    const signupBtn = await screen.findByText("Sign up");
+    await user.click(signupBtn);
+    const successEl = await screen.findByRole("alert");
+    expect(successEl).toBeInTheDocument();
+    expect(successEl).toHaveClass("success");
   });
-
 });

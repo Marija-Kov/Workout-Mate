@@ -1,5 +1,5 @@
-@use '../vars';
-@use '../fonts';
+@use "../vars";
+@use "../fonts";
 
 .about--container {
   position: relative;
@@ -20,9 +20,9 @@
 }
 
 .about--gym--pattern--bkg {
-  z-index:-1;
+  z-index: -1;
   position: fixed;
-  top:0;
+  top: 0;
   right: 0;
   background: vars.$about--bkg;
 }
@@ -33,9 +33,9 @@
     max-width: 400px;
     padding-right: 50px;
   }
-  
+
   .github {
     display: inline-block;
   }
-
+  
 }

@@ -1,5 +1,5 @@
-@use '../vars';
-@use '../fonts';
+@use "../vars";
+@use "../fonts";
 
 .user--menu {
   display: flex;
@@ -9,26 +9,26 @@
   right: 20px;
   padding: 20px;
   background: vars.$user-menu--bkg;
-  border-bottom-left-radius:15px;
-  border-bottom-right-radius:15px;
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
   box-shadow: vars.$user-menu--shadow;
 }
-  
+
 .user--menu--item {
   margin-right: 2px;
   background: unset;
-  border:unset;
+  border: unset;
   font-size: 0.8em;
   font-weight: 600;
   color: vars.$primary;
   cursor: pointer;
 }
-  
-.user--menu--item:nth-child(1){
+
+.user--menu--item:nth-child(1) {
   border-right: vars.$user-menu-item--border;
 }
 
-.user--menu--item:hover{
+.user--menu--item:hover {
   color: vars.$user-menu-item--text--hover;
 }
 
@@ -37,5 +37,5 @@
   .user--menu {
     top: 52px;
   }
-
+  
 }

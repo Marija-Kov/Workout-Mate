@@ -1,18 +1,18 @@
-@use 'components/chart';
-@use 'components/forms';
-@use 'components/header';
-@use 'components/pagination';
-@use 'components/searchBar';
-@use 'components/userMenu';
-@use 'components/workouts';
-@use 'components/deleteAccount';
-@use 'pages/about';
-@use 'pages/home';
-@use 'pages/confirmedAccount';
-@use 'fonts';
-@use 'successAndErrorMessages';
-@use 'vars';
-@use 'loader';
+@use "components/chart";
+@use "components/forms";
+@use "components/header";
+@use "components/pagination";
+@use "components/searchBar";
+@use "components/userMenu";
+@use "components/workouts";
+@use "components/deleteAccount";
+@use "pages/about";
+@use "pages/home";
+@use "pages/confirmedAccount";
+@use "fonts";
+@use "successAndErrorMessages";
+@use "vars";
+@use "loader";
 
 body {
   overflow-x: hidden;
@@ -26,7 +26,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  height:100vh;
+  height: 100vh;
 }
 
 .fallback--animation--container h1 {
@@ -77,5 +77,5 @@ body {
     width: 95%;
     max-width: none;
   }
-
+  
 }

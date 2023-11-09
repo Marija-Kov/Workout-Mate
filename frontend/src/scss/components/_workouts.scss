@@ -1,5 +1,5 @@
-@use '../fonts';
-@use '../vars';
+@use "../fonts";
+@use "../vars";
 
 .get--started {
   text-align: center;
@@ -25,26 +25,30 @@
   min-width: 150px;
   background-image: linear-gradient(
     0deg,
-    rgb(219, 162, 215), 
-    rgb(212, 122, 147), 
-    rgb(162, 122, 212), 
-    rgb(122, 131, 212), 
-    rgb(99, 148, 255), 
-    rgb(99, 224, 255), 
-    rgb(99, 255, 239), 
-    rgb(99, 255, 140), 
-    rgb(255, 206, 99), 
+    rgb(219, 162, 215),
+    rgb(212, 122, 147),
+    rgb(162, 122, 212),
+    rgb(122, 131, 212),
+    rgb(99, 148, 255),
+    rgb(99, 224, 255),
+    rgb(99, 255, 239),
+    rgb(99, 255, 140),
+    rgb(255, 206, 99),
     rgb(255, 127, 99),
     rgb(219, 162, 215),
     rgb(212, 122, 147)
-    );
+  );
   background-size: 100% 1100%;
   animation: no--workouts--yet 20s linear infinite;
 }
-  
+
 @keyframes no--workouts--yet {
-  0% { background-position: 0% 0%; }
-  100% { background-position: 0% 100%; }
+  0% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: 0% 100%;
+  }
 }
 
 .loading--workouts {
@@ -53,7 +57,7 @@
   color: vars.$chart-title--color;
 }
 
-.loading--workouts{
+.loading--workouts {
   z-index: 5;
   position: absolute;
   top: 50px;
@@ -66,7 +70,7 @@
     color: vars.$chart--color-1;
   }
   50% {
-    color: vars.$chart--color-2;  
+    color: vars.$chart--color-2;
   }
   100% {
     color: vars.$chart--color-1;
@@ -86,7 +90,7 @@
 .workouts--placeholder {
   grid-area: workouts;
   position: relative;
-  filter:opacity(0.7);
+  filter: opacity(0.7);
 }
 
 .workouts--placeholder > div {
@@ -111,7 +115,7 @@
   background: vars.$workout-details--bkg;
   border-radius: 20px;
   box-shadow: vars.$workout-details--shadow;
-  &:nth-child(n+4) {
+  &:nth-child(n + 4) {
     display: none;
   }
 }
@@ -123,7 +127,7 @@
   border-bottom: vars.$workout-details--h4--border;
   font-size: 1em;
   font-weight: 700;
-  color: vars.$primary; 
+  color: vars.$primary;
   text-transform: capitalize;
 }
 
@@ -138,12 +142,12 @@
   top: 110px;
   right: 15px;
   background: unset;
-  border:unset;
+  border: unset;
   border-radius: unset;
   font-size: 1.3em;
   color: vars.$light-text;
   cursor: pointer;
-  transition:unset;
+  transition: unset;
 }
 
 .workout-details > button:hover {
@@ -189,10 +193,10 @@
     margin-left: auto;
     margin-right: auto;
   }
-  
+
   .workouts--placeholder {
     top: 50px;
     width: 280px;
   }
-
+  
 }

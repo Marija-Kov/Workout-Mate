@@ -7,7 +7,8 @@ export const handlers = [
       return res(
         ctx.status(200),
         ctx.json({
-          success: "Account created and pending confirmation. Please check your inbox.",
+          success:
+            "Account created and pending confirmation. Please check your inbox.",
         })
       );
     }
@@ -101,7 +102,7 @@ export const handlers = [
       ctx.status(200),
       ctx.json({
         user: {
-          username: "daredev"
+          username: "daredev",
         },
         success: "Profile updated",
       })

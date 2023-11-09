@@ -1,11 +1,11 @@
-@use '../vars';
-@use '../fonts';
+@use "../vars";
+@use "../fonts";
 
 .search--bar {
   grid-area: search;
   z-index: 3;
   display: flex;
-  position:relative;
+  position: relative;
   top: 0;
   left: 40px;
   height: unset;
@@ -15,7 +15,7 @@
   background: none;
   box-shadow: none;
 }
-  
+
 .search--bar > button {
   position: relative;
   left: -20px;
@@ -42,7 +42,7 @@
   font-size: 1.4em;
 }
 
-.search--bar > input{
+.search--bar > input {
   height: 25px;
   border-radius: 20px;
   border: solid 1px vars.$light-text;
@@ -55,5 +55,5 @@
     left: 10px;
     margin: 10px auto 0 auto;
   }
-
+  
 }

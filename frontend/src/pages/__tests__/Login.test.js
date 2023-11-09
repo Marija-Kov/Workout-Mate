@@ -13,12 +13,11 @@ afterAll(() => {
 });
 
 describe("<Login />", () => {
-  
   it("should render login form", () => {
     render(
       <Provider store={store}>
         <Login />
-     </Provider>
+      </Provider>
     );
     const loginForm = screen.getByLabelText("log in");
     const forgotPassword = screen.getByText(/forgot/i);
@@ -27,64 +26,69 @@ describe("<Login />", () => {
   });
 
   it("should focus form elements in right order", async () => {
-      user.setup();
-      render(
-        <Provider store={store}>
-          <Login />
-        </Provider>
-      );
-      const emailInp = screen.getByPlaceholderText("email address");
-      const passwordInp = screen.getByPlaceholderText("password");
-      const forgotPasswordBtn = screen.getByRole("button", { name: /forgot/i });
-      const loginBtn = screen.getByRole("button", { name: /log in/i });
-      await user.tab();
-      expect(emailInp).toHaveFocus();
-      await user.tab();
-      expect(passwordInp).toHaveFocus();
-      await user.tab();
-      expect(forgotPasswordBtn).toHaveFocus();
-      await user.tab();
-      expect(loginBtn).toHaveFocus();
+    user.setup();
+    render(
+      <Provider store={store}>
+        <Login />
+      </Provider>
+    );
+    const emailInp = screen.getByPlaceholderText("email address");
+    const passwordInp = screen.getByPlaceholderText("password");
+    const forgotPasswordBtn = screen.getByRole("button", { name: /forgot/i });
+    const loginBtn = screen.getByRole("button", { name: /log in/i });
+    await user.tab();
+    expect(emailInp).toHaveFocus();
+    await user.tab();
+    expect(passwordInp).toHaveFocus();
+    await user.tab();
+    expect(forgotPasswordBtn).toHaveFocus();
+    await user.tab();
+    expect(loginBtn).toHaveFocus();
   });
 
-  it("should render input value as user types", async ()=> {
-   user.setup();
-   render(
-    <Provider store={store}>
-       <Login />
-    </Provider>
-   );
-   const emailInp = screen.getByPlaceholderText("email address");
-   const passwordInp = screen.getByPlaceholderText("password");
-   await user.type(emailInp, "keech@mail.yu");
-   await user.type(passwordInp, "abc");
-   expect(emailInp).toHaveValue("keech@mail.yu");
-   expect(passwordInp).toHaveValue("abc");
+  it("should render input value as user types", async () => {
+    user.setup();
+    render(
+      <Provider store={store}>
+        <Login />
+      </Provider>
+    );
+    const emailInp = screen.getByPlaceholderText("email address");
+    const passwordInp = screen.getByPlaceholderText("password");
+    await user.type(emailInp, "keech@mail.yu");
+    await user.type(passwordInp, "abc");
+    expect(emailInp).toHaveValue("keech@mail.yu");
+    expect(passwordInp).toHaveValue("abc");
   });
 
   it("should render reset password request form when user clicks on 'forgot password'", async () => {
-   user.setup();
-   render(
-    <Provider store={store}>
-       <Login />
-    </Provider>
-   );
-   const forgotPasswordBtn = screen.getByRole("button", { name: /forgot/i });
-   await user.click(forgotPasswordBtn);
-   const forgotPasswordForm = await screen.findByLabelText("forgot password form");
-   expect(forgotPasswordForm).toBeInTheDocument();
+    user.setup();
+    render(
+      <Provider store={store}>
+        <Login />
+      </Provider>
+    );
+    const forgotPasswordBtn = screen.getByRole("button", { name: /forgot/i });
+    await user.click(forgotPasswordBtn);
+    const forgotPasswordForm = await screen.findByLabelText(
+      "forgot password form"
+    );
+    expect(forgotPasswordForm).toBeInTheDocument();
   });
 
   it("should render error element once 'log in' button is clicked given that server responds with error", async () => {
     server.use(
-      rest.post(`${process.env.REACT_APP_API}/api/users/login`, (req, res, ctx) => {
-        return res(
-          ctx.status(400),
-          ctx.json({
-           error: "Invalid input or user not confirmed"
-          })
-        );
-      })
+      rest.post(
+        `${process.env.REACT_APP_API}/api/users/login`,
+        (req, res, ctx) => {
+          return res(
+            ctx.status(400),
+            ctx.json({
+              error: "Invalid input or user not confirmed",
+            })
+          );
+        }
+      )
     );
     user.setup();
     render(
@@ -126,8 +130,4 @@ describe("<Login />", () => {
     await user.logIn();
     expect(screen.getByText(/mock home/i)).toBeInTheDocument();
   });
-  
 });
-
-    
- 

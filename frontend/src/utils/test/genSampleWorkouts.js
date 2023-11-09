@@ -1,7 +1,7 @@
 import uuid from "react-uuid";
 import store from "../../redux/store";
 
-export function genSampleWorkouts(searchFor = "", page = 1, itemsPerPage=3) {
+export function genSampleWorkouts(searchFor = "", page = 1, itemsPerPage = 3) {
   const dispatch = store.dispatch;
   const workoutTitles = [
     "bench press",
@@ -11,10 +11,17 @@ export function genSampleWorkouts(searchFor = "", page = 1, itemsPerPage=3) {
     "squats",
     "arm curls",
     "situps",
-    "lunges"
+    "lunges",
   ];
   const allWorkoutsMuscleGroups = [
-   "chest", "forearmAndGrip", "chest", "ab", "glute", "biceps", "ab", "leg"
+    "chest",
+    "forearmAndGrip",
+    "chest",
+    "ab",
+    "glute",
+    "biceps",
+    "ab",
+    "leg",
   ];
   const workouts = [];
   for (let i = 0; i < workoutTitles.length; ++i) {
@@ -26,21 +33,36 @@ export function genSampleWorkouts(searchFor = "", page = 1, itemsPerPage=3) {
       reps: Math.floor(Math.random() * 99) + 1,
       load: Math.floor(Math.random() * 50),
       user_id: "userid",
-    }
+    };
     workouts.unshift(workout);
-    dispatch({type: "CREATE_WORKOUT_SUCCESS", payload: workout })
+    dispatch({ type: "CREATE_WORKOUT_SUCCESS", payload: workout });
   }
   let noWorkoutsByQuery = false;
-  const searchResults = workouts.filter(e => {
+  const searchResults = workouts.filter((e) => {
     const regExp = `^${searchFor}`;
     return e.title.match(regExp);
   });
-  if(!searchResults.length) {
+  if (!searchResults.length) {
     noWorkoutsByQuery = true;
-    return { total: 0, searchResults, allWorkoutsMuscleGroups, workoutsChunk: [], noWorkoutsByQuery}
-  } 
-  const firstResultOnPage_Index = Math.floor(workouts.length/itemsPerPage) * (page - 1);
-  const workoutsChunk = searchResults.slice(firstResultOnPage_Index, firstResultOnPage_Index + itemsPerPage);
-  return { total: searchResults.length, searchResults, allWorkoutsMuscleGroups, workoutsChunk, noWorkoutsByQuery }
+    return {
+      total: 0,
+      searchResults,
+      allWorkoutsMuscleGroups,
+      workoutsChunk: [],
+      noWorkoutsByQuery,
+    };
+  }
+  const firstResultOnPage_Index =
+    Math.floor(workouts.length / itemsPerPage) * (page - 1);
+  const workoutsChunk = searchResults.slice(
+    firstResultOnPage_Index,
+    firstResultOnPage_Index + itemsPerPage
+  );
+  return {
+    total: searchResults.length,
+    searchResults,
+    allWorkoutsMuscleGroups,
+    workoutsChunk,
+    noWorkoutsByQuery,
+  };
 }
-

@@ -1,31 +1,33 @@
-import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
-import Navbar from './components/Navbar';
-import Login from './pages/Login';
-import { useGetUrl } from './hooks/useGetUrl';
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import Navbar from "./components/Navbar";
+import Login from "./pages/Login";
+import { useGetUrl } from "./hooks/useGetUrl";
 
 const Home = React.lazy(() => import("./pages/Home"));
 const Signup = React.lazy(() => import("./pages/Signup"));
-const About = React.lazy(()=> import("./pages/About"))
-const ResetPassword = React.lazy(() => import("./pages/ResetPassword"))
-const ConfirmedAccount = React.lazy(()=>import("./pages/ConfirmedAccount"))
+const About = React.lazy(() => import("./pages/About"));
+const ResetPassword = React.lazy(() => import("./pages/ResetPassword"));
+const ConfirmedAccount = React.lazy(() => import("./pages/ConfirmedAccount"));
 
 function App() {
-  const { user } =  useSelector(state => state.user);
-  const { showSpunDownServerAlert } = useSelector(state => state.showComponent);
+  const { user } = useSelector((state) => state.user);
+  const { showSpunDownServerAlert } = useSelector(
+    (state) => state.showComponent
+  );
   const dispatch = useDispatch();
   const { getUrl } = useGetUrl();
 
   React.useEffect(() => {
-   const url = getUrl();
-   if(!url.includes(process.env.REACT_APP_WEB_SERVICE)){
-    return
-   } 
-   if(!localStorage.getItem("alerted")){
-    dispatch({type: "SHOW_SPUN_DOWN_SERVER_ALERT"});
-   }
-   return
+    const url = getUrl();
+    if (!url.includes(process.env.REACT_APP_WEB_SERVICE)) {
+      return;
+    }
+    if (!localStorage.getItem("alerted")) {
+      dispatch({ type: "SHOW_SPUN_DOWN_SERVER_ALERT" });
+    }
+    return;
   }, []);
 
   return (
@@ -33,23 +35,27 @@ function App() {
       <BrowserRouter>
         <Navbar />
         <div className="pages">
-        {showSpunDownServerAlert &&
-         <div className="spun--down--server--alert">
-           <p>
-             NOTE: This app uses a free web service that spins the server down after a period of inactivity.
-             If you haven't been here in a while, your initial request may take a minute.
-             Thank you for your patience!
-           </p>
-           <button
-            onClick={() => {
-              localStorage.setItem("alerted", "The user has been alerted about web service limitations");
-              dispatch({type: "HIDE_ALL_COMPONENTS"});
-             }
-            }
-           >
-             Got it, close this
-           </button>
-         </div>}
+          {showSpunDownServerAlert && (
+            <div className="spun--down--server--alert">
+              <p>
+                NOTE: This app uses a free web service that spins the server
+                down after a period of inactivity. If you haven't been here in a
+                while, your initial request may take a minute. Thank you for
+                your patience!
+              </p>
+              <button
+                onClick={() => {
+                  localStorage.setItem(
+                    "alerted",
+                    "The user has been alerted about web service limitations"
+                  );
+                  dispatch({ type: "HIDE_ALL_COMPONENTS" });
+                }}
+              >
+                Got it, close this
+              </button>
+            </div>
+          )}
           <Routes>
             <Route
               path="/login"

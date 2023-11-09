@@ -9,9 +9,9 @@ import store from "../../redux/store";
 describe("<ForgotPasswordForm />", () => {
   it("should render ForgotPasswordForm component properly", async () => {
     render(
-     <Provider store={store}>
-       <ForgotPasswordForm />
-     </Provider>
+      <Provider store={store}>
+        <ForgotPasswordForm />
+      </Provider>
     );
     const inputField = await screen.findByLabelText(/email address/i);
     const submitBtn = await screen.findByLabelText(/submit/i);
@@ -27,7 +27,7 @@ describe("<ForgotPasswordForm />", () => {
       <Provider store={store}>
         <ForgotPasswordForm />
       </Provider>
-     );
+    );
     const inputField = await screen.findByLabelText(/email address/i);
     const submitBtn = await screen.findByLabelText(/submit/i);
     const closeBtn = await screen.findByLabelText(/close/i);
@@ -45,7 +45,7 @@ describe("<ForgotPasswordForm />", () => {
       <Provider store={store}>
         <ForgotPasswordForm />
       </Provider>
-     );
+    );
     const inputField = await screen.findByLabelText(/email address/i);
     await user.type(inputField, "keech");
     expect(inputField).toHaveValue("keech");
@@ -67,7 +67,7 @@ describe("<ForgotPasswordForm />", () => {
       <Provider store={store}>
         <ForgotPasswordForm />
       </Provider>
-     );
+    );
     const inputField = await screen.findByLabelText(/email address/i);
     const submitBtn = await screen.findByLabelText(/submit/i);
     await user.type(inputField, "keech");
@@ -75,7 +75,7 @@ describe("<ForgotPasswordForm />", () => {
     const error = await screen.findByRole("alert");
     expect(error).toBeInTheDocument();
     expect(error).toHaveAttribute("class", "error");
-    expect(error.textContent).toMatch(/please enter valid email address/i)
+    expect(error.textContent).toMatch(/please enter valid email address/i);
   });
 
   it("should render success message if user submits valid email", async () => {
@@ -84,7 +84,7 @@ describe("<ForgotPasswordForm />", () => {
       <Provider store={store}>
         <ForgotPasswordForm />
       </Provider>
-     );
+    );
     const inputField = await screen.findByLabelText(/email address/i);
     const submitBtn = await screen.findByLabelText(/submit/i);
     await user.type(inputField, "keech@mail.yu");
@@ -92,6 +92,6 @@ describe("<ForgotPasswordForm />", () => {
     const successMessage = await screen.findByRole("alert");
     expect(successMessage).toBeInTheDocument();
     expect(successMessage).toHaveAttribute("class", "success");
-    expect(successMessage.textContent).toMatch(/reset link sent to inbox/i)
+    expect(successMessage.textContent).toMatch(/reset link sent to inbox/i);
   });
-})
+});

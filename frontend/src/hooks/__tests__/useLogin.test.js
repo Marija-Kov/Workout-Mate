@@ -10,19 +10,15 @@ let dispatch;
 
 beforeAll(() => {
   wrapper = ({ children }) => {
-    return (
-      <Provider store={store}>
-          {children}
-      </Provider>
-    );
+    return <Provider store={store}>{children}</Provider>;
   };
   dispatch = store.dispatch;
-})
+});
 
 afterAll(() => {
   wrapper = null;
   dispatch = null;
-})
+});
 
 describe("useLogin()", () => {
   it("should return login function", () => {
@@ -39,7 +35,7 @@ describe("useLogin()", () => {
           return res(
             ctx.status(400),
             ctx.json({
-              error: "Invalid credentials"
+              error: "Invalid credentials",
             })
           );
         }
@@ -62,7 +58,6 @@ describe("useLogin()", () => {
     await act(async () => result.current.login());
     state = store.getState();
     expect(state.user.user).toBeTruthy();
-    dispatch({type: "LOGOUT"})
+    dispatch({ type: "LOGOUT" });
   });
-
-})
+});

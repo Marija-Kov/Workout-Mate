@@ -11,11 +11,7 @@ let mockUser;
 
 beforeAll(() => {
   wrapper = ({ children }) => {
-    return (
-      <Provider store={store}>
-          {children}
-      </Provider>
-    );
+    return <Provider store={store}>{children}</Provider>;
   };
   dispatch = store.dispatch;
   mockUser = {
@@ -26,20 +22,19 @@ beforeAll(() => {
     profileImg: undefined,
     tokenExpires: Date.now() + 3600000,
   };
-})
+});
 
 afterAll(() => {
   wrapper = null;
   dispatch = null;
   mockUser = null;
-})
+});
 
 describe("useUpdateUser()", () => {
   it("should return updateUser function", () => {
     const { result } = renderHook(useUpdateUser, { wrapper });
     expect(result.current.updateUser).toBeTruthy();
     expect(typeof result.current.updateUser).toBe("function");
-
   });
 
   it("should set updateUserError given that updateUser was run without authorization", async () => {
@@ -64,7 +59,7 @@ describe("useUpdateUser()", () => {
     expect(state.user.user.username).toBe(mockUser.username);
     expect(state.user.updateUserError).toBeTruthy();
     expect(state.user.updateUserError).toMatch(/invalid input/i);
-    act(() => dispatch({type: "LOGOUT"}));
+    act(() => dispatch({ type: "LOGOUT" }));
   });
 
   it("should run updateUser, set success state to 'true', error state to 'false' given that user is authorized and input is valid", async () => {
@@ -73,22 +68,25 @@ describe("useUpdateUser()", () => {
       profileImg: "profileImgString",
     };
     server.use(
-      rest.patch(`${process.env.REACT_APP_API}/api/users/*`, (req, res, ctx) => {
-        return res(
-          ctx.status(200),
-          ctx.json({
-             user: {
-               id: mockUser.id,
-               email: mockUser.email,
-               token: mockUser.token,
-               username: newData.username,
-               profileImg: newData.profileImg,
-               tokenExpires: mockUser.tokenExpires,
-             },
+      rest.patch(
+        `${process.env.REACT_APP_API}/api/users/*`,
+        (req, res, ctx) => {
+          return res(
+            ctx.status(200),
+            ctx.json({
+              user: {
+                id: mockUser.id,
+                email: mockUser.email,
+                token: mockUser.token,
+                username: newData.username,
+                profileImg: newData.profileImg,
+                tokenExpires: mockUser.tokenExpires,
+              },
               success: "Profile updated",
-          })
-        );
-      }),
+            })
+          );
+        }
+      )
     );
     dispatch({ type: "LOGIN_SUCCESS", payload: mockUser });
     const { result } = renderHook(useUpdateUser, { wrapper });
@@ -101,6 +99,6 @@ describe("useUpdateUser()", () => {
     expect(state.user.success).toBeTruthy();
     expect(state.user.updateUserError).toBeFalsy();
     expect(state.user.success).toMatch(/profile updated/i);
-    act(() => dispatch({type: "LOGOUT"}));
+    act(() => dispatch({ type: "LOGOUT" }));
   });
 });

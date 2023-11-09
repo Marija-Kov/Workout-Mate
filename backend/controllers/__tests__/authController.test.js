@@ -1,17 +1,16 @@
 const request = require("supertest");
 const app = require("../../server");
-const { connect, clear, close }= require("../../database.config");
+const { connect, clear, close } = require("../../database.config");
 
 const agent = request.agent(app);
 
 beforeAll(async () => await connect());
 afterAll(async () => {
-   await clear()
-   await close()
+  await clear();
+  await close();
 });
 
 describe("authController", () => {
-    
   describe("POST /api/users/signup", () => {
     it("should respond with error on attempt to sign up with an invalid email", async () => {
       const user = { email: "invalidemail", password: "abcABC123!" };
@@ -78,7 +77,10 @@ describe("authController", () => {
   describe("GET /api/users/:accountConfirmationToken", () => {
     it("should respond with error if the confirmation token was invalid", async () => {
       const res = await agent.get(`/api/users/forgedOrExpiredToken`);
-      expect(res._body).toHaveProperty("error", "Couldn't find user with provided confirmation token - this might be because the account has already been confirmed");
+      expect(res._body).toHaveProperty(
+        "error",
+        "Couldn't find user with provided confirmation token - this might be because the account has already been confirmed"
+      );
     });
 
     it("should respond with success message if the confirmation token was valid", async () => {
@@ -92,7 +94,7 @@ describe("authController", () => {
       );
     });
   });
-  
+
   describe("POST /api/users/login", () => {
     it("should respond with error if login was attempted without email and/or password", async () => {
       await mockUser("poozh@thedoor.rs", "abcABC123!", "confirmed");
@@ -193,7 +195,8 @@ describe("authController", () => {
         user.password,
         "logged-in"
       );
-      const newProfileImg = "data:image/jpeg;base64,/9j/4QEKRXhpZgAATU0AKgAAAAgACAEbAAUAAAABA";
+      const newProfileImg =
+        "data:image/jpeg;base64,/9j/4QEKRXhpZgAATU0AKgAAAAgACAEbAAUAAAABA";
       const res = (
         await agent
           .patch(`/api/users/${userLoggedIn.id}`)
@@ -218,8 +221,8 @@ describe("authController", () => {
           .send({ profileImg: newProfileImg })
       )._body;
       expect(res.error).toBeTruthy();
-      expect(res.error).toMatch(/bad input/i)
-    })
+      expect(res.error).toMatch(/bad input/i);
+    });
   });
 
   describe("DELETE /api/users/:id", () => {
@@ -260,36 +263,31 @@ describe("authController", () => {
   });
 
   describe("ANY /api/users", () => {
-
     it("should respond with error if too many requests were sent in a short amount of time", async () => {
       const user = { email: "invalidemail", password: "abcABC123!" };
       const maxReq = process.env.TEST_MAX_API_USERS_REQS;
       let res;
-      for (let i = 0; i <= maxReq + 1; ++i){
-       res = await agent.post("/api/users/signup").send(user);
+      for (let i = 0; i <= maxReq + 1; ++i) {
+        res = await agent.post("/api/users/signup").send(user);
       }
       expect(res._body.error).toBeTruthy();
       expect(res._body.error).toMatch(/too many requests/i);
     });
-
-  })
-
+  });
 });
 
-async function mockUser(email, password, status){
+async function mockUser(email, password, status) {
   const user = {
     email: email,
     password: password,
   };
   const userPending = (await agent.post("/api/users/signup").send(user))._body;
-  if(status==="pending") return userPending;
+  if (status === "pending") return userPending;
 
   const userConfirmed = (await agent.get(`/api/users/${userPending.token}`))
     ._body;
-  if(status==="confirmed") return userConfirmed
+  if (status === "confirmed") return userConfirmed;
 
   const userLoggedIn = (await agent.post("/api/users/login").send(user))._body;
-  if(status==="logged-in") return userLoggedIn
-
+  if (status === "logged-in") return userLoggedIn;
 }
-

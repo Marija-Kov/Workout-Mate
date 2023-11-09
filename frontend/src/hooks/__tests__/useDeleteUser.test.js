@@ -3,18 +3,14 @@ import { rest } from "msw";
 import { server } from "../../mocks/server";
 import { useDeleteUser } from "../useDeleteUser";
 import { Provider } from "react-redux";
-import store from '../../redux/store';
+import store from "../../redux/store";
 
 let wrapper;
 let mockUser;
 
 beforeAll(() => {
   wrapper = ({ children }) => {
-    return (
-      <Provider store={store}>
-          {children}
-      </Provider>
-    );
+    return <Provider store={store}>{children}</Provider>;
   };
   mockUser = {
     id: "userid",
@@ -24,12 +20,12 @@ beforeAll(() => {
     profileImg: undefined,
     tokenExpires: Date.now() + 3600000,
   };
-})
+});
 
 afterAll(() => {
   wrapper = null;
   mockUser = null;
-})
+});
 
 describe("useDeleteUser()", () => {
   it("should return deleteUser function", () => {
@@ -40,15 +36,18 @@ describe("useDeleteUser()", () => {
 
   it("should set deleteUserError message given that deleteUser function was run without authorization", async () => {
     server.use(
-      rest.delete(`${process.env.REACT_APP_API}/api/users/*`, (req, res, ctx) => {
-        return res(
-          ctx.status(401),
-          ctx.json({
-            error: "Not authorized",
-          })
-        );
-      })
-    )
+      rest.delete(
+        `${process.env.REACT_APP_API}/api/users/*`,
+        (req, res, ctx) => {
+          return res(
+            ctx.status(401),
+            ctx.json({
+              error: "Not authorized",
+            })
+          );
+        }
+      )
+    );
     const { result } = renderHook(useDeleteUser, { wrapper });
     await act(() => result.current.deleteUser(mockUser.id));
     let state = store.getState();
@@ -58,14 +57,17 @@ describe("useDeleteUser()", () => {
 
   it("should set deleteUserError message given that user id wasn't found", async () => {
     server.use(
-      rest.delete(`${process.env.REACT_APP_API}/api/users/*`, (req, res, ctx) => {
-        return res(
-          ctx.status(404),
-          ctx.json({
-            error: "User id not found",
-          })
-        );
-      })
+      rest.delete(
+        `${process.env.REACT_APP_API}/api/users/*`,
+        (req, res, ctx) => {
+          return res(
+            ctx.status(404),
+            ctx.json({
+              error: "User id not found",
+            })
+          );
+        }
+      )
     );
     const { result } = renderHook(useDeleteUser, { wrapper });
     await act(() => result.current.deleteUser("invalidUserId"));

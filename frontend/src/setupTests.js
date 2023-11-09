@@ -3,7 +3,7 @@ import { server } from "./mocks/server";
 import { cleanup } from "@testing-library/react";
 
 beforeAll(() => {
- server.listen({ onUnhandledRequest: "error" });
+  server.listen({ onUnhandledRequest: "error" });
 });
 
 afterEach(() => {

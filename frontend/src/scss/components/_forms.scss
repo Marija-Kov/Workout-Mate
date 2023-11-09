@@ -1,5 +1,5 @@
-@use '../fonts';
-@use '../vars';
+@use "../fonts";
+@use "../vars";
 
 label,
 input {
@@ -11,12 +11,12 @@ label {
   font-size: 14px;
 }
 
-.disabled--btn{
+.disabled--btn {
   text-decoration: line-through;
 }
 
 .no--button {
-  display: none
+  display: none;
 }
 
 input {
@@ -139,13 +139,13 @@ form.signup h4 {
   color: vars.$forgot-password--btn--text;
   text-decoration: underline;
   cursor: pointer;
-  }
-  
-.forgot--password:hover{
+}
+
+.forgot--password:hover {
   color: vars.$forgot-password--btn--text--hover;
 }
 
-  /* Forgot password form */
+/* Forgot password form */
 
 .form--container--reset--password--request {
   z-index: 5;
@@ -154,7 +154,7 @@ form.signup h4 {
   left: 0;
   height: 100%;
   width: 100vw;
-  background: vars.$form--container--bkg; 
+  background: vars.$form--container--bkg;
 }
 
 .reset--password--request {
@@ -162,7 +162,7 @@ form.signup h4 {
   position: relative;
   top: 180px;
   height: fit-content;
-  width: 300px; 
+  width: 300px;
   margin: 0 auto;
   padding: 20px;
   background: vars.$reset-password-request--form--bkg;
@@ -198,10 +198,10 @@ form.signup h4 {
   text-align: center;
   height: 100vh;
   width: 100vw;
-  top:0;
-  left:0;
+  top: 0;
+  left: 0;
 }
-  
+
 .reset--password {
   position: relative;
   top: 180px;
@@ -225,12 +225,12 @@ form.signup h4 {
   transition: 0.2s;
 }
 
-.reset--password> button:hover {
+.reset--password > button:hover {
   background: vars.$all--form--btn--bkg--hover;
   color: vars.$primary;
 }
 
-  /* Add & Edit workout forms */
+/* Add & Edit workout forms */
 
 .form--container--workout--form,
 .form--container--edit--workout--form {
@@ -240,7 +240,7 @@ form.signup h4 {
   left: -22%;
   height: 100vh;
   width: 150%;
-  background: vars.$form--container--bkg;  
+  background: vars.$form--container--bkg;
 }
 
 .workout--form > h4,
@@ -259,7 +259,7 @@ form.signup h4 {
   top: 100px;
   height: fit-content;
   max-width: 400px;
-  min-width: 300px; 
+  min-width: 300px;
   margin: 0 32%;
   padding: 20px;
   background: vars.$workout--form--bkg;
@@ -315,7 +315,7 @@ form.signup h4 {
   background: vars.$primary;
   border: solid 1px vars.$primary;
   border-radius: 50px;
-  font-size: .9em;
+  font-size: 0.9em;
   font-weight: 500;
   font-family: "Poppins";
   color: vars.$all--form--btn--text;
@@ -329,11 +329,11 @@ form.signup h4 {
 }
 
 .add--workout:hover {
-  background:vars.$all--form--btn--bkg--hover;
+  background: vars.$all--form--btn--bkg--hover;
   color: vars.$primary;
-} 
+}
 
-  /* User/Profile settings form */
+/* User/Profile settings form */
 
 .form--container--user--settings {
   z-index: 3;
@@ -342,7 +342,7 @@ form.signup h4 {
   left: 0;
   height: 100vh;
   width: 100vw;
-  background: vars.$form--container--bkg; 
+  background: vars.$form--container--bkg;
 }
 
 .user--settings {
@@ -352,12 +352,12 @@ form.signup h4 {
   right: 18%;
   height: fit-content;
   max-width: 400px;
-  min-width: 300px; 
+  min-width: 300px;
   padding: 20px;
-  padding-left: 50px; 
+  padding-left: 50px;
   background: vars.$user-settings-form--bkg;
   border-radius: 20px;
-  box-shadow: vars.$user-settings-form--shadow; 
+  box-shadow: vars.$user-settings-form--shadow;
 }
 
 .user--settings > input {
@@ -384,11 +384,11 @@ form.signup h4 {
   font-weight: 500;
 }
 
-.upload--image{
+.upload--image {
   padding: 30px 0;
 }
 
-.upload--btn{
+.upload--btn {
   height: 30px;
   padding: 5px 20px;
   background: vars.$primary;
@@ -400,8 +400,8 @@ form.signup h4 {
   transition: 0.2s;
 }
 
-.upload--btn:hover{
-  background:vars.$all--form--btn--bkg--hover;
+.upload--btn:hover {
+  background: vars.$all--form--btn--bkg--hover;
   color: vars.$primary;
 }
 
@@ -409,20 +409,20 @@ form.signup h4 {
   font-size: small;
 }
 
-.close{
+.close {
   position: absolute;
   right: 20px;
   height: 1em;
   width: 1em;
   padding: 0;
   background: unset;
-  border:unset;
+  border: unset;
   color: vars.$primary;
   cursor: pointer;
-  transition:unset;
+  transition: unset;
 }
 
-.close:hover{
+.close:hover {
   background: unset;
 }
 
@@ -432,25 +432,24 @@ form.signup h4 {
 }
 
 .cropper--wrapper {
-  display:block;
-  position:relative;
+  display: block;
+  position: relative;
   height: 250px;
   margin-bottom: 20px;
 }
 
 @media screen and (max-width: 600px) {
-  
   .form--container--login,
   .form--container--signup {
     display: flex;
-    justify-content: center;;
+    justify-content: center;
     background-image: none;
   }
- 
+
   .form--container--login {
     background: vars.$login--form--bkg;
   }
- 
+
   .form--container--signup {
     background: vars.$signup--form--bkg;
   }
@@ -460,18 +459,17 @@ form.signup h4 {
     position: relative;
     left: unset;
     padding: 0;
-    background: none; 
+    background: none;
   }
 
   .log-in--form--btn,
   .sign-up--form--btn {
     margin: 0 auto;
   }
-
 }
 
 @media screen and (max-width: 450px) {
- 
+
   .add--workout {
     z-index: 3;
     width: 100%;
@@ -504,5 +502,5 @@ form.signup h4 {
   .user--settings {
     right: 7%;
   }
-
+  
 }

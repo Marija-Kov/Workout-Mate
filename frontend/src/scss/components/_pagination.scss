@@ -1,5 +1,5 @@
-@use '../vars';
-@use '../fonts';
+@use "../vars";
+@use "../fonts";
 
 .page--btn--container {
   grid-area: pagination;
@@ -24,7 +24,7 @@
 
 .dots-left::before,
 .dots-right::after {
-  content:"...";
+  content: "...";
   display: inline-block;
   font-size: larger;
   color: vars.$pagination-dots--color;
@@ -42,7 +42,7 @@
   background: transparent;
   border: solid 1px vars.$light-text;
   color: vars.$light-text;
-  cursor: default
+  cursor: default;
 }
 .page--btn--container > .num--page {
   padding: 0 5px;
@@ -59,9 +59,9 @@
 }
 
 @media screen and (max-width: 450px) {
-  
+
   .page--btn--container {
     margin-bottom: 20px;
   }
-
+  
 }

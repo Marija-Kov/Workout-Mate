@@ -11,9 +11,9 @@ import store from "../../redux/store";
 describe("<ResetPassword />", () => {
   it("should render reset password form", () => {
     render(
-     <Provider store={store}>
-       <ResetPassword />
-     </Provider>
+      <Provider store={store}>
+        <ResetPassword />
+      </Provider>
     );
     const newPasswordInput = screen.getByLabelText("new password");
     const confirmPasswordInput = screen.getByLabelText(/confirm/i);
@@ -29,7 +29,7 @@ describe("<ResetPassword />", () => {
       <Provider store={store}>
         <ResetPassword />
       </Provider>
-     );
+    );
     const newPasswordInput = screen.getByLabelText("new password");
     const confirmPasswordInput = screen.getByLabelText(/confirm/i);
     const saveBtn = screen.getByText(/save/i);
@@ -47,7 +47,7 @@ describe("<ResetPassword />", () => {
       <Provider store={store}>
         <ResetPassword />
       </Provider>
-     );
+    );
     const newPasswordInput = screen.getByLabelText("new password");
     const confirmPasswordInput = screen.getByLabelText(/confirm/i);
     await user.type(newPasswordInput, "abc");
@@ -58,22 +58,25 @@ describe("<ResetPassword />", () => {
 
   it("should show error message given that passwords are not matching", async () => {
     server.use(
-      rest.patch(`${process.env.REACT_APP_API}/api/reset-password/*`, (req, res, ctx) => {
-        return res(
-          ctx.status(400),
-          ctx.json({
-            error: "Passwords must match",
-          })
-        );
-      })
+      rest.patch(
+        `${process.env.REACT_APP_API}/api/reset-password/*`,
+        (req, res, ctx) => {
+          return res(
+            ctx.status(400),
+            ctx.json({
+              error: "Passwords must match",
+            })
+          );
+        }
+      )
     );
     user.setup();
     render(
-     <Provider store={store}>
-      <BrowserRouter>
-        <ResetPassword />
-      </BrowserRouter> 
-     </Provider>
+      <Provider store={store}>
+        <BrowserRouter>
+          <ResetPassword />
+        </BrowserRouter>
+      </Provider>
     );
     const newPasswordInput = screen.getByLabelText("new password");
     const confirmPasswordInput = screen.getByLabelText(/confirm/i);
@@ -89,23 +92,26 @@ describe("<ResetPassword />", () => {
 
   it("should show error message given that new password is not strong enough", async () => {
     server.use(
-      rest.patch(`${process.env.REACT_APP_API}/api/reset-password/*`, (req, res, ctx) => {
-        return res(
-          ctx.status(400),
-          ctx.json({
-            error: "Password not strong enough",
-          })
-        );
-      })
+      rest.patch(
+        `${process.env.REACT_APP_API}/api/reset-password/*`,
+        (req, res, ctx) => {
+          return res(
+            ctx.status(400),
+            ctx.json({
+              error: "Password not strong enough",
+            })
+          );
+        }
+      )
     );
     user.setup();
     render(
       <Provider store={store}>
-       <BrowserRouter>
-         <ResetPassword />
-       </BrowserRouter> 
+        <BrowserRouter>
+          <ResetPassword />
+        </BrowserRouter>
       </Provider>
-     );
+    );
     const newPasswordInput = screen.getByLabelText("new password");
     const confirmPasswordInput = screen.getByLabelText(/confirm/i);
     const saveBtn = screen.getByText(/save/i);
@@ -120,23 +126,26 @@ describe("<ResetPassword />", () => {
 
   it("should show error message given that password reset token has expired", async () => {
     server.use(
-      rest.patch(`${process.env.REACT_APP_API}/api/reset-password/*`, (req, res, ctx) => {
-        return res(
-          ctx.status(400),
-          ctx.json({
-            error: "Invalid token",
-          })
-        );
-      })
+      rest.patch(
+        `${process.env.REACT_APP_API}/api/reset-password/*`,
+        (req, res, ctx) => {
+          return res(
+            ctx.status(400),
+            ctx.json({
+              error: "Invalid token",
+            })
+          );
+        }
+      )
     );
     user.setup();
     render(
       <Provider store={store}>
-       <BrowserRouter>
-         <ResetPassword />
-       </BrowserRouter> 
+        <BrowserRouter>
+          <ResetPassword />
+        </BrowserRouter>
       </Provider>
-     );
+    );
     const newPasswordInput = screen.getByLabelText("new password");
     const confirmPasswordInput = screen.getByLabelText(/confirm/i);
     const saveBtn = screen.getByText(/save/i);
@@ -155,11 +164,11 @@ describe("<ResetPassword />", () => {
     user.setup();
     render(
       <Provider store={store}>
-       <BrowserRouter>
-         <ResetPassword />
-       </BrowserRouter> 
+        <BrowserRouter>
+          <ResetPassword />
+        </BrowserRouter>
       </Provider>
-     );
+    );
     const newPasswordInput = screen.getByLabelText("new password");
     const confirmPasswordInput = screen.getByLabelText(/confirm/i);
     const saveBtn = screen.getByText(/save/i);
@@ -172,5 +181,5 @@ describe("<ResetPassword />", () => {
     await expect(loginLink).toBeInTheDocument();
     expect(success).toHaveAttribute("class", "success");
     expect(success.textContent).toMatch(/success/i);
-  })
+  });
 });

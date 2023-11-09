@@ -12,17 +12,18 @@ export default function UserMenu() {
         <button
           aria-label="open user settings"
           className="user--menu--item"
-          onClick={() => dispatch({type: "SHOW_USER_SETTINGS_FORM"})}
+          onClick={() => dispatch({ type: "SHOW_USER_SETTINGS_FORM" })}
         >
           Settings
         </button>
-        <button 
+        <button
           aria-label="log out"
-          className="user--menu--item" onClick={() => logout()}>
+          className="user--menu--item"
+          onClick={() => logout()}
+        >
           Log Out
         </button>
       </div>
-
     </>
   );
 }

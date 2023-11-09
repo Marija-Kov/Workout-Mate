@@ -47,4 +47,3 @@ module.exports.api_workouts = rateLimit({
   standardHeaders: true,
   legacyHeaders: false,
 });
-

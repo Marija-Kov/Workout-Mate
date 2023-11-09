@@ -1,5 +1,5 @@
-@use '../vars';
-@use '../fonts';
+@use "../vars";
+@use "../fonts";
 
 header {
   z-index: 5;
@@ -12,7 +12,7 @@ header {
 
 /* Logged-in Header */
 
-.header--blur{
+.header--blur {
   background: rgba(255, 255, 255, 0);
   box-shadow: 1px 1px 5px vars.$header--shadow;
   backdrop-filter: blur(4px);
@@ -39,7 +39,7 @@ header a {
 
 .logo > a {
   font-size: 0.8em;
-  font-family: 'Yellowtail', cursive;
+  font-family: "Yellowtail", cursive;
   color: vars.$logo--link;
 }
 
@@ -54,7 +54,7 @@ header a {
 
 .logged--in--logo > a {
   font-size: 20px;
-  font-family: 'Yellowtail', cursive;
+  font-family: "Yellowtail", cursive;
   color: vars.$logo--link--logged--in;
 }
 
@@ -66,20 +66,19 @@ header a {
   position: relative;
   top: 10px;
   background: unset;
-  border:unset;
+  border: unset;
   border-radius: unset;
   font-size: 0.9em;
   color: vars.$primary;
   cursor: pointer;
-  transition:unset;
+  transition: unset;
 }
 
-.hello--user > span:nth-child(1){
+.hello--user > span:nth-child(1) {
   display: inline-block;
   font-weight: 400;
-
 }
-.hello--user > span:nth-child(1) > strong{
+.hello--user > span:nth-child(1) > strong {
   display: inline-block;
   font-weight: 600;
 }
@@ -123,7 +122,7 @@ header a {
   border: solid 1px transparent;
 }
 
-.signup--btn:hover{
+.signup--btn:hover {
   background: vars.$signup--form--bkg;
 }
 
@@ -131,8 +130,8 @@ header a {
   background: vars.$login--form--bkg;
 }
 
-.about--btn:hover{
-  background:vars.$about--link--bkg--hover;
+.about--btn:hover {
+  background: vars.$about--link--bkg--hover;
 }
 
 @media screen and (max-width: 450px) {
@@ -147,23 +146,23 @@ header a {
   header {
     height: 50px;
   }
- 
+
   header > .container {
     padding: 0 10px;
   }
- 
- .about--login--signup--nav {
+
+  .about--login--signup--nav {
     position: relative;
     top: -15px;
     right: -12px;
     padding-right: 0px;
   }
- 
+
   .logo,
   .logged--in--logo {
     margin: 0;
   }
- 
+
   .logo > a,
   .logged--in--logo > a {
     font-size: 0.6em;
@@ -182,5 +181,5 @@ header a {
   .avatar {
     width: 30px;
   }
-
+  
 }

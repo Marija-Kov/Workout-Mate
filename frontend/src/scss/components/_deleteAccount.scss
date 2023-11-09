@@ -1,5 +1,5 @@
-@use '../vars';
-@use '../fonts';
+@use "../vars";
+@use "../fonts";
 
 .delete--account--btn {
   display: block;
@@ -14,7 +14,7 @@
   line-height: 90%;
   cursor: pointer;
 }
-  
+
 .delete--account--btn:hover {
   border-bottom: 1px solid vars.$delete-account-dialogue--accent;
   color: vars.$delete-account-dialogue--accent;
@@ -35,7 +35,7 @@
   border-radius: 10px;
   box-shadow: 2px 2px 60px rgba(54, 21, 21, 0.884);
 }
-  
+
 .delete--account--dialogue > p {
   margin: 0;
   padding: 8px;
@@ -44,7 +44,7 @@
 }
 
 .delete--account--dialogue > h4 {
-  position:relative;
+  position: relative;
   width: fit-content;
   margin: 0 auto;
   border-bottom: solid 2px vars.$delete-account-dialogue--accent;
@@ -60,21 +60,21 @@
   padding: 3px 8px;
   background: vars.$primary;
   font-size: 0.9em;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   color: vars.$all--form--btn--text;
   cursor: pointer;
 }
-  
+
 .delete--account--dialogue--btns > button:nth-child(2) {
   background-color: vars.$delete-account-dialogue--change-my-mind--btn--bkg;
   border-radius: 5px;
 }
 
 @media screen and (max-width: 450px) {
-   
+  
   .delete--account--dialogue {
     width: 280px;
-  }  
+  }
 
   .delete--account--dialogue--btns {
     gap: 10px;

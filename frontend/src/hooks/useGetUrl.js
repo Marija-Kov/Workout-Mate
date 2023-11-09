@@ -1,6 +1,6 @@
 export const useGetUrl = () => {
-  const getUrl = () => {             
+  const getUrl = () => {
     return window.location.href;
-  }
-  return { getUrl }
-}
+  };
+  return { getUrl };
+};

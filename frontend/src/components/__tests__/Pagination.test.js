@@ -3,8 +3,8 @@ import { render, screen, act } from "@testing-library/react";
 import user from "@testing-library/user-event";
 import Pagination from "../Pagination";
 import { genSampleWorkouts } from "../../utils/test/genSampleWorkouts";
-import store from '../../redux/store'
-import { Provider } from 'react-redux'
+import store from "../../redux/store";
+import { Provider } from "react-redux";
 
 let mockWorkouts;
 let dispatch;
@@ -20,13 +20,16 @@ beforeAll(() => {
     profileImg: undefined,
     tokenExpires: Date.now() + 3600000,
   };
-  dispatch({type: "LOGIN_SUCCESS", payload: mockUser})
+  dispatch({ type: "LOGIN_SUCCESS", payload: mockUser });
   mockWorkouts = genSampleWorkouts();
 });
 
 afterAll(() => {
-  dispatch({type: "DELETE_ALL_WORKOUTS_SUCCESS", payload: "All workouts deleted successfully"})
-  dispatch({type: "LOGOUT"})
+  dispatch({
+    type: "DELETE_ALL_WORKOUTS_SUCCESS",
+    payload: "All workouts deleted successfully",
+  });
+  dispatch({ type: "LOGOUT" });
   mockWorkouts = null;
   dispatch = null;
   mockUser = null;
@@ -37,7 +40,7 @@ describe("<Pagination />", () => {
     render(
       <Provider store={store}>
         <Pagination />
-      </Provider> 
+      </Provider>
     );
     const numButtons = await screen.findAllByLabelText(/go to page/i);
     const page1 = await screen.findByLabelText(/page 1/i);
@@ -54,7 +57,7 @@ describe("<Pagination />", () => {
     let state = store.getState();
     let total = state.workout.workouts.total;
     let limit = state.workout.workouts.limit;
-    expect(numButtons.length).toBe(Math.ceil(total/limit));
+    expect(numButtons.length).toBe(Math.ceil(total / limit));
   });
 
   it("should focus elements in the correct order", async () => {
@@ -62,40 +65,40 @@ describe("<Pagination />", () => {
     render(
       <Provider store={store}>
         <Pagination />
-      </Provider> 
+      </Provider>
     );
     const prev = await screen.findByLabelText(/previous page/i);
     const next = await screen.findByLabelText(/next page/i);
     let page2 = await screen.findByLabelText(/page 2/i);
-    await user.click(page2)
+    await user.click(page2);
     await user.tab();
     expect(prev).toHaveFocus();
-    await user.tab()
+    await user.tab();
     const page1 = await screen.findByLabelText(/page 1/i);
-    expect(page1).toHaveFocus();   
-    await user.tab()
+    expect(page1).toHaveFocus();
+    await user.tab();
     page2 = await screen.findByLabelText(/page 2/i);
-    expect(page2).toHaveFocus();   
-    await user.tab()
+    expect(page2).toHaveFocus();
+    await user.tab();
     const page3 = await screen.findByLabelText(/page 3/i);
-    expect(page3).toHaveFocus();   
-    await user.tab()
+    expect(page3).toHaveFocus();
+    await user.tab();
     expect(next).toHaveFocus();
-    act(() => dispatch({type: "GO_TO_PAGE_NUMBER", payload: 0}))
+    act(() => dispatch({ type: "GO_TO_PAGE_NUMBER", payload: 0 }));
   });
 
   it("should highlight corresponding page when pages are changed back and forth clicking on 'next' and 'previous' buttons", async () => {
-      render(
-        <Provider store={store}>
-          <Pagination />
-        </Provider> 
-      );
+    render(
+      <Provider store={store}>
+        <Pagination />
+      </Provider>
+    );
     user.setup();
     let prev = await screen.findByLabelText(/previous page/i);
     let next = await screen.findByLabelText(/next page/i);
-    let page1 = await screen.findByText(1); 
-    let page2 = await screen.findByText(2); 
-    let page3 = await screen.findByText(3); 
+    let page1 = await screen.findByText(1);
+    let page2 = await screen.findByText(2);
+    let page3 = await screen.findByText(3);
     expect(page1).toHaveAttribute("class", "num--page current");
     expect(page2).toHaveAttribute("class", "num--page");
     expect(page3).toHaveAttribute("class", "num--page");
@@ -124,15 +127,15 @@ describe("<Pagination />", () => {
     expect(page2).toHaveAttribute("class", "num--page current");
     expect(page3).toHaveAttribute("class", "num--page");
     expect(next).not.toHaveAttribute("disabled");
-    act(() => dispatch({type: "GO_TO_PAGE_NUMBER", payload: 0}))
+    act(() => dispatch({ type: "GO_TO_PAGE_NUMBER", payload: 0 }));
   });
 
   it("should highlight page number p when it is clicked", async () => {
-      render(
-        <Provider store={store}>
-          <Pagination/>
-        </Provider> 
-      );
+    render(
+      <Provider store={store}>
+        <Pagination />
+      </Provider>
+    );
 
     user.setup();
     let page1 = await screen.findByText(1);
@@ -145,6 +148,6 @@ describe("<Pagination />", () => {
     expect(page1).toHaveAttribute("class", "num--page");
     expect(page2).toHaveAttribute("class", "num--page");
     expect(page3).toHaveAttribute("class", "num--page current");
-    act(() => dispatch({type: "GO_TO_PAGE_NUMBER", payload: 0}))
+    act(() => dispatch({ type: "GO_TO_PAGE_NUMBER", payload: 0 }));
   });
 });
