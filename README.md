@@ -92,6 +92,8 @@ cd backend && npm install && npm run dev && cd ../frontend && npm install && npm
 ```npm run test``` 
 to run backend and frontend tests in corresponding directories.
 
+<br>
+
 ## Tools and Dependencies <a name = "tools"></a>
 
 ### Backend
@@ -178,7 +180,7 @@ REACT_APP_WEB_SERVICE=localhost <br>
  - Capacity management mechanism should involve automated deletion of accounts after a period of inactivity.
  - Users should be adequatly informed about the capacity management mechanism.
  - Users should have an option to commit to using their account and posting workouts to avoid automated deletion.
- - Userd should be able to download their data stored in WM database.
+ - Users should be able to download their data stored in WM database.
  - Fix EditWorkout.test.js
 <br>
 
