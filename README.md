@@ -14,22 +14,14 @@ Workout Mate lets you be the athlete you want to be.</i>
 
 ## Table of Contents
 
-1. [Motivation](#motivation)
-2. [App Features and Limitations](#features)
-3. [Local Usage](#localUsage)
-4. [Tools and Dependencies](#tools)
-5. [Environment variables](#environment-variables)
-6. [Todos](#todos)
-7. [Author](#author)
+1. [App Features and Limitations](#features)
+2. [Local Usage](#localUsage)
+3. [Tools and Dependencies](#tools)
+4. [Environment variables](#environment-variables)
+5. [Todos](#todos)
+6. [Author](#author)
 
 ---
-<br>
-
-## Motivation <a name = "motivation"></a>
-<p> 
- Workout Mate is a CRUD project that I built on top of over time to solidify and expand my web development skills using a popular tech stack.
-</p>
-
 <br>
 
 ## App Features (User's perspective walkthrough)<a name = "features"></a>
