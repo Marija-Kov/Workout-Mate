@@ -1,8 +1,11 @@
-const User = require("../models/userModel");
-const Workout = require("../models/workoutModel");
+const UserRepository = require("../dataAccessLayer/userRepository");
+const WorkoutRepository = require("../dataAccessLayer/workoutRepository");
 const jwt = require("jsonwebtoken");
 const sendEmail = require("../middleware/sendEmail");
 const { ApiError } = require("../error/error");
+
+const User = new UserRepository();
+const Workout = new WorkoutRepository();
 
 const expiresIn = Number(process.env.AUTH_TOKEN_EXPIRES_IN);
 const createToken = (_id) => {
@@ -10,21 +13,21 @@ const createToken = (_id) => {
 };
 
 const signup = async (email, password) => {
-  const user = await User.signup(email, password);
+  const user = await User.create(email, password);
   const id = user._id;
   const confirmationToken = createToken(id);
   user.accountConfirmationToken = confirmationToken;
   user.accountConfirmationTokenExpires = Date.now() + 3600000;
-  await user.save();
-  const registeredUsers = await User.find({});
+  await User.save(user);
+  const registeredUsers = await User.findAll();
   const limit =
     process.env.NODE_ENV !== "test"
       ? Number(process.env.MAX_USERS)
       : Number(process.env.TEST_MAX_USERS);
   if (registeredUsers.length === limit) {
     const id = registeredUsers[0]._id;
-    await User.findOneAndDelete({ _id: id });
-    await Workout.deleteMany({ user_id: id });
+    await User.delete(id);
+    await Workout.deleteAll(id);
   }
   const clientUrl = process.env.CLIENT_URL;
   const accountVerificationLink = `${clientUrl}/users?accountConfirmationToken=${confirmationToken}`;
@@ -43,9 +46,7 @@ const verify_user = async (token) => {
   if (!token) {
     ApiError.notFound("Account confirmation token not found");
   }
-  const user = await User.findOne({
-    accountConfirmationToken: token,
-  });
+  const user = await User.findAccountConfirmationToken(token);
   if (!user) {
     ApiError.notFound(
       "Couldn't find user with provided confirmation token - this might be because the account has already been confirmed"
@@ -54,18 +55,15 @@ const verify_user = async (token) => {
   user.accountStatus = "active";
   user.accountConfirmationToken = undefined;
   user.accountConfirmationTokenExpires = undefined;
-  await user.save();
+  await User.save(user);
   return { user };
 };
 
 const login = async (email, password) => {
-  const user = await User.login(email, password);
-  const id = user._id;
-  const username = user.username;
-  const profileImg = user.profileImg;
-  const token = createToken(id);
+  const { _id, username, profileImg } = await User.login(email, password);
+  const token = createToken(_id);
   const tokenExpires = Date.now() + expiresIn * 1000;
-  return { id, token, username, profileImg, tokenExpires };
+  return { id: _id, token, username, profileImg, tokenExpires };
 };
 
 const updateUser = async (user, id, body) => {
@@ -83,10 +81,7 @@ const updateUser = async (user, id, body) => {
   ) {
     ApiError.badInput("Bad input, must be JPEG, PNG or SVG image format");
   }
-  const userUpdated = await User.findOneAndUpdate({ _id: id }, body, {
-    new: true,
-    runValidators: true,
-  });
+  const userUpdated = await User.update(id, body);
   return { userUpdated };
 };
 
@@ -94,7 +89,7 @@ const deleteUser = async (id) => {
   if (!id) {
     ApiError.notAuthorized("Not authorized");
   }
-  await User.findOneAndDelete({ _id: id });
+  await User.delete(id);
 };
 
 module.exports = {
