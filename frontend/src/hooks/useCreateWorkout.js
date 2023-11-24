@@ -38,7 +38,7 @@ export const useCreateWorkout = () => {
         type: "SET_ROUTINE_BALANCE",
         payload: [workout.muscle_group, ...allUserWorkoutsMuscleGroups],
       });
-      dispatch({ type: "SHOW_CREATE_WORKOUT_FORM" });
+      dispatch({ type: "MOUNT_CREATE_WORKOUT_FORM" });
     }
   };
 

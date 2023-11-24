@@ -6,7 +6,7 @@ export default function EditWorkout() {
   const dispatch = useDispatch();
   const { editWorkout } = useEditWorkout();
   const { prepopulateEditWorkoutForm } = useSelector(
-    (state) => state.showComponent
+    (state) => state.toggleMountComponents
   );
   const {
     id,
@@ -63,7 +63,7 @@ export default function EditWorkout() {
           aria-label="close form"
           className="close material-symbols-outlined"
           onClick={() => {
-            dispatch({ type: "SHOW_EDIT_WORKOUT_FORM" });
+            dispatch({ type: "MOUNT_EDIT_WORKOUT_FORM" });
             dispatch({ type: "RESET_ERROR_MESSAGES" });
           }}
         >

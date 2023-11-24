@@ -49,8 +49,8 @@ describe("useLogout()", () => {
     }
     expect(state.page).toBe(0);
     expect(state.query).toBe("");
-    for (let key in state.showComponent) {
-      expect(state.showComponent[key]).toBeFalsy();
+    for (let key in state.toggleMountComponents) {
+      expect(state.toggleMountComponents[key]).toBeFalsy();
     }
   });
 });

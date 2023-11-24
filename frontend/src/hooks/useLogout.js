@@ -16,7 +16,7 @@ export const useLogout = () => {
     dispatch({ type: "LOGOUT" });
     dispatch({ type: "SET_WORKOUTS_SUCCESS", payload: {} });
     dispatch({ type: "SET_ROUTINE_BALANCE", payload: [] });
-    dispatch({ type: "HIDE_ALL_COMPONENTS" });
+    dispatch({ type: "UNMOUNT_ALL_COMPONENTS" });
     dispatch({ type: "GO_TO_PAGE_NUMBER", payload: 0 });
     dispatch({ type: "SET_QUERY", payload: "" });
 

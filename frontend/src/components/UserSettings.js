@@ -17,8 +17,8 @@ export default function UserSettings({ changeProfileImg }) {
   const { user, loading, updateUserError, success } = useSelector(
     (state) => state.user
   );
-  const { showDeleteAccountDialogue } = useSelector(
-    (state) => state.showComponent
+  const { isDeleteAccountDialogueMounted } = useSelector(
+    (state) => state.toggleMountComponents
   );
   const [newUsername, setNewUsername] = useState("");
   const [selectedFile, setSelectedFile] = useState();
@@ -80,7 +80,7 @@ export default function UserSettings({ changeProfileImg }) {
             aria-label="close form"
             className="close material-symbols-outlined"
             onClick={() => {
-              dispatch({ type: "SHOW_USER_SETTINGS_FORM" });
+              dispatch({ type: "MOUNT_USER_SETTINGS_FORM" });
               dispatch({ type: "RESET_USER_STATE" });
             }}
           >
@@ -154,12 +154,12 @@ export default function UserSettings({ changeProfileImg }) {
             aria-label="delete account button"
             type="button"
             className="delete--account--btn"
-            onClick={() => dispatch({ type: "SHOW_DELETE_ACCOUNT_DIALOGUE" })}
+            onClick={() => dispatch({ type: "MOUNT_DELETE_ACCOUNT_DIALOGUE" })}
           >
             delete account
           </button>
         </form>
-        {showDeleteAccountDialogue && (
+        {isDeleteAccountDialogueMounted && (
           <div
             className="delete--account--dialogue"
             aria-label="delete account dialogue"
@@ -179,7 +179,7 @@ export default function UserSettings({ changeProfileImg }) {
                 aria-label="keep account and close dialogue"
                 type="button"
                 onClick={() =>
-                  dispatch({ type: "SHOW_DELETE_ACCOUNT_DIALOGUE" })
+                  dispatch({ type: "MOUNT_DELETE_ACCOUNT_DIALOGUE" })
                 }
               >
                 No, I changed my mind

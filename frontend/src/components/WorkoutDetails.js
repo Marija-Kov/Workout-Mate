@@ -42,7 +42,7 @@ export default function WorkoutDetails({
           className="material-symbols-outlined edit"
           onClick={() =>
             dispatch({
-              type: "SHOW_EDIT_WORKOUT_FORM",
+              type: "MOUNT_EDIT_WORKOUT_FORM",
               payload: {
                 id,
                 prevTitle: title,

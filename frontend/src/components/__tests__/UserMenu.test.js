@@ -38,7 +38,7 @@ describe("<UserMenu />", () => {
     expect(logoutBtn).toHaveFocus();
   });
 
-  it("should set showUserSettingsForm to true when user clicks on 'Settings' in User menu", async () => {
+  it("should set isUserSettingsFormMounted to true when user clicks on 'Settings' in User menu", async () => {
     user.setup();
     render(
       <Provider store={store}>
@@ -48,6 +48,6 @@ describe("<UserMenu />", () => {
     const openUserSettings = await screen.findByLabelText(/settings/i);
     await user.click(openUserSettings);
     let state = store.getState();
-    expect(state.showComponent.showUserSettingsForm).toBeTruthy();
+    expect(state.toggleMountComponents.isUserSettingsFormMounted).toBeTruthy();
   });
 });

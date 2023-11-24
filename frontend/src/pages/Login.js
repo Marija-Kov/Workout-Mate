@@ -9,8 +9,8 @@ const ForgotPasswordForm = React.lazy(() =>
 const Login = () => {
   const dispatch = useDispatch();
   const { loginError, loading } = useSelector((state) => state.user);
-  const { showForgotPasswordForm } = useSelector(
-    (state) => state.showComponent
+  const { isForgotPasswordFormMounted } = useSelector(
+    (state) => state.toggleMountComponents
   );
   const email = React.useRef();
   const password = React.useRef();
@@ -54,7 +54,7 @@ const Login = () => {
           <button
             type="button"
             className="forgot--password"
-            onClick={() => dispatch({ type: "SHOW_FORGOT_PASSWORD_FORM" })}
+            onClick={() => dispatch({ type: "MOUNT_FORGOT_PASSWORD_FORM" })}
           >
             Forgot the password?
           </button>
@@ -79,7 +79,7 @@ const Login = () => {
         </form>
       </div>
 
-      {showForgotPasswordForm && (
+      {isForgotPasswordFormMounted && (
         <Suspense>
           <ForgotPasswordForm />
         </Suspense>

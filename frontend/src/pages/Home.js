@@ -13,8 +13,8 @@ const EditWorkout = lazy(() => import("../components/EditWorkout"));
 
 export default function Home() {
   const dispatch = useDispatch();
-  const { showCreateWorkoutForm, showEditWorkoutForm } = useSelector(
-    (state) => state.showComponent
+  const { isCreateWorkoutFormMounted, isEditWorkoutFormMounted } = useSelector(
+    (state) => state.toggleMountComponents
   );
   const { workouts, loading, setWorkoutsError } = useSelector(
     (state) => state.workout
@@ -107,20 +107,20 @@ export default function Home() {
 
         {muscleGroups ? <Chart /> : loading ? <ChartPlaceholder /> : ""}
 
-        {showCreateWorkoutForm ? (
+        {isCreateWorkoutFormMounted ? (
           <WorkoutForm />
         ) : (
           <button
             aria-label="buff it up"
             className={buffItUpButtonClass()}
-            onClick={() => dispatch({ type: "SHOW_CREATE_WORKOUT_FORM" })}
+            onClick={() => dispatch({ type: "MOUNT_CREATE_WORKOUT_FORM" })}
             disabled={loading}
           >
             + Buff It Up
           </button>
         )}
 
-        {showEditWorkoutForm && (
+        {isEditWorkoutFormMounted && (
           <Suspense>
             <EditWorkout />
           </Suspense>

@@ -13,8 +13,8 @@ const ConfirmedAccount = React.lazy(() => import("./pages/ConfirmedAccount"));
 
 function App() {
   const { user } = useSelector((state) => state.user);
-  const { showSpunDownServerAlert } = useSelector(
-    (state) => state.showComponent
+  const { isSpunDownServerAlertMounted } = useSelector(
+    (state) => state.toggleMountComponents
   );
   const dispatch = useDispatch();
   const { getUrl } = useGetUrl();
@@ -25,7 +25,7 @@ function App() {
       return;
     }
     if (!localStorage.getItem("alerted")) {
-      dispatch({ type: "SHOW_SPUN_DOWN_SERVER_ALERT" });
+      dispatch({ type: "MOUNT_SPUN_DOWN_SERVER_ALERT" });
     }
     return;
   }, []);
@@ -35,7 +35,7 @@ function App() {
       <BrowserRouter>
         <Navbar />
         <div className="pages">
-          {showSpunDownServerAlert && (
+          {isSpunDownServerAlertMounted && (
             <div className="spun--down--server--alert">
               <p>
                 NOTE: This app uses a free web service that spins the server
@@ -49,7 +49,7 @@ function App() {
                     "alerted",
                     "The user has been alerted about web service limitations"
                   );
-                  dispatch({ type: "HIDE_ALL_COMPONENTS" });
+                  dispatch({ type: "UNMOUNT_ALL_COMPONENTS" });
                 }}
               >
                 Got it, close this

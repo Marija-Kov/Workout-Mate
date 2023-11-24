@@ -8,8 +8,8 @@ import { useSelector, useDispatch } from "react-redux";
 export default function Navbar() {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
-  const { showUserMenu, showUserSettingsForm } = useSelector(
-    (state) => state.showComponent
+  const { isUserMenuMounted, isUserSettingsFormMounted } = useSelector(
+    (state) => state.toggleMountComponents
   );
   const [username, setUsername] = useState("who are you?");
   const [profileImg, setProfileImg] = useState(
@@ -51,7 +51,7 @@ export default function Navbar() {
             <button
               aria-label="open user menu"
               className="hello--user"
-              onClick={() => dispatch({ type: "SHOW_USER_MENU" })}
+              onClick={() => dispatch({ type: "MOUNT_USER_MENU" })}
             >
               <span>
                 Hello, <strong>{username}</strong>
@@ -80,8 +80,8 @@ export default function Navbar() {
             </Link>
           </div>
         )}
-        {user && showUserMenu && <UserMenu />}
-        {showUserSettingsForm && (
+        {user && isUserMenuMounted && <UserMenu />}
+        {isUserSettingsFormMounted && (
           <UserSettings changeProfileImg={changeProfileImg} />
         )}
       </div>

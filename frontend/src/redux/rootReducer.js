@@ -3,7 +3,7 @@ import { userReducer } from "./user/userReducer";
 import { workoutReducer } from "./workout/workoutReducer";
 import { pageReducer } from "./page/pageReducer";
 import { queryReducer } from "./query/queryReducer";
-import { showComponentReducer } from "./showComponent/showComponentReducer";
+import { toggleMountComponentsReducer } from "./toggleMountComponents/toggleMountComponentsReducer";
 import { routineBalanceReducer } from "./routineBalance/routineBalanceReducer";
 
 const rootReducer = combineReducers({
@@ -11,7 +11,7 @@ const rootReducer = combineReducers({
   workout: workoutReducer,
   page: pageReducer,
   query: queryReducer,
-  showComponent: showComponentReducer,
+  toggleMountComponents: toggleMountComponentsReducer,
   routineBalance: routineBalanceReducer,
 });
 

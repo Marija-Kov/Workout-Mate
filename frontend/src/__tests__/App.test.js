@@ -33,6 +33,6 @@ describe("<App />", () => {
      const gotIt = screen.getByText(/got it/i);
      act(() => gotIt.click());
      let state = store.getState();
-     expect(state.showComponent.showSpunDownServerAlert).toBeFalsy();
+     expect(state.toggleMountComponents.showSpunDownServerAlert).toBeFalsy();
     });
 })

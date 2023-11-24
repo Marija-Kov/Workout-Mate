@@ -103,7 +103,7 @@ describe("<Navbar />", () => {
     act(() => dispatch({ type: "LOGOUT" }));
   });
 
-  it("should render User Settings once showUserSettingForm state is set to true", async () => {
+  it("should render User Settings once isUserSettingsFormMounted state is set to true", async () => {
     user.setup();
     dispatch({ type: "LOGIN_SUCCESS", payload: mockUser });
     render(
@@ -113,7 +113,7 @@ describe("<Navbar />", () => {
         </BrowserRouter>
       </Provider>
     );
-    await act(() => dispatch({ type: "SHOW_USER_SETTINGS_FORM" }));
+    await act(() => dispatch({ type: "MOUNT_USER_SETTINGS_FORM" }));
     const userSettingsForm = await screen.findByLabelText(
       /change user settings/i
     );

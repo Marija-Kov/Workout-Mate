@@ -23,11 +23,11 @@ beforeAll(() => {
 
 beforeEach(() => {
   dispatch({ type: "LOGIN_SUCCESS", payload: {} });
-  dispatch({ type: "SHOW_EDIT_WORKOUT_FORM", payload: mockPrepopulatedForm });
+  dispatch({ type: "MOUNT_EDIT_WORKOUT_FORM", payload: mockPrepopulatedForm });
 });
 
 afterEach(() => {
-  dispatch({ type: "SHOW_EDIT_WORKOUT_FORM" });
+  dispatch({ type: "MOUNT_EDIT_WORKOUT_FORM" });
   act(() => dispatch({ type: "LOGOUT" }));
 });
 
