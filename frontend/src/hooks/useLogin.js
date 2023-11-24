@@ -17,7 +17,7 @@ export const useLogin = () => {
     if (!response.ok) {
       dispatch({ type: "LOGIN_FAIL", payload: json.error });
       setTimeout(() => {
-        dispatch({ type: "RESET_ERROR_AND_SUCCESS_MESSAGES" });
+        dispatch({ type: "RESET_USER_STATE" });
       }, 5000);
     }
     if (response.ok) {

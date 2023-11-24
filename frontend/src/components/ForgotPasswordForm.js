@@ -27,7 +27,7 @@ export default function ForgotPasswordForm() {
           className="close material-symbols-outlined"
           onClick={() => {
             dispatch({ type: "SHOW_FORGOT_PASSWORD_FORM" });
-            dispatch({ type: "RESET_ERROR_AND_SUCCESS_MESSAGES" });
+            dispatch({ type: "RESET_USER_STATE" });
           }}
         >
           close

@@ -160,18 +160,8 @@ export const userReducer = (state = init, action) => {
         loading: false,
         deleteUserError: action.payload,
       };
-    case a.RESET_ERROR_AND_SUCCESS_MESSAGES:
-      return {
-        ...state,
-        signupError: null,
-        confirmAccountError: null,
-        loginError: null,
-        updateUserError: null,
-        sendPasswordResetLinkError: null,
-        resetPasswordError: null,
-        deleteUserError: null,
-        success: false,
-      };
+    case a.RESET_USER_STATE:
+      return init;
     default:
       return state;
   }

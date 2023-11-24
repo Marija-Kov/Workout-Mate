@@ -49,7 +49,7 @@ export const useUpdateUser = () => {
     }
 
     setTimeout(() => {
-      dispatch({ type: "RESET_ERROR_AND_SUCCESS_MESSAGES" });
+      dispatch({ type: "RESET_USER_STATE" });
     }, 5000);
   };
   return { updateUser };
