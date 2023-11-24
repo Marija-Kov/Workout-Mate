@@ -13,8 +13,19 @@ class UserRepository {
     return User.find({});
   }
 
+  async findByEmail(email) {
+    return User.findOne({ email: email });
+  }
+
   async findAccountConfirmationToken(token) {
     return User.findOne({ accountConfirmationToken: token });
+  }
+
+  async findPasswordResetToken(token) {
+    return User.findOne({
+      resetPasswordToken: token,
+      resetPasswordTokenExpires: { $gt: Date.now() },
+    });
   }
 
   async delete(id) {
