@@ -60,16 +60,7 @@ export const showComponentReducer = (state = init, action) => {
         showSpunDownServerAlert: true,
       };
     case a.HIDE_ALL_COMPONENTS:
-      return {
-        showCreateWorkoutForm: false,
-        showEditWorkoutForm: false,
-        prepopulateEditWorkoutForm: null,
-        showForgotPasswordForm: false,
-        showUserMenu: false,
-        showUserSettingsForm: false,
-        showDeleteAccountDialogue: false,
-        showSpunDownServerAlert: false,
-      };
+      return init;
     default:
       return state;
   }
