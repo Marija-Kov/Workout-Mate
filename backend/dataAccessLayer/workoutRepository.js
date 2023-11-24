@@ -60,4 +60,4 @@ class WorkoutRepository {
   }
 }
 
-module.exports = WorkoutRepository;
+module.exports = new WorkoutRepository();

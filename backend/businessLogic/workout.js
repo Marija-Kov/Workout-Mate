@@ -1,7 +1,5 @@
-const WorkoutRepository = require("../dataAccessLayer/workoutRepository");
+const Workout = require("../dataAccessLayer/workoutRepository");
 const { ApiError } = require("../error/error");
-
-const Workout = new WorkoutRepository();
 
 const getAllWorkouts = async (user, page, searchQuery) => {
   if (!user) {

@@ -1,11 +1,8 @@
-const UserRepository = require("../dataAccessLayer/userRepository");
-const WorkoutRepository = require("../dataAccessLayer/workoutRepository");
+const User = require("../dataAccessLayer/userRepository");
+const Workout = require("../dataAccessLayer/workoutRepository");
 const jwt = require("jsonwebtoken");
 const sendEmail = require("../middleware/sendEmail");
 const { ApiError } = require("../error/error");
-
-const User = new UserRepository();
-const Workout = new WorkoutRepository();
 
 const expiresIn = Number(process.env.AUTH_TOKEN_EXPIRES_IN);
 const createToken = (_id) => {

@@ -1,11 +1,9 @@
-const UserRepository = require("../dataAccessLayer/userRepository");
+const User = require("../dataAccessLayer/userRepository");
 const crypto = require("crypto");
 const bcrypt = require("bcrypt");
 const validator = require("validator");
 const sendEmail = require("../middleware/sendEmail");
 const { ApiError } = require("../error/error");
-
-const User = new UserRepository();
 
 const forgotPassword = async (email) => {
   if (
