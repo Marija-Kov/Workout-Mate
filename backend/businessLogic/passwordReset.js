@@ -1,9 +1,11 @@
-const User = require("../models/userModel");
+const UserRepository = require("../dataAccessLayer/userRepository");
 const crypto = require("crypto");
 const bcrypt = require("bcrypt");
 const validator = require("validator");
 const sendEmail = require("../middleware/sendEmail");
 const { ApiError } = require("../error/error");
+
+const User = new UserRepository();
 
 const forgotPassword = async (email) => {
   if (
@@ -13,7 +15,7 @@ const forgotPassword = async (email) => {
   ) {
     ApiError.badInput("Please enter your email address");
   }
-  const user = await User.findOne({ email });
+  const user = await User.findByEmail(email);
   if (!user) {
     ApiError.notFound("That email does not exist in our database");
   }
@@ -29,7 +31,7 @@ const forgotPassword = async (email) => {
       ? Number(process.env.RESET_PASSWORD_TOKEN_EXPIRES_IN)
       : Number(process.env.TEST_RESET_PASSWORD_TOKEN_EXPIRES_IN);
   user.resetPasswordTokenExpires = Date.now() + expiresIn;
-  await user.save();
+  await User.save(user);
   const clientUrl = process.env.CLIENT_URL;
   const resetLink = `${clientUrl}/reset-password?token=${resetToken}`;
   sendEmail(
@@ -48,10 +50,7 @@ const forgotPassword = async (email) => {
 };
 
 const resetPassword = async (token, password, confirmPassword) => {
-  const user = await User.findOne({
-    resetPasswordToken: token,
-    resetPasswordTokenExpires: { $gt: Date.now() },
-  });
+  const user = await User.findPasswordResetToken(token);
   if (!user) {
     ApiError.badInput("Invalid token");
   }
@@ -66,7 +65,7 @@ const resetPassword = async (token, password, confirmPassword) => {
     user.password = hash;
     user.resetPasswordToken = undefined;
     user.resetPasswordTokenExpires = undefined;
-    await user.save();
+    await User.save(user);
     return { success: `Password reset successfully` };
   }
 };
