@@ -97,23 +97,23 @@ describe("<WorkoutDetails />", () => {
     expect(state.toggleMountComponents.prepopulateEditWorkoutForm.id).toBe(
       mockWorkout.id
     );
-    expect(state.toggleMountComponents.prepopulateEditWorkoutForm.prevTitle).toBe(
-      mockWorkout.title
-    );
-    expect(state.toggleMountComponents.prepopulateEditWorkoutForm.prevMuscleGroup).toBe(
-      mockWorkout.muscle_group
-    );
-    expect(state.toggleMountComponents.prepopulateEditWorkoutForm.prevReps).toBe(
-      mockWorkout.reps
-    );
-    expect(state.toggleMountComponents.prepopulateEditWorkoutForm.prevLoad).toBe(
-      mockWorkout.load
-    );
-    expect(state.toggleMountComponents.prepopulateEditWorkoutForm.createdAt).toBe(
-      mockWorkout.createdAt
-    );
-    expect(state.toggleMountComponents.prepopulateEditWorkoutForm.updatedAt).toBe(
-      mockWorkout.updatedAt
-    );
+    expect(
+      state.toggleMountComponents.prepopulateEditWorkoutForm.prevTitle
+    ).toBe(mockWorkout.title);
+    expect(
+      state.toggleMountComponents.prepopulateEditWorkoutForm.prevMuscleGroup
+    ).toBe(mockWorkout.muscle_group);
+    expect(
+      state.toggleMountComponents.prepopulateEditWorkoutForm.prevReps
+    ).toBe(mockWorkout.reps);
+    expect(
+      state.toggleMountComponents.prepopulateEditWorkoutForm.prevLoad
+    ).toBe(mockWorkout.load);
+    expect(
+      state.toggleMountComponents.prepopulateEditWorkoutForm.createdAt
+    ).toBe(mockWorkout.createdAt);
+    expect(
+      state.toggleMountComponents.prepopulateEditWorkoutForm.updatedAt
+    ).toBe(mockWorkout.updatedAt);
   });
 });

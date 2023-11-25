@@ -19,7 +19,10 @@ beforeAll(() => {
   dispatch = store.dispatch;
   dispatch({ type: "LOGIN_SUCCESS", payload: mockUser });
 });
-
+afterEach(() => {
+  act(() => dispatch({ type: "RESET_QUERY_STATE" }));
+  act(() => dispatch({ type: "RESET_PAGE_STATE" }));
+});
 afterAll(() => {
   act(() => dispatch({ type: "LOGOUT" }));
   dispatch = null;
@@ -59,7 +62,6 @@ describe("<Search />", () => {
     expect(searchInput).toHaveValue("pu");
     state = store.getState();
     expect(state.page).toBe(0);
-    act(() => dispatch({ type: "SET_QUERY", payload: "" }));
   });
 
   it("should disable clicking on search button while workouts are being loaded", async () => {
@@ -74,7 +76,5 @@ describe("<Search />", () => {
     act(() => dispatch({ type: "SET_WORKOUTS_REQ" }));
     expect(searchForm).toHaveAttribute("class", "search--bar is--loading");
     expect(searchBtn).toBeDisabled();
-    act(() => dispatch({ type: "SET_WORKOUTS_SUCCESS", payload: [] }));
-    act(() => dispatch({ type: "SET_QUERY", payload: "" }));
   });
 });

@@ -22,6 +22,7 @@ beforeAll(() => {
 });
 
 afterAll(() => {
+  act(() => dispatch({ type: "RESET_COMPONENTS_STATE" }));
   mockUser = null;
   dispatch = null;
 });

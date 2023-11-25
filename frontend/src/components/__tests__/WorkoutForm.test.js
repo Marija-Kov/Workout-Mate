@@ -16,10 +16,12 @@ let mockUser = {
   tokenExpires: Date.now() + 3600000,
 };
 
-beforeAll(() => {
-  dispatch = store.dispatch;
+beforeAll(() => (dispatch = store.dispatch));
+beforeEach(() => dispatch({ type: "LOGIN_SUCCESS", payload: mockUser }));
+afterEach(() => {
+  dispatch({ type: "RESET_WORKOUTS_STATE" });
+  act(() => dispatch({ type: "LOGOUT" }));
 });
-
 afterAll(() => {
   dispatch = null;
   mockUser = null;
@@ -115,8 +117,6 @@ describe("<WorkoutForm/>", () => {
       )
     );
     user.setup();
-    dispatch({ type: "LOGIN_SUCCESS", payload: mockUser });
-    dispatch({ type: "SET_WORKOUTS", payload: [] });
     render(
       <Provider store={store}>
         <WorkoutForm />
@@ -145,7 +145,6 @@ describe("<WorkoutForm/>", () => {
     const error = await screen.findByRole("alert");
     expect(error.textContent).toMatch(/please fill out the empty fields/i);
     expect(error).toHaveAttribute("class", "error");
-    act(() => dispatch({ type: "LOGOUT" }));
   });
 
   it("should signal input error when user attempts to submit form with too long title", async () => {
@@ -163,8 +162,6 @@ describe("<WorkoutForm/>", () => {
       )
     );
     user.setup();
-    dispatch({ type: "LOGIN_SUCCESS", payload: mockUser });
-    dispatch({ type: "SET_WORKOUTS", payload: [] });
     render(
       <Provider store={store}>
         <WorkoutForm />
@@ -190,7 +187,6 @@ describe("<WorkoutForm/>", () => {
     const error = await screen.findByRole("alert");
     expect(error.textContent).toMatch(/max 30 characters/i);
     expect(error).toHaveAttribute("class", "error");
-    act(() => dispatch({ type: "LOGOUT" }));
   });
 
   it("should signal input error when user attempts to submit form with title containing non-alphabetic characters", async () => {
@@ -208,8 +204,6 @@ describe("<WorkoutForm/>", () => {
       )
     );
     user.setup();
-    dispatch({ type: "LOGIN_SUCCESS", payload: mockUser });
-    dispatch({ type: "SET_WORKOUTS", payload: [] });
     render(
       <Provider store={store}>
         <WorkoutForm />
@@ -232,7 +226,6 @@ describe("<WorkoutForm/>", () => {
     const error = await screen.findByRole("alert");
     expect(error.textContent).toMatch(/may contain only letters/i);
     expect(error).toHaveAttribute("class", "error");
-    act(() => dispatch({ type: "LOGOUT" }));
   });
 
   it("should signal input error when user attempts to submit form with too large reps number", async () => {
@@ -250,8 +243,6 @@ describe("<WorkoutForm/>", () => {
       )
     );
     user.setup();
-    dispatch({ type: "LOGIN_SUCCESS", payload: mockUser });
-    dispatch({ type: "SET_WORKOUTS", payload: [] });
     render(
       <Provider store={store}>
         <WorkoutForm />
@@ -274,7 +265,6 @@ describe("<WorkoutForm/>", () => {
     const error = await screen.findByRole("alert");
     expect(error.textContent).toMatch(/reps value too large/i);
     expect(error).toHaveAttribute("class", "error");
-    act(() => dispatch({ type: "LOGOUT" }));
   });
 
   it("should signal input error when user attempts to submit form with too large load number", async () => {
@@ -292,8 +282,6 @@ describe("<WorkoutForm/>", () => {
       )
     );
     user.setup();
-    dispatch({ type: "LOGIN_SUCCESS", payload: mockUser });
-    dispatch({ type: "SET_WORKOUTS", payload: [] });
     render(
       <Provider store={store}>
         <WorkoutForm />
@@ -316,7 +304,6 @@ describe("<WorkoutForm/>", () => {
     const error = await screen.findByRole("alert");
     expect(error.textContent).toMatch(/load value too large/i);
     expect(error).toHaveAttribute("class", "error");
-    act(() => dispatch({ type: "LOGOUT" }));
   });
 
   it("should respond with error message if authentication token expired and user attempts to submit", async () => {
@@ -354,12 +341,10 @@ describe("<WorkoutForm/>", () => {
     const error = await screen.findByRole("alert");
     expect(error.textContent).toMatch(/not authorized/i);
     expect(error).toHaveAttribute("class", "error");
-    act(() => dispatch({ type: "LOGOUT" }));
   });
 
   it("should not respond with error when user submits form with valid input", async () => {
     user.setup();
-    dispatch({ type: "LOGIN_SUCCESS", payload: mockUser });
     render(
       <Provider store={store}>
         <WorkoutForm />
@@ -384,7 +369,6 @@ describe("<WorkoutForm/>", () => {
     state = store.getState();
     expect(state.workout.workouts.total).toBe(1);
     act(() => dispatch({ type: "DELETE_ALL_WORKOUTS_SUCCESS" }));
-    act(() => dispatch({ type: "SET_ROUTINE_BALANCE", payload: [] }));
-    act(() => dispatch({ type: "LOGOUT" }));
+    act(() => dispatch({ type: "RESET_ROUTINE_BALANCE_STATE" }));
   });
 });

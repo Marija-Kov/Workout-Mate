@@ -27,7 +27,7 @@ beforeEach(() => {
 });
 
 afterEach(() => {
-  dispatch({ type: "TOGGLE_MOUNT_EDIT_WORKOUT_FORM" });
+  dispatch({ type: "RESET_COMPONENTS_STATE" });
   act(() => dispatch({ type: "LOGOUT" }));
 });
 

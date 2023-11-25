@@ -23,7 +23,7 @@ beforeAll(() => {
   dispatch({ type: "LOGIN_SUCCESS", payload: mockUser });
   mockWorkouts = genSampleWorkouts();
 });
-
+afterEach(() => dispatch({ type: "RESET_PAGE_STATE" }));
 afterAll(() => {
   dispatch({
     type: "DELETE_ALL_WORKOUTS_SUCCESS",
@@ -84,7 +84,6 @@ describe("<Pagination />", () => {
     expect(page3).toHaveFocus();
     await user.tab();
     expect(next).toHaveFocus();
-    act(() => dispatch({ type: "GO_TO_PAGE_NUMBER", payload: 0 }));
   });
 
   it("should highlight corresponding page when pages are changed back and forth clicking on 'next' and 'previous' buttons", async () => {
@@ -127,7 +126,6 @@ describe("<Pagination />", () => {
     expect(page2).toHaveAttribute("class", "num--page current");
     expect(page3).toHaveAttribute("class", "num--page");
     expect(next).not.toHaveAttribute("disabled");
-    act(() => dispatch({ type: "GO_TO_PAGE_NUMBER", payload: 0 }));
   });
 
   it("should highlight page number p when it is clicked", async () => {
@@ -148,6 +146,5 @@ describe("<Pagination />", () => {
     expect(page1).toHaveAttribute("class", "num--page");
     expect(page2).toHaveAttribute("class", "num--page");
     expect(page3).toHaveAttribute("class", "num--page current");
-    act(() => dispatch({ type: "GO_TO_PAGE_NUMBER", payload: 0 }));
   });
 });

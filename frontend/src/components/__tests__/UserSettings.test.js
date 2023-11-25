@@ -16,18 +16,9 @@ let mockUser = {
   tokenExpires: Date.now() + 3600000,
 };
 
-beforeAll(() => {
-  dispatch = store.dispatch;
-});
-
-beforeEach(() => {
-  dispatch({ type: "LOGIN_SUCCESS", payload: mockUser });
-});
-
-afterEach(() => {
-  dispatch({ type: "LOGOUT" });
-});
-
+beforeAll(() => (dispatch = store.dispatch));
+beforeEach(() => dispatch({ type: "LOGIN_SUCCESS", payload: mockUser }));
+afterEach(() => dispatch({ type: "LOGOUT" }));
 afterAll(() => {
   dispatch = null;
   mockUser = null;
