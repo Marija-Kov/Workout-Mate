@@ -81,7 +81,7 @@ export default function UserSettings({ changeProfileImg }) {
             className="close material-symbols-outlined"
             onClick={() => {
               dispatch({ type: "TOGGLE_MOUNT_USER_SETTINGS_FORM" });
-              dispatch({ type: "RESET_USER_STATE" });
+              dispatch({ type: "RESET_USER_MESSAGE_STATE" });
             }}
           >
             close
