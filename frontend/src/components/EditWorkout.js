@@ -63,8 +63,8 @@ export default function EditWorkout() {
           aria-label="close form"
           className="close material-symbols-outlined"
           onClick={() => {
-            dispatch({ type: "MOUNT_EDIT_WORKOUT_FORM" });
-            dispatch({ type: "RESET_ERROR_MESSAGES" });
+            dispatch({ type: "TOGGLE_MOUNT_EDIT_WORKOUT_FORM" });
+            dispatch({ type: "RESET_WORKOUT_ERROR_MESSAGES" });
           }}
         >
           close

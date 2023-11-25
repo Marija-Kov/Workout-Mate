@@ -54,7 +54,7 @@ const Login = () => {
           <button
             type="button"
             className="forgot--password"
-            onClick={() => dispatch({ type: "MOUNT_FORGOT_PASSWORD_FORM" })}
+            onClick={() => dispatch({ type: "TOGGLE_MOUNT_FORGOT_PASSWORD_FORM" })}
           >
             Forgot the password?
           </button>

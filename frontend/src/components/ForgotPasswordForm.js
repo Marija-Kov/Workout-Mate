@@ -26,7 +26,7 @@ export default function ForgotPasswordForm() {
           aria-label="close forgot password form"
           className="close material-symbols-outlined"
           onClick={() => {
-            dispatch({ type: "MOUNT_FORGOT_PASSWORD_FORM" });
+            dispatch({ type: "TOGGLE_MOUNT_FORGOT_PASSWORD_FORM" });
             dispatch({ type: "RESET_USER_STATE" });
           }}
         >

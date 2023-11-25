@@ -26,7 +26,7 @@ export const useCreateWorkout = () => {
     if (!response.ok) {
       dispatch({ type: "CREATE_WORKOUT_FAIL", payload: json.error });
       setTimeout(() => {
-        dispatch({ type: "RESET_ERROR_MESSAGES" });
+        dispatch({ type: "RESET_WORKOUT_ERROR_MESSAGES" });
       }, 5000);
       return;
     }
@@ -38,7 +38,7 @@ export const useCreateWorkout = () => {
         type: "SET_ROUTINE_BALANCE",
         payload: [workout.muscle_group, ...allUserWorkoutsMuscleGroups],
       });
-      dispatch({ type: "MOUNT_CREATE_WORKOUT_FORM" });
+      dispatch({ type: "TOGGLE_MOUNT_CREATE_WORKOUT_FORM" });
     }
   };
 

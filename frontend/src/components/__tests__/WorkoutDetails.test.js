@@ -75,7 +75,7 @@ describe("<WorkoutDetails />", () => {
     expect(openEditWorkoutFormBtn).toHaveFocus();
   });
 
-  it("should dispatch MOUNT_EDIT_WORKOUT_FORM when 'edit' button is clicked", async () => {
+  it("should dispatch TOGGLE_MOUNT_EDIT_WORKOUT_FORM when 'edit' button is clicked", async () => {
     user.setup();
     render(
       <Provider store={store}>

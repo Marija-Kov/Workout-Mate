@@ -105,7 +105,7 @@ describe("<Home />", () => {
         <Home />
       </Provider>
     );
-    await act(() => store.dispatch({ type: "MOUNT_EDIT_WORKOUT_FORM" }));
+    await act(() => store.dispatch({ type: "TOGGLE_MOUNT_EDIT_WORKOUT_FORM" }));
     expect(EditWorkout).toHaveBeenCalled();
   });
 });

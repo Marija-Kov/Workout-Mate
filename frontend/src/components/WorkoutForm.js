@@ -51,8 +51,8 @@ export default function WorkoutForm() {
           aria-label="close form"
           className="close material-symbols-outlined"
           onClick={() => {
-            dispatch({ type: "MOUNT_CREATE_WORKOUT_FORM" });
-            dispatch({ type: "RESET_ERROR_MESSAGES" });
+            dispatch({ type: "TOGGLE_MOUNT_CREATE_WORKOUT_FORM" });
+            dispatch({ type: "RESET_WORKOUT_ERROR_MESSAGES" });
           }}
         >
           close

@@ -113,7 +113,7 @@ export default function Home() {
           <button
             aria-label="buff it up"
             className={buffItUpButtonClass()}
-            onClick={() => dispatch({ type: "MOUNT_CREATE_WORKOUT_FORM" })}
+            onClick={() => dispatch({ type: "TOGGLE_MOUNT_CREATE_WORKOUT_FORM" })}
             disabled={loading}
           >
             + Buff It Up

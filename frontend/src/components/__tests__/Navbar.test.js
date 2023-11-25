@@ -113,7 +113,7 @@ describe("<Navbar />", () => {
         </BrowserRouter>
       </Provider>
     );
-    await act(() => dispatch({ type: "MOUNT_USER_SETTINGS_FORM" }));
+    await act(() => dispatch({ type: "TOGGLE_MOUNT_USER_SETTINGS_FORM" }));
     const userSettingsForm = await screen.findByLabelText(
       /change user settings/i
     );

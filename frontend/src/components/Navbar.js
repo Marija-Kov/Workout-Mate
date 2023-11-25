@@ -51,7 +51,7 @@ export default function Navbar() {
             <button
               aria-label="open user menu"
               className="hello--user"
-              onClick={() => dispatch({ type: "MOUNT_USER_MENU" })}
+              onClick={() => dispatch({ type: "TOGGLE_MOUNT_USER_MENU" })}
             >
               <span>
                 Hello, <strong>{username}</strong>

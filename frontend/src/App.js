@@ -25,7 +25,7 @@ function App() {
       return;
     }
     if (!localStorage.getItem("alerted")) {
-      dispatch({ type: "MOUNT_SPUN_DOWN_SERVER_ALERT" });
+      dispatch({ type: "TOGGLE_MOUNT_SPUN_DOWN_SERVER_ALERT" });
     }
     return;
   }, []);
@@ -49,7 +49,7 @@ function App() {
                     "alerted",
                     "The user has been alerted about web service limitations"
                   );
-                  dispatch({ type: "UNMOUNT_ALL_COMPONENTS" });
+                  dispatch({ type: "RESET_COMPONENTS_STATE" });
                 }}
               >
                 Got it, close this

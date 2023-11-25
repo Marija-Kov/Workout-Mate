@@ -12,7 +12,7 @@ export default function UserMenu() {
         <button
           aria-label="open user settings"
           className="user--menu--item"
-          onClick={() => dispatch({ type: "MOUNT_USER_SETTINGS_FORM" })}
+          onClick={() => dispatch({ type: "TOGGLE_MOUNT_USER_SETTINGS_FORM" })}
         >
           Settings
         </button>

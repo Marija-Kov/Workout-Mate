@@ -34,7 +34,7 @@ export default function useEditWorkout() {
           type: "SET_ROUTINE_BALANCE",
           payload: allUserWorkoutsMuscleGroups,
         });
-      dispatch({ type: "MOUNT_EDIT_WORKOUT_FORM" });
+      dispatch({ type: "TOGGLE_MOUNT_EDIT_WORKOUT_FORM" });
     }
   };
 
