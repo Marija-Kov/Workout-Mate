@@ -1,4 +1,5 @@
 const SET_ROUTINE_BALANCE = "SET_ROUTINE_BALANCE";
+const RESET_ROUTINE_BALANCE_STATE = "SET_ROUTINE_BALANCE_STATE";
 
 const init = {
   chest: 0,
@@ -41,7 +42,8 @@ export const routineBalanceReducer = (state = init, action) => {
         balance[allMuscleGroups[i]] = group.toFixed(1);
       }
       return balance;
-
+    case RESET_ROUTINE_BALANCE_STATE:
+      return init;
     default:
       return state;
   }

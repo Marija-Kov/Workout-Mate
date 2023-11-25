@@ -175,6 +175,8 @@ export const workoutReducer = (state = init, action) => {
         updateWorkoutError: null,
         deleteWorkoutError: null,
       };
+    case a.RESET_WORKOUT_STATE:
+      return init;
     default:
       return state;
   }

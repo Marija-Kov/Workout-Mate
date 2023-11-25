@@ -10,6 +10,8 @@ export const pageReducer = (state = init, action) => {
       return state - 1;
     case a.GO_TO_PAGE_NUMBER:
       return action.payload;
+    case a.RESET_PAGE_STATE:
+      return init;
     default:
       return state;
   }
