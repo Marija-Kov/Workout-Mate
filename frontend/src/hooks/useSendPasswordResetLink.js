@@ -16,7 +16,7 @@ export default function useSendPasswordResetLink() {
         payload: "Please enter valid email address",
       });
       setTimeout(() => {
-        dispatch({ type: "RESET_USER_STATE" });
+        dispatch({ type: "RESET_USER_MESSAGES" });
       }, 5000);
       return;
     }
@@ -34,7 +34,7 @@ export default function useSendPasswordResetLink() {
     if (!response.ok) {
       dispatch({ type: "SEND_PASSWORD_RESET_LINK_FAIL", payload: json.error });
       setTimeout(() => {
-        dispatch({ type: "RESET_USER_STATE" });
+        dispatch({ type: "RESET_USER_MESSAGES" });
       }, 5000);
       return;
     }
