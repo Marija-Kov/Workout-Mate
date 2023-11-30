@@ -4,7 +4,7 @@
 <br>
 <p align="center"> <i>
 Workout Mate is there for you when you need to keep track of your physical activity. 
-It lets you submit exercise whenever you want and without any real-life relavance if that's what you prefer.
+It lets you submit exercise whenever you want and without any real-life relevance if that's what you prefer.
 Workout Mate doesn't judge.
 Workout Mate lets you be the athlete you want to be.</i>
 </p>
