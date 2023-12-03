@@ -169,8 +169,9 @@ export const userReducer = (state = init, action) => {
     case a.DOWNLOAD_DATA_SUCCESS:
       return {
         ...state,
-        downloadDataError: null,
         loading: false,
+        downloadDataError: null,
+        success: action.payload
       };
     case a.DOWNLOAD_DATA_FAIL:
       return {
