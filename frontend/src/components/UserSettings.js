@@ -156,7 +156,9 @@ export default function UserSettings({ changeProfileImg }) {
               {success}
             </div>
           )}
-          {loading && <h3 style={{ zIndex: "10" }}>Uploading..</h3>}
+          {loading && (
+            <h4 style={{ position: "absolute", zIndex: "10" }}>Loading...</h4>
+          )}
           <button
             aria-label="download data"
             className="download--data--btn"
