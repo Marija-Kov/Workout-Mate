@@ -12,5 +12,6 @@ router.use(requireAuth);
 
 router.patch("/:id", tryCatch(authController.user_update_patch));
 router.delete("/:id", tryCatch(authController.user_deletion));
+router.get("/download/:id", tryCatch(authController.download_user_data));
 
 module.exports = router;
