@@ -157,7 +157,11 @@ export default function UserSettings({ changeProfileImg }) {
             </div>
           )}
           {loading && <h3 style={{ zIndex: "10" }}>Uploading..</h3>}
-          <button className="download--data--btn" onClick={runDownloadData}>
+          <button
+            aria-label="download data"
+            className="download--data--btn"
+            onClick={runDownloadData}
+          >
             download data
           </button>
           <button

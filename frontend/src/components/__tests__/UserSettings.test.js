@@ -36,6 +36,7 @@ describe("<UserSettings/>", () => {
     const newUsername = await screen.findByLabelText(/new username/i);
     const newProfileImage = await screen.findByLabelText(/new profile image/i);
     const upload = await screen.findByLabelText(/update profile button/i);
+    const downloadData = await screen.findByLabelText(/download data/i);
     const deleteAccount = await screen.findByLabelText(
       /delete account button/i
     );
@@ -44,6 +45,7 @@ describe("<UserSettings/>", () => {
     expect(newUsername).toBeInTheDocument();
     expect(newProfileImage).toBeInTheDocument();
     expect(upload).toBeInTheDocument();
+    expect(downloadData).toBeInTheDocument();
     expect(deleteAccount).toBeInTheDocument();
   });
 
@@ -58,6 +60,7 @@ describe("<UserSettings/>", () => {
     const newUsername = await screen.findByLabelText(/new username/i);
     const newProfileImage = await screen.findByLabelText(/new profile image/i);
     const upload = await screen.findByLabelText(/update profile button/i);
+    const downloadData = await screen.findByLabelText(/download data/i);
     const deleteAccount = await screen.findByLabelText(
       /delete account button/i
     );
@@ -69,6 +72,8 @@ describe("<UserSettings/>", () => {
     expect(newProfileImage).toHaveFocus();
     await user.tab();
     expect(upload).toHaveFocus();
+    await user.tab();
+    expect(downloadData).toHaveFocus();
     await user.tab();
     expect(deleteAccount).toHaveFocus();
   });
