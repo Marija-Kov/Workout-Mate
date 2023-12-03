@@ -3,12 +3,14 @@ import { useUpdateUser } from "../hooks/useUpdateUser";
 import Cropper from "react-easy-crop";
 import { useCroppedImg } from "../hooks/useCroppedImg";
 import { useDeleteUser } from "../hooks/useDeleteUser";
+import { useDownloadData } from "../hooks/useDownloadData";
 import { useDeleteAllWorkouts } from "../hooks/useDeleteAllWorkouts";
 import { useLogout } from "../hooks/useLogout";
 import { useDispatch, useSelector } from "react-redux";
 
 export default function UserSettings({ changeProfileImg }) {
   const dispatch = useDispatch();
+  const { downloadData } = useDownloadData();
   const { updateUser } = useUpdateUser();
   const { croppedImg } = useCroppedImg();
   const { deleteUser } = useDeleteUser();
@@ -67,6 +69,11 @@ export default function UserSettings({ changeProfileImg }) {
     await deleteUser(user.id);
     logout();
   };
+
+  const runDownloadData = async (e) => {
+    e.preventDefault();
+    await downloadData();
+  }
 
   return (
     <>
@@ -151,10 +158,17 @@ export default function UserSettings({ changeProfileImg }) {
           )}
           {loading && <h3 style={{ zIndex: "10" }}>Uploading..</h3>}
           <button
+            onClick={runDownloadData}
+          >
+            Download your data
+          </button>
+          <button
             aria-label="delete account button"
             type="button"
             className="delete--account--btn"
-            onClick={() => dispatch({ type: "TOGGLE_MOUNT_DELETE_ACCOUNT_DIALOGUE" })}
+            onClick={() =>
+              dispatch({ type: "TOGGLE_MOUNT_DELETE_ACCOUNT_DIALOGUE" })
+            }
           >
             delete account
           </button>
