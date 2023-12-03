@@ -1,9 +1,9 @@
 import { useSelector, useDispatch } from "react-redux";
+import { downloadJsonFile } from "../utils/downloadJsonFile";
 
 export function useDownloadData() {
   const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
-
   const downloadData = async () => {
     dispatch({ type: "DOWNLOAD_DATA_REQ" });
     if (!user) {
@@ -29,17 +29,12 @@ export function useDownloadData() {
       return;
     }
     if (response.ok) {
-      dispatch({ type: "DOWNLOAD_DATA_SUCCESS" });
+      dispatch({
+        type: "DOWNLOAD_DATA_SUCCESS",
+        payload: "Data download started",
+      });
       const data = await response.json();
-      const jsonData = JSON.stringify(data);
-      const blob = new Blob([jsonData], { type: "application/json" });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = url;
-      link.setAttribute("download", "your_data_on_workout_mate.json");
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+      downloadJsonFile(data);
     }
   };
   return { downloadData };
