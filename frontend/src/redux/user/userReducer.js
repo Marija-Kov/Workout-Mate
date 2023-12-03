@@ -10,6 +10,7 @@ const init = {
   sendPasswordResetLinkError: null,
   resetPasswordError: null,
   deleteUserError: null,
+  downloadDataError: null,
   success: false,
 };
 
@@ -159,6 +160,23 @@ export const userReducer = (state = init, action) => {
         ...state,
         loading: false,
         deleteUserError: action.payload,
+      };
+    case a.DOWNLOAD_DATA_REQ:
+      return {
+        ...state,
+        loading: true,
+      };
+    case a.DOWNLOAD_DATA_SUCCESS:
+      return {
+        ...state,
+        downloadDataError: null,
+        loading: false,
+      };
+    case a.DOWNLOAD_DATA_FAIL:
+      return {
+        ...state,
+        loading: false,
+        downloadDataError: action.payload,
       };
     case a.RESET_USER_MESSAGE_STATE:
       return {
