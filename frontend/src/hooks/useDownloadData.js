@@ -5,9 +5,10 @@ export function useDownloadData() {
   const dispatch = useDispatch();
 
   const downloadData = async () => {
+    dispatch({ type: "DOWNLOAD_DATA_REQ" });
     if (!user) {
       dispatch({
-        type: "DELETE_USER_FAIL", // I could have created DOWNLOAD_USER_DATA action types, but this will do the job.
+        type: "DOWNLOAD_DATA_FAIL",
         payload: "Not authorized",
       });
       return;
@@ -22,22 +23,24 @@ export function useDownloadData() {
     );
     if (!response.ok) {
       dispatch({
-        type: "DELETE_USER_FAIL",
+        type: "DOWNLOAD_DATA_FAIL",
         payload: "Could not get data",
       });
       return;
     }
-
-    const data = await response.json();
-    const jsonData = JSON.stringify(data);
-    const blob = new Blob([jsonData], { type: "application/json" });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.href = url;
-    link.setAttribute("download", "your_data_on_workout_mate.json");
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    if (response.ok) {
+      dispatch({ type: "DOWNLOAD_DATA_SUCCESS" });
+      const data = await response.json();
+      const jsonData = JSON.stringify(data);
+      const blob = new Blob([jsonData], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "your_data_on_workout_mate.json");
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
   };
   return { downloadData };
 }
