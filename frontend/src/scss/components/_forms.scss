@@ -438,6 +438,27 @@ form.signup h4 {
   margin-bottom: 20px;
 }
 
+.delete--account--btn,
+.download--data--btn {
+  display: block;
+  position: relative;
+  left: 200px;
+  margin-top: 10px;
+  padding: 0;
+  background: unset;
+  border: unset;
+  border-bottom: 1px solid vars.$primary;
+  color: vars.$primary;
+  line-height: 90%;
+  cursor: pointer;
+}
+
+.delete--account--btn:hover,
+.download--data--btn:hover {
+  border-bottom: 1px solid vars.$delete-account-dialogue--accent;
+  color: vars.$delete-account-dialogue--accent;
+}
+
 @media screen and (max-width: 600px) {
   .form--container--login,
   .form--container--signup {
@@ -469,7 +490,6 @@ form.signup h4 {
 }
 
 @media screen and (max-width: 450px) {
-
   .add--workout {
     z-index: 3;
     width: 100%;
@@ -502,5 +522,4 @@ form.signup h4 {
   .user--settings {
     right: 7%;
   }
-  
 }

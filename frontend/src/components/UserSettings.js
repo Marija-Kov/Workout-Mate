@@ -73,7 +73,7 @@ export default function UserSettings({ changeProfileImg }) {
   const runDownloadData = async (e) => {
     e.preventDefault();
     await downloadData();
-  }
+  };
 
   return (
     <>
@@ -157,10 +157,8 @@ export default function UserSettings({ changeProfileImg }) {
             </div>
           )}
           {loading && <h3 style={{ zIndex: "10" }}>Uploading..</h3>}
-          <button
-            onClick={runDownloadData}
-          >
-            Download your data
+          <button className="download--data--btn" onClick={runDownloadData}>
+            download data
           </button>
           <button
             aria-label="delete account button"
