@@ -35,6 +35,9 @@ export function useDownloadData() {
       });
       const data = await response.json();
       downloadJsonFile(data);
+      setTimeout(() => {
+        dispatch({ type: "RESET_USER_MESSAGE_STATE" });
+      }, 5000);
     }
   };
   return { downloadData };
