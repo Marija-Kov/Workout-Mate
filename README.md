@@ -60,7 +60,8 @@ If you happen to forget your password, you will be able to recover it by first c
   <img src="https://i.imgur.com/9hbR4TV.gif" alt="resetting password" height="350px" />
  </div>
 <br><br>
-In case you want to delete your Workout Mate account, you will have to log in, open "Profile Settings" from the dropdown menu and click on "delete account" at the bottom-right of the form. You will see a dialogue pop-up that will warn you about the consequences of deleting your account and will give you an option to change your mind or delete your account permanently. After you click on "Yes, delete my account permanently", all your data will be deleted from the database and you will be redirected to the Login page.
+In case you want to delete your Workout Mate account, you will have to log in, open "Profile Settings" from the dropdown menu and click on "delete account" at the bottom-right of the form. You will see a dialogue pop-up that will warn you about the consequences of deleting your account and will give you an option to change your mind or delete your account permanently. After you click on "Yes, delete my account permanently", all your data will be deleted from the database and you will be redirected to the Login page. <br>
+You can download your data from Workout Mate database as a JSON file by clicking on "download data" in Settings.
  <br><br>
  
  ### Limitations
@@ -170,9 +171,7 @@ REACT_APP_WEB_SERVICE=localhost <br>
 
 ## Todos <a name = "todos"></a>
  - Capacity management mechanism should involve automated deletion of accounts after a period of inactivity.
- - Users should be adequatly informed about the capacity management mechanism.
  - Users should have an option to commit to using their account and posting workouts to avoid automated deletion.
- - Users should be able to download their data stored in WM database.
  - Fix EditWorkout.test.js
 <br>
 
