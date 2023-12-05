@@ -4,6 +4,7 @@ const {
   login,
   updateUser,
   deleteUser,
+  downloadUserData,
 } = require("../businessLogic/auth");
 
 module.exports.signup_post = async (req, res) => {
@@ -59,4 +60,10 @@ module.exports.user_deletion = async (req, res) => {
   const { id } = req.params;
   await deleteUser(id);
   res.status(200).json({ success: "Account deleted successfully" });
+};
+
+module.exports.download_user_data = async (req, res) => {
+  const { id } = req.params;
+  const { user, workouts } = await downloadUserData(id);
+  res.status(200).json({ user, workouts });
 };

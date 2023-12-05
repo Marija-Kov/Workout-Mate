@@ -89,10 +89,17 @@ const deleteUser = async (id) => {
   await User.delete(id);
 };
 
+const downloadUserData = async (id) => {
+  const user = await User.findById(id);
+  const workouts = await Workout.getAll(id);
+  return { user, workouts }
+};
+
 module.exports = {
   signup,
   verify_user,
   login,
   updateUser,
   deleteUser,
+  downloadUserData
 };

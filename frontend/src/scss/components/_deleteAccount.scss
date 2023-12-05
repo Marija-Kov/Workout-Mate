@@ -1,25 +1,6 @@
 @use "../vars";
 @use "../fonts";
 
-.delete--account--btn {
-  display: block;
-  position: relative;
-  left: 200px;
-  margin-top: 20px;
-  padding: 0;
-  background: unset;
-  border: unset;
-  border-bottom: 1px solid vars.$primary;
-  color: vars.$primary;
-  line-height: 90%;
-  cursor: pointer;
-}
-
-.delete--account--btn:hover {
-  border-bottom: 1px solid vars.$delete-account-dialogue--accent;
-  color: vars.$delete-account-dialogue--accent;
-}
-
 .delete--account--dialogue {
   z-index: 15;
   display: flex;
@@ -71,7 +52,6 @@
 }
 
 @media screen and (max-width: 450px) {
-  
   .delete--account--dialogue {
     width: 280px;
   }
@@ -81,5 +61,4 @@
     margin-top: 5px;
     font-size: 0.8em;
   }
-
 }

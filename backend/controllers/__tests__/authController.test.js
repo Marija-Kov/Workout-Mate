@@ -221,6 +221,30 @@ describe("authController", () => {
     });
   });
 
+  describe("GET /api/users/download/:id", () => {
+    it("should respond with error if no authorization token was found", async () => {
+      const { id, token } = await mockUser("confirmed");
+      const res = (
+        await agent
+          .get(`/api/users/download/${id}`)
+          .set("Authorization", `Bearer ${token}`)
+      )._body;
+      expect(res.error).toBeTruthy();
+    });
+
+    it("should return no error when the download started", async () => {
+      const { id, token } = await mockUser("logged-in");
+      const res = (
+        await agent
+          .get(`/api/users/download/${id}`)
+          .set("Authorization", `Bearer ${token}`)
+      )._body;
+      expect(res.user).toBeTruthy();
+      expect(res.user._id).toBe(id);
+      expect(res.workouts).toBeTruthy();
+    });
+  });
+
   describe("ANY /api/users", () => {
     it("should respond with error if too many requests were sent in a short amount of time", async () => {
       const maxReq = process.env.TEST_MAX_API_USERS_REQS;

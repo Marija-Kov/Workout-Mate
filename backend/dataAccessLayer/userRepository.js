@@ -17,6 +17,10 @@ class UserRepository {
     return User.findOne({ email: email });
   }
 
+  async findById(id) {
+    return User.findOne({ _id: id });
+  }
+
   async findAccountConfirmationToken(token) {
     return User.findOne({ accountConfirmationToken: token });
   }
