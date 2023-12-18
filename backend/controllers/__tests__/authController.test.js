@@ -13,8 +13,8 @@ describe("authController", () => {
     it("should respond with error on attempt to sign up with an invalid email", async () => {
       const user = { email: "invalidemail", password: "abcABC123!" };
       const res = await agent.post("/api/users/signup").send(user);
-      expect(res._body.id).toBeFalsy();
-      expect(res._body).toHaveProperty(
+      expect(res.body.id).toBeFalsy();
+      expect(res.body).toHaveProperty(
         "error",
         "Please enter valid email address"
       );
@@ -23,24 +23,24 @@ describe("authController", () => {
     it("should respond with error on attempt to sign up with a weak password", async () => {
       const user = { email: "keech@validemail.com", password: "abc" };
       const res = await agent.post("/api/users/signup").send(user);
-      expect(res._body.id).toBeFalsy();
-      expect(res._body).toHaveProperty("error", "Password not strong enough");
+      expect(res.body.id).toBeFalsy();
+      expect(res.body).toHaveProperty("error", "Password not strong enough");
     });
 
     it("should respond with error on attempt to sign up with an email that already exists in the database", async () => {
       const user = { email: "a@b.c", password: "abcABC123!" };
       await mockUser("confirmed");
-      const res = (await agent.post("/api/users/signup").send(user))._body;
+      const res = (await agent.post("/api/users/signup").send(user)).body;
       expect(res.error).toBeTruthy();
     });
 
     it("should respond with the user id and account confirmation token and success message given that email is valid and password strong enough", async () => {
       const user = { email: "a@b.c", password: "abcABC123!" };
       const res = await agent.post("/api/users/signup").send(user);
-      expect(res._body.id).toBeTruthy();
-      expect(res._body.token).toBeTruthy();
-      expect(res._body.success).toBeTruthy();
-      expect(res._body.success).toMatch(/pending confirmation/i);
+      expect(res.body.id).toBeTruthy();
+      expect(res.body.token).toBeTruthy();
+      expect(res.body.success).toBeTruthy();
+      expect(res.body.success).toMatch(/pending confirmation/i);
     });
 
     it("should delete oldest user in the database given that the number of users has reached the limit", async () => {
@@ -63,10 +63,10 @@ describe("authController", () => {
       }
       const canNotFindOldestUser = (
         await agent.get(`/api/users/${oldestUserPendingToken}`)
-      )._body.error;
+      ).body.error;
       const canFind2ndOldestUser = (
         await agent.get(`/api/users/${secondOldestUserPendingToken}`)
-      )._body.success;
+      ).body.success;
       expect(canNotFindOldestUser).toBeTruthy();
       expect(canFind2ndOldestUser).toBeTruthy();
     });
@@ -75,7 +75,7 @@ describe("authController", () => {
   describe("GET /api/users/:accountConfirmationToken", () => {
     it("should respond with error if the confirmation token was invalid", async () => {
       const res = await agent.get(`/api/users/forgedOrExpiredToken`);
-      expect(res._body).toHaveProperty(
+      expect(res.body).toHaveProperty(
         "error",
         "Couldn't find user with provided confirmation token - this might be because the account has already been confirmed"
       );
@@ -84,9 +84,9 @@ describe("authController", () => {
     it("should respond with success message if the confirmation token was valid", async () => {
       const user = { email: "a@b.c", password: "abcABC123!" };
       const { token } = (await agent.post("/api/users/signup").send(user))
-        ._body;
+        .body;
       const res = await agent.get(`/api/users/${token}`);
-      expect(res._body).toHaveProperty(
+      expect(res.body).toHaveProperty(
         "success",
         "Success! You may log in with your account now."
       );
@@ -98,7 +98,7 @@ describe("authController", () => {
       await mockUser("confirmed");
       const user = { email: "a@b.c", password: "" };
       const res = await agent.post(`/api/users/login`).send(user);
-      expect(res._body).toHaveProperty("error", "All fields must be filled");
+      expect(res.body).toHaveProperty("error", "All fields must be filled");
     });
 
     it("should respond with error if the password is wrong", async () => {
@@ -108,7 +108,7 @@ describe("authController", () => {
         password: "wrongPassword",
       };
       const res = await agent.post(`/api/users/login`).send(user);
-      expect(res._body).toHaveProperty("error", "Wrong password");
+      expect(res.body).toHaveProperty("error", "Wrong password");
     });
 
     it("should respond with error if the email is not registered in the database", async () => {
@@ -117,7 +117,7 @@ describe("authController", () => {
         password: "somePassword",
       };
       const res = await agent.post(`/api/users/login`).send(user);
-      expect(res._body).toHaveProperty(
+      expect(res.body).toHaveProperty(
         "error",
         "That email does not exist in our database"
       );
@@ -131,7 +131,7 @@ describe("authController", () => {
       };
       await agent.post("/api/users/signup").send(user);
       const res = await agent.post(`/api/users/login`).send(user);
-      expect(res._body).toHaveProperty(
+      expect(res.body).toHaveProperty(
         "error",
         "You must verify your email before you log in"
       );
@@ -144,7 +144,7 @@ describe("authController", () => {
         password: "abcABC123!",
       };
       const res = await agent.post("/api/users/login").send(user);
-      expect(res._body.token).toBeTruthy();
+      expect(res.body.token).toBeTruthy();
     });
   });
 
@@ -157,7 +157,7 @@ describe("authController", () => {
           .patch(`/api/users/${id}`)
           .set("Authorization", `Bearer ${token}`)
           .send({ username: newUsername })
-      )._body;
+      ).body;
       expect(res.error).toBeTruthy();
     });
 
@@ -169,7 +169,7 @@ describe("authController", () => {
           .patch(`/api/users/${id}`)
           .set("Authorization", `Bearer ${token}`)
           .send({ username: newUsername })
-      )._body;
+      ).body;
       expect(res.user).toHaveProperty("username", newUsername);
     });
 
@@ -182,7 +182,7 @@ describe("authController", () => {
           .patch(`/api/users/${id}`)
           .set("Authorization", `Bearer ${token}`)
           .send({ profileImg: newProfileImg })
-      )._body;
+      ).body;
       expect(res.user).toHaveProperty("profileImg", newProfileImg);
     });
 
@@ -194,7 +194,7 @@ describe("authController", () => {
           .patch(`/api/users/${id}`)
           .set("Authorization", `Bearer ${token}`)
           .send({ profileImg: newProfileImg })
-      )._body;
+      ).body;
       expect(res.error).toBeTruthy();
       expect(res.error).toMatch(/bad input/i);
     });
@@ -207,7 +207,7 @@ describe("authController", () => {
         await agent
           .delete(`/api/users/${id}`)
           .set("Authorization", `Bearer ${token}`)
-      )._body;
+      ).body;
       expect(res.error).toBeTruthy();
     });
 
@@ -228,7 +228,7 @@ describe("authController", () => {
         await agent
           .get(`/api/users/download/${id}`)
           .set("Authorization", `Bearer ${token}`)
-      )._body;
+      ).body;
       expect(res.error).toBeTruthy();
     });
 
@@ -238,7 +238,7 @@ describe("authController", () => {
         await agent
           .get(`/api/users/download/${id}`)
           .set("Authorization", `Bearer ${token}`)
-      )._body;
+      ).body;
       expect(res.user).toBeTruthy();
       expect(res.user._id).toBe(id);
       expect(res.workouts).toBeTruthy();
@@ -252,8 +252,8 @@ describe("authController", () => {
       for (let i = 0; i <= maxReq; ++i) {
         res = await agent.post("/api/users/signup").send({});
       }
-      expect(res._body.error).toBeTruthy();
-      expect(res._body.error).toMatch(/too many requests/i);
+      expect(res.body.error).toBeTruthy();
+      expect(res.body.error).toMatch(/too many requests/i);
     });
   });
 });
@@ -262,13 +262,13 @@ async function mockUser(status, user = { email: "a@b.c", password: "abcABC123!" 
   const { email, password } = user;
   const userPending = (
     await agent.post("/api/users/signup").send({ email, password })
-  )._body;
+  ).body;
   if (status === "pending") return userPending;
   const userConfirmed = (await agent.get(`/api/users/${userPending.token}`))
-    ._body;
+    .body;
   if (status === "confirmed") return userConfirmed;
   const userLoggedIn = (
     await agent.post("/api/users/login").send({ email, password })
-  )._body;
+  ).body;
   if (status === "logged-in") return userLoggedIn;
 }

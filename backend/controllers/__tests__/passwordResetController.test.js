@@ -80,20 +80,20 @@ async function mockPasswordResetResponse_POST(status) {
       .post("/api/users/signup")
       .send({ email, password });
     return (await agent.post(`/api/reset-password`).send({ email }))
-      ._body;
+      .body;
   }
   if (status === "confirmed") {
     const user = (
       await agent
         .post("/api/users/signup")
         .send({ email, password })
-    )._body;
+    ).body;
     await agent.get(`/api/users/${user.token}`);
     return (await agent.post(`/api/reset-password`).send({ email }))
-      ._body;
+      .body;
   }
   return (await agent.post(`/api/reset-password`).send({ email }))
-    ._body;
+    .body;
 }
 
 async function mockPasswordResetResponse_PATCH(test) {
@@ -102,7 +102,7 @@ async function mockPasswordResetResponse_PATCH(test) {
     await mockPasswordResetResponse_POST("confirmed");
     const resetToken = (
       await agent.post(`/api/reset-password`).send({ email })
-    )._body.resetToken;
+    ).body.resetToken;
     await agent.patch(`/api/reset-password/${resetToken}`).send({
       password: "abcABC123!@#",
       confirmPassword: "abcABC123!@#",
@@ -112,45 +112,45 @@ async function mockPasswordResetResponse_PATCH(test) {
         password: "abcABC123!@#",
         confirmPassword: "abcABC123!@#",
       })
-    )._body;
+    ).body;
   }
 
   if (test === "passwords-not-matching") {
     await mockPasswordResetResponse_POST("confirmed");
     const resetToken = (
       await agent.post(`/api/reset-password`).send({ email })
-    )._body.resetToken;
+    ).body.resetToken;
     return (
       await agent.patch(`/api/reset-password/${resetToken}`).send({
         password: "abcABC123!@#",
         confirmPassword: "abcABC123",
       })
-    )._body;
+    ).body;
   }
 
   if (test === "password-weak") {
     await mockPasswordResetResponse_POST("confirmed");
     const resetToken = (
       await agent.post(`/api/reset-password`).send({ email })
-    )._body.resetToken;
+    ).body.resetToken;
     return (
       await agent.patch(`/api/reset-password/${resetToken}`).send({
         password: "abcABC",
         confirmPassword: "abcABC",
       })
-    )._body;
+    ).body;
   }
 
   if (test === "reset-success") {
     await mockPasswordResetResponse_POST("confirmed");
     const resetToken = (
       await agent.post(`/api/reset-password`).send({ email })
-    )._body.resetToken;
+    ).body.resetToken;
     return (
       await agent.patch(`/api/reset-password/${resetToken}`).send({
         password: "abcABC123!",
         confirmPassword: "abcABC123!",
       })
-    )._body;
+    ).body;
   }
 }
