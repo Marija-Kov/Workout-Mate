@@ -45,13 +45,7 @@ describe("authController", () => {
 
     it("should delete oldest user in the database given that the number of users has reached the limit", async () => {
       const dbLimit = process.env.TEST_MAX_USERS;
-      const users = [
-        "a@a.a",
-        "b@b.b",
-        "c@c.c",
-        "d@d.d",
-        "e@e.e",
-      ];
+      const users = ["a@a.a", "b@b.b", "c@c.c", "d@d.d", "e@e.e"];
       const oldestUserPendingToken = (
         await mockUser("pending", { email: users[0], password: "abcABC123!" })
       ).token;
@@ -83,8 +77,7 @@ describe("authController", () => {
 
     it("should respond with success message if the confirmation token was valid", async () => {
       const user = { email: "a@b.c", password: "abcABC123!" };
-      const { token } = (await agent.post("/api/users/signup").send(user))
-        .body;
+      const { token } = (await agent.post("/api/users/signup").send(user)).body;
       const res = await agent.get(`/api/users/${token}`);
       expect(res.body).toHaveProperty(
         "success",
@@ -163,7 +156,7 @@ describe("authController", () => {
 
     it("should respond with user details updated with the new username given that the user is authorized and a new username is submitted", async () => {
       const { id, token } = await mockUser("logged-in");
-      const newUsername = "theDawg78";
+      const newUsername = "the_Dawg.78";
       const res = (
         await agent
           .patch(`/api/users/${id}`)
@@ -197,6 +190,34 @@ describe("authController", () => {
       ).body;
       expect(res.error).toBeTruthy();
       expect(res.error).toMatch(/bad input/i);
+    });
+
+    it("should respond with error if username is too long", async () => {
+      const { id, token } = await mockUser("logged-in");
+      const newUsername = "abcabcabcabcabcabcacb";
+      const res = (
+        await agent
+          .patch(`/api/users/${id}`)
+          .set("Authorization", `Bearer ${token}`)
+          .send({ username: newUsername })
+      ).body;
+      expect(res.error).toBeTruthy();
+      expect(res.error).toMatch(/too long/i);
+    });
+
+    it("should respond with error if username contains invalid characters", async () => {
+      const { id, token } = await mockUser("logged-in");
+      const newUsername = "the,d@^^g!";
+      const res = (
+        await agent
+          .patch(`/api/users/${id}`)
+          .set("Authorization", `Bearer ${token}`)
+          .send({ username: newUsername })
+      ).body;
+      expect(res.error).toBeTruthy();
+      expect(res.error).toMatch(
+        /may only contain letters, numbers, dots and underscores/i
+      );
     });
   });
 
@@ -258,7 +279,10 @@ describe("authController", () => {
   });
 });
 
-async function mockUser(status, user = { email: "a@b.c", password: "abcABC123!" }) {
+async function mockUser(
+  status,
+  user = { email: "a@b.c", password: "abcABC123!" }
+) {
   const { email, password } = user;
   const userPending = (
     await agent.post("/api/users/signup").send({ email, password })

@@ -70,6 +70,9 @@ const updateUser = async (user, id, body) => {
   if (body.username && body.username.length > 12) {
     ApiError.badInput("Too long name");
   }
+  if (body.username && !body.username.match(/^[a-zA-Z0-9._]+$/)) {
+    ApiError.badInput("Username may only contain letters, numbers, dots and underscores");
+  }
   if (
     body.profileImg &&
     !body.profileImg.match(/^data:image\/jpeg/) &&

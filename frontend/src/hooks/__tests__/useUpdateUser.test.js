@@ -51,20 +51,33 @@ describe("useUpdateUser()", () => {
     expect(state.user.updateUserError).toMatch(/not authorized/i);
   });
 
-  it("should set updateUserError given that updateUser was run with invalid input", async () => {
+  it("should set updateUserError given that updateUser was run with too long username", async () => {
     dispatch({ type: "LOGIN_SUCCESS", payload: mockUser });
     const { result } = renderHook(useUpdateUser, { wrapper });
     await act(() => result.current.updateUser("thisUsernameIsTooLong444555"));
     let state = store.getState();
     expect(state.user.user.username).toBe(mockUser.username);
     expect(state.user.updateUserError).toBeTruthy();
-    expect(state.user.updateUserError).toMatch(/invalid input/i);
+    expect(state.user.updateUserError).toMatch(/too long username/i);
+    act(() => dispatch({ type: "LOGOUT" }));
+  });
+
+  it("should set updateUserError given that updateUser was run with username containing invalid character types", async () => {
+    dispatch({ type: "LOGIN_SUCCESS", payload: mockUser });
+    const { result } = renderHook(useUpdateUser, { wrapper });
+    await act(() => result.current.updateUser("i,n-v@l!d"));
+    let state = store.getState();
+    expect(state.user.user.username).toBe(mockUser.username);
+    expect(state.user.updateUserError).toBeTruthy();
+    expect(state.user.updateUserError).toMatch(
+      /may only contain letters, numbers, dots and underscores/i
+    );
     act(() => dispatch({ type: "LOGOUT" }));
   });
 
   it("should run updateUser, set success state to 'true', error state to 'false' given that user is authorized and input is valid", async () => {
     const newData = {
-      username: "keechrr",
+      username: "keech.rr_",
       profileImg: "profileImgString",
     };
     server.use(

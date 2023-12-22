@@ -11,7 +11,15 @@ export const useUpdateUser = () => {
       return;
     }
     if (username && username.length > 12) {
-      dispatch({ type: "UPDATE_USER_FAIL", payload: "Invalid input" });
+      dispatch({ type: "UPDATE_USER_FAIL", payload: "Too long username" });
+      return;
+    }
+    if (username && !username.match(/^[a-zA-Z0-9._]+$/)) {
+      dispatch({
+        type: "UPDATE_USER_FAIL",
+        payload:
+          "Username may only contain letters, numbers, dots and underscores",
+      });
       return;
     }
     const body = {
