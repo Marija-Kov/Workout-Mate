@@ -8,32 +8,23 @@ export const useCroppedImg = () => {
       image.src = url;
     });
 
-  function getRadianAngle(degreeValue) {
-    return (degreeValue * Math.PI) / 180;
-  }
-
-  const croppedImg = async (imageSrc, pixelCrop, rotation = 0) => {
-    const image = await createImg(imageSrc);
+  const croppedImg = async (imageSrc, pixelCrop) => {
     const canvas = document.createElement("canvas");
+    const image = await createImg(imageSrc);
     const ctx = canvas.getContext("2d");
     if (!ctx) {
       return null;
     }
 
-    const maxSize = Math.max(image.width, image.height);
-    const safeArea = 2 * ((maxSize / 2) * Math.sqrt(2));
+    const safeArea = Math.sqrt(image.width ** 2 + image.height ** 2);
 
     canvas.width = safeArea;
     canvas.height = safeArea;
-
-    ctx.translate(safeArea / 2, safeArea / 2);
-    ctx.rotate(getRadianAngle(rotation));
-    ctx.translate(-safeArea / 2, -safeArea / 2);
-
+    
     ctx.drawImage(
       image,
-      safeArea / 2 - image.width * 0.5,
-      safeArea / 2 - image.height * 0.5
+      (safeArea - image.width) / 2,
+      (safeArea - image.height) / 2
     );
 
     const data = ctx.getImageData(0, 0, safeArea, safeArea);
@@ -43,11 +34,11 @@ export const useCroppedImg = () => {
 
     ctx.putImageData(
       data,
-      Math.round(0 - safeArea / 2 + image.width * 0.5 - pixelCrop.x),
-      Math.round(0 - safeArea / 2 + image.height * 0.5 - pixelCrop.y)
+      Math.round(0 - safeArea / 2 + image.width / 2 - pixelCrop.x),
+      Math.round(0 - safeArea / 2 + image.height / 2 - pixelCrop.y)
     );
 
-    const dataURL = canvas.toDataURL("image/jpeg");
+    const dataURL = canvas.toDataURL("image/jpeg", 0.3);
 
     return dataURL;
   };
