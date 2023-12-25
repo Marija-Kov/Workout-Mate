@@ -1,5 +1,10 @@
 import { renderHook, act } from "@testing-library/react";
 import { rest } from "msw";
+import {
+  writeLargeFile,
+  readLargeFile,
+  deleteLargeFile,
+} from "../../utils/test/largeImageFile";
 import { server } from "../../mocks/server";
 import { useUpdateUser } from "../useUpdateUser";
 import { Provider } from "react-redux";
@@ -9,7 +14,7 @@ let wrapper;
 let dispatch;
 let mockUser;
 
-beforeAll(() => {
+beforeAll(async () => {
   wrapper = ({ children }) => {
     return <Provider store={store}>{children}</Provider>;
   };
@@ -22,12 +27,14 @@ beforeAll(() => {
     profileImg: undefined,
     tokenExpires: Date.now() + 3600000,
   };
+  writeLargeFile();
 });
 
-afterAll(() => {
+afterAll(async () => {
   wrapper = null;
   dispatch = null;
   mockUser = null;
+  deleteLargeFile();
 });
 
 describe("useUpdateUser()", () => {
@@ -72,6 +79,18 @@ describe("useUpdateUser()", () => {
     expect(state.user.updateUserError).toMatch(
       /may only contain letters, numbers, dots and underscores/i
     );
+    act(() => dispatch({ type: "LOGOUT" }));
+  });
+
+  it("should set updateUserError given that updateUser was run with too large image", async () => {
+    const tooLargeImgUrl = readLargeFile();
+    dispatch({ type: "LOGIN_SUCCESS", payload: mockUser });
+    const { result } = renderHook(useUpdateUser, { wrapper });
+    await act(() => result.current.updateUser("abc", tooLargeImgUrl));
+    let state = store.getState();
+    expect(state.user.user.profileImg).toBe(mockUser.profileImg);
+    expect(state.user.updateUserError).toBeTruthy();
+    expect(state.user.updateUserError).toMatch(/image too big/i);
     act(() => dispatch({ type: "LOGOUT" }));
   });
 

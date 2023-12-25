@@ -10,6 +10,15 @@ export const useUpdateUser = () => {
       dispatch({ type: "UPDATE_USER_FAIL", payload: "Not authorized" });
       return;
     }
+    if (profileImg && Buffer.byteLength(profileImg) > 1048576) {
+      dispatch({
+        type: "UPDATE_USER_FAIL",
+        payload: "Image too big - 1MB max",
+      });
+      return setTimeout(() => {
+        dispatch({ type: "RESET_USER_MESSAGE_STATE" });
+      }, 5000);
+    }
     if (username && username.length > 12) {
       dispatch({ type: "UPDATE_USER_FAIL", payload: "Too long username" });
       return;
