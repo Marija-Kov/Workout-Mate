@@ -1,7 +1,6 @@
 const request = require("supertest");
 const app = require("../../server");
 const { connect, clear, close } = require("../../database.config");
-
 const agent = request.agent(app);
 
 beforeAll(async () => await connect());
@@ -190,6 +189,25 @@ describe("authController", () => {
       ).body;
       expect(res.error).toBeTruthy();
       expect(res.error).toMatch(/bad input/i);
+    });
+
+    it("should respond with error if file is too large", async () => {
+      const { id, token } = await mockUser("logged-in");
+      const tooLarge = (() => {
+        let str = "data:image/jpeg";
+        for (let i = 0; i < 1049000; ++i) {
+          str += "1";
+        }
+        return str;
+      })();
+      const res = (
+        await agent
+          .patch(`/api/users/${id}`)
+          .set("Authorization", `Bearer ${token}`)
+          .send({ profileImg: tooLarge })
+      ).body;
+      expect(res.error).toBeTruthy();
+      expect(res.error).toMatch(/image too big/i);
     });
 
     it("should respond with error if username is too long", async () => {

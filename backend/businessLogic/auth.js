@@ -81,6 +81,9 @@ const updateUser = async (user, id, body) => {
   ) {
     ApiError.badInput("Bad input, must be JPEG, PNG or SVG image format");
   }
+  if (body.profileImg && Buffer.byteLength(body.profileImg) > 1048576) {
+    ApiError.badInput("Image too big - 1MB max");
+  }
   const userUpdated = await User.update(id, body);
   return { userUpdated };
 };
@@ -95,7 +98,7 @@ const deleteUser = async (id) => {
 const downloadUserData = async (id) => {
   const user = await User.findById(id);
   const workouts = await Workout.getAll(id);
-  return { user, workouts }
+  return { user, workouts };
 };
 
 module.exports = {
@@ -104,5 +107,5 @@ module.exports = {
   login,
   updateUser,
   deleteUser,
-  downloadUserData
+  downloadUserData,
 };
