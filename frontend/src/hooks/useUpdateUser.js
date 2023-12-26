@@ -11,6 +11,18 @@ export const useUpdateUser = () => {
       dispatch({ type: "UPDATE_USER_FAIL", payload: "Not authorized" });
       return;
     }
+    if (
+      profileImg &&
+      profileImg.match(/^data:image\/jpeg/) &&
+      profileImg.match(/^data:image\/png/) &&
+      profileImg.match(/^data:image\/svg/)
+    ) {
+      dispatch({
+        type: "UPDATE_USER_FAIL",
+        payload: "Bad input - JPG, PNG and SVG only",
+      });
+      return;
+    }
     if (profileImg && Buffer.byteLength(profileImg) > 1048576) {
       dispatch({
         type: "UPDATE_USER_FAIL",

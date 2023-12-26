@@ -50,18 +50,11 @@ export default function UserSettings({ changeProfileImg }) {
     e.preventDefault();
     let croppedImage = undefined;
     let username = newUsername ? newUsername : null;
-    try {
-      if (selectedFile) {
-        croppedImage = await croppedImg(selectedFile, croppedAreaPixels);
-        changeProfileImg(croppedImage);
-      }
-      await updateUser(username, croppedImage);
-    } catch (error) {
-      dispatch({
-        type: "UPDATE_USER_FAIL",
-        payload: "Bad input - JPG, PNG and SVG only",
-      });
+    if (selectedFile) {
+      croppedImage = await croppedImg(selectedFile, croppedAreaPixels);
+      changeProfileImg(croppedImage);
     }
+    await updateUser(username, croppedImage);
   };
 
   const deleteAccount = async () => {
