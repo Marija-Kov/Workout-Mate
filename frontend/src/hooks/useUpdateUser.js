@@ -32,11 +32,11 @@ export const useUpdateUser = () => {
         dispatch({ type: "RESET_USER_MESSAGE_STATE" });
       }, 5000);
     }
-    if (username && username.length > 12) {
+    if (username && username.trim() && username.trim().length > 12) {
       dispatch({ type: "UPDATE_USER_FAIL", payload: "Too long username" });
       return;
     }
-    if (username && !username.match(/^[a-zA-Z0-9._]+$/)) {
+    if (username && username.trim() && !username.match(/^[a-zA-Z0-9._]+$/)) {
       dispatch({
         type: "UPDATE_USER_FAIL",
         payload:

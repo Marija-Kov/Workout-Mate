@@ -89,15 +89,15 @@ export default function UserSettings({ changeProfileImg }) {
           <h4>Profile settings</h4>
           <label>Change displayed name:</label>
           <input
-            className={newUsername.length > 12 ? "error" : ""}
+            className={newUsername.trim().length > 12 ? "error" : ""}
             type="text"
             name="username"
             id="new-username"
             aria-label="new username"
             value={newUsername}
-            onChange={(e) => setNewUsername(e.target.value)}
+            onChange={(e) => setNewUsername(e.target.value.trim())}
           />
-          {newUsername.length > 12 && (
+          {newUsername.trim().length > 12 && (
             <p className="max-chars-error" role="alert">
               ⚠Too long name!
             </p>
