@@ -57,6 +57,26 @@ export default function UserSettings({ changeProfileImg }) {
     await updateUser(username, croppedImage);
   };
 
+  const toggleDisableUploadBtn = () => {
+    if (loading) return true;
+    if (newUsername && !newUsername.match(/^[a-zA-Z0-9._]+$/)) return true;
+    if (!newUsername && !selectedFile) return true;
+    if (newUsername && !newUsername.trim() && !selectedFile) return true;
+    if (newUsername.trim().length > 12) return true;
+    return false;
+  };
+
+  const uploadBtnStyle = () => {
+    if (loading) return "disabled--btn upload--btn";
+    if (newUsername && !newUsername.match(/^[a-zA-Z0-9._]+$/))
+      return "disabled--btn upload--btn";
+    if (!newUsername && !selectedFile) return "disabled--btn upload--btn";
+    if (newUsername && !newUsername.trim() && !selectedFile)
+      return "disabled--btn upload--btn";
+    if (newUsername.trim().length > 12) return "disabled--btn upload--btn";
+    return "upload--btn";
+  };
+
   const deleteAccount = async () => {
     await deleteAllWorkouts();
     await deleteUser(user.id);
@@ -135,12 +155,8 @@ export default function UserSettings({ changeProfileImg }) {
           )}
           <button
             aria-label="update profile button"
-            disabled={loading || newUsername.length > 12}
-            className={
-              newUsername.length > 12
-                ? "disabled--btn upload--btn"
-                : "upload--btn"
-            }
+            className={uploadBtnStyle()}
+            disabled={toggleDisableUploadBtn()}
           >
             Upload
           </button>
