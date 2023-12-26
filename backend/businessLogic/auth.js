@@ -67,11 +67,22 @@ const updateUser = async (user, id, body) => {
   if (!user) {
     ApiError.notAuthorized("Not authorized");
   }
-  if (body.username && body.username.length > 12) {
+  if (!body.username || (body.username && !body.username.trim())) return;
+  if (
+    body.username &&
+    body.username.trim() &&
+    body.username.trim().length > 12
+  ) {
     ApiError.badInput("Too long name");
   }
-  if (body.username && !body.username.match(/^[a-zA-Z0-9._]+$/)) {
-    ApiError.badInput("Username may only contain letters, numbers, dots and underscores");
+  if (
+    body.username &&
+    body.username.trim() &&
+    !body.username.match(/^[a-zA-Z0-9._]+$/)
+  ) {
+    ApiError.badInput(
+      "Username may only contain letters, numbers, dots and underscores"
+    );
   }
   if (
     body.profileImg &&
@@ -85,7 +96,8 @@ const updateUser = async (user, id, body) => {
     ApiError.badInput("Image too big - 1MB max");
   }
   const userUpdated = await User.update(id, body);
-  return { userUpdated };
+  if (userUpdated) return userUpdated;
+  return;
 };
 
 const deleteUser = async (id) => {
