@@ -1,4 +1,5 @@
 import { useSelector, useDispatch } from "react-redux";
+import { Buffer } from "buffer";
 
 export const useUpdateUser = () => {
   const { user } = useSelector((state) => state.user);
@@ -10,8 +11,37 @@ export const useUpdateUser = () => {
       dispatch({ type: "UPDATE_USER_FAIL", payload: "Not authorized" });
       return;
     }
-    if (username && username.length > 12) {
-      dispatch({ type: "UPDATE_USER_FAIL", payload: "Invalid input" });
+    if (
+      profileImg &&
+      profileImg.match(/^data:image\/jpeg/) &&
+      profileImg.match(/^data:image\/png/) &&
+      profileImg.match(/^data:image\/svg/)
+    ) {
+      dispatch({
+        type: "UPDATE_USER_FAIL",
+        payload: "Bad input - JPG, PNG and SVG only",
+      });
+      return;
+    }
+    if (profileImg && Buffer.byteLength(profileImg) > 1048576) {
+      dispatch({
+        type: "UPDATE_USER_FAIL",
+        payload: "Image too big - 1MB max",
+      });
+      return setTimeout(() => {
+        dispatch({ type: "RESET_USER_MESSAGE_STATE" });
+      }, 5000);
+    }
+    if (username && username.trim() && username.trim().length > 12) {
+      dispatch({ type: "UPDATE_USER_FAIL", payload: "Too long username" });
+      return;
+    }
+    if (username && username.trim() && !username.match(/^[a-zA-Z0-9._]+$/)) {
+      dispatch({
+        type: "UPDATE_USER_FAIL",
+        payload:
+          "Username may only contain letters, numbers, dots and underscores",
+      });
       return;
     }
     const body = {

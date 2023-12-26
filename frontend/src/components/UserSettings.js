@@ -50,18 +50,31 @@ export default function UserSettings({ changeProfileImg }) {
     e.preventDefault();
     let croppedImage = undefined;
     let username = newUsername ? newUsername : null;
-    try {
-      if (selectedFile) {
-        croppedImage = await croppedImg(selectedFile, croppedAreaPixels);
-        changeProfileImg(croppedImage);
-      }
-      await updateUser(username, croppedImage);
-    } catch (error) {
-      dispatch({
-        type: "UPDATE_USER_FAIL",
-        payload: "Bad input - JPG, PNG and SVG only",
-      });
+    if (selectedFile) {
+      croppedImage = await croppedImg(selectedFile, croppedAreaPixels);
+      changeProfileImg(croppedImage);
     }
+    await updateUser(username, croppedImage);
+  };
+
+  const toggleDisableUploadBtn = () => {
+    if (loading) return true;
+    if (newUsername && !newUsername.match(/^[a-zA-Z0-9._]+$/)) return true;
+    if (!newUsername && !selectedFile) return true;
+    if (newUsername && !newUsername.trim() && !selectedFile) return true;
+    if (newUsername.trim().length > 12) return true;
+    return false;
+  };
+
+  const uploadBtnStyle = () => {
+    if (loading) return "disabled--btn upload--btn";
+    if (newUsername && !newUsername.match(/^[a-zA-Z0-9._]+$/))
+      return "disabled--btn upload--btn";
+    if (!newUsername && !selectedFile) return "disabled--btn upload--btn";
+    if (newUsername && !newUsername.trim() && !selectedFile)
+      return "disabled--btn upload--btn";
+    if (newUsername.trim().length > 12) return "disabled--btn upload--btn";
+    return "upload--btn";
   };
 
   const deleteAccount = async () => {
@@ -96,17 +109,22 @@ export default function UserSettings({ changeProfileImg }) {
           <h4>Profile settings</h4>
           <label>Change displayed name:</label>
           <input
-            className={newUsername.length > 12 ? "error" : ""}
+            className={newUsername.trim().length > 12 ? "error" : ""}
             type="text"
             name="username"
             id="new-username"
             aria-label="new username"
             value={newUsername}
-            onChange={(e) => setNewUsername(e.target.value)}
+            onChange={(e) => setNewUsername(e.target.value.trim())}
           />
-          {newUsername.length > 12 && (
+          {newUsername.trim().length > 12 && (
             <p className="max-chars-error" role="alert">
               ⚠Too long name!
+            </p>
+          )}
+          {newUsername.trim() && !newUsername.match(/^[a-zA-Z0-9._]+$/) && (
+            <p className="max-chars-error" role="alert">
+              ⚠Letters, numbers, '_' and '.' allowed!
             </p>
           )}
           <label>Change profile image:</label>
@@ -137,12 +155,8 @@ export default function UserSettings({ changeProfileImg }) {
           )}
           <button
             aria-label="update profile button"
-            disabled={loading || newUsername.length > 12}
-            className={
-              newUsername.length > 12
-                ? "disabled--btn upload--btn"
-                : "upload--btn"
-            }
+            className={uploadBtnStyle()}
+            disabled={toggleDisableUploadBtn()}
           >
             Upload
           </button>

@@ -1,5 +1,10 @@
 import { renderHook, act } from "@testing-library/react";
 import { rest } from "msw";
+import {
+  writeLargeFile,
+  readLargeFile,
+  deleteLargeFile,
+} from "../../utils/test/largeImageFile";
 import { server } from "../../mocks/server";
 import { useUpdateUser } from "../useUpdateUser";
 import { Provider } from "react-redux";
@@ -9,7 +14,7 @@ let wrapper;
 let dispatch;
 let mockUser;
 
-beforeAll(() => {
+beforeAll(async () => {
   wrapper = ({ children }) => {
     return <Provider store={store}>{children}</Provider>;
   };
@@ -22,12 +27,14 @@ beforeAll(() => {
     profileImg: undefined,
     tokenExpires: Date.now() + 3600000,
   };
+  writeLargeFile();
 });
 
-afterAll(() => {
+afterAll(async () => {
   wrapper = null;
   dispatch = null;
   mockUser = null;
+  deleteLargeFile();
 });
 
 describe("useUpdateUser()", () => {
@@ -51,20 +58,45 @@ describe("useUpdateUser()", () => {
     expect(state.user.updateUserError).toMatch(/not authorized/i);
   });
 
-  it("should set updateUserError given that updateUser was run with invalid input", async () => {
+  it("should set updateUserError given that updateUser was run with too long username", async () => {
     dispatch({ type: "LOGIN_SUCCESS", payload: mockUser });
     const { result } = renderHook(useUpdateUser, { wrapper });
     await act(() => result.current.updateUser("thisUsernameIsTooLong444555"));
     let state = store.getState();
     expect(state.user.user.username).toBe(mockUser.username);
     expect(state.user.updateUserError).toBeTruthy();
-    expect(state.user.updateUserError).toMatch(/invalid input/i);
+    expect(state.user.updateUserError).toMatch(/too long username/i);
+    act(() => dispatch({ type: "LOGOUT" }));
+  });
+
+  it("should set updateUserError given that updateUser was run with username containing invalid character types", async () => {
+    dispatch({ type: "LOGIN_SUCCESS", payload: mockUser });
+    const { result } = renderHook(useUpdateUser, { wrapper });
+    await act(() => result.current.updateUser("i,n-v@l!d"));
+    let state = store.getState();
+    expect(state.user.user.username).toBe(mockUser.username);
+    expect(state.user.updateUserError).toBeTruthy();
+    expect(state.user.updateUserError).toMatch(
+      /may only contain letters, numbers, dots and underscores/i
+    );
+    act(() => dispatch({ type: "LOGOUT" }));
+  });
+
+  it("should set updateUserError given that updateUser was run with too large image", async () => {
+    const tooLargeImgUrl = readLargeFile();
+    dispatch({ type: "LOGIN_SUCCESS", payload: mockUser });
+    const { result } = renderHook(useUpdateUser, { wrapper });
+    await act(() => result.current.updateUser("abc", tooLargeImgUrl));
+    let state = store.getState();
+    expect(state.user.user.profileImg).toBe(mockUser.profileImg);
+    expect(state.user.updateUserError).toBeTruthy();
+    expect(state.user.updateUserError).toMatch(/image too big/i);
     act(() => dispatch({ type: "LOGOUT" }));
   });
 
   it("should run updateUser, set success state to 'true', error state to 'false' given that user is authorized and input is valid", async () => {
     const newData = {
-      username: "keechrr",
+      username: "keech.rr_",
       profileImg: "profileImgString",
     };
     server.use(

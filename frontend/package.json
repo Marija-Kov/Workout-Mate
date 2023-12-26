@@ -6,6 +6,7 @@
     "restoreMocks": true
   },
   "dependencies": {
+    "buffer": "^6.0.3",
     "chart.js": "^4.4.0",
     "date-fns": "^2.30.0",
     "react": "^18.2.0",

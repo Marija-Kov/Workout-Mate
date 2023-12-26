@@ -43,17 +43,32 @@ module.exports.user_update_patch = async (req, res) => {
   const { id } = req.params;
   const token = req.headers.authorization.slice(7);
   const body = req.body;
-  const { userUpdated } = await updateUser(user, id, body);
-  res.status(200).json({
-    user: {
-      id: userUpdated._id,
-      email: userUpdated.email,
-      username: userUpdated.username,
-      profileImg: userUpdated.profileImg,
-      token: token,
-    },
-    success: "Profile updated.",
-  });
+  const userUpdated = await updateUser(user, id, body);
+  if (userUpdated) {
+    res.status(200).json({
+      user: {
+        id: userUpdated._id,
+        email: userUpdated.email,
+        username: userUpdated.username,
+        profileImg: userUpdated.profileImg,
+        token: token,
+      },
+      success: "Profile updated.",
+    });
+    return;
+  } else {
+    res.status(200).json({
+      user: {
+        id: id,
+        email: user.email,
+        username: user.username,
+        profileImg: user.profileImg,
+        token: token,
+      },
+      success: "",
+    });
+    return;
+  }
 };
 
 module.exports.user_deletion = async (req, res) => {

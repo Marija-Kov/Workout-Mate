@@ -67,8 +67,22 @@ const updateUser = async (user, id, body) => {
   if (!user) {
     ApiError.notAuthorized("Not authorized");
   }
-  if (body.username && body.username.length > 12) {
+  if (!body.username || (body.username && !body.username.trim())) return;
+  if (
+    body.username &&
+    body.username.trim() &&
+    body.username.trim().length > 12
+  ) {
     ApiError.badInput("Too long name");
+  }
+  if (
+    body.username &&
+    body.username.trim() &&
+    !body.username.match(/^[a-zA-Z0-9._]+$/)
+  ) {
+    ApiError.badInput(
+      "Username may only contain letters, numbers, dots and underscores"
+    );
   }
   if (
     body.profileImg &&
@@ -78,8 +92,12 @@ const updateUser = async (user, id, body) => {
   ) {
     ApiError.badInput("Bad input, must be JPEG, PNG or SVG image format");
   }
+  if (body.profileImg && Buffer.byteLength(body.profileImg) > 1048576) {
+    ApiError.badInput("Image too big - 1MB max");
+  }
   const userUpdated = await User.update(id, body);
-  return { userUpdated };
+  if (userUpdated) return userUpdated;
+  return;
 };
 
 const deleteUser = async (id) => {
@@ -92,7 +110,7 @@ const deleteUser = async (id) => {
 const downloadUserData = async (id) => {
   const user = await User.findById(id);
   const workouts = await Workout.getAll(id);
-  return { user, workouts }
+  return { user, workouts };
 };
 
 module.exports = {
@@ -101,5 +119,5 @@ module.exports = {
   login,
   updateUser,
   deleteUser,
-  downloadUserData
+  downloadUserData,
 };

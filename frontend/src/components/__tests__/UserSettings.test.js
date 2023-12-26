@@ -90,6 +90,19 @@ describe("<UserSettings/>", () => {
     expect(newUsername).toHaveValue("daredev");
   });
 
+  it("should trim new username input value", async () => {
+    user.setup();
+    render(
+      <Provider store={store}>
+        <UserSettings />
+      </Provider>
+    );
+    const input = "daredev  ";
+    const newUsername = await screen.findByLabelText(/new username/i);
+    await user.type(newUsername, input);
+    expect(newUsername).toHaveValue(input.trim());
+  });
+
   it("should render input error message and disable upload button if username input value is too long", async () => {
     user.setup();
     render(
