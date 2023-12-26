@@ -102,6 +102,11 @@ export default function UserSettings({ changeProfileImg }) {
               ⚠Too long name!
             </p>
           )}
+          {newUsername.trim() && !newUsername.match(/^[a-zA-Z0-9._]+$/) && (
+            <p className="max-chars-error" role="alert">
+              ⚠Letters, numbers, '_' and '.' allowed!
+            </p>
+          )}
           <label>Change profile image:</label>
           <input
             type="file"
