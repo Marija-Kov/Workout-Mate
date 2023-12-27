@@ -8,3 +8,4 @@ frontend/build
 frontend/coverage
 backend/coverage
 backend/globalConfig.json
+NOTES.md

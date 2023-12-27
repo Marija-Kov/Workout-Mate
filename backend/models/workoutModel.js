@@ -1,7 +1,5 @@
 const mongoose = require("mongoose");
-
 const Schema = mongoose.Schema;
-// Schema is like a mongoose object property.
 
 const workoutSchema = new Schema(
   {
