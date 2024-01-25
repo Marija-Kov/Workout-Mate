@@ -22,7 +22,7 @@ describe("<Chart />", () => {
       "leg",
       "leg",
       "chest",
-      "forearmAndGrip",
+      "forearm and grip",
       "biceps",
       "triceps",
       "glute",
