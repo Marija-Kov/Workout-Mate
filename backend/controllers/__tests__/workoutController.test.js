@@ -347,6 +347,25 @@ describe("workoutController", () => {
       expect(res.error).toMatch(/load value too large/i);
     });
 
+    it("should respond with error if there was an attempt to update with invalid muscle group value", async () => {
+      const { userLoggedIn, workouts } = await mockUser("has-workouts");
+      const { token } = userLoggedIn;
+      const updateWorkout = {
+        id: workouts[1]._id,
+        body: {
+          muscle_group: "gallbladder",
+        },
+      };
+      const res = (
+        await agent
+          .patch(`/api/workouts/${updateWorkout.id}`)
+          .send(updateWorkout.body)
+          .set("Authorization", `Bearer ${token}`)
+      ).body;
+      expect(res.error).toBeTruthy();
+      expect(res.error).toMatch(/invalid muscle group value/i);
+    });
+
     it("should respond with the updated version of the workout provided all the values are valid", async () => {
       const { userLoggedIn, workouts } = await mockUser("has-workouts");
       const { token } = userLoggedIn;

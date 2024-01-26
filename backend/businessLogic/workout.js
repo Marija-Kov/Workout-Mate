@@ -66,12 +66,29 @@ const addWorkout = async (title, muscleGroup, reps, load, user) => {
 };
 
 const updateWorkout = async (id, body) => {
-  const { title, reps, load } = body;
+  const { title, muscle_group, reps, load } = body;
   if (!Workout.isValidId(id)) {
     ApiError.notFound("Invalid workout id");
   }
   if (title && !title.match(/^[a-zA-Z\s]*$/)) {
     ApiError.badInput("Title may contain only letters");
+  }
+  if (
+    muscle_group &&
+    ![
+      "chest",
+      "shoulder",
+      "biceps",
+      "triceps",
+      "leg",
+      "back",
+      "glute",
+      "ab",
+      "calf",
+      "forearm and grip",
+    ].includes(muscle_group)
+  ) {
+    ApiError.badInput("Invalid muscle group value");
   }
   if (title && title.length > 30) {
     ApiError.badInput("Too long title - max 30 characters");
