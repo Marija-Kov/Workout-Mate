@@ -1,6 +1,6 @@
 const request = require("supertest");
 const app = require("../../server");
-const { connect, clear, close } = require("../../database.config");
+const { connect, clear, close } = require("../test-utils/database.config");
 
 const agent = request.agent(app);
 
