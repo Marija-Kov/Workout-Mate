@@ -1,7 +1,11 @@
 const request = require("supertest");
 const app = require("../../server");
 const { connect, clear, close } = require("../test-utils/database.config");
-
+const {
+  mockUser,
+  maxOutWorkouts,
+  ISO8601ToMilliseconds,
+} = require("../test-utils/testData");
 const agent = request.agent(app);
 
 beforeAll(async () => await connect());
@@ -11,7 +15,7 @@ afterAll(async () => await close());
 describe("workoutController", () => {
   describe("POST /api/workouts/", () => {
     it("should respond with error if no authorization token was found", async () => {
-      const { token } = await mockUser("confirmed");
+      const { token } = await mockUser("confirmed", agent);
       const workout = {
         title: "Situps",
         muscle_group: "ab",
@@ -29,7 +33,7 @@ describe("workoutController", () => {
     });
 
     it("should respond with error if at least one input value is not provided", async () => {
-      const { token } = await mockUser("logged-in");
+      const { token } = await mockUser("logged-in", agent);
       const workout = {
         title: undefined,
         muscle_group: "forearm and grip",
@@ -47,7 +51,7 @@ describe("workoutController", () => {
     });
 
     it("should respond with error if title input value is too long", async () => {
-      const { token } = await mockUser("logged-in");
+      const { token } = await mockUser("logged-in", agent);
       const workout = {
         title: "Pullupsssssssssssssssssssssssssssssssss",
         muscle_group: "forearm and grip",
@@ -65,7 +69,7 @@ describe("workoutController", () => {
     });
 
     it("should respond with error if title input value contains non-alphabetic characters", async () => {
-      const { token } = await mockUser("logged-in");
+      const { token } = await mockUser("logged-in", agent);
       const workout = {
         title: "<Pullups>",
         muscle_group: "forearm and grip",
@@ -83,7 +87,7 @@ describe("workoutController", () => {
     });
 
     it("should respond with error if reps input value is too large", async () => {
-      const { token } = await mockUser("logged-in");
+      const { token } = await mockUser("logged-in", agent);
       const workout = {
         title: "Pullups",
         muscle_group: "forearm and grip",
@@ -101,7 +105,7 @@ describe("workoutController", () => {
     });
 
     it("should respond with error if load input value is too large", async () => {
-      const { token } = await mockUser("logged-in");
+      const { token } = await mockUser("logged-in", agent);
       const workout = {
         title: "Pullups",
         muscle_group: "forearm and grip",
@@ -119,7 +123,7 @@ describe("workoutController", () => {
     });
 
     it("should delete oldest workout given that the amount of workouts exceeds the limit", async () => {
-      const user = await mockUser("logged-in");
+      const user = await mockUser("logged-in", agent);
       const { token } = user;
       const samples = [
         { title: "Oldest workout", muscle_group: "chest", reps: 20, load: 20 },
@@ -142,7 +146,7 @@ describe("workoutController", () => {
           .send(samples[1])
           .set("Authorization", `Bearer ${token}`)
       ).body._id;
-      await maxOutWorkouts(user);
+      await maxOutWorkouts(user, agent);
       const canNotFindOldestWorkout = (
         await agent
           .delete(`/api/workouts/${oldestWorkoutId}`)
@@ -158,7 +162,7 @@ describe("workoutController", () => {
     });
 
     it("should respond with workout details and id given that the user is authorized and all required input values were provided", async () => {
-      const { token } = await mockUser("logged-in");
+      const { token } = await mockUser("logged-in", agent);
       const workout = {
         title: "Bench press",
         muscle_group: "chest",
@@ -181,7 +185,7 @@ describe("workoutController", () => {
 
   describe("GET /api/workouts/", () => {
     it("should respond with error if no authorization token was found", async () => {
-      const { token } = await mockUser("confirmed");
+      const { token } = await mockUser("confirmed", agent);
       const res = (
         await agent
           .get("/api/workouts/")
@@ -192,7 +196,7 @@ describe("workoutController", () => {
     });
 
     it("should respond with all workouts if no search query was specified", async () => {
-      const { userLoggedIn, workouts } = await mockUser("has-workouts");
+      const { userLoggedIn, workouts } = await mockUser("has-workouts", agent);
       const { token } = userLoggedIn;
       const res = (
         await agent
@@ -203,7 +207,7 @@ describe("workoutController", () => {
     });
 
     it("should respond with workouts by search query provided that they exist", async () => {
-      const { userLoggedIn, workouts } = await mockUser("has-workouts");
+      const { userLoggedIn, workouts } = await mockUser("has-workouts", agent);
       const { token } = userLoggedIn;
       const query = "pu";
       const res = (
@@ -218,7 +222,7 @@ describe("workoutController", () => {
     });
 
     it("should respond with no workouts if the workouts by search query don't exist", async () => {
-      const { userLoggedIn } = await mockUser("has-workouts");
+      const { userLoggedIn } = await mockUser("has-workouts", agent);
       const { token } = userLoggedIn;
       const query = "qx";
       const res = (
@@ -231,7 +235,7 @@ describe("workoutController", () => {
     });
 
     it("should respond with workouts from a specified page query", async () => {
-      const { userLoggedIn } = await mockUser("has-workouts");
+      const { userLoggedIn } = await mockUser("has-workouts", agent);
       const { token } = userLoggedIn;
       const query = 1;
       const res1 = (
@@ -254,7 +258,7 @@ describe("workoutController", () => {
 
   describe("PATCH /api/workouts/:id", () => {
     it("should respond with error if no authorization token was found", async () => {
-      const { workouts } = await mockUser("has-workouts");
+      const { workouts } = await mockUser("has-workouts", agent);
       const updateWorkout = {
         id: workouts[1]._id,
         body: {
@@ -272,7 +276,7 @@ describe("workoutController", () => {
     });
 
     it("should respond with error if there was an attempt to update with title value that is too long", async () => {
-      const { userLoggedIn, workouts } = await mockUser("has-workouts");
+      const { userLoggedIn, workouts } = await mockUser("has-workouts", agent);
       const { token } = userLoggedIn;
       const updateWorkout = {
         id: workouts[1]._id,
@@ -291,7 +295,7 @@ describe("workoutController", () => {
     });
 
     it("should respond with error if there was an attempt to update with title value that contains non-alphabetic characters", async () => {
-      const { userLoggedIn, workouts } = await mockUser("has-workouts");
+      const { userLoggedIn, workouts } = await mockUser("has-workouts", agent);
       const { token } = userLoggedIn;
       const updateWorkout = {
         id: workouts[1]._id,
@@ -310,7 +314,7 @@ describe("workoutController", () => {
     });
 
     it("should respond with error if there was an attempt to update with reps value that is too large", async () => {
-      const { userLoggedIn, workouts } = await mockUser("has-workouts");
+      const { userLoggedIn, workouts } = await mockUser("has-workouts", agent);
       const { token } = userLoggedIn;
       const updateWorkout = {
         id: workouts[1]._id,
@@ -329,7 +333,7 @@ describe("workoutController", () => {
     });
 
     it("should respond with error if there was an attempt to update with load value that is too large", async () => {
-      const { userLoggedIn, workouts } = await mockUser("has-workouts");
+      const { userLoggedIn, workouts } = await mockUser("has-workouts", agent);
       const { token } = userLoggedIn;
       const updateWorkout = {
         id: workouts[1]._id,
@@ -348,7 +352,7 @@ describe("workoutController", () => {
     });
 
     it("should respond with error if there was an attempt to update with invalid muscle group value", async () => {
-      const { userLoggedIn, workouts } = await mockUser("has-workouts");
+      const { userLoggedIn, workouts } = await mockUser("has-workouts", agent);
       const { token } = userLoggedIn;
       const updateWorkout = {
         id: workouts[1]._id,
@@ -367,7 +371,7 @@ describe("workoutController", () => {
     });
 
     it("should respond with the updated version of the workout provided all the values are valid", async () => {
-      const { userLoggedIn, workouts } = await mockUser("has-workouts");
+      const { userLoggedIn, workouts } = await mockUser("has-workouts", agent);
       const { token } = userLoggedIn;
       const updateWorkout = {
         id: workouts[1]._id,
@@ -388,7 +392,7 @@ describe("workoutController", () => {
 
   describe("DELETE /api/workouts/:id", () => {
     it("should respond with error if no authorization token was found", async () => {
-      const { workouts } = await mockUser("has-workouts");
+      const { workouts } = await mockUser("has-workouts", agent);
       const deleteWorkoutId = workouts[1]._id;
       const res = (
         await agent
@@ -400,7 +404,7 @@ describe("workoutController", () => {
     });
 
     it("should respond with error if the provided workout id is invalid", async () => {
-      const { userLoggedIn } = await mockUser("has-workouts");
+      const { userLoggedIn } = await mockUser("has-workouts", agent);
       const { token } = userLoggedIn;
       const res = (
         await agent
@@ -412,7 +416,7 @@ describe("workoutController", () => {
     });
 
     it("should respond with error if the workout with the provided id doesn't exist", async () => {
-      const { userLoggedIn, workouts } = await mockUser("has-workouts");
+      const { userLoggedIn, workouts } = await mockUser("has-workouts", agent);
       const { token } = userLoggedIn;
       const deleteWorkoutId = workouts[1]._id;
       await agent
@@ -428,7 +432,7 @@ describe("workoutController", () => {
     });
 
     it("should respond with the deleted workout details and the number of remaining workouts", async () => {
-      const { userLoggedIn, workouts } = await mockUser("has-workouts");
+      const { userLoggedIn, workouts } = await mockUser("has-workouts", agent);
       const { token } = userLoggedIn;
       const totalWorkouts = workouts.length;
       const deleteWorkoutId = workouts[1]._id;
@@ -444,7 +448,7 @@ describe("workoutController", () => {
 
   describe("DELETE /api/workouts/", () => {
     it("should respond with error given that the user is not authorized", async () => {
-      await mockUser("has-workouts");
+      await mockUser("has-workouts", agent);
       const res = (await agent.delete(`/api/workouts/`)).body;
       expect(res.deletedCount).toBeFalsy();
       expect(res.error).toBeTruthy();
@@ -452,7 +456,7 @@ describe("workoutController", () => {
     });
 
     it("should delete all workouts given that the user is authorized", async () => {
-      const { userLoggedIn, workouts } = await mockUser("has-workouts");
+      const { userLoggedIn, workouts } = await mockUser("has-workouts", agent);
       const { token } = userLoggedIn;
       const res = (
         await agent
@@ -467,7 +471,7 @@ describe("workoutController", () => {
 
   describe("ANY /api/workouts/", () => {
     it("should respond with error if too many requests were sent in a short amount of time", async () => {
-      const { token } = await mockUser("logged-in");
+      const { token } = await mockUser("logged-in", agent);
       const maxReq = Number(process.env.TEST_MAX_API_WORKOUTS_REQS);
       let res;
       for (let i = 0; i <= maxReq + 1; ++i) {
@@ -480,77 +484,3 @@ describe("workoutController", () => {
     });
   });
 });
-
-async function mockUser(status) {
-  const user = {
-    email: "a@b.c",
-    password: "abcABC123!",
-  };
-  const userPending = (await agent.post("/api/users/signup").send(user)).body;
-  if (status === "pending") return userPending;
-
-  const userConfirmed = (await agent.get(`/api/users/${userPending.token}`))
-    .body;
-  if (status === "confirmed") return userConfirmed;
-
-  const userLoggedIn = (await agent.post("/api/users/login").send(user)).body;
-  if (status === "logged-in") return userLoggedIn;
-
-  const userHasWorkouts = await addWorkouts();
-  if (status === "has-workouts") return userHasWorkouts;
-
-  async function addWorkouts() {
-    const sampleWorkouts = [
-      { title: "Bench Press", muscle_group: "chest", reps: 20, load: 20 },
-      { title: "Pushups", muscle_group: "chest", reps: 30, load: 0 },
-      { title: "Situps", muscle_group: "ab", reps: 40, load: 0 },
-      { title: "Squats", muscle_group: "leg", reps: 20, load: 23 },
-      { title: "Pullups", muscle_group: "forearm and grip", reps: 15, load: 0 },
-    ];
-    const workouts = [];
-    for (let i = 0; i < sampleWorkouts.length; ++i) {
-      let workout = (
-        await agent
-          .post("/api/workouts/")
-          .send(sampleWorkouts[i])
-          .set("Authorization", `Bearer ${userLoggedIn.token}`)
-      ).body;
-      workouts.unshift(workout);
-    }
-    return { userLoggedIn, workouts };
-  }
-}
-
-async function maxOutWorkouts(user) {
-  /*
-    limit = process.env.TEST_MAX_WORKOUTS_PER_USER;
-    sampleWorkouts.length must be limit - 1
-    if the condition for deletion of the oldest entry is number of workouts being 
-    EQUAL TO limit and given that the test is asserting the existence of each of
-    the two previously posted workouts where more recent one is supposed to exist
-    and the less recent one not to exist.
-  */
-  const sampleWorkouts = [
-    { title: "Bench Press", muscle_group: "chest", reps: 20, load: 20 },
-    { title: "Pushups", muscle_group: "chest", reps: 30, load: 0 },
-    { title: "Situps", muscle_group: "ab", reps: 40, load: 0 },
-    { title: "Squats", muscle_group: "leg", reps: 20, load: 23 },
-  ];
-  for (let i = 0; i < sampleWorkouts.length; ++i) {
-    await agent
-      .post("/api/workouts/")
-      .send(sampleWorkouts[i])
-      .set("Authorization", `Bearer ${user.token}`);
-  }
-}
-
-function ISO8601ToMilliseconds(ISO8601) {
-  let ms = Number(ISO8601.slice(20, 23));
-  let s = Number(ISO8601.slice(17, 19));
-  let min = Number(ISO8601.slice(14, 16));
-  let h = Number(ISO8601.slice(11, 13));
-  let d = Number(ISO8601.slice(8, 10));
-  let m = Number(ISO8601.slice(5, 7));
-  let y = Number(ISO8601.slice(0, 4));
-  return ms + 1000 * (s + 60 * (min + 60 * (h + 24 * (d + 30 * (m + y * 12)))));
-}
