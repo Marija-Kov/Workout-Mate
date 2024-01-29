@@ -197,7 +197,6 @@ describe("authController", () => {
           .set("Authorization", `Bearer ${token}`)
           .send({ profileImg: newProfileImg })
       ).body;
-      console.log(res)
       expect(res.error).toBeTruthy();
       expect(res.error).toMatch(/bad input/i);
     });
@@ -217,7 +216,6 @@ describe("authController", () => {
           .set("Authorization", `Bearer ${token}`)
           .send({ profileImg: tooLarge })
       ).body;
-      console.log(res)
       expect(res.error).toBeTruthy();
       expect(res.error).toMatch(/image too big/i);
     });
