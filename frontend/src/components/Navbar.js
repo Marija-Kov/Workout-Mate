@@ -21,18 +21,23 @@ export default function Navbar() {
   };
 
   useEffect(() => {
-    if (user) {
-      const username = localStorage.getItem("username");
-      if (!user.username && !username) {
-        const i = user.email.indexOf("@");
-        setUsername(`${user.email.slice(0, i)}`);
-      } else {
-        if (username) setUsername(username);
-        if (user.username && !username) setUsername(user.username);
-      }
-      const newImg = localStorage.getItem("newImg");
-      if (user.profileImg && !newImg) setProfileImg(user.profileImg);
-      if (newImg) setProfileImg(newImg);
+    if (!user) return;
+    const username = localStorage.getItem("username");
+    if (username) {
+      setUsername(username);
+    } else if (user.username) {
+      setUsername(user.username);
+    } else {
+      const i = user.email.indexOf("@");
+      setUsername(`${user.email.slice(0, i)}`);
+    }
+    const newImg = localStorage.getItem("newImg");
+    if (newImg) {
+      setProfileImg(newImg);
+    } else if (user.profileImg) {
+      setProfileImg(user.profileImg);
+    } else {
+      return;
     }
   }, [user]);
 
@@ -65,9 +70,7 @@ export default function Navbar() {
         {!user && (
           <div
             className="about--login--signup--nav"
-            onClick={() =>
-              dispatch({ type: "RESET_USER_STATE" })
-            }
+            onClick={() => dispatch({ type: "RESET_USER_STATE" })}
           >
             <Link to="/about" aria-label="about workout mate">
               <span className="about--btn">About</span>
