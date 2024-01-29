@@ -11,6 +11,7 @@ export const useUpdateUser = () => {
       dispatch({ type: "UPDATE_USER_FAIL", payload: "Not authorized" });
       return;
     }
+    const body = {};
     if (
       profileImg &&
       profileImg.match(/^data:image\/jpeg/) &&
@@ -32,6 +33,7 @@ export const useUpdateUser = () => {
         dispatch({ type: "RESET_USER_MESSAGE_STATE" });
       }, 5000);
     }
+    body.profileImg = profileImg;
     if (username && username.trim() && username.trim().length > 12) {
       dispatch({ type: "UPDATE_USER_FAIL", payload: "Too long username" });
       return;
@@ -44,10 +46,9 @@ export const useUpdateUser = () => {
       });
       return;
     }
-    const body = {
-      username: username,
-      profileImg: profileImg,
-    };
+    if (username && username.trim()) {
+      body.username = username;
+    }
     const response = await fetch(
       `${process.env.REACT_APP_API}/api/users/${user.id}`,
       {
