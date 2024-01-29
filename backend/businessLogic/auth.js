@@ -67,7 +67,9 @@ const updateUser = async (user, id, body) => {
   if (!user) {
     ApiError.notAuthorized("Not authorized");
   }
-  if (!body.username || (body.username && !body.username.trim())) return;
+  if ((!body.username || !body.username.trim()) && !body.profileImg) {
+    return await User.findById(id);
+  }
   if (
     body.username &&
     body.username.trim() &&
@@ -96,8 +98,7 @@ const updateUser = async (user, id, body) => {
     ApiError.badInput("Image too big - 1MB max");
   }
   const userUpdated = await User.update(id, body);
-  if (userUpdated) return userUpdated;
-  return;
+  return userUpdated;
 };
 
 const deleteUser = async (id) => {
