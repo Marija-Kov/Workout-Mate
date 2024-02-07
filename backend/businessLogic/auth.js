@@ -92,10 +92,10 @@ const updateUser = async (user, id, body) => {
     !body.profileImg.match(/^data:image\/png/) &&
     !body.profileImg.match(/^data:image\/svg/)
   ) {
-    ApiError.badInput("Bad input, must be JPEG, PNG or SVG image format");
+    ApiError.badMediaType("Bad media type, must be JPEG, PNG or SVG");
   }
   if (body.profileImg && Buffer.byteLength(body.profileImg) > 1048576) {
-    ApiError.badInput("Image too big - 1MB max");
+    ApiError.payloadTooLarge("Image too big - 1MB max");
   }
   const userUpdated = await User.update(id, body);
   return userUpdated;

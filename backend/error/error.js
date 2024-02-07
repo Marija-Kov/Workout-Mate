@@ -5,7 +5,13 @@ class ApiError extends Error {
     this.message = message;
   }
   static badInput(message) {
-    throw new ApiError(400, message);
+    throw new ApiError(422, message);
+  }
+  static badMediaType(message) {
+    throw new ApiError(415, message);
+  }
+  static payloadTooLarge(message) {
+    throw new ApiError(413, message);
   }
   static notAuthorized(message) {
     throw new ApiError(401, message);
