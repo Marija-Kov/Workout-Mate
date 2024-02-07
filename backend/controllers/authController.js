@@ -10,7 +10,7 @@ const {
 module.exports.signup_post = async (req, res) => {
   const { email, password } = req.body;
   const { id, confirmationToken } = await signup(email, password);
-  res.status(200).json({
+  res.status(201).json({
     id,
     token: confirmationToken,
     success:

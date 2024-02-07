@@ -18,7 +18,7 @@ module.exports.add_workout = async (req, res) => {
   const user = req.user;
   const { title, muscle_group, reps, load } = req.body;
   const workout = await addWorkout(title, muscle_group, reps, load, user);
-  res.status(200).json(workout);
+  res.status(201).json(workout);
 };
 
 module.exports.update_workout = async (req, res) => {

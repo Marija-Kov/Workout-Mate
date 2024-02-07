@@ -22,14 +22,13 @@ describe("workoutController", () => {
         reps: 30,
         load: 0,
       };
-      const res = (
-        await agent
-          .post("/api/workouts/")
-          .send(workout)
-          .set("Authorization", `Bearer ${token}`)
-      ).body;
-      expect(res.error).toBeTruthy();
-      expect(res.error).toMatch(/not authorized/i);
+      const res = await agent
+        .post("/api/workouts/")
+        .send(workout)
+        .set("Authorization", `Bearer ${token}`);
+      expect(res.status).toBe(401);
+      expect(res.body.error).toBeTruthy();
+      expect(res.body.error).toMatch(/not authorized/i);
     });
 
     it("should respond with error if at least one input value is not provided", async () => {
@@ -40,14 +39,13 @@ describe("workoutController", () => {
         reps: undefined,
         load: 20,
       };
-      const res = (
-        await agent
-          .post("/api/workouts/")
-          .send(workout)
-          .set("Authorization", `Bearer ${token}`)
-      ).body;
-      expect(res.error).toBeTruthy();
-      expect(res.error).toMatch(/please fill out the empty fields/i);
+      const res = await agent
+        .post("/api/workouts/")
+        .send(workout)
+        .set("Authorization", `Bearer ${token}`);
+      expect(res.status).toBe(422);
+      expect(res.body.error).toBeTruthy();
+      expect(res.body.error).toMatch(/please fill out the empty fields/i);
     });
 
     it("should respond with error if title input value is too long", async () => {
@@ -58,14 +56,13 @@ describe("workoutController", () => {
         reps: 20,
         load: 20,
       };
-      const res = (
-        await agent
-          .post("/api/workouts/")
-          .send(workout)
-          .set("Authorization", `Bearer ${token}`)
-      ).body;
-      expect(res.error).toBeTruthy();
-      expect(res.error).toMatch(/too long title - max 30 characters/i);
+      const res = await agent
+        .post("/api/workouts/")
+        .send(workout)
+        .set("Authorization", `Bearer ${token}`);
+      expect(res.status).toBe(422);
+      expect(res.body.error).toBeTruthy();
+      expect(res.body.error).toMatch(/too long title - max 30 characters/i);
     });
 
     it("should respond with error if title input value contains non-alphabetic characters", async () => {
@@ -76,14 +73,13 @@ describe("workoutController", () => {
         reps: 20,
         load: 20,
       };
-      const res = (
-        await agent
-          .post("/api/workouts/")
-          .send(workout)
-          .set("Authorization", `Bearer ${token}`)
-      ).body;
-      expect(res.error).toBeTruthy();
-      expect(res.error).toMatch(/title may contain only letters/i);
+      const res = await agent
+        .post("/api/workouts/")
+        .send(workout)
+        .set("Authorization", `Bearer ${token}`);
+      expect(res.status).toBe(422);
+      expect(res.body.error).toBeTruthy();
+      expect(res.body.error).toMatch(/title may contain only letters/i);
     });
 
     it("should respond with error if reps input value is too large", async () => {
@@ -94,14 +90,13 @@ describe("workoutController", () => {
         reps: 20000,
         load: 20,
       };
-      const res = (
-        await agent
-          .post("/api/workouts/")
-          .send(workout)
-          .set("Authorization", `Bearer ${token}`)
-      ).body;
-      expect(res.error).toBeTruthy();
-      expect(res.error).toMatch(/reps value too large/i);
+      const res = await agent
+        .post("/api/workouts/")
+        .send(workout)
+        .set("Authorization", `Bearer ${token}`);
+      expect(res.status).toBe(422);
+      expect(res.body.error).toBeTruthy();
+      expect(res.body.error).toMatch(/reps value too large/i);
     });
 
     it("should respond with error if load input value is too large", async () => {
@@ -112,14 +107,13 @@ describe("workoutController", () => {
         reps: 20,
         load: 20000,
       };
-      const res = (
-        await agent
-          .post("/api/workouts/")
-          .send(workout)
-          .set("Authorization", `Bearer ${token}`)
-      ).body;
-      expect(res.error).toBeTruthy();
-      expect(res.error).toMatch(/load value too large/i);
+      const res = await agent
+        .post("/api/workouts/")
+        .send(workout)
+        .set("Authorization", `Bearer ${token}`);
+      expect(res.status).toBe(422);
+      expect(res.body.error).toBeTruthy();
+      expect(res.body.error).toMatch(/load value too large/i);
     });
 
     it("should delete oldest workout given that the amount of workouts exceeds the limit", async () => {
@@ -147,18 +141,23 @@ describe("workoutController", () => {
           .set("Authorization", `Bearer ${token}`)
       ).body._id;
       await maxOutWorkouts(user, agent);
-      const canNotFindOldestWorkout = (
-        await agent
-          .delete(`/api/workouts/${oldestWorkoutId}`)
-          .set("Authorization", `Bearer ${token}`)
-      ).body.error;
-      const canFind2ndOldestWorkout = (
-        await agent
-          .delete(`/api/workouts/${secondOldestWorkoutId}`)
-          .set("Authorization", `Bearer ${token}`)
-      ).body.workout;
-      expect(canNotFindOldestWorkout).toBeTruthy();
-      expect(canFind2ndOldestWorkout).toBeTruthy();
+      const resOldestWorkout = await agent
+        .delete(`/api/workouts/${oldestWorkoutId}`)
+        .set("Authorization", `Bearer ${token}`);
+      const res2ndOldestWorkout = await agent
+        .delete(`/api/workouts/${secondOldestWorkoutId}`)
+        .set("Authorization", `Bearer ${token}`);
+      expect(resOldestWorkout.status).toBe(404);
+      expect(res2ndOldestWorkout.status).toBe(200);
+      expect(resOldestWorkout.body).toHaveProperty(
+        "error",
+        `Workout id (${oldestWorkoutId}) does not exist`
+      );
+      expect(res2ndOldestWorkout.body.workout).toBeTruthy();
+      expect(res2ndOldestWorkout.body.workout).toHaveProperty(
+        "_id",
+        `${secondOldestWorkoutId}`
+      );
     });
 
     it("should respond with workout details and id given that the user is authorized and all required input values were provided", async () => {
@@ -169,87 +168,83 @@ describe("workoutController", () => {
         reps: 20,
         load: 20,
       };
-      const res = (
-        await agent
-          .post("/api/workouts/")
-          .send(workout)
-          .set("Authorization", `Bearer ${token}`)
-      ).body;
-      expect(res).toHaveProperty("title", `${workout.title.toLowerCase()}`);
-      expect(res).toHaveProperty("reps", workout.reps);
-      expect(res).toHaveProperty("load", workout.load);
-      expect(res).toHaveProperty("muscle_group", workout.muscle_group);
-      expect(res._id).toBeTruthy();
+      const res = await agent
+        .post("/api/workouts/")
+        .send(workout)
+        .set("Authorization", `Bearer ${token}`);
+      expect(res.status).toBe(201);
+      expect(res.body).toHaveProperty(
+        "title",
+        `${workout.title.toLowerCase()}`
+      );
+      expect(res.body).toHaveProperty("reps", workout.reps);
+      expect(res.body).toHaveProperty("load", workout.load);
+      expect(res.body).toHaveProperty("muscle_group", workout.muscle_group);
+      expect(res.body._id).toBeTruthy();
     });
   });
 
   describe("GET /api/workouts/", () => {
     it("should respond with error if no authorization token was found", async () => {
       const { token } = await mockUser("confirmed", agent);
-      const res = (
-        await agent
-          .get("/api/workouts/")
-          .set("Authorization", `Bearer ${token}`)
-      ).body;
-      expect(res.error).toBeTruthy();
-      expect(res.error).toMatch(/not authorized/i);
+      const res = await agent
+        .get("/api/workouts/")
+        .set("Authorization", `Bearer ${token}`);
+      expect(res.status).toBe(401);
+      expect(res.body.error).toBeTruthy();
+      expect(res.body.error).toMatch(/not authorized/i);
     });
 
     it("should respond with all workouts if no search query was specified", async () => {
       const { userLoggedIn, workouts } = await mockUser("has-workouts", agent);
       const { token } = userLoggedIn;
-      const res = (
-        await agent
-          .get("/api/workouts/")
-          .set("Authorization", `Bearer ${token}`)
-      ).body;
-      expect(res.total).toEqual(workouts.length);
+      const res = await agent
+        .get("/api/workouts/")
+        .set("Authorization", `Bearer ${token}`);
+      expect(res.status).toBe(200);
+      expect(res.body.total).toEqual(workouts.length);
     });
 
     it("should respond with workouts by search query provided that they exist", async () => {
       const { userLoggedIn, workouts } = await mockUser("has-workouts", agent);
       const { token } = userLoggedIn;
       const query = "pu";
-      const res = (
-        await agent
-          .get(`/api/workouts/?search=${query}`)
-          .set("Authorization", `Bearer ${token}`)
-      ).body;
-      expect(res.workoutsChunk.length).toBeTruthy();
-      expect(res.workoutsChunk[0].title).toMatch(/^pu/i);
-      expect(res.total).toBeTruthy();
-      expect(res.total).toBeLessThan(workouts.length);
+      const res = await agent
+        .get(`/api/workouts/?search=${query}`)
+        .set("Authorization", `Bearer ${token}`);
+      expect(res.status).toBe(200);
+      expect(res.body.workoutsChunk.length).toBeTruthy();
+      expect(res.body.workoutsChunk[0].title).toMatch(/^pu/i);
+      expect(res.body.total).toBeTruthy();
+      expect(res.body.total).toBeLessThan(workouts.length);
     });
 
     it("should respond with no workouts if the workouts by search query don't exist", async () => {
       const { userLoggedIn } = await mockUser("has-workouts", agent);
       const { token } = userLoggedIn;
       const query = "qx";
-      const res = (
-        await agent
-          .get(`/api/workouts/?search=${query}`)
-          .set("Authorization", `Bearer ${token}`)
-      ).body;
-      expect(res.total).toEqual(0);
-      expect(res.noWorkoutsByQuery).toMatch(/no workouts found/i);
+      const res = await agent
+        .get(`/api/workouts/?search=${query}`)
+        .set("Authorization", `Bearer ${token}`);
+      expect(res.status).toBe(200);
+      expect(res.body.total).toEqual(0);
+      expect(res.body.noWorkoutsByQuery).toMatch(/no workouts found/i);
     });
 
     it("should respond with workouts from a specified page query", async () => {
       const { userLoggedIn } = await mockUser("has-workouts", agent);
       const { token } = userLoggedIn;
       const query = 1;
-      const res1 = (
-        await agent
-          .get(`/api/workouts/`)
-          .set("Authorization", `Bearer ${token}`)
-      ).body;
-      const res2 = (
-        await agent
-          .get(`/api/workouts/?p=${query}`)
-          .set("Authorization", `Bearer ${token}`)
-      ).body;
-      const firstDateOnTheQueriedPage = res2.workoutsChunk[0].createdAt;
-      const lastDateOnTheFirstPage = res1.workoutsChunk[2].createdAt;
+      const res1 = await agent
+        .get(`/api/workouts/`)
+        .set("Authorization", `Bearer ${token}`);
+      const res2 = await agent
+        .get(`/api/workouts/?p=${query}`)
+        .set("Authorization", `Bearer ${token}`);
+      const firstDateOnTheQueriedPage = res2.body.workoutsChunk[0].createdAt;
+      const lastDateOnTheFirstPage = res1.body.workoutsChunk[2].createdAt;
+      expect(res1.status).toBe(200);
+      expect(res2.status).toBe(200);
       expect(ISO8601ToMilliseconds(firstDateOnTheQueriedPage)).toBeLessThan(
         ISO8601ToMilliseconds(lastDateOnTheFirstPage)
       );
@@ -265,14 +260,13 @@ describe("workoutController", () => {
           reps: 33,
         },
       };
-      const res = (
-        await agent
-          .patch(`/api/workouts/${updateWorkout.id}`)
-          .send(updateWorkout.body)
-          .set("Authorization", `Bearer ${undefined}`)
-      ).body;
-      expect(res.error).toBeTruthy();
-      expect(res.error).toMatch(/not authorized/i);
+      const res = await agent
+        .patch(`/api/workouts/${updateWorkout.id}`)
+        .send(updateWorkout.body)
+        .set("Authorization", `Bearer ${undefined}`);
+      expect(res.status).toBe(401);
+      expect(res.body.error).toBeTruthy();
+      expect(res.body.error).toMatch(/not authorized/i);
     });
 
     it("should respond with error if there was an attempt to update with title value that is too long", async () => {
@@ -284,14 +278,13 @@ describe("workoutController", () => {
           title: "Pullupsssssssssssssssssssssssssssssssss",
         },
       };
-      const res = (
-        await agent
-          .patch(`/api/workouts/${updateWorkout.id}`)
-          .send(updateWorkout.body)
-          .set("Authorization", `Bearer ${token}`)
-      ).body;
-      expect(res.error).toBeTruthy();
-      expect(res.error).toMatch(/too long title - max 30 characters/i);
+      const res = await agent
+        .patch(`/api/workouts/${updateWorkout.id}`)
+        .send(updateWorkout.body)
+        .set("Authorization", `Bearer ${token}`);
+      expect(res.status).toBe(422);
+      expect(res.body.error).toBeTruthy();
+      expect(res.body.error).toMatch(/too long title - max 30 characters/i);
     });
 
     it("should respond with error if there was an attempt to update with title value that contains non-alphabetic characters", async () => {
@@ -303,14 +296,13 @@ describe("workoutController", () => {
           title: "<Pullups>",
         },
       };
-      const res = (
-        await agent
-          .patch(`/api/workouts/${updateWorkout.id}`)
-          .send(updateWorkout.body)
-          .set("Authorization", `Bearer ${token}`)
-      ).body;
-      expect(res.error).toBeTruthy();
-      expect(res.error).toMatch(/title may contain only letters/i);
+      const res = await agent
+        .patch(`/api/workouts/${updateWorkout.id}`)
+        .send(updateWorkout.body)
+        .set("Authorization", `Bearer ${token}`);
+      expect(res.status).toBe(422);
+      expect(res.body.error).toBeTruthy();
+      expect(res.body.error).toMatch(/title may contain only letters/i);
     });
 
     it("should respond with error if there was an attempt to update with reps value that is too large", async () => {
@@ -322,14 +314,13 @@ describe("workoutController", () => {
           reps: 20000,
         },
       };
-      const res = (
-        await agent
-          .patch(`/api/workouts/${updateWorkout.id}`)
-          .send(updateWorkout.body)
-          .set("Authorization", `Bearer ${token}`)
-      ).body;
-      expect(res.error).toBeTruthy();
-      expect(res.error).toMatch(/reps value too large/i);
+      const res = await agent
+        .patch(`/api/workouts/${updateWorkout.id}`)
+        .send(updateWorkout.body)
+        .set("Authorization", `Bearer ${token}`);
+      expect(res.status).toBe(422);
+      expect(res.body.error).toBeTruthy();
+      expect(res.body.error).toMatch(/reps value too large/i);
     });
 
     it("should respond with error if there was an attempt to update with load value that is too large", async () => {
@@ -341,14 +332,13 @@ describe("workoutController", () => {
           load: 20000,
         },
       };
-      const res = (
-        await agent
-          .patch(`/api/workouts/${updateWorkout.id}`)
-          .send(updateWorkout.body)
-          .set("Authorization", `Bearer ${token}`)
-      ).body;
-      expect(res.error).toBeTruthy();
-      expect(res.error).toMatch(/load value too large/i);
+      const res = await agent
+        .patch(`/api/workouts/${updateWorkout.id}`)
+        .send(updateWorkout.body)
+        .set("Authorization", `Bearer ${token}`);
+      expect(res.status).toBe(422);
+      expect(res.body.error).toBeTruthy();
+      expect(res.body.error).toMatch(/load value too large/i);
     });
 
     it("should respond with error if there was an attempt to update with invalid muscle group value", async () => {
@@ -360,14 +350,13 @@ describe("workoutController", () => {
           muscle_group: "gallbladder",
         },
       };
-      const res = (
-        await agent
-          .patch(`/api/workouts/${updateWorkout.id}`)
-          .send(updateWorkout.body)
-          .set("Authorization", `Bearer ${token}`)
-      ).body;
-      expect(res.error).toBeTruthy();
-      expect(res.error).toMatch(/invalid muscle group value/i);
+      const res = await agent
+        .patch(`/api/workouts/${updateWorkout.id}`)
+        .send(updateWorkout.body)
+        .set("Authorization", `Bearer ${token}`);
+      expect(res.status).toBe(422);
+      expect(res.body.error).toBeTruthy();
+      expect(res.body.error).toMatch(/invalid muscle group value/i);
     });
 
     it("should respond with the updated version of the workout provided all the values are valid", async () => {
@@ -379,14 +368,13 @@ describe("workoutController", () => {
           reps: 40,
         },
       };
-      const res = (
-        await agent
-          .patch(`/api/workouts/${updateWorkout.id}`)
-          .send(updateWorkout.body)
-          .set("Authorization", `Bearer ${token}`)
-      ).body;
-      expect(res.reps).toEqual(updateWorkout.body.reps);
-      expect(res.updatedAt).not.toMatch(workouts[1].updatedAt);
+      const res = await agent
+        .patch(`/api/workouts/${updateWorkout.id}`)
+        .send(updateWorkout.body)
+        .set("Authorization", `Bearer ${token}`);
+      expect(res.status).toBe(200);
+      expect(res.body.reps).toEqual(updateWorkout.body.reps);
+      expect(res.body.updatedAt).not.toMatch(workouts[1].updatedAt);
     });
   });
 
@@ -394,25 +382,23 @@ describe("workoutController", () => {
     it("should respond with error if no authorization token was found", async () => {
       const { workouts } = await mockUser("has-workouts", agent);
       const deleteWorkoutId = workouts[1]._id;
-      const res = (
-        await agent
-          .delete(`/api/workouts/${deleteWorkoutId}`)
-          .set("Authorization", `Bearer ${undefined}`)
-      ).body;
-      expect(res.error).toBeTruthy();
-      expect(res.error).toMatch(/not authorized/i);
+      const res = await agent
+        .delete(`/api/workouts/${deleteWorkoutId}`)
+        .set("Authorization", `Bearer ${undefined}`);
+      expect(res.status).toBe(401);
+      expect(res.body.error).toBeTruthy();
+      expect(res.body.error).toMatch(/not authorized/i);
     });
 
     it("should respond with error if the provided workout id is invalid", async () => {
       const { userLoggedIn } = await mockUser("has-workouts", agent);
       const { token } = userLoggedIn;
-      const res = (
-        await agent
-          .delete(`/api/workouts/invalidWorkoutId`)
-          .set("Authorization", `Bearer ${token}`)
-      ).body;
-      expect(res.error).toBeTruthy();
-      expect(res.error).toMatch(/invalid workout id/i);
+      const res = await agent
+        .delete(`/api/workouts/invalidWorkoutId`)
+        .set("Authorization", `Bearer ${token}`);
+      expect(res.status).toBe(404);
+      expect(res.body.error).toBeTruthy();
+      expect(res.body.error).toMatch(/invalid workout id/i);
     });
 
     it("should respond with error if the workout with the provided id doesn't exist", async () => {
@@ -422,13 +408,12 @@ describe("workoutController", () => {
       await agent
         .delete(`/api/workouts/${deleteWorkoutId}`)
         .set("Authorization", `Bearer ${token}`);
-      const res = (
-        await agent
-          .delete(`/api/workouts/${deleteWorkoutId}`)
-          .set("Authorization", `Bearer ${token}`)
-      ).body;
-      expect(res.error).toBeTruthy();
-      expect(res.error).toMatch(/does not exist/i);
+      const res = await agent
+        .delete(`/api/workouts/${deleteWorkoutId}`)
+        .set("Authorization", `Bearer ${token}`);
+      expect(res.status).toBe(404);
+      expect(res.body.error).toBeTruthy();
+      expect(res.body.error).toMatch(/does not exist/i);
     });
 
     it("should respond with the deleted workout details and the number of remaining workouts", async () => {
@@ -436,36 +421,35 @@ describe("workoutController", () => {
       const { token } = userLoggedIn;
       const totalWorkouts = workouts.length;
       const deleteWorkoutId = workouts[1]._id;
-      const res = (
-        await agent
-          .delete(`/api/workouts/${deleteWorkoutId}`)
-          .set("Authorization", `Bearer ${token}`)
-      ).body;
-      expect(res.workout._id).toMatch(deleteWorkoutId);
-      expect(res.remaining).toEqual(totalWorkouts - 1);
+      const res = await agent
+        .delete(`/api/workouts/${deleteWorkoutId}`)
+        .set("Authorization", `Bearer ${token}`);
+      expect(res.status).toBe(200);
+      expect(res.body.workout._id).toMatch(deleteWorkoutId);
+      expect(res.body.remaining).toEqual(totalWorkouts - 1);
     });
   });
 
   describe("DELETE /api/workouts/", () => {
     it("should respond with error given that the user is not authorized", async () => {
       await mockUser("has-workouts", agent);
-      const res = (await agent.delete(`/api/workouts/`)).body;
-      expect(res.deletedCount).toBeFalsy();
-      expect(res.error).toBeTruthy();
-      expect(res.error).toMatch(/not authorized/i);
+      const res = await agent.delete(`/api/workouts/`);
+      expect(res.status).toBe(401);
+      expect(res.body.deletedCount).toBeFalsy();
+      expect(res.body.error).toBeTruthy();
+      expect(res.body.error).toMatch(/not authorized/i);
     });
 
     it("should delete all workouts given that the user is authorized", async () => {
       const { userLoggedIn, workouts } = await mockUser("has-workouts", agent);
       const { token } = userLoggedIn;
-      const res = (
-        await agent
-          .delete(`/api/workouts/`)
-          .set("Authorization", `Bearer ${token}`)
-      ).body;
-      expect(res.error).toBeFalsy();
-      expect(res.deletedCount).toBeTruthy();
-      expect(res.deletedCount).toEqual(workouts.length);
+      const res = await agent
+        .delete(`/api/workouts/`)
+        .set("Authorization", `Bearer ${token}`);
+      expect(res.status).toBe(200);
+      expect(res.body.error).toBeFalsy();
+      expect(res.body.deletedCount).toBeTruthy();
+      expect(res.body.deletedCount).toEqual(workouts.length);
     });
   });
 
@@ -479,6 +463,7 @@ describe("workoutController", () => {
           .get("/api/workouts/")
           .set("Authorization", `Bearer ${token}`);
       }
+      expect(res.status).toBe(429);
       expect(res.body.error).toBeTruthy();
       expect(res.body.error).toMatch(/too many requests/i);
     });
