@@ -23,18 +23,18 @@ export default function ResetPassword() {
   return (
     <div className="form--container--reset--password">
       <form className="reset--password" onSubmit={handleSubmit}>
-        <label>New password:</label>
+        <label htmlFor="new-password">New password:</label>
         <input
           type="password"
           id="new-password"
-          aria-label="new password"
+          placeholder="new password"
           ref={password}
         />
-        <label>Confirm new password:</label>
+        <label htmlFor="confirm-new-password">Confirm new password:</label>
         <input
           type="password"
           id="confirm-new-password"
-          aria-label="confirm new password"
+          placeholder="confirm new password"
           ref={confirmPassword}
         />
         {!success && <button>Save</button>}

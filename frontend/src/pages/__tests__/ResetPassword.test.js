@@ -15,8 +15,8 @@ describe("<ResetPassword />", () => {
         <ResetPassword />
       </Provider>
     );
-    const newPasswordInput = screen.getByLabelText("new password");
-    const confirmPasswordInput = screen.getByLabelText(/confirm/i);
+    const newPasswordInput = screen.getByPlaceholderText("new password");
+    const confirmPasswordInput = screen.getByPlaceholderText(/confirm/i);
     const saveBtn = screen.getByText(/save/i);
     expect(newPasswordInput).toBeInTheDocument();
     expect(confirmPasswordInput).toBeInTheDocument();
@@ -30,8 +30,8 @@ describe("<ResetPassword />", () => {
         <ResetPassword />
       </Provider>
     );
-    const newPasswordInput = screen.getByLabelText("new password");
-    const confirmPasswordInput = screen.getByLabelText(/confirm/i);
+    const newPasswordInput = screen.getByPlaceholderText("new password");
+    const confirmPasswordInput = screen.getByPlaceholderText(/confirm/i);
     const saveBtn = screen.getByText(/save/i);
     await user.tab();
     expect(newPasswordInput).toHaveFocus();
@@ -48,8 +48,8 @@ describe("<ResetPassword />", () => {
         <ResetPassword />
       </Provider>
     );
-    const newPasswordInput = screen.getByLabelText("new password");
-    const confirmPasswordInput = screen.getByLabelText(/confirm/i);
+    const newPasswordInput = screen.getByPlaceholderText("new password");
+    const confirmPasswordInput = screen.getByPlaceholderText(/confirm/i);
     await user.type(newPasswordInput, "abc");
     expect(newPasswordInput).toHaveValue("abc");
     await user.type(confirmPasswordInput, "def");
@@ -78,8 +78,8 @@ describe("<ResetPassword />", () => {
         </BrowserRouter>
       </Provider>
     );
-    const newPasswordInput = screen.getByLabelText("new password");
-    const confirmPasswordInput = screen.getByLabelText(/confirm/i);
+    const newPasswordInput = screen.getByPlaceholderText("new password");
+    const confirmPasswordInput = screen.getByPlaceholderText(/confirm/i);
     const saveBtn = screen.getByText(/save/i);
     await user.type(newPasswordInput, "abcAbacaeefwwd");
     await user.type(confirmPasswordInput, "defGUGUOIhoih");
@@ -112,8 +112,8 @@ describe("<ResetPassword />", () => {
         </BrowserRouter>
       </Provider>
     );
-    const newPasswordInput = screen.getByLabelText("new password");
-    const confirmPasswordInput = screen.getByLabelText(/confirm/i);
+    const newPasswordInput = screen.getByPlaceholderText("new password");
+    const confirmPasswordInput = screen.getByPlaceholderText(/confirm/i);
     const saveBtn = screen.getByText(/save/i);
     await user.type(newPasswordInput, "abc");
     await user.type(confirmPasswordInput, "abc");
@@ -146,8 +146,8 @@ describe("<ResetPassword />", () => {
         </BrowserRouter>
       </Provider>
     );
-    const newPasswordInput = screen.getByLabelText("new password");
-    const confirmPasswordInput = screen.getByLabelText(/confirm/i);
+    const newPasswordInput = screen.getByPlaceholderText("new password");
+    const confirmPasswordInput = screen.getByPlaceholderText(/confirm/i);
     const saveBtn = screen.getByText(/save/i);
     await user.type(newPasswordInput, "abcABC123!");
     await user.type(confirmPasswordInput, "abcABC123!");
@@ -169,8 +169,8 @@ describe("<ResetPassword />", () => {
         </BrowserRouter>
       </Provider>
     );
-    const newPasswordInput = screen.getByLabelText("new password");
-    const confirmPasswordInput = screen.getByLabelText(/confirm/i);
+    const newPasswordInput = screen.getByPlaceholderText("new password");
+    const confirmPasswordInput = screen.getByPlaceholderText(/confirm/i);
     const saveBtn = screen.getByText(/save/i);
     await user.type(newPasswordInput, "abcABC123!");
     await user.type(confirmPasswordInput, "abcABC123!");
