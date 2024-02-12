@@ -89,137 +89,116 @@ export default function UserSettings({ changeProfileImg }) {
   };
 
   return (
-    <>
-      <div className="form--container--user--settings">
-        <form
-          aria-label="change user settings"
-          className="user--settings"
-          onSubmit={handleUpdateProfile}
+    <div className="form--container--user--settings">
+      <form className="user--settings" onSubmit={handleUpdateProfile}>
+        <button
+          className="close material-symbols-outlined"
+          onClick={() => {
+            dispatch({ type: "TOGGLE_MOUNT_USER_SETTINGS_FORM" });
+            dispatch({ type: "RESET_USER_MESSAGE_STATE" });
+          }}
         >
-          <button
-            aria-label="close form"
-            className="close material-symbols-outlined"
-            onClick={() => {
-              dispatch({ type: "TOGGLE_MOUNT_USER_SETTINGS_FORM" });
-              dispatch({ type: "RESET_USER_MESSAGE_STATE" });
-            }}
-          >
-            close
-          </button>
-          <h4>Profile settings</h4>
-          <label>Change displayed name:</label>
-          <input
-            className={newUsername.trim().length > 12 ? "error" : ""}
-            type="text"
-            name="username"
-            id="new-username"
-            aria-label="new username"
-            value={newUsername}
-            onChange={(e) => setNewUsername(e.target.value.trim())}
-          />
-          {newUsername.trim().length > 12 && (
-            <p className="max-chars-error" role="alert">
-              ⚠Too long name!
-            </p>
-          )}
-          {newUsername.trim() && !newUsername.match(/^[a-zA-Z0-9._]+$/) && (
-            <p className="max-chars-error" role="alert">
-              ⚠Letters, numbers, '_' and '.' allowed!
-            </p>
-          )}
-          <label>Change profile image:</label>
-          <input
-            type="file"
-            accept=".jpg, .png, .svg"
-            name="profile-image"
-            id="new-profile-image"
-            aria-label="new profile image"
-            onChange={handleFileInputChange}
-          />
-          {selectedFile && (
-            <div className="cropper--wrapper">
-              <Cropper
-                className="cropper"
-                image={selectedFile}
-                crop={crop}
-                zoom={zoom}
-                zoomWithScroll={true}
-                showGrid={true}
-                aspect={1 / 1}
-                cropShape="round"
-                onCropChange={setCrop}
-                onCropComplete={onCropComplete}
-                onZoomChange={setZoom}
-              />
-            </div>
-          )}
-          <button
-            aria-label="update profile button"
-            className={uploadBtnStyle()}
-            disabled={toggleDisableUploadBtn()}
-          >
-            Upload
-          </button>
-          {updateUserError && (
-            <div role="alert" className="error">
-              {updateUserError}
-            </div>
-          )}
-          {success && (
-            <div role="alert" className="success">
-              {success}
-            </div>
-          )}
-          {loading && (
-            <h4 style={{ position: "absolute", zIndex: "10" }}>Loading...</h4>
-          )}
-          <button
-            aria-label="download data"
-            className="download--data--btn"
-            onClick={runDownloadData}
-          >
-            download data
-          </button>
-          <button
-            aria-label="delete account button"
-            type="button"
-            className="delete--account--btn"
-            onClick={() =>
-              dispatch({ type: "TOGGLE_MOUNT_DELETE_ACCOUNT_DIALOGUE" })
-            }
-          >
-            delete account
-          </button>
-        </form>
-        {isDeleteAccountDialogueMounted && (
-          <div
-            className="delete--account--dialogue"
-            aria-label="delete account dialogue"
-          >
-            <h4>This is irreversible.</h4>
-            <p>We won't be able to recover any of your data.</p>
-            <p>Are you sure you want to proceed?</p>
-            <div className="delete--account--dialogue--btns">
-              <button
-                aria-label="confirm account deletion"
-                type="button"
-                onClick={deleteAccount}
-              >
-                Yes, delete my account permanently 💀
-              </button>
-              <button
-                aria-label="keep account and close dialogue"
-                type="button"
-                onClick={() =>
-                  dispatch({ type: "TOGGLE_MOUNT_DELETE_ACCOUNT_DIALOGUE" })
-                }
-              >
-                No, I changed my mind
-              </button>
-            </div>
+          close
+        </button>
+        <h4>Profile settings</h4>
+        <label htmlFor="username">Change username:</label>
+        <input
+          className={newUsername.trim().length > 12 ? "error" : ""}
+          type="text"
+          name="username"
+          id="username"
+          data-testid="username"
+          value={newUsername}
+          onChange={(e) => setNewUsername(e.target.value.trim())}
+        />
+        {newUsername.trim().length > 12 && (
+          <p className="max-chars-error" role="alert">
+            ⚠Too long name!
+          </p>
+        )}
+        {newUsername.trim() && !newUsername.match(/^[a-zA-Z0-9._]+$/) && (
+          <p className="max-chars-error" role="alert">
+            ⚠Letters, numbers, '_' and '.' allowed!
+          </p>
+        )}
+        <label htmlFor="profile-image">Change profile image:</label>
+        <input
+          type="file"
+          accept=".jpg, .png, .svg"
+          name="profile-image"
+          id="profile-image"
+          data-testid="profile-image"
+          onChange={handleFileInputChange}
+        />
+        {selectedFile && (
+          <div className="cropper--wrapper">
+            <Cropper
+              className="cropper"
+              image={selectedFile}
+              crop={crop}
+              zoom={zoom}
+              zoomWithScroll={true}
+              showGrid={true}
+              aspect={1 / 1}
+              cropShape="round"
+              onCropChange={setCrop}
+              onCropComplete={onCropComplete}
+              onZoomChange={setZoom}
+            />
           </div>
         )}
-      </div>
-    </>
+        <button
+          className={uploadBtnStyle()}
+          disabled={toggleDisableUploadBtn()}
+        >
+          Upload
+        </button>
+        {updateUserError && (
+          <div role="alert" className="error">
+            {updateUserError}
+          </div>
+        )}
+        {success && (
+          <div role="alert" className="success">
+            {success}
+          </div>
+        )}
+        {loading && (
+          <h4 style={{ position: "absolute", zIndex: "10" }}>Loading...</h4>
+        )}
+        <button className="download--data--btn" onClick={runDownloadData}>
+          download data
+        </button>
+        <button
+          type="button"
+          className="delete--account--btn"
+          onClick={() =>
+            dispatch({ type: "TOGGLE_MOUNT_DELETE_ACCOUNT_DIALOGUE" })
+          }
+        >
+          delete account
+        </button>
+      </form>
+      {isDeleteAccountDialogueMounted && (
+        <div className="delete--account--dialogue">
+          <h4>This is irreversible.</h4>
+          <p>We won't be able to recover any of your data.</p>
+          <p>Are you sure you want to proceed?</p>
+          <div className="delete--account--dialogue--btns">
+            <button type="button" onClick={deleteAccount}>
+              Yes, delete my account permanently 💀
+            </button>
+            <button
+              type="button"
+              onClick={() =>
+                dispatch({ type: "TOGGLE_MOUNT_DELETE_ACCOUNT_DIALOGUE" })
+              }
+            >
+              No, I changed my mind
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
   );
 }

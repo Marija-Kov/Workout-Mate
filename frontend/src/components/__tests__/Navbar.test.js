@@ -95,10 +95,10 @@ describe("<Navbar />", () => {
     );
     const helloUser = screen.getByLabelText("open user menu");
     await user.click(helloUser);
-    const openUserSettings = await screen.findByLabelText(
-      /open user settings/i
+    const openUserSettings = await screen.findByText(
+      /settings/i
     );
-    const logOut = await screen.findByLabelText(/log out/i);
+    const logOut = await screen.findByText(/log out/i);
     expect(openUserSettings).toBeInTheDocument();
     expect(logOut).toBeInTheDocument();
     act(() => dispatch({ type: "LOGOUT" }));
@@ -115,10 +115,10 @@ describe("<Navbar />", () => {
       </Provider>
     );
     await act(() => dispatch({ type: "TOGGLE_MOUNT_USER_SETTINGS_FORM" }));
-    const userSettingsForm = await screen.findByLabelText(
-      /change user settings/i
+    const userSettings = await screen.findByText(
+      /profile settings/i
     );
-    expect(userSettingsForm).toBeInTheDocument();
+    expect(userSettings).toBeInTheDocument();
     act(() => dispatch({ type: "LOGOUT" }));
   });
 });

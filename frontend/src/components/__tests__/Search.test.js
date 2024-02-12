@@ -38,7 +38,7 @@ describe("<Search />", () => {
     );
     const searchForm = screen.getByTestId("search-form");
     const searchInputLabel = screen.getByText(/search:/i);
-    const searchInput = screen.getByPlaceholderText(/type workout name/i);
+    const searchInput = screen.getByPlaceholderText(/type workout title/i);
     const searchBtn = screen.getByRole("button");
     expect(searchForm).toHaveAttribute("class", "search--bar");
     expect(searchInputLabel).toBeInTheDocument();
@@ -55,7 +55,7 @@ describe("<Search />", () => {
         <Search />
       </Provider>
     );
-    const searchInput = screen.getByPlaceholderText(/type workout name/i);
+    const searchInput = screen.getByPlaceholderText(/type workout title/i);
     expect(searchInput).toHaveValue("");
     act(() => dispatch({ type: "GO_TO_PAGE_NUMBER", payload: 2 }));
     let state = store.getState();

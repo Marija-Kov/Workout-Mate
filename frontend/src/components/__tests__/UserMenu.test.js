@@ -6,17 +6,15 @@ import { Provider } from "react-redux";
 import store from "../../redux/store";
 
 describe("<UserMenu />", () => {
-  it("should render UserMenu correctly", async () => {
+  it("should render UserMenu correctly", () => {
     user.setup();
     render(
       <Provider store={store}>
         <UserMenu />
       </Provider>
     );
-    const openUserSettings = await screen.findByLabelText(
-      /open user settings/i
-    );
-    const logoutBtn = await screen.findByLabelText(/log out/i);
+    const openUserSettings = screen.getByText(/settings/i);
+    const logoutBtn = screen.getByText(/log out/i);
     expect(openUserSettings).toBeInTheDocument();
     expect(logoutBtn).toBeInTheDocument();
   });
@@ -28,10 +26,8 @@ describe("<UserMenu />", () => {
         <UserMenu />
       </Provider>
     );
-    const openUserSettings = await screen.findByLabelText(
-      /open user settings/i
-    );
-    const logoutBtn = await screen.findByLabelText(/log out/i);
+    const openUserSettings = screen.getByText(/settings/i);
+    const logoutBtn = screen.getByText(/log out/i);
     await user.tab();
     expect(openUserSettings).toHaveFocus();
     await user.tab();
@@ -45,7 +41,7 @@ describe("<UserMenu />", () => {
         <UserMenu />
       </Provider>
     );
-    const openUserSettings = await screen.findByLabelText(/settings/i);
+    const openUserSettings = screen.getByText(/settings/i);
     await user.click(openUserSettings);
     let state = store.getState();
     expect(state.toggleMountComponents.isUserSettingsFormMounted).toBeTruthy();

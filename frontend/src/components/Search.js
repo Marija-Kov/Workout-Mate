@@ -30,7 +30,7 @@ export default function Search() {
       <input
         type="search"
         id="search"
-        placeholder="type workout name"
+        placeholder="type workout title"
         value={query}
         onChange={handleChange}
       ></input>
