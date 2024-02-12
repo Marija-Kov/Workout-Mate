@@ -28,7 +28,7 @@ export default function Pagination() {
     }
   }
   return (
-    <div aria-label="pages" className="page--btn--container">
+    <div className="page--btn--container">
       <button
         aria-label="previous page"
         type="button"

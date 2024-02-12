@@ -34,21 +34,17 @@ describe("<WorkoutForm/>", () => {
         <WorkoutForm />
       </Provider>
     );
-    const workoutForm = await screen.findByLabelText(/workout form/i);
-    const titleInput = await screen.findByLabelText(/workout title/i);
-    const muscleGroupSelect = await screen.findByLabelText(/muscle group/i);
-    const repsInput = await screen.findByLabelText(/number of reps/i);
-    const loadInput = await screen.findByLabelText(/load in kg/i);
-    const closeForm = await screen.findByLabelText(/close form/i);
-    const submitWorkoutBtn = await screen.findByLabelText(
-      /submit workout button/i
-    );
-    expect(workoutForm).toBeInTheDocument();
+    const titleInput = screen.getByTestId("title");
+    const muscleGroupSelect = screen.getByTestId("muscle_group");
+    const repsInput = screen.getByTestId("reps");
+    const loadInput = screen.getByTestId("load");
+    const closeForm = screen.getByText("close");
+    const submit = screen.getByText(/add/i);
     expect(titleInput).toBeInTheDocument();
     expect(muscleGroupSelect).toBeInTheDocument();
     expect(repsInput).toBeInTheDocument();
     expect(loadInput).toBeInTheDocument();
-    expect(submitWorkoutBtn).toBeInTheDocument();
+    expect(submit).toBeInTheDocument();
     expect(closeForm).toBeInTheDocument();
   });
 
@@ -59,14 +55,12 @@ describe("<WorkoutForm/>", () => {
         <WorkoutForm />
       </Provider>
     );
-    const titleInput = await screen.findByLabelText(/workout title/i);
-    const muscleGroupSelect = await screen.findByLabelText(/muscle group/i);
-    const repsInput = await screen.findByLabelText(/number of reps/i);
-    const loadInput = await screen.findByLabelText(/load in kg/i);
-    const closeForm = await screen.findByLabelText(/close form/i);
-    const submitWorkoutBtn = await screen.findByLabelText(
-      /submit workout button/i
-    );
+    const titleInput = screen.getByTestId("title");
+    const muscleGroupSelect = screen.getByTestId("muscle_group");
+    const repsInput = screen.getByTestId("reps");
+    const loadInput = screen.getByTestId("load");
+    const closeForm = screen.getByText("close");
+    const submit = screen.getByText(/add/i);
     await user.tab();
     expect(closeForm).toHaveFocus();
     await user.tab();
@@ -78,7 +72,7 @@ describe("<WorkoutForm/>", () => {
     await user.tab();
     expect(loadInput).toHaveFocus();
     await user.tab();
-    expect(submitWorkoutBtn).toHaveFocus();
+    expect(submit).toHaveFocus();
   });
 
   it("should update input/select value when user types/selects", async () => {
@@ -88,10 +82,10 @@ describe("<WorkoutForm/>", () => {
         <WorkoutForm />
       </Provider>
     );
-    const titleInput = await screen.findByLabelText(/workout title/i);
-    const muscleGroupSelect = await screen.findByLabelText(/muscle group/i);
-    const repsInput = await screen.findByLabelText(/number of reps/i);
-    const loadInput = await screen.findByLabelText(/load in kg/i);
+    const titleInput = screen.getByTestId("title");
+    const muscleGroupSelect = screen.getByTestId("muscle_group");
+    const repsInput = screen.getByTestId("reps");
+    const loadInput = screen.getByTestId("load");
     await user.type(titleInput, "squats");
     await user.selectOptions(muscleGroupSelect, "leg");
     await user.type(repsInput, "30");
@@ -122,22 +116,20 @@ describe("<WorkoutForm/>", () => {
         <WorkoutForm />
       </Provider>
     );
-    let titleInput = await screen.findByLabelText(/workout title/i);
-    let muscleGroupSelect = await screen.findByLabelText(/muscle group/i);
-    let repsInput = await screen.findByLabelText(/number of reps/i);
-    let loadInput = await screen.findByLabelText(/load in kg/i);
-    const submitWorkoutBtn = await screen.findByLabelText(
-      /submit workout button/i
-    );
+    let titleInput = screen.getByTestId("title");
+    let muscleGroupSelect = screen.getByTestId("muscle_group");
+    let repsInput = screen.getByTestId("reps");
+    let loadInput = screen.getByTestId("load");
+    let submit = screen.getByText(/add/i);
     await user.type(titleInput, "squats");
     await user.selectOptions(muscleGroupSelect, "");
     await user.type(repsInput, " ");
     await user.type(loadInput, "22");
-    await user.click(submitWorkoutBtn);
-    titleInput = await screen.findByLabelText(/workout title/i);
-    muscleGroupSelect = await screen.findByLabelText(/muscle group/i);
-    repsInput = await screen.findByLabelText(/number of reps/i);
-    loadInput = await screen.findByLabelText(/load in kg/i);
+    await user.click(submit);
+    titleInput = await screen.findByTestId("title");
+    muscleGroupSelect = await screen.findByTestId("muscle_group");
+    repsInput = await screen.findByTestId("reps");
+    loadInput = await screen.findByTestId("load");
     expect(titleInput).not.toHaveAttribute("class", "error");
     expect(muscleGroupSelect).toHaveAttribute("class", "error");
     expect(repsInput).toHaveAttribute("class", "error");
@@ -167,13 +159,11 @@ describe("<WorkoutForm/>", () => {
         <WorkoutForm />
       </Provider>
     );
-    let titleInput = await screen.findByLabelText(/workout title/i);
-    let muscleGroupSelect = await screen.findByLabelText(/muscle group/i);
-    let repsInput = await screen.findByLabelText(/number of reps/i);
-    let loadInput = await screen.findByLabelText(/load in kg/i);
-    const submitWorkoutBtn = await screen.findByLabelText(
-      /submit workout button/i
-    );
+    let titleInput = screen.getByTestId("title");
+    const muscleGroupSelect = screen.getByTestId("muscle_group");
+    const repsInput = screen.getByTestId("reps");
+    const loadInput = screen.getByTestId("load");
+    const submit = screen.getByText(/add/i);
     await user.type(
       titleInput,
       "adasdaasdsdfsdfdddfdfsdfsfsdfsfddsfsfsfsdfterttrtee"
@@ -181,8 +171,8 @@ describe("<WorkoutForm/>", () => {
     await user.selectOptions(muscleGroupSelect, "biceps");
     await user.type(repsInput, "22");
     await user.type(loadInput, "22");
-    await user.click(submitWorkoutBtn);
-    titleInput = await screen.findByLabelText(/workout title/i);
+    await user.click(submit);
+    titleInput = await screen.findByTestId("title");
     expect(titleInput).toHaveAttribute("class", "error");
     const error = await screen.findByRole("alert");
     expect(error.textContent).toMatch(/max 30 characters/i);
@@ -209,19 +199,17 @@ describe("<WorkoutForm/>", () => {
         <WorkoutForm />
       </Provider>
     );
-    let titleInput = await screen.findByLabelText(/workout title/i);
-    let muscleGroupSelect = await screen.findByLabelText(/muscle group/i);
-    let repsInput = await screen.findByLabelText(/number of reps/i);
-    let loadInput = await screen.findByLabelText(/load in kg/i);
-    const submitWorkoutBtn = await screen.findByLabelText(
-      /submit workout button/i
-    );
+    let titleInput = screen.getByTestId("title");
+    const muscleGroupSelect = screen.getByTestId("muscle_group");
+    const repsInput = screen.getByTestId("reps");
+    const loadInput = screen.getByTestId("load");
+    const submit = screen.getByText(/add/i);
     await user.type(titleInput, "66768^&^*&%<>*");
     await user.selectOptions(muscleGroupSelect, "biceps");
     await user.type(repsInput, "22");
     await user.type(loadInput, "22");
-    await user.click(submitWorkoutBtn);
-    titleInput = await screen.findByLabelText(/workout title/i);
+    await user.click(submit);
+    titleInput = await screen.findByTestId("title");
     expect(titleInput).toHaveAttribute("class", "error");
     const error = await screen.findByRole("alert");
     expect(error.textContent).toMatch(/may contain only letters/i);
@@ -248,19 +236,17 @@ describe("<WorkoutForm/>", () => {
         <WorkoutForm />
       </Provider>
     );
-    let titleInput = await screen.findByLabelText(/workout title/i);
-    let muscleGroupSelect = await screen.findByLabelText(/muscle group/i);
-    let repsInput = await screen.findByLabelText(/number of reps/i);
-    let loadInput = await screen.findByLabelText(/load in kg/i);
-    const submitWorkoutBtn = await screen.findByLabelText(
-      /submit workout button/i
-    );
+    const titleInput = screen.getByTestId("title");
+    const muscleGroupSelect = screen.getByTestId("muscle_group");
+    let repsInput = screen.getByTestId("reps");
+    const loadInput = screen.getByTestId("load");
+    const submit = screen.getByText(/add/i);
     await user.type(titleInput, "arm curls");
     await user.selectOptions(muscleGroupSelect, "biceps");
     await user.type(repsInput, "23848394829");
     await user.type(loadInput, "22");
-    await user.click(submitWorkoutBtn);
-    repsInput = await screen.findByLabelText(/number of reps/i);
+    await user.click(submit);
+    repsInput = await screen.findByTestId("reps");
     expect(repsInput).toHaveAttribute("class", "error");
     const error = await screen.findByRole("alert");
     expect(error.textContent).toMatch(/reps value too large/i);
@@ -287,19 +273,17 @@ describe("<WorkoutForm/>", () => {
         <WorkoutForm />
       </Provider>
     );
-    let titleInput = await screen.findByLabelText(/workout title/i);
-    let muscleGroupSelect = await screen.findByLabelText(/muscle group/i);
-    let repsInput = await screen.findByLabelText(/number of reps/i);
-    let loadInput = await screen.findByLabelText(/load in kg/i);
-    const submitWorkoutBtn = await screen.findByLabelText(
-      /submit workout button/i
-    );
+    const titleInput = screen.getByTestId("title");
+    const muscleGroupSelect = screen.getByTestId("muscle_group");
+    const repsInput = screen.getByTestId("reps");
+    let loadInput = screen.getByTestId("load");
+    const submit = screen.getByText(/add/i);
     await user.type(titleInput, "arm curls");
     await user.selectOptions(muscleGroupSelect, "biceps");
     await user.type(repsInput, "22");
     await user.type(loadInput, "284738378");
-    await user.click(submitWorkoutBtn);
-    loadInput = await screen.findByLabelText(/load in kg/i);
+    await user.click(submit);
+    loadInput = await screen.findByTestId("load");
     expect(loadInput).toHaveAttribute("class", "error");
     const error = await screen.findByRole("alert");
     expect(error.textContent).toMatch(/load value too large/i);
@@ -326,18 +310,16 @@ describe("<WorkoutForm/>", () => {
         <WorkoutForm />
       </Provider>
     );
-    const titleInput = await screen.findByLabelText(/workout title/i);
-    const muscleGroupSelect = await screen.findByLabelText(/muscle group/i);
-    const repsInput = await screen.findByLabelText(/number of reps/i);
-    const loadInput = await screen.findByLabelText(/load in kg/i);
-    const submitWorkoutBtn = await screen.findByLabelText(
-      /submit workout button/i
-    );
+    const titleInput = screen.getByTestId("title");
+    const muscleGroupSelect = screen.getByTestId("muscle_group");
+    const repsInput = screen.getByTestId("reps");
+    const loadInput = screen.getByTestId("load");
+    const submit = screen.getByText(/add/i);
     await user.type(titleInput, "arm curls");
     await user.selectOptions(muscleGroupSelect, "biceps");
     await user.type(repsInput, "33");
     await user.type(loadInput, "20");
-    await user.click(submitWorkoutBtn);
+    await user.click(submit);
     const error = await screen.findByRole("alert");
     expect(error.textContent).toMatch(/not authorized/i);
     expect(error).toHaveAttribute("class", "error");
@@ -350,20 +332,18 @@ describe("<WorkoutForm/>", () => {
         <WorkoutForm />
       </Provider>
     );
-    const titleInput = await screen.findByLabelText(/workout title/i);
-    const muscleGroupSelect = await screen.findByLabelText(/muscle group/i);
-    const repsInput = await screen.findByLabelText(/number of reps/i);
-    const loadInput = await screen.findByLabelText(/load in kg/i);
-    const submitWorkoutBtn = await screen.findByLabelText(
-      /submit workout button/i
-    );
+    const titleInput = screen.getByTestId("title");
+    const muscleGroupSelect = screen.getByTestId("muscle_group");
+    const repsInput = screen.getByTestId("reps");
+    const loadInput = screen.getByTestId("load");
+    const submit = screen.getByText(/add/i);
     await user.type(titleInput, "arm curls");
     await user.selectOptions(muscleGroupSelect, "biceps");
     await user.type(repsInput, "33");
     await user.type(loadInput, "20");
     let state = store.getState();
     expect(state.workout.workouts.total).toBe(0);
-    await user.click(submitWorkoutBtn);
+    await user.click(submit);
     const error = screen.queryAllByRole("alert");
     expect(error.length).toBe(0);
     state = store.getState();

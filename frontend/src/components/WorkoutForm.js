@@ -42,13 +42,8 @@ export default function WorkoutForm() {
 
   return (
     <div className="form--container--workout--form">
-      <form
-        className="workout--form"
-        aria-label="workout form"
-        onSubmit={handleSubmit}
-      >
+      <form className="workout--form" onSubmit={handleSubmit}>
         <button
-          aria-label="close form"
           className="close material-symbols-outlined"
           onClick={() => {
             dispatch({ type: "TOGGLE_MOUNT_CREATE_WORKOUT_FORM" });
@@ -58,22 +53,22 @@ export default function WorkoutForm() {
           close
         </button>
         <h4>New workout</h4>
-        <label>exercise title:</label>
+        <label htmlFor="title">exercise title:</label>
         <input
           type="text"
           name="title"
           id="title"
+          data-testid="title"
           placeholder="ex: bench press"
-          aria-label="workout title"
           ref={title}
           className={badInput.includes("title") ? "error" : ""}
         />
         <label htmlFor="muscle_group">muscle group:</label>
         <select
           ref={muscle_group}
-          aria-label="muscle group"
           name="muscle_group"
           id="muscle_group"
+          data-testid="muscle_group"
           className={badInput.includes("muscle_group") ? "error" : ""}
         >
           <option value="">-please select-</option>
@@ -88,30 +83,25 @@ export default function WorkoutForm() {
           <option value="calf">calf</option>
           <option value="forearm and grip">forearm and grip</option>
         </select>
-        <label>number of reps:</label>
+        <label htmlFor="reps">number of reps:</label>
         <input
           type="number"
           name="reps"
           id="reps"
-          aria-label="number of reps"
+          data-testid="reps"
           ref={reps}
           className={badInput.includes("reps") ? "error" : ""}
         />
-        <label>load (kg):</label>
+        <label htmlFor="load">load (kg):</label>
         <input
           type="number"
           name="load"
           id="load"
-          aria-label="load in kg"
+          data-testid="load"
           ref={load}
           className={badInput.includes("load") ? "error" : ""}
         />
-        <button
-          className="workout--form--btn"
-          aria-label="submit workout button"
-        >
-          Add workout
-        </button>
+        <button className="workout--form--btn">Add workout</button>
         {createWorkoutError && (
           <div role="alert" className="error">
             {createWorkoutError}

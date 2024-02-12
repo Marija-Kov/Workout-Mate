@@ -36,18 +36,18 @@ afterAll(() => {
 });
 
 describe("<Pagination />", () => {
-  it("should render Pagination component correctly in its initial state given that 6+ workouts exist in the database", async () => {
+  it("should render Pagination component correctly in its initial state given that 6+ workouts exist in the database", () => {
     render(
       <Provider store={store}>
         <Pagination />
       </Provider>
     );
-    const numButtons = await screen.findAllByLabelText(/go to page/i);
-    const page1 = await screen.findByLabelText(/page 1/i);
-    const page2 = await screen.findByLabelText(/page 2/i);
-    const page3 = await screen.findByLabelText(/page 3/i);
-    const prev = await screen.findByLabelText(/previous page/i);
-    const next = await screen.findByLabelText(/next page/i);
+    const numButtons = screen.getAllByLabelText(/go to page/i);
+    const page1 = screen.getByLabelText(/page 1/i);
+    const page2 = screen.getByLabelText(/page 2/i);
+    const page3 = screen.getByLabelText(/page 3/i);
+    const prev = screen.getByLabelText(/previous page/i);
+    const next = screen.getByLabelText(/next page/i);
     expect(prev).toBeInTheDocument();
     expect(prev).toHaveAttribute("disabled");
     expect(next).toBeInTheDocument();
@@ -67,9 +67,9 @@ describe("<Pagination />", () => {
         <Pagination />
       </Provider>
     );
-    const prev = await screen.findByLabelText(/previous page/i);
-    const next = await screen.findByLabelText(/next page/i);
-    let page2 = await screen.findByLabelText(/page 2/i);
+    const prev = screen.getByLabelText(/previous page/i);
+    const next = screen.getByLabelText(/next page/i);
+    let page2 = screen.getByLabelText(/page 2/i);
     await user.click(page2);
     await user.tab();
     expect(prev).toHaveFocus();
@@ -93,11 +93,11 @@ describe("<Pagination />", () => {
       </Provider>
     );
     user.setup();
-    let prev = await screen.findByLabelText(/previous page/i);
-    let next = await screen.findByLabelText(/next page/i);
-    let page1 = await screen.findByText(1);
-    let page2 = await screen.findByText(2);
-    let page3 = await screen.findByText(3);
+    let prev = screen.getByLabelText(/previous page/i);
+    let next = screen.getByLabelText(/next page/i);
+    let page1 = screen.getByText(1);
+    let page2 = screen.getByText(2);
+    let page3 = screen.getByText(3);
     expect(page1).toHaveAttribute("class", "num--page current");
     expect(page2).toHaveAttribute("class", "num--page");
     expect(page3).toHaveAttribute("class", "num--page");
@@ -136,9 +136,9 @@ describe("<Pagination />", () => {
     );
 
     user.setup();
-    let page1 = await screen.findByText(1);
-    let page2 = await screen.findByText(2);
-    let page3 = await screen.findByText(3);
+    let page1 = screen.getByText(1);
+    let page2 = screen.getByText(2);
+    let page3 = screen.getByText(3);
     await user.click(page3);
     page1 = await screen.findByText(1);
     page2 = await screen.findByText(2);
