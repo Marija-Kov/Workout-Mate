@@ -71,6 +71,12 @@ body {
   }
 }
 
+.hidden {
+  visibility: hidden;
+  height: 0;
+  width: 0;
+}
+
 @media screen and (max-width: 450px) {
 
   .spun--down--server--alert {
