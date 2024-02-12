@@ -30,17 +30,19 @@ afterAll(() => {
 });
 
 describe("<Search />", () => {
-  it("should render search form properly", async () => {
+  it("should render search form properly", () => {
     render(
       <Provider store={store}>
         <Search />
       </Provider>
     );
-    const searchForm = await screen.findByLabelText(/search bar/i);
-    const searchInput = await screen.findByPlaceholderText(/search workouts/i);
-    const searchBtn = await screen.findByLabelText(/search button/i);
-    expect(searchForm).toBeInTheDocument();
+    const searchForm = screen.getByTestId("search-form");
+    const searchInputLabel = screen.getByText(/search:/i);
+    const searchInput = screen.getByPlaceholderText(/type workout title/i);
+    const searchBtn = screen.getByRole("button");
     expect(searchForm).toHaveAttribute("class", "search--bar");
+    expect(searchInputLabel).toBeInTheDocument();
+    expect(searchInputLabel).toHaveAttribute("class", "hidden");
     expect(searchInput).toBeInTheDocument();
     expect(searchInput).toHaveValue("");
     expect(searchBtn).toBeInTheDocument();
@@ -53,7 +55,7 @@ describe("<Search />", () => {
         <Search />
       </Provider>
     );
-    const searchInput = await screen.findByPlaceholderText(/search workouts/i);
+    const searchInput = screen.getByPlaceholderText(/type workout title/i);
     expect(searchInput).toHaveValue("");
     act(() => dispatch({ type: "GO_TO_PAGE_NUMBER", payload: 2 }));
     let state = store.getState();
@@ -71,8 +73,8 @@ describe("<Search />", () => {
         <Search />
       </Provider>
     );
-    const searchForm = await screen.findByLabelText(/search bar/i);
-    const searchBtn = await screen.findByLabelText(/search button/i);
+    const searchForm = screen.getByTestId("search-form");
+    const searchBtn = screen.getByRole("button");
     act(() => dispatch({ type: "SET_WORKOUTS_REQ" }));
     expect(searchForm).toHaveAttribute("class", "search--bar is--loading");
     expect(searchBtn).toBeDisabled();

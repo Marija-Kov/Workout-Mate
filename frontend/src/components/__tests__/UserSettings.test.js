@@ -25,26 +25,23 @@ afterAll(() => {
 });
 
 describe("<UserSettings/>", () => {
-  it("should render UserSettings component correctly", async () => {
+  it("should render UserSettings component correctly", () => {
     render(
       <Provider store={store}>
         <UserSettings />
       </Provider>
     );
-    const userSettings = await screen.findByLabelText(/user settings/i);
-    const closeForm = await screen.findByLabelText(/close form/i);
-    const newUsername = await screen.findByLabelText(/new username/i);
-    const newProfileImage = await screen.findByLabelText(/new profile image/i);
-    const upload = await screen.findByLabelText(/update profile button/i);
-    const downloadData = await screen.findByLabelText(/download data/i);
-    const deleteAccount = await screen.findByLabelText(
-      /delete account button/i
-    );
-    expect(userSettings).toBeInTheDocument();
+    const closeForm = screen.getByText("close");
+    const newUsername = screen.getByTestId("username");
+    const newProfileImage = screen.getByTestId("profile-image");
+    const upload = screen.getByText("Upload");
+    const downloadData = screen.getByText(/download data/i);
+    const deleteAccount = screen.getByText(/delete account/i);
     expect(closeForm).toBeInTheDocument();
     expect(newUsername).toBeInTheDocument();
     expect(newProfileImage).toBeInTheDocument();
     expect(upload).toBeInTheDocument();
+    expect(upload).toHaveAttribute("disabled");
     expect(downloadData).toBeInTheDocument();
     expect(deleteAccount).toBeInTheDocument();
   });
@@ -56,18 +53,18 @@ describe("<UserSettings/>", () => {
         <UserSettings />
       </Provider>
     );
-    const closeForm = await screen.findByLabelText(/close form/i);
-    const newUsername = await screen.findByLabelText(/new username/i);
-    const newProfileImage = await screen.findByLabelText(/new profile image/i);
-    const upload = await screen.findByLabelText(/update profile button/i);
-    const downloadData = await screen.findByLabelText(/download data/i);
-    const deleteAccount = await screen.findByLabelText(
-      /delete account button/i
-    );
+    const closeForm = screen.getByText("close");
+    const newUsername = screen.getByTestId("username");
+    const newProfileImage = screen.getByTestId("profile-image");
+    const upload = screen.getByText("Upload");
+    const downloadData = screen.getByText(/download data/i);
+    const deleteAccount = screen.getByText(/delete account/i);
     await user.tab();
     expect(closeForm).toHaveFocus();
     await user.tab();
     expect(newUsername).toHaveFocus();
+    await user.type(newUsername, "d");
+    expect(upload).not.toHaveAttribute("disabled");
     await user.tab();
     expect(newProfileImage).toHaveFocus();
     await user.tab();
@@ -85,7 +82,7 @@ describe("<UserSettings/>", () => {
         <UserSettings />
       </Provider>
     );
-    const newUsername = await screen.findByLabelText(/new username/i);
+    const newUsername = screen.getByTestId("username");
     await user.type(newUsername, "daredev");
     expect(newUsername).toHaveValue("daredev");
   });
@@ -98,7 +95,7 @@ describe("<UserSettings/>", () => {
       </Provider>
     );
     const input = "daredev  ";
-    const newUsername = await screen.findByLabelText(/new username/i);
+    const newUsername = screen.getByTestId("username");
     await user.type(newUsername, input);
     expect(newUsername).toHaveValue(input.trim());
   });
@@ -110,10 +107,10 @@ describe("<UserSettings/>", () => {
         <UserSettings />
       </Provider>
     );
-    const newUsername = await screen.findByLabelText(/new username/i);
+    const newUsername = screen.getByTestId("username");
     await user.type(newUsername, "daredev3343554543543553454");
     const error = await screen.findByRole("alert");
-    const upload = await screen.findByLabelText(/update profile button/i);
+    const upload = screen.getByText("Upload");
     expect(error).toBeInTheDocument();
     expect(error).toHaveAttribute("class", "max-chars-error");
     expect(error.textContent).toMatch(/too long/i);
@@ -140,9 +137,9 @@ describe("<UserSettings/>", () => {
         <UserSettings />
       </Provider>
     );
-    const newUsername = await screen.findByLabelText(/new username/i);
+    const newUsername = screen.getByTestId("username");
     await user.type(newUsername, "daredev");
-    const upload = await screen.findByLabelText(/update profile button/i);
+    const upload = screen.getByText("Upload");
     await user.click(upload);
     const errorMessage = await screen.findByText(/something went wrong/i);
     expect(errorMessage).toBeInTheDocument();
@@ -168,9 +165,9 @@ describe("<UserSettings/>", () => {
         <UserSettings />
       </Provider>
     );
-    const newUsername = await screen.findByLabelText(/new username/i);
+    const newUsername = screen.getByTestId("username");
     await user.type(newUsername, "daredev");
-    const upload = await screen.findByLabelText(/update profile button/i);
+    const upload = screen.getByText("Upload");
     await user.click(upload);
     const errorMessage = await screen.findByText(/not authorized/i);
     expect(errorMessage).toBeInTheDocument();
@@ -183,9 +180,9 @@ describe("<UserSettings/>", () => {
         <UserSettings />
       </Provider>
     );
-    const newUsername = await screen.findByLabelText(/new username/i);
+    const newUsername = screen.getByTestId("username");
     await user.type(newUsername, "daredev");
-    const upload = await screen.findByLabelText(/update profile button/i);
+    const upload = screen.getByText("Upload");
     await user.click(upload);
     const successMessage = await screen.findByText(/profile updated/i);
     expect(successMessage).toBeInTheDocument();
@@ -198,12 +195,10 @@ describe("<UserSettings/>", () => {
         <UserSettings />
       </Provider>
     );
-    const deleteAccount = await screen.findByLabelText(
-      /delete account button/i
-    );
+    const deleteAccount = screen.getByText(/delete account/i);
     await user.click(deleteAccount);
-    const deleteAccountDialogue = await screen.findByLabelText(
-      /delete account dialogue/i
+    const deleteAccountDialogue = await screen.findByText(
+      /this is irreversible/i
     );
     expect(deleteAccountDialogue).toBeInTheDocument();
   });

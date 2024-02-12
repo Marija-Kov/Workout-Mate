@@ -43,7 +43,6 @@ export default function Navbar() {
 
   return (
     <header
-      data-testid="navbar"
       className={user ? "header--blur" : ""}
       onClick={user && logOutIfTokenExpired}
     >
@@ -72,7 +71,7 @@ export default function Navbar() {
             className="about--login--signup--nav"
             onClick={() => dispatch({ type: "RESET_USER_STATE" })}
           >
-            <Link to="/about" aria-label="about workout mate">
+            <Link to="/about" aria-label="about">
               <span className="about--btn">About</span>
             </Link>
             <Link to="/login" aria-label="go to login page">

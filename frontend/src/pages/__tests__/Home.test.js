@@ -61,7 +61,7 @@ describe("<Home />", () => {
       store.dispatch({ type: "SET_WORKOUTS_SUCCESS", payload: [] })
     );
     const getStarted = await screen.findByText(/get started/i);
-    const addWorkoutBtn = await screen.findByLabelText(/buff it up/i);
+    const addWorkoutBtn = await screen.findByText(/buff it up/i);
     expect(getStarted).toBeInTheDocument();
     expect(addWorkoutBtn).toBeInTheDocument();
     expect(addWorkoutBtn).toHaveClass("no--workouts--yet");
@@ -74,7 +74,7 @@ describe("<Home />", () => {
         <Home />
       </Provider>
     );
-    const addWorkoutBtn = await screen.findByLabelText(/buff it up/i);
+    const addWorkoutBtn = await screen.findByText(/buff it up/i);
     const workouts = await screen.findByLabelText("workouts");
     expect(Search).toHaveBeenCalled();
     expect(Pagination).toHaveBeenCalled();
@@ -94,7 +94,7 @@ describe("<Home />", () => {
     await act(() =>
       store.dispatch({ type: "SET_WORKOUTS_SUCCESS", payload: [] })
     );
-    const addWorkoutBtn = await screen.findByLabelText(/buff it up/i);
+    const addWorkoutBtn = await screen.findByText(/buff it up/i);
     await user.click(addWorkoutBtn);
     expect(WorkoutForm).toHaveBeenCalled();
   });

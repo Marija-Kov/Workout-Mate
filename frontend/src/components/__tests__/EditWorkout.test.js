@@ -37,18 +37,18 @@ afterAll(() => {
 });
 
 describe("<EditWorkout/>", () => {
-  it("should render prepopulated Edit workout form given that user is authenticated", async () => {
+  it("should render prepopulated Edit workout form given that user is authenticated", () => {
     render(
       <Provider store={store}>
         <EditWorkout />
       </Provider>
     );
-    const titleInput = await screen.findByLabelText(/workout title/i);
-    const muscleGroupSelect = await screen.findByLabelText(/muscle group/i);
-    const repsInput = await screen.findByLabelText(/number of reps/i);
-    const loadInput = await screen.findByLabelText(/load in kg/i);
-    const closeForm = await screen.findByLabelText(/close form/i);
-    const submit = await screen.findByLabelText(/submit edited workout/i);
+    const titleInput = screen.getByTestId("title");
+    const muscleGroupSelect = screen.getByTestId("muscle_group");
+    const repsInput = screen.getByTestId("reps");
+    const loadInput = screen.getByTestId("load");
+    const closeForm = screen.getByText(/close/i);
+    const submit = screen.getByText(/save/i);
     expect(titleInput).toBeInTheDocument();
     expect(titleInput).toHaveValue(mockPrepopulatedForm.prevTitle);
     expect(muscleGroupSelect).toBeInTheDocument();
@@ -73,12 +73,12 @@ describe("<EditWorkout/>", () => {
         <EditWorkout />
       </Provider>
     );
-    const titleInput = await screen.findByLabelText(/workout title/i);
-    const muscleGroupSelect = await screen.findByLabelText(/muscle group/i);
-    const repsInput = await screen.findByLabelText(/number of reps/i);
-    const loadInput = await screen.findByLabelText(/load in kg/i);
-    const closeForm = await screen.findByLabelText(/close form/i);
-    const submit = await screen.findByLabelText(/submit edited workout/i);
+    const titleInput = screen.getByTestId("title");
+    const muscleGroupSelect = screen.getByTestId("muscle_group");
+    const repsInput = screen.getByTestId("reps");
+    const loadInput = screen.getByTestId("load");
+    const closeForm = screen.getByText(/close/i);
+    const submit = screen.getByText(/save/i);
     await user.tab();
     expect(closeForm).toHaveFocus();
     await user.tab();
@@ -100,10 +100,10 @@ describe("<EditWorkout/>", () => {
         <EditWorkout />
       </Provider>
     );
-    const titleInput = await screen.findByLabelText(/workout title/i);
-    const muscleGroupSelect = await screen.findByLabelText(/muscle group/i);
-    const repsInput = await screen.findByLabelText(/number of reps/i);
-    const loadInput = await screen.findByLabelText(/load in kg/i);
+    const titleInput = screen.getByTestId("title");
+    const muscleGroupSelect = screen.getByTestId("muscle_group");
+    const repsInput = screen.getByTestId("reps");
+    const loadInput = screen.getByTestId("load");
     await user.clear(titleInput);
     await user.type(titleInput, "squats");
     await user.selectOptions(muscleGroupSelect, "leg");
@@ -134,10 +134,10 @@ describe("<EditWorkout/>", () => {
         <EditWorkout />
       </Provider>
     );
-    const titleInput = await screen.findByLabelText(/workout title/i);
-    const repsInput = await screen.findByLabelText(/number of reps/i);
-    const loadInput = await screen.findByLabelText(/load in kg/i);
-    const submit = await screen.findByLabelText(/submit edited workout/i);
+    const titleInput = screen.getByTestId("title");
+    const repsInput = screen.getByTestId("reps");
+    const loadInput = screen.getByTestId("load");
+    const submit = screen.getByText(/save/i);
     await user.clear(titleInput);
     await user.type(titleInput, "arm curls");
     await user.clear(repsInput);
@@ -172,17 +172,15 @@ describe("<EditWorkout/>", () => {
         <EditWorkout />
       </Provider>
     );
-    let titleInput = await screen.findByLabelText(/workout title/i);
-    const submitWorkoutBtn = await screen.findByLabelText(
-      /submit edited workout/i
-    );
+    let titleInput = screen.getByTestId("title");
+    const submit = screen.getByText(/save/i);
     await user.clear(titleInput);
     await user.type(
       titleInput,
       "adasdaasdsdfsdfdddfdfsdfsfsdfsfddsfsfsfsdfterttrteefrfwfwfwefwefweffefwe"
     );
-    await user.click(submitWorkoutBtn);
-    titleInput = await screen.findByLabelText(/workout title/i);
+    await user.click(submit);
+    titleInput = await screen.findByTestId("title");
     expect(titleInput).toHaveAttribute("class", "error");
     const error = await screen.findByRole("alert");
     expect(error.textContent).toMatch(/max 30 characters/i);
@@ -209,14 +207,12 @@ describe("<EditWorkout/>", () => {
         <EditWorkout />
       </Provider>
     );
-    let titleInput = await screen.findByLabelText(/workout title/i);
-    const submitWorkoutBtn = await screen.findByLabelText(
-      /submit edited workout/i
-    );
+    let titleInput = screen.getByTestId("title");
+    const submit = screen.getByText(/save/i);
     await user.clear(titleInput);
     await user.type(titleInput, "66768^&^*&%<>*");
-    await user.click(submitWorkoutBtn);
-    titleInput = await screen.findByLabelText(/workout title/i);
+    await user.click(submit);
+    titleInput = await screen.findByTestId("title");
     expect(titleInput).toHaveAttribute("class", "error");
     const error = await screen.findByRole("alert");
     expect(error.textContent).toMatch(/may contain only letters/i);
@@ -243,14 +239,12 @@ describe("<EditWorkout/>", () => {
         <EditWorkout />
       </Provider>
     );
-    let repsInput = await screen.findByLabelText(/number of reps/i);
-    const submitWorkoutBtn = await screen.findByLabelText(
-      /submit edited workout/i
-    );
+    let repsInput = screen.getByTestId("reps");
+    const submit = screen.getByText(/save/i);
     await user.clear(repsInput);
     await user.type(repsInput, "23848394829");
-    await user.click(submitWorkoutBtn);
-    repsInput = await screen.findByLabelText(/number of reps/i);
+    await user.click(submit);
+    repsInput = await screen.findByTestId("reps");
     expect(repsInput).toHaveAttribute("class", "error");
     const error = await screen.findByRole("alert");
     expect(error.textContent).toMatch(/reps value too large/i);
@@ -277,14 +271,12 @@ describe("<EditWorkout/>", () => {
         <EditWorkout />
       </Provider>
     );
-    let loadInput = await screen.findByLabelText(/load in kg/i);
-    const submitWorkoutBtn = await screen.findByLabelText(
-      /submit edited workout/i
-    );
+    let loadInput = screen.getByTestId("reps");
+    const submit = screen.getByText(/save/i);
     await user.clear(loadInput);
     await user.type(loadInput, "284738378");
-    await user.click(submitWorkoutBtn);
-    loadInput = await screen.findByLabelText(/load in kg/i);
+    await user.click(submit);
+    loadInput = await screen.findByTestId("reps");
     expect(loadInput).toHaveAttribute("class", "error");
     const error = await screen.findByRole("alert");
     expect(error.textContent).toMatch(/load value too large/i);
@@ -313,11 +305,10 @@ describe("<EditWorkout/>", () => {
         <EditWorkout />
       </Provider>
     );
-    const repsInput = await screen.findByLabelText(/number of reps/i);
-    const loadInput = await screen.findByLabelText(/load in kg/i);
-    const submit = await screen.findByLabelText(/submit edited workout/i);
-    await user.clear(repsInput);
-    await user.type(repsInput, "30");
+    let loadInput = screen.getByTestId("reps");
+    const submit = screen.getByText(/save/i);
+    await user.clear(loadInput);
+    await user.type(loadInput, "30");
     await user.clear(loadInput);
     await user.type(loadInput, "15");
     await user.click(submit);

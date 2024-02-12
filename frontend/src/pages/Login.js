@@ -31,30 +31,30 @@ const Login = () => {
         <h1>
           <p></p>
         </h1>
-        <form aria-label="log in" className="login" onSubmit={handleSubmit}>
+        <form className="login" onSubmit={handleSubmit}>
           <h4>User Login</h4>
-          <label>email address:</label>
+          <label htmlFor="email">email address:</label>
           <input
             type="text"
             id="email"
             name="email"
             placeholder="email address"
-            aria-label="email address"
             ref={email}
           />
-          <label>password:</label>
+          <label htmlFor="password">password:</label>
           <input
             type="password"
             id="password"
             name="password"
             placeholder="password"
-            aria-label="password"
             ref={password}
           />
           <button
             type="button"
             className="forgot--password"
-            onClick={() => dispatch({ type: "TOGGLE_MOUNT_FORGOT_PASSWORD_FORM" })}
+            onClick={() =>
+              dispatch({ type: "TOGGLE_MOUNT_FORGOT_PASSWORD_FORM" })
+            }
           >
             Forgot the password?
           </button>

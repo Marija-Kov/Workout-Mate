@@ -24,7 +24,7 @@ afterAll(() => {
 });
 
 describe("<WorkoutDetails />", () => {
-  it("should render WorkoutDetails component properly", async () => {
+  it("should render WorkoutDetails component properly", () => {
     render(
       <Provider store={store}>
         <WorkoutDetails
@@ -38,12 +38,12 @@ describe("<WorkoutDetails />", () => {
         />
       </Provider>
     );
-    const title = await screen.findByText(mockWorkout.title);
-    const reps = await screen.findByText(mockWorkout.reps);
-    const load = await screen.findByText(mockWorkout.load);
-    const createdAt = await screen.findByLabelText(/date/i);
-    const openEditWorkoutFormBtn = await screen.findByText(/edit/i);
-    const deleteWorkoutBtn = await screen.findByText(/delete/i);
+    const title = screen.getByText(mockWorkout.title);
+    const reps = screen.getByText(mockWorkout.reps);
+    const load = screen.getByText(mockWorkout.load);
+    const createdAt = screen.getByText(/ ago/i);
+    const openEditWorkoutFormBtn = screen.getByText(/edit/i);
+    const deleteWorkoutBtn = screen.getByText(/delete/i);
     expect(title).toBeInTheDocument();
     expect(reps).toBeInTheDocument();
     expect(load).toBeInTheDocument();
@@ -67,8 +67,8 @@ describe("<WorkoutDetails />", () => {
         />
       </Provider>
     );
-    const openEditWorkoutFormBtn = await screen.findByText(/edit/i);
-    const deleteWorkoutBtn = await screen.findByText(/delete/i);
+    const openEditWorkoutFormBtn = screen.getByText(/edit/i);
+    const deleteWorkoutBtn = screen.getByText(/delete/i);
     await user.tab();
     expect(deleteWorkoutBtn).toHaveFocus();
     await user.tab();
@@ -90,7 +90,7 @@ describe("<WorkoutDetails />", () => {
         />
       </Provider>
     );
-    const openEditWorkoutFormBtn = await screen.findByText(/edit/i);
+    const openEditWorkoutFormBtn = screen.getByText(/edit/i);
     await user.click(openEditWorkoutFormBtn);
     let state = store.getState();
     expect(state.toggleMountComponents.prepopulateEditWorkoutForm).toBeTruthy();

@@ -60,7 +60,7 @@ export default function Home() {
     if (!muscleGroups) {
       return (
         <div className="get--started">
-          Buff it up to get started.
+          Get started.
           <br></br>
           No pressure
           <span>🥤</span>
@@ -111,9 +111,10 @@ export default function Home() {
           <WorkoutForm />
         ) : (
           <button
-            aria-label="buff it up"
             className={buffItUpButtonClass()}
-            onClick={() => dispatch({ type: "TOGGLE_MOUNT_CREATE_WORKOUT_FORM" })}
+            onClick={() =>
+              dispatch({ type: "TOGGLE_MOUNT_CREATE_WORKOUT_FORM" })
+            }
             disabled={loading}
           >
             + Buff It Up

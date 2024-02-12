@@ -19,10 +19,14 @@ describe("<Login />", () => {
         <Login />
       </Provider>
     );
-    const loginForm = screen.getByLabelText("log in");
-    const forgotPassword = screen.getByText(/forgot/i);
-    expect(loginForm).toBeInTheDocument();
-    expect(forgotPassword).toBeInTheDocument();
+    const emailInp = screen.getByPlaceholderText("email address");
+    const passwordInp = screen.getByPlaceholderText("password");
+    const forgotPasswordBtn = screen.getByRole("button", { name: /forgot/i });
+    const loginBtn = screen.getByRole("button", { name: /log in/i });
+    expect(emailInp).toBeInTheDocument();
+    expect(passwordInp).toBeInTheDocument();
+    expect(forgotPasswordBtn).toBeInTheDocument();
+    expect(loginBtn).toBeInTheDocument();
   });
 
   it("should focus form elements in right order", async () => {
@@ -61,7 +65,7 @@ describe("<Login />", () => {
     expect(passwordInp).toHaveValue("abc");
   });
 
-  it("should render reset password request form when user clicks on 'forgot password'", async () => {
+  it("should render forgot password form when user clicks on 'forgot password'", async () => {
     user.setup();
     render(
       <Provider store={store}>
@@ -70,9 +74,7 @@ describe("<Login />", () => {
     );
     const forgotPasswordBtn = screen.getByRole("button", { name: /forgot/i });
     await user.click(forgotPasswordBtn);
-    const forgotPasswordForm = await screen.findByLabelText(
-      "forgot password form"
-    );
+    const forgotPasswordForm = await screen.findByText("Reset Password");
     expect(forgotPasswordForm).toBeInTheDocument();
   });
 

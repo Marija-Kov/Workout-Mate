@@ -14,8 +14,6 @@ export default function EditWorkout() {
     prevMuscleGroup,
     prevReps,
     prevLoad,
-    createdAt,
-    updatedAt,
   } = prepopulateEditWorkoutForm;
   const { updateWorkoutError } = useSelector((state) => state.workout);
   const title = useRef();
@@ -53,14 +51,8 @@ export default function EditWorkout() {
   };
   return (
     <div className="form--container--edit--workout--form">
-      <form
-        className="edit--form"
-        aria-label={`edit ${title} ${
-          updatedAt ? `updated ${updatedAt}` : `created ${createdAt}`
-        }`}
-      >
+      <form data-testid="edit" className="edit--form">
         <button
-          aria-label="close form"
           className="close material-symbols-outlined"
           onClick={() => {
             dispatch({ type: "TOGGLE_MOUNT_EDIT_WORKOUT_FORM" });
@@ -70,12 +62,12 @@ export default function EditWorkout() {
           close
         </button>
         <h4>Edit workout</h4>
-        <label>exercise title:</label>
+        <label htmlFor="title">exercise title:</label>
         <input
           type="text"
           name="title"
           id="title"
-          aria-label="workout title"
+          data-testid="title"
           defaultValue={prevTitle}
           ref={title}
           className={badInput.includes("title") ? "error" : ""}
@@ -83,9 +75,9 @@ export default function EditWorkout() {
         <label htmlFor="muscle_group">muscle group:</label>
         <select
           ref={muscle_group}
-          aria-label="muscle group"
           name="muscle_group"
           id="muscle_group"
+          data-testid="muscle_group"
         >
           <option value="">{prevMuscleGroup}</option>
           <option value="chest">chest</option>
@@ -99,31 +91,27 @@ export default function EditWorkout() {
           <option value="calf">calf</option>
           <option value="forearm and grip">forearm and grip</option>
         </select>
-        <label>number of reps:</label>
+        <label htmlFor="reps">number of reps:</label>
         <input
           type="number"
           name="reps"
           id="reps"
-          aria-label="number of reps"
+          data-testid="reps"
           defaultValue={prevReps}
           ref={reps}
           className={badInput.includes("reps") ? "error" : ""}
         />
-        <label>load (kg):</label>
+        <label htmlFor="load">load (kg):</label>
         <input
           type="number"
           name="load"
           id="load"
-          aria-label="load in kg"
+          data-testid="load"
           defaultValue={prevLoad}
           ref={load}
           className={badInput.includes("load") ? "error" : ""}
         />
-        <button
-          className="edit--form--btn"
-          onClick={(e) => handleUpdate(e)}
-          aria-label="submit edited workout button"
-        >
+        <button className="edit--form--btn" onClick={(e) => handleUpdate(e)}>
           Save changes
         </button>
         {updateWorkoutError && (

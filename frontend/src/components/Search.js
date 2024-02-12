@@ -20,18 +20,21 @@ export default function Search() {
 
   return (
     <form
-      aria-label="search bar"
+      data-testid="search-form"
       className={loading ? "search--bar is--loading" : "search--bar"}
       onSubmit={handleSearch}
     >
+      <label htmlFor="search" className="hidden">
+        Search:
+      </label>
       <input
-        aria-label="search input"
         type="search"
-        placeholder="search workouts..."
+        id="search"
+        placeholder="type workout title"
         value={query}
         onChange={handleChange}
       ></input>
-      <button aria-label="search button" disabled={loading}>
+      <button disabled={loading}>
         <span className="material-symbols-outlined">search</span>
       </button>
     </form>

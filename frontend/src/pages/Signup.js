@@ -23,27 +23,24 @@ const Signup = () => {
         <p></p>
       </h1>
       <form
-        aria-label="create an account"
         className="signup"
         onSubmit={handleSubmit}
       >
         <h4>Create an account</h4>
-        <label>email address:</label>
+        <label htmlFor="email">email address:</label>
         <input
           type="text"
           id="email"
           name="email"
           placeholder="email address"
-          aria-label="email address"
           ref={email}
         />
-        <label>password:</label>
+        <label htmlFor="password">password:</label>
         <input
           type="password"
           id="password"
           name="password"
           placeholder="password"
-          aria-label="password"
           ref={password}
         />
         <button className="sign-up--form--btn" disabled={loading}>

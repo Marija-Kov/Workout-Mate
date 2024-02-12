@@ -14,7 +14,7 @@ describe("<Signup />", () => {
         <Signup />
       </Provider>
     );
-    const signupForm = screen.getByLabelText("create an account");
+    const signupForm = screen.getByText(/create an account/i);
     expect(signupForm).toBeInTheDocument();
   });
 
