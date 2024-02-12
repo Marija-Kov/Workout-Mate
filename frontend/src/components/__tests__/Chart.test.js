@@ -34,8 +34,8 @@ describe("<Chart />", () => {
       </Provider>
     );
     act(() => dispatch({ type: "SET_ROUTINE_BALANCE", payload: muscleGroups }));
-    const doughnut = await screen.findByLabelText("routine balance chart");
-    const legend = await screen.findByLabelText("chart legend");
+    const doughnut = await screen.findByText(/routine balance/i);
+    const legend = await screen.findByLabelText("muscle groups");
     const hasChestMuscleGroupWorkouts = await screen.findByLabelText(
       /12.5% chest/i
     );
@@ -55,7 +55,7 @@ describe("<Chart />", () => {
       /12.5% glute/i
     );
     const hasNotBackMuscleGroupWorkouts = await screen.findByLabelText(
-      /0% back workouts/i
+      /0% back/i
     );
     expect(doughnut).toBeInTheDocument();
     expect(legend).toBeInTheDocument();

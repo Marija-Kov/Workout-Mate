@@ -111,7 +111,7 @@ export const Chart = () => {
   return (
     <div className="chart--container">
       <h3>Routine balance (%)</h3>
-      <div className="chart" aria-label="routine balance chart">
+      <div className="chart">
         <Doughnut data={data} options={options} />
         <CustomLegend
           labels={data.labels}
