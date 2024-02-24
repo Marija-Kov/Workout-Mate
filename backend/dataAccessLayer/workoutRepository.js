@@ -36,7 +36,7 @@ class WorkoutRepository {
 
   async add(title, muscleGroup, reps, load, userId) {
     return Workout.create({
-      title: title.trim().toLowerCase(),
+      title: title,
       muscle_group: muscleGroup,
       reps,
       load,

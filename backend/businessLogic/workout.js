@@ -61,7 +61,7 @@ const addWorkout = async (title, muscleGroup, reps, load, user) => {
     const id = allWorkoutsByUser[0]._id;
     await Workout.delete(id);
   }
-  const workout = await Workout.add(title, muscleGroup, reps, load, user_id);
+  const workout = await Workout.add(title.trim().toLowerCase(), muscleGroup, reps, load, user_id);
   return workout;
 };
 
