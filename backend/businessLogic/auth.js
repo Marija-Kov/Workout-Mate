@@ -1,6 +1,8 @@
 const User = require("../dataAccessLayer/userRepository");
 const Workout = require("../dataAccessLayer/workoutRepository");
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
+const validator = require("validator");
 const sendEmail = require("../middleware/sendEmail");
 const { ApiError } = require("../error/error");
 
@@ -10,7 +12,26 @@ const createToken = (_id) => {
 };
 
 const signup = async (email, password) => {
-  const user = await User.create(email, password);
+  if (!email || !password) {
+    ApiError.badInput("All fields must be filled");
+  }
+  if (
+    !email.match(
+      /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
+    )
+  ) {
+    ApiError.badInput("Please enter valid email address");
+  }
+  if (!validator.isStrongPassword(password)) {
+    ApiError.badInput("Password not strong enough");
+  }
+  const exists = await User.isEmailInDb(email);
+  if (exists) {
+    ApiError.badInput("Email already in use");
+  }
+  const salt = await bcrypt.genSalt(10);
+  const hash = await bcrypt.hash(password, salt);
+  const user = await User.create(email, hash);
   const id = user._id;
   const confirmationToken = createToken(id);
   user.accountConfirmationToken = confirmationToken;
