@@ -45,10 +45,6 @@ class UserRepository {
     }
   }
 
-  async login(email, password) {
-    return User.login(email, password);
-  }
-
   async findAll() {
     try {
       const sql = `
