@@ -104,7 +104,31 @@ class UserRepository {
   }
 
   async findById(id) {
-    return User.findOne({ _id: id });
+    const sql = `
+    SELECT * FROM wm_users WHERE _id = $1;
+   `;
+    try {
+      if (process.env.NODE_ENV === "test") {
+        return new Promise((resolve, reject) => {
+          this.db.get(sql, [id], (err, row) => {
+            if (err) {
+              reject(err);
+            } else if (!row) {
+              resolve(null);
+            } else {
+              resolve(row);
+            }
+          });
+        });
+      } else {
+        const client = await this.pool.connect();
+        const result = await client.query(sql, [id]);
+        client.release();
+        return result.rows[0];
+      }
+    } catch (error) {
+      console.error("User.findById:", error);
+    }
   }
 
   async findAccountConfirmationToken(token) {
