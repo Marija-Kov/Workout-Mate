@@ -88,6 +88,8 @@ class UserRepository {
             } else if (!row) {
               resolve(null);
             } else {
+              row.profileImg = row.profile_image;
+              delete row.profile_image;
               resolve(row);
             }
           });
@@ -96,6 +98,8 @@ class UserRepository {
         const client = await this.pool.connect();
         const result = await client.query(sql, [email]);
         client.release();
+        result.rows[0].profileImg = result.rows[0].profile_image;
+        delete result.rows[0].profile_image;
         return result.rows[0];
       }
     } catch (error) {
@@ -202,10 +206,42 @@ class UserRepository {
   }
 
   async update(id, body) {
-    return User.findOneAndUpdate({ _id: id }, body, {
-      new: true,
-      runValidators: true,
-    });
+    const sql = `
+     UPDATE wm_users
+     SET 
+      username = COALESCE($1, username),
+      profile_image = COALESCE($2, profile_image)
+     WHERE _id = $3
+     RETURNING _id, email, username, profile_image;
+    `;
+    try {
+      if (process.env.NODE_ENV === "test") {
+        return new Promise((resolve, reject) => {
+          this.db.get(sql, [body.username, body.profileImg, id], (err, row) => {
+            if (err) {
+              reject(err);
+            } else {
+              row.profileImg = row.profile_image;
+              delete row.profile_image;
+              resolve(row);
+            }
+          });
+        });
+      } else {
+        const client = await this.pool.connect();
+        const result = await client.query(sql, [
+          body.username,
+          body.profileImg,
+          id,
+        ]);
+        client.release();
+        result.rows[0].profileImg = result.rows[0].profile_image;
+        delete result.rows[0].profile_image;
+        return result.rows[0];
+      }
+    } catch (error) {
+      console.error("User.update:", error);
+    }
   }
 
   async save(user) {
