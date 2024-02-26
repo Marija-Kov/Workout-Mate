@@ -10,7 +10,7 @@ db.serialize(() => {
     password TEXT, 
     username TEXT, 
     profile_image TEXT,
-    account_status TEXT
+    account_status TEXT DEFAULT ('pending')
     );
   `);
   db.run(`
