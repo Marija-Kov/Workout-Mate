@@ -78,7 +78,28 @@ const verify_user = async (token) => {
 };
 
 const login = async (email, password) => {
-  const { _id, username, profileImg } = await User.login(email, password);
+  if (!email || !password) {
+    ApiError.badInput("All fields must be filled");
+  }
+  if (
+    !email.match(
+      /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
+    )
+  ) {
+    ApiError.badInput("Please enter valid email address");
+  }
+  const user = await User.isEmailInDb(email);
+  if (!user) {
+    ApiError.badInput("That email does not exist in our database");
+  }
+  if (user.account_status === "pending") {
+    ApiError.badInput("You must verify your email before you log in");
+  }
+  const match = await bcrypt.compare(password, user.password);
+  if (!match) {
+    ApiError.badInput("Wrong password");
+  }
+  const { _id, username, profileImg } = user;
   const token = createToken(_id);
   const tokenExpires = Date.now() + expiresIn * 1000;
   return { id: _id, token, username, profileImg, tokenExpires };
