@@ -108,7 +108,31 @@ class UserRepository {
   }
 
   async findAccountConfirmationToken(token) {
-    return User.findOne({ accountConfirmationToken: token });
+    const sql = `
+    SELECT user_id as _id, token FROM account_confirmation WHERE token = $1;
+    `;
+    try {
+      if (process.env.NODE_ENV === "test") {
+        return new Promise((resolve, reject) => {
+          this.db.get(sql, [token], (err, row) => {
+            if (err) {
+              reject(err);
+            } else if (!row) {
+              resolve(null);
+            } else {
+              resolve(row);
+            }
+          });
+        });
+      } else {
+        const client = await this.pool.connect();
+        const result = await client.query(sql, [token]);
+        client.release();
+        return result.rows[0];
+      }
+    } catch (error) {
+      console.error("User.findAccountConfirmationToken:", error);
+    }
   }
 
   async findPasswordResetToken(token) {
