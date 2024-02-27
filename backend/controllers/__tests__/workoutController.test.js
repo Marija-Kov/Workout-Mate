@@ -1,6 +1,7 @@
 const request = require("supertest");
 const app = require("../../server");
-const { connect, clear, close } = require("../test-utils/database.config");
+const { connect, clear, close } = require("../test-utils/mongo.config");
+const { clearSqlite, closeSqlite } = require("../test-utils/sqlite.config");
 const {
   mockUser,
   maxOutWorkouts,
@@ -9,8 +10,14 @@ const {
 const agent = request.agent(app);
 
 beforeAll(async () => await connect());
-afterEach(async () => await clear());
-afterAll(async () => await close());
+afterEach(async () => {
+  await clear();
+  await clearSqlite();
+});
+afterAll(async () => {
+  await close();
+  await closeSqlite();
+});
 
 describe("workoutController", () => {
   describe("POST /api/workouts/", () => {
