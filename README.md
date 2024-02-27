@@ -94,6 +94,8 @@ to run backend and frontend tests in corresponding directories.
 - [NodeJS](https://nodejs.org/en/) - Server logic
 - [Express](https://expressjs.com/) - Routing
 - [MongoDB](https://account.mongodb.com/account/login) - Database
+- [Supabase](https://supabase.com) - Database
+- [Node-Postgres](https://github.com/brianc/node-postgres) - PostgreSQL client for Node.js
 - [Mongoose](https://mongoosejs.com/) - MongoDB document modelling
 - [Bcrypt](https://www.npmjs.com/package/bcrypt) - hashing passwords
 - [Dotenv](https://www.npmjs.com/package/dotenv) - secret-keeping
@@ -111,6 +113,7 @@ to run backend and frontend tests in corresponding directories.
 - [Supertest](https://github.com/ladjs/supertest) - testing HTTP requests
 - [MongoDB Memory Server](https://github.com/nodkz/mongodb-memory-server) - testing/mocking MongoDB memory server in NodeJS
 - [@shelf/jest-mongodb](https://www.npmjs.com/package/@shelf/jest-mongodb) - A Jest preset for running MongoDB memory server
+- [Sqlite3](https://github.com/TryGhost/node-sqlite3) - In-memory test database
 
 ### Frontend
 
@@ -128,7 +131,11 @@ to run backend and frontend tests in corresponding directories.
 ## Environment variables <a name = "environment-variables"></a>
 If you want to run the app in your local environment, you'll need to create a .env file in each of the second-level directories and provide values for the variables below.<br>
 ### Backend .env
-MONGO_URI = <br>
+SB_USER= <br>
+SB_PASSWORD= <br>
+SB_HOST= <br>
+SB_DATABASE= <br>
+MONGO_URI= <br>
 PORT= <br>
 SECRET= <br>
 SALT= <br>
@@ -170,9 +177,7 @@ REACT_APP_WEB_SERVICE=localhost <br>
 <br>
 
 ## Todos <a name = "todos"></a>
- - Capacity management mechanism should involve automated deletion of accounts after a period of inactivity.
  - Users should have an option to commit to using their account and posting workouts to avoid automated deletion.
- - Fix EditWorkout.test.js
 <br>
 
 
