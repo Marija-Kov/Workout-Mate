@@ -163,11 +163,109 @@ class UserRepository {
     }
   }
 
+  async savePasswordResetToken(user_id, token) {
+    const sql = `
+    INSERT INTO password_reset (user_id, token)
+    VALUES ($1, $2);
+    `;
+    try {
+      if (process.env.NODE_ENV === "test") {
+        return new Promise((resolve, reject) => {
+          this.db.run(sql, [user_id, token], (err, row) => {
+            if (err) {
+              reject(err);
+            } else {
+              resolve(row);
+            }
+          });
+        });
+      } else {
+        const client = await this.pool.connect();
+        await client.query(sql, [user_id, token]);
+        return client.release();
+      }
+    } catch (error) {
+      console.error("User.savePasswordResetToken:", error);
+    }
+  }
+
   async findPasswordResetToken(token) {
-    return User.findOne({
-      resetPasswordToken: token,
-      resetPasswordTokenExpires: { $gt: Date.now() },
-    });
+    const sql =
+      process.env.NODE_ENV === "test"
+        ? ` 
+          SELECT _id
+          FROM wm_users JOIN password_reset 
+          ON wm_users._id = password_reset.user_id
+          WHERE password_reset.token = $1
+          AND password_reset.expires > unixepoch('now');
+          `
+        : ` 
+          SELECT _id
+          FROM wm_users JOIN password_reset 
+          ON wm_users._id = password_reset.user_id
+          WHERE password_reset.token = $1
+          AND password_reset.expires > now();
+          `;
+    try {
+      if (process.env.NODE_ENV === "test") {
+        return new Promise((resolve, reject) => {
+          this.db.get(sql, [token], (err, row) => {
+            if (err) {
+              reject(err);
+            } else if (!row) {
+              resolve(null);
+            } else {
+              resolve(row);
+            }
+          });
+        });
+      } else {
+        const client = await this.pool.connect();
+        const result = await client.query(sql, [token]);
+        client.release();
+        return result.rows[0];
+      }
+    } catch (error) {
+      console.error("User.findPasswordResetToken:", error);
+    }
+  }
+
+  async changePassword(password, user_id) {
+    const sql = `
+     UPDATE wm_users
+     SET
+      password = $1
+     WHERE _id = $2;
+    `;
+    try {
+      if (process.env.NODE_ENV === "test") {
+        return new Promise((resolve, reject) => {
+          this.db.run(sql, [password, user_id], (err, row) => {
+            this.db.run(
+              `DELETE FROM password_reset WHERE user_id = ?;`,
+              user_id
+            );
+            if (err) {
+              reject(err);
+            } else if (!row) {
+              resolve(null);
+            } else {
+              resolve(row);
+            }
+          });
+        });
+      } else {
+        const client = await this.pool.connect();
+        const result = await client.query(sql, [password, user_id]);
+        await client.query(`DELETE FROM password_reset WHERE user_id = $1;`, [
+          user_id,
+        ]);
+        client.release();
+        return result.rows[0];
+      }
+    } catch (error) {
+      console.error("User.changePassword:", error);
+    }
   }
 
   async delete(id) {
