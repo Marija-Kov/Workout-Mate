@@ -42,6 +42,98 @@ class UserRepository {
     }
   }
 
+  async saveConfirmationToken(user_id, token) {
+    const sql = `
+    INSERT INTO account_confirmation (user_id, token)
+    VALUES ($1, $2)
+    RETURNING user_id, token;
+    `;
+    try {
+      if (process.env.NODE_ENV === "test") {
+        return new Promise((resolve, reject) => {
+          this.db.get(sql, [user_id, token], (err, row) => {
+            if (err) {
+              reject(err);
+            } else {
+              resolve(row);
+            }
+          });
+        });
+      } else {
+        const client = await this.pool.connect();
+        const result = await client.query(sql, [user_id, token]);
+        client.release();
+        return result.rows[0];
+      }
+    } catch (error) {
+      console.error("User.saveConfirmationToken:", error);
+    }
+  }
+
+  async findConfirmationToken(token) {
+    const sql = `
+    SELECT user_id as _id, token FROM account_confirmation WHERE token = $1;
+    `;
+    try {
+      if (process.env.NODE_ENV === "test") {
+        return new Promise((resolve, reject) => {
+          this.db.get(sql, [token], (err, row) => {
+            if (err) {
+              reject(err);
+            } else if (!row) {
+              resolve(null);
+            } else {
+              resolve(row);
+            }
+          });
+        });
+      } else {
+        const client = await this.pool.connect();
+        const result = await client.query(sql, [token]);
+        client.release();
+        return result.rows[0];
+      }
+    } catch (error) {
+      console.error("User.findConfirmationToken:", error);
+    }
+  }
+
+  async activate(id) {
+    const sql = `
+        UPDATE wm_users 
+        SET account_status = 'active'
+        WHERE _id = $1;
+        `;
+    try {
+      if (process.env.NODE_ENV === "test") {
+        return new Promise((resolve, reject) => {
+          this.db.get(sql, [id], (err, row) => {
+            if (err) {
+              reject(err);
+            } else {
+              this.db.run(
+                "DELETE FROM account_confirmation WHERE user_id = ?;",
+                id
+              );
+              resolve(row);
+            }
+          });
+        });
+      } else {
+        const client = await this.pool.connect();
+        const result = await client.query(sql, [id]);
+        await client.query(
+          "DELETE FROM account_confirmation WHERE user_id = $1;",
+          [id]
+        );
+        client.release();
+        return result.rows[0];
+      }
+    } catch (error) {
+      console.error("User.save:", error);
+    }
+  }
+
   async findAll() {
     try {
       const sql = `
@@ -81,8 +173,10 @@ class UserRepository {
             } else if (!row) {
               resolve(null);
             } else {
-              row.profileImg = row.profile_image;
-              delete row.profile_image;
+              if (row.profile_image) {
+                row.profileImg = row.profile_image;
+                delete row.profile_image;
+              }
               resolve(row);
             }
           });
@@ -91,8 +185,10 @@ class UserRepository {
         const client = await this.pool.connect();
         const result = await client.query(sql, [email]);
         client.release();
-        result.rows[0].profileImg = result.rows[0].profile_image;
-        delete result.rows[0].profile_image;
+        if (result.rows[0] && result.rows[0].profile_image) {
+          result.rows[0].profileImg = result.rows[0].profile_image;
+          delete result.rows[0].profile_image;
+        }
         return result.rows[0];
       }
     } catch (error) {
@@ -125,34 +221,6 @@ class UserRepository {
       }
     } catch (error) {
       console.error("User.findById:", error);
-    }
-  }
-
-  async findAccountConfirmationToken(token) {
-    const sql = `
-    SELECT user_id as _id, token FROM account_confirmation WHERE token = $1;
-    `;
-    try {
-      if (process.env.NODE_ENV === "test") {
-        return new Promise((resolve, reject) => {
-          this.db.get(sql, [token], (err, row) => {
-            if (err) {
-              reject(err);
-            } else if (!row) {
-              resolve(null);
-            } else {
-              resolve(row);
-            }
-          });
-        });
-      } else {
-        const client = await this.pool.connect();
-        const result = await client.query(sql, [token]);
-        client.release();
-        return result.rows[0];
-      }
-    } catch (error) {
-      console.error("User.findAccountConfirmationToken:", error);
     }
   }
 
@@ -267,15 +335,15 @@ class UserRepository {
       if (process.env.NODE_ENV === "test") {
         return new Promise((resolve, reject) => {
           this.db.run(sql, [id], (err, row) => {
+            this.db.run(
+              `DELETE FROM account_confirmation WHERE user_id = ?;`,
+              id
+            );
             if (err) {
               reject(err);
             } else if (!row) {
               resolve(null);
             } else {
-              this.db.run(
-                `DELETE FROM account_confirmation WHERE user_id = ?;`,
-                id
-              );
               resolve(row);
             }
           });
@@ -287,7 +355,7 @@ class UserRepository {
           `DELETE FROM account_confirmation WHERE user_id = $1;`,
           [id]
         );
-        client.release();
+        return client.release();
       }
     } catch (error) {
       console.error("User.delete:", error);
@@ -330,50 +398,6 @@ class UserRepository {
       }
     } catch (error) {
       console.error("User.update:", error);
-    }
-  }
-
-  async save(user) {
-    const { _id, accountConfirmationToken } = user;
-    const activate =
-      process.env.NODE_ENV === "test"
-        ? `UPDATE wm_users SET account_status = 'active' WHERE _id = $1;`
-        : `WITH activate_user AS (
-            UPDATE wm_users 
-            SET account_status = 'active'
-            WHERE _id = $1
-          )
-          DELETE FROM account_confirmation WHERE user_id = $1;
-          `;
-    const sql = accountConfirmationToken
-      ? `
-         INSERT INTO account_confirmation (user_id, token)
-         VALUES ($1, $2)
-         RETURNING user_id, token;
-        `
-      : activate;
-    const args = accountConfirmationToken
-      ? [_id, accountConfirmationToken]
-      : [_id];
-    try {
-      if (process.env.NODE_ENV === "test") {
-        return new Promise((resolve, reject) => {
-          this.db.get(sql, [...args], (err, row) => {
-            if (err) {
-              reject(err);
-            } else {
-              resolve(row);
-            }
-          });
-        });
-      } else {
-        const client = await this.pool.connect();
-        const result = await client.query(sql, [...args]);
-        client.release();
-        return result.rows[0];
-      }
-    } catch (error) {
-      console.error("User.save:", error);
     }
   }
 }
