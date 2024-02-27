@@ -17,23 +17,19 @@ const forgotPassword = async (email) => {
   if (!user) {
     ApiError.notFound("That email does not exist in our database");
   }
-  if (user.accountConfirmationToken) {
-    ApiError.notAuthorized(
-      "The account with that email address has not yet been confirmed"
-    );
+  if (user.account_status === "pending") {
+    ApiError.notAuthorized("The account with that email address has not yet been confirmed");
   }
   const resetToken = crypto.randomBytes(32).toString("hex");
-  user.resetPasswordToken = resetToken;
-  const expiresIn =
+  const { _id } = user;
     process.env.NODE_ENV !== "test"
       ? Number(process.env.RESET_PASSWORD_TOKEN_EXPIRES_IN)
       : Number(process.env.TEST_RESET_PASSWORD_TOKEN_EXPIRES_IN);
-  user.resetPasswordTokenExpires = Date.now() + expiresIn;
-  await User.save(user);
+  await User.savePasswordResetToken(_id, resetToken);
   const clientUrl = process.env.CLIENT_URL;
   const resetLink = `${clientUrl}/reset-password?token=${resetToken}`;
   sendEmail(
-    user.email,
+    email,
     "Password Reset Request",
     {
       link: resetLink,
@@ -60,10 +56,7 @@ const resetPassword = async (token, password, confirmPassword) => {
   } else {
     const salt = await bcrypt.genSalt(10);
     const hash = await bcrypt.hash(password, salt);
-    user.password = hash;
-    user.resetPasswordToken = undefined;
-    user.resetPasswordTokenExpires = undefined;
-    await User.save(user);
+    await User.changePassword(hash, user._id);
     return { success: `Password reset successfully` };
   }
 };
