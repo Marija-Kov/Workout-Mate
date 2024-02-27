@@ -5,9 +5,6 @@ class UserRepository {
   constructor() {
     if (process.env.NODE_ENV === "test") {
       this.db = require("../controllers/test-utils/sqliteDb");
-      this.deleteToken = (id) => {
-        this.db.run(`DELETE FROM account_confirmation WHERE user_id = ?;`, id);
-      };
     } else {
       this.pool = new Pool({
         user: process.env.SB_USER,
@@ -265,33 +262,31 @@ class UserRepository {
   }
 
   async delete(id) {
-    const sql =
-      process.env.NODE_ENV === "test"
-        ? `
-           DELETE FROM wm_users WHERE _id = $1`
-        : `
-           WITH delete_user AS (
-             DELETE FROM wm_users WHERE _id = $1
-           )
-           DELETE FROM account_confirmation WHERE user_id = $1;
-          `;
+    const sql = `DELETE FROM wm_users WHERE _id = $1;`;
     try {
       if (process.env.NODE_ENV === "test") {
         return new Promise((resolve, reject) => {
-          this.deleteToken(id);
           this.db.run(sql, [id], (err, row) => {
             if (err) {
               reject(err);
             } else if (!row) {
               resolve(null);
             } else {
+              this.db.run(
+                `DELETE FROM account_confirmation WHERE user_id = ?;`,
+                id
+              );
               resolve(row);
             }
           });
         });
       } else {
         const client = await this.pool.connect();
-        const result = await client.query(sql, [id]);
+        await client.query(sql, [id]);
+        await client.query(
+          `DELETE FROM account_confirmation WHERE user_id = $1;`,
+          [id]
+        );
         client.release();
       }
     } catch (error) {
@@ -363,7 +358,6 @@ class UserRepository {
     try {
       if (process.env.NODE_ENV === "test") {
         return new Promise((resolve, reject) => {
-          this.deleteToken(_id);
           this.db.get(sql, [...args], (err, row) => {
             if (err) {
               reject(err);
