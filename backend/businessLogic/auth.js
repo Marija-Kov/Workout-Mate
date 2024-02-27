@@ -25,7 +25,7 @@ const signup = async (email, password) => {
   if (!validator.isStrongPassword(password)) {
     ApiError.badInput("Password not strong enough");
   }
-  const exists = await User.isEmailInDb(email);
+  const exists = await User.findByEmail(email);
   if (exists) {
     ApiError.badInput("Email already in use");
   }
@@ -88,7 +88,7 @@ const login = async (email, password) => {
   ) {
     ApiError.badInput("Please enter valid email address");
   }
-  const user = await User.isEmailInDb(email);
+  const user = await User.findByEmail(email);
   if (!user) {
     ApiError.badInput("That email does not exist in our database");
   }

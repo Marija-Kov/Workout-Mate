@@ -13,7 +13,7 @@ const forgotPassword = async (email) => {
   ) {
     ApiError.badInput("Please enter your email address");
   }
-  const user = await User.isEmailInDb(email);
+  const user = await User.findByEmail(email);
   if (!user) {
     ApiError.notFound("That email does not exist in our database");
   }

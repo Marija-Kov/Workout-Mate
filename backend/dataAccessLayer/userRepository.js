@@ -72,10 +72,6 @@ class UserRepository {
   }
 
   async findByEmail(email) {
-    return User.findOne({ email: email });
-  }
-
-  async isEmailInDb(email) {
     const sql = `
     SELECT * FROM wm_users WHERE email = $1;
    `;
@@ -103,7 +99,7 @@ class UserRepository {
         return result.rows[0];
       }
     } catch (error) {
-      console.error("User.isEmailInDb:", error);
+      console.error("User.findByEmail:", error);
     }
   }
 
