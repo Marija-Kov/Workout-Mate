@@ -1,7 +1,7 @@
 import { useSelector, useDispatch } from "react-redux";
 
 export const useDeleteUser = () => {
-  const user = useSelector((state) => state.user);
+  const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
   const deleteUser = async (id) => {
