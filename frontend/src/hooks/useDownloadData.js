@@ -1,17 +1,16 @@
 import { useSelector, useDispatch } from "react-redux";
 import { downloadJsonFile } from "../utils/downloadJsonFile";
+import { useFlashMessage } from "./useFlashMessage";
 
 export function useDownloadData() {
   const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
+  const flashMessage = useFlashMessage();
+
   const downloadData = async () => {
     dispatch({ type: "DOWNLOAD_DATA_REQ" });
     if (!user) {
-      dispatch({
-        type: "DOWNLOAD_DATA_FAIL",
-        payload: "Not authorized",
-      });
-      return;
+      return flashMessage("DOWNLOAD_DATA_FAIL", "Not authorized");
     }
     const response = await fetch(
       `${process.env.REACT_APP_API}/api/users/download/${user.id}`,
@@ -22,23 +21,14 @@ export function useDownloadData() {
       }
     );
     if (!response.ok) {
-      dispatch({
-        type: "DOWNLOAD_DATA_FAIL",
-        payload: "Could not get data",
-      });
-      return;
+      return flashMessage("DOWNLOAD_DATA_FAIL", "Could not get data");
     }
     if (response.ok) {
-      dispatch({
-        type: "DOWNLOAD_DATA_SUCCESS",
-        payload: "Data download started",
-      });
       const data = await response.json();
       downloadJsonFile(data);
-      setTimeout(() => {
-        dispatch({ type: "RESET_USER_MESSAGE_STATE" });
-      }, 5000);
+      return flashMessage("DOWNLOAD_DATA_SUCCESS", "Data download started");
     }
   };
+  
   return { downloadData };
 }

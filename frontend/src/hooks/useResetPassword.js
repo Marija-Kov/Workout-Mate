@@ -1,14 +1,17 @@
 import { useDispatch } from "react-redux";
+import { useFlashMessage } from "./useFlashMessage";
 
 export default function useResetPassword() {
   const dispatch = useDispatch();
+  const flashMessage = useFlashMessage();
+
   const resetPassword = async (token, password, confirmPassword) => {
     dispatch({ type: "RESET_PASSWORD_REQ" });
     if (!token) {
-      dispatch({
-        type: "RESET_PASSWORD_FAIL",
-        payload: "Reset password token not found",
-      });
+      return flashMessage(
+        "RESET_PASSWORD_FAIL",
+        "Reset password token not found"
+      );
     }
     const response = await fetch(
       `${process.env.REACT_APP_API}/api/reset-password/${token}`,
@@ -25,9 +28,9 @@ export default function useResetPassword() {
     );
     const json = await response.json();
     if (!response.ok) {
-      dispatch({ type: "RESET_PASSWORD_FAIL", payload: json.error });
+      return flashMessage("RESET_PASSWORD_FAIL", json.error);
     } else if (response.ok) {
-      dispatch({ type: "RESET_PASSWORD_SUCCESS", payload: json.success });
+      return dispatch({ type: "RESET_PASSWORD_SUCCESS", payload: json.success });
     }
   };
 

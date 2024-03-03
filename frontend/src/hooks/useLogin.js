@@ -1,7 +1,10 @@
 import { useDispatch } from "react-redux";
+import { useFlashMessage } from "./useFlashMessage";
 
 export const useLogin = () => {
   const dispatch = useDispatch();
+  const flashMessage = useFlashMessage();
+
   const login = async (credentials) => {
     dispatch({ type: "LOGIN_REQ" });
     const response = await fetch(
@@ -13,18 +16,14 @@ export const useLogin = () => {
       }
     );
     const json = await response.json();
-
     if (!response.ok) {
-      dispatch({ type: "LOGIN_FAIL", payload: json.error });
-      setTimeout(() => {
-        dispatch({ type: "RESET_USER_MESSAGES" });
-      }, 5000);
+      return flashMessage("LOGIN_FAIL", json.error);
     }
     if (response.ok) {
       localStorage.setItem("user", JSON.stringify(json));
-      dispatch({ type: "LOGIN_SUCCESS", payload: json });
+      return dispatch({ type: "LOGIN_SUCCESS", payload: json });
     }
   };
-
+  
   return { login };
 };
