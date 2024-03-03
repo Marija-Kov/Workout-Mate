@@ -1,7 +1,9 @@
 import { useSelector, useDispatch } from "react-redux";
+import { useFlashMessage } from "./useFlashMessage";
 
 export const useCreateWorkout = () => {
   const dispatch = useDispatch();
+  const flashMessage = useFlashMessage();
   const { user } = useSelector((state) => state.user);
   const { workouts } = useSelector((state) => state.workout);
   const { allUserWorkoutsMuscleGroups } = workouts;
@@ -9,8 +11,7 @@ export const useCreateWorkout = () => {
   const createWorkout = async (workout) => {
     dispatch({ type: "CREATE_WORKOUT_REQ" });
     if (!user) {
-      dispatch({ type: "CREATE_WORKOUT_FAIL", payload: "Not authorized" });
-      return;
+      return flashMessage("CREATE_WORKOUT_FAIL", "Not authorized");
     }
 
     const response = await fetch(`${process.env.REACT_APP_API}/api/workouts`, {
@@ -22,15 +23,9 @@ export const useCreateWorkout = () => {
       },
     });
     const json = await response.json();
-
     if (!response.ok) {
-      dispatch({ type: "CREATE_WORKOUT_FAIL", payload: json.error });
-      setTimeout(() => {
-        dispatch({ type: "RESET_WORKOUT_ERROR_MESSAGES" });
-      }, 5000);
-      return;
+      return flashMessage("CREATE_WORKOUT_FAIL", json.error);
     }
-
     if (response.ok) {
       dispatch({ type: "CREATE_WORKOUT_SUCCESS", payload: json });
       dispatch({ type: "GO_TO_PAGE_NUMBER", payload: 0 });
@@ -38,7 +33,7 @@ export const useCreateWorkout = () => {
         type: "SET_ROUTINE_BALANCE",
         payload: [workout.muscle_group, ...allUserWorkoutsMuscleGroups],
       });
-      dispatch({ type: "TOGGLE_MOUNT_CREATE_WORKOUT_FORM" });
+      return dispatch({ type: "TOGGLE_MOUNT_CREATE_WORKOUT_FORM" });
     }
   };
 

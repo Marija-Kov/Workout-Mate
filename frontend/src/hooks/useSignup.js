@@ -1,7 +1,9 @@
 import { useDispatch } from "react-redux";
+import { useFlashMessage } from "./useFlashMessage";
 
 export const useSignup = () => {
   const dispatch = useDispatch();
+  const flashMessage = useFlashMessage();
 
   const signup = async (credentials) => {
     dispatch({ type: "SIGNUP_REQ" });
@@ -14,17 +16,13 @@ export const useSignup = () => {
       }
     );
     const json = await response.json();
-
     if (!response.ok) {
-      dispatch({ type: "SIGNUP_FAIL", payload: json.error });
-      setTimeout(() => {
-        dispatch({ type: "RESET_USER_MESSAGES" });
-      }, 5000);
+      return flashMessage("SIGNUP_FAIL", json.error);
     }
     if (response.ok) {
-      dispatch({ type: "SIGNUP_SUCCESS", payload: json.success });
+      return flashMessage("SIGNUP_SUCCESS", json.success);
     }
   };
-
+  
   return { signup };
 };

@@ -1,14 +1,15 @@
 import { useSelector, useDispatch } from "react-redux";
+import { useFlashMessage } from "./useFlashMessage";
 
 export const useDeleteAllWorkouts = () => {
   const dispatch = useDispatch();
+  const flashMessage = useFlashMessage();
   const { user } = useSelector((state) => state.user);
 
   const deleteAllWorkouts = async () => {
     dispatch({ type: "DELETE_ALL_WORKOUTS_REQ" });
     if (!user) {
-      dispatch({ type: "DELETE_ALL_WORKOUTS_FAIL", payload: "Not authorized" });
-      return;
+      return flashMessage("DELETE_ALL_WORKOUTS_FAIL", "Not authorized");
     }
     const response = await fetch(`${process.env.REACT_APP_API}/api/workouts/`, {
       method: "DELETE",
@@ -16,7 +17,6 @@ export const useDeleteAllWorkouts = () => {
         Authorization: `Bearer ${user.token}`,
       },
     });
-
     if (response.ok) {
       dispatch({
         type: "DELETE_ALL_WORKOUTS_SUCCESS",
@@ -24,11 +24,10 @@ export const useDeleteAllWorkouts = () => {
       });
     }
     if (!response.ok) {
-      dispatch({
-        type: "DELETE_ALL_WORKOUTS_FAIL",
-        payload:
-          "Something went wrong with deleting workouts. This could be because: 1)the account was already deleted, 2)something else. Please try logging in again to make sure that your account was deleted as requested before you contact support.",
-      });
+      return flashMessage(
+        "DELETE_ALL_WORKOUTS_FAIL",
+        "Could not delete workouts"
+      );
     }
   };
 
