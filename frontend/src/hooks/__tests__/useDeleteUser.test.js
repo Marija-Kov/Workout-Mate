@@ -7,11 +7,13 @@ import store from "../../redux/store";
 
 let wrapper;
 let mockUser;
+let dispatch;
 
 beforeAll(() => {
   wrapper = ({ children }) => {
     return <Provider store={store}>{children}</Provider>;
   };
+  dispatch = store.dispatch;
   mockUser = {
     id: "userid",
     email: "keech@mail.yu",
@@ -25,6 +27,7 @@ beforeAll(() => {
 afterAll(() => {
   wrapper = null;
   mockUser = null;
+  dispatch = null;
 });
 
 describe("useDeleteUser()", () => {
@@ -70,17 +73,21 @@ describe("useDeleteUser()", () => {
       )
     );
     const { result } = renderHook(useDeleteUser, { wrapper });
+    act(() => dispatch({ type: "LOGIN_SUCCESS", payload: mockUser }));
     await act(() => result.current.deleteUser("invalidUserId"));
     let state = store.getState();
     expect(state.user.deleteUserError).toBeTruthy();
     expect(state.user.deleteUserError).toMatch(/user id not found/i);
+    act(() => dispatch({ type: "LOGOUT" }));
   });
 
   it("should run deleteUser function successfully given that the user is authorized", async () => {
     const { result } = renderHook(useDeleteUser, { wrapper });
+    act(() => dispatch({ type: "LOGIN_SUCCESS", payload: mockUser }));
     await act(() => result.current.deleteUser(mockUser.id));
     let state = store.getState();
     expect(state.user.success).toBeTruthy();
     expect(state.user.success).toMatch(/account deleted successfully/i);
+    act(() => dispatch({ type: "LOGOUT" }));
   });
 });
