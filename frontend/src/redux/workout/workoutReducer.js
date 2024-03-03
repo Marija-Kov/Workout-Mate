@@ -63,12 +63,12 @@ export const workoutReducer = (state = init, action) => {
         loading: false,
         createWorkoutError: action.payload,
       };
-    case a.UPDATE_ONE_REQ:
+    case a.UPDATE_WORKOUT_REQ:
       return {
         ...state,
         loading: true,
       };
-    case a.UPDATE_ONE_SUCCESS:
+    case a.UPDATE_WORKOUT_SUCCESS:
       if (action.payload.muscle_group) {
         const prevMuscleGroupIndex =
           state.workouts.allUserWorkoutsMuscleGroups.indexOf(
@@ -99,18 +99,18 @@ export const workoutReducer = (state = init, action) => {
         loading: false,
         updateWorkoutError: null,
       };
-    case a.UPDATE_ONE_FAIL:
+    case a.UPDATE_WORKOUT_FAIL:
       return {
         ...state,
         loading: false,
         updateWorkoutError: action.payload,
       };
-    case a.DELETE_ONE_REQ:
+    case a.DELETE_WORKOUT_REQ:
       return {
         ...state,
         loading: true,
       };
-    case a.DELETE_ONE_SUCCESS:
+    case a.DELETE_WORKOUT_SUCCESS:
       --state.workouts.total;
       const newWorkoutsChunk = state.workouts.workoutsChunk.filter(
         (e) => e._id !== action.payload._id
@@ -137,7 +137,7 @@ export const workoutReducer = (state = init, action) => {
         loading: false,
         deleteWorkoutError: null,
       };
-    case a.DELETE_ONE_FAIL:
+    case a.DELETE_WORKOUT_FAIL:
       return {
         ...state,
         loading: false,
