@@ -16,6 +16,7 @@ function App() {
   const { isSpunDownServerAlertMounted } = useSelector(
     (state) => state.toggleMountComponents
   );
+  const { success, error } = useSelector((state) => state.flashMessages);
   const dispatch = useDispatch();
   const { getUrl } = useGetUrl();
 
@@ -56,6 +57,8 @@ function App() {
               </button>
             </div>
           )}
+          { error && <div className="error flashMessage"><p>{error}</p></div> }
+          { success && <div className="success flashMessage"><p>{success}</p></div> }
           <Routes>
             <Route
               path="/login"
