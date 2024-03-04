@@ -25,10 +25,7 @@ export default function useDeleteWorkout() {
     );
     const json = await response.json();
     if (response.ok) {
-      dispatch({
-        type: "SET_ROUTINE_BALANCE",
-        payload: allUserWorkoutsMuscleGroups,
-      });
+      dispatch({ type: "DELETE_WORKOUT_SUCCESS", payload: json.workout });
       if (workoutsChunk.length === 1 && page === 0) {
         if (total > 1) {
           dispatch({ type: "NEXT_PAGE" });
@@ -40,7 +37,10 @@ export default function useDeleteWorkout() {
       if (workoutsChunk.length === 1 && page > 0) {
         dispatch({ type: "PREV_PAGE" });
       }
-      return dispatch({ type: "DELETE_WORKOUT_SUCCESS", payload: json.workout });
+      return dispatch({
+        type: "SET_ROUTINE_BALANCE",
+        payload: allUserWorkoutsMuscleGroups,
+      });
     }
     if (!response.ok) {
       return flashMessage("DELETE_WORKOUT_FAIL", json.error);
