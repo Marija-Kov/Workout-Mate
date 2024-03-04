@@ -6,7 +6,7 @@ export const useFlashMessage = () => {
     dispatch({ type: action, payload: message });
     setTimeout(() => {
       return action.includes("WORKOUT")
-        ? dispatch({ type: "RESET_WORKOUT_STATE" })
+        ? dispatch({ type: "RESET_WORKOUT_ERROR_MESSAGES" })
         : dispatch({ type: "RESET_USER_MESSAGE_STATE" });
     }, 5000);
   };
