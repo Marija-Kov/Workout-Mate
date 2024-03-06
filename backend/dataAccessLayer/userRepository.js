@@ -137,7 +137,8 @@ class UserRepository {
   async findAll() {
     try {
       const sql = `
-       SELECT _id FROM wm_users;
+       SELECT _id FROM wm_users
+       ORDER BY _id ASC;
       `;
       if (process.env.NODE_ENV === "test") {
         return new Promise((resolve, reject) => {
