@@ -57,8 +57,8 @@ function App() {
               </button>
             </div>
           )}
-          { error && <div className="error flashMessage"><p>{error}</p></div> }
-          { success && <div className="success flashMessage"><p>{success}</p></div> }
+          { error && <div role="alert" className="error flashMessage"><p>{error}</p></div> }
+          { success && <div role="alert" className="success flashMessage"><p>{success}</p></div> }
           <Routes>
             <Route
               path="/login"
