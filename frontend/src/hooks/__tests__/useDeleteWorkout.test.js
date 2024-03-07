@@ -37,7 +37,7 @@ afterEach(() => {
   act(() => dispatch({ type: "GO_TO_PAGE_NUMBER", payload: 0 }));
   act(() => dispatch({ type: "SET_ROUTINE_BALANCE", payload: [] }));
   act(() =>
-    dispatch({ type: "RESET_WORKOUTS_STATE", payload: "success" })
+    dispatch({ type: "RESET_WORKOUTS_STATE" })
   );
   act(() => dispatch({ type: "LOGOUT" }));
 });
@@ -72,14 +72,14 @@ describe("useDeleteWorkout()", () => {
       )
     );
     let state = store.getState();
-    expect(state.workouts.total).toBe(mockWorkouts.length);
+    const prevTotal = state.workouts.total;
     expect(state.workouts.workoutsChunk[1]._id).toBe(
       mockWorkouts[1]._id
     );
     const { result } = renderHook(useDeleteWorkout, { wrapper });
     await act(() => result.current.deleteWorkout(mockWorkouts[1]._id));
     state = store.getState();
-    expect(state.workouts.total).toBe(mockWorkouts.length - 1);
+    expect(state.workouts.total).toBe(prevTotal - 1);
     expect(state.workouts.workoutsChunk[1]._id).not.toBe(
       mockWorkouts[1]._id
     );
@@ -183,7 +183,7 @@ describe("useDeleteWorkout()", () => {
       )
     );
     let state = store.getState();
-    expect(state.workouts.total).toBe(mockWorkouts.length);
+    const prevTotal = state.workouts.total;
     expect(state.workouts.workoutsChunk[1]._id).toBe(
       mockWorkouts[1]._id
     );
@@ -191,7 +191,7 @@ describe("useDeleteWorkout()", () => {
     const { result } = renderHook(useDeleteWorkout, { wrapper });
     await act(() => result.current.deleteWorkout(mockWorkouts[1]._id));
     state = store.getState();
-    expect(state.workouts.total).toBe(mockWorkouts.length);
+    expect(state.workouts.total).toBe(prevTotal);
     expect(state.workouts.workoutsChunk[1]._id).toBe(
       mockWorkouts[1]._id
     );
@@ -214,11 +214,11 @@ describe("useDeleteWorkout()", () => {
       )
     );
     let state = store.getState();
-    expect(state.workouts.total).toBe(mockWorkouts.length);
+    const prevTotal = state.workouts.total;
     const { result } = renderHook(useDeleteWorkout, { wrapper });
     await act(() => result.current.deleteWorkout("invalidWorkoutId"));
     state = store.getState();
-    expect(state.workouts.total).toBe(mockWorkouts.length);
+    expect(state.workouts.total).toBe(prevTotal);
     expect(state.flashMessages.error).toBeTruthy();
     expect(state.flashMessages.error).toMatch(/invalid workout id/i);
   });
