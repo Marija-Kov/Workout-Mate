@@ -37,7 +37,7 @@ describe("useDeleteUser()", () => {
     expect(typeof result.current.deleteUser).toBe("function");
   });
 
-  it("should set deleteUserError message given that deleteUser function was run without authorization", async () => {
+  it("should set error given that user isn't authorized", async () => {
     server.use(
       rest.delete(
         `${process.env.REACT_APP_API}/api/users/*`,
@@ -54,11 +54,11 @@ describe("useDeleteUser()", () => {
     const { result } = renderHook(useDeleteUser, { wrapper });
     await act(() => result.current.deleteUser(mockUser.id));
     let state = store.getState();
-    expect(state.user.deleteUserError).toBeTruthy();
-    expect(state.user.deleteUserError).toMatch(/not authorized/i);
+    expect(state.flashMessages.error).toBeTruthy();
+    expect(state.flashMessages.error).toMatch(/not authorized/i);
   });
 
-  it("should set deleteUserError message given that user id wasn't found", async () => {
+  it("should set error given that user id wasn't found", async () => {
     server.use(
       rest.delete(
         `${process.env.REACT_APP_API}/api/users/*`,
@@ -73,21 +73,19 @@ describe("useDeleteUser()", () => {
       )
     );
     const { result } = renderHook(useDeleteUser, { wrapper });
-    act(() => dispatch({ type: "LOGIN_SUCCESS", payload: mockUser }));
+    act(() => dispatch({ type: "LOGIN", payload: mockUser }));
     await act(() => result.current.deleteUser("invalidUserId"));
     let state = store.getState();
-    expect(state.user.deleteUserError).toBeTruthy();
-    expect(state.user.deleteUserError).toMatch(/user id not found/i);
-    act(() => dispatch({ type: "LOGOUT" }));
+    expect(state.flashMessages.error).toBeTruthy();
+    expect(state.flashMessages.error).toMatch(/user id not found/i);
   });
 
-  it("should run deleteUser function successfully given that the user is authorized", async () => {
+  it("should delete user successfully given that the user is authorized", async () => {
     const { result } = renderHook(useDeleteUser, { wrapper });
-    act(() => dispatch({ type: "LOGIN_SUCCESS", payload: mockUser }));
+    act(() => dispatch({ type: "LOGIN", payload: mockUser }));
     await act(() => result.current.deleteUser(mockUser.id));
     let state = store.getState();
-    expect(state.user.success).toBeTruthy();
-    expect(state.user.success).toMatch(/account deleted successfully/i);
-    act(() => dispatch({ type: "LOGOUT" }));
+    expect(state.flashMessages.success).toBeTruthy();
+    expect(state.flashMessages.success).toMatch(/account deleted successfully/i);
   });
 });

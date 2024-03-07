@@ -6,7 +6,7 @@ export const useLogin = () => {
   const flashMessage = useFlashMessage();
 
   const login = async (credentials) => {
-    dispatch({ type: "LOGIN_REQ" });
+    dispatch({ type: "SET_LOADER" });
     const response = await fetch(
       `${process.env.REACT_APP_API}/api/users/login`,
       {
@@ -17,11 +17,13 @@ export const useLogin = () => {
     );
     const json = await response.json();
     if (!response.ok) {
-      return flashMessage("LOGIN_FAIL", json.error);
+      dispatch({ type: "UNSET_LOADER" });
+      return flashMessage("ERROR", json.error);
     }
     if (response.ok) {
       localStorage.setItem("user", JSON.stringify(json));
-      return dispatch({ type: "LOGIN_SUCCESS", payload: json });
+      dispatch({ type: "UNSET_LOADER" });
+      return dispatch({ type: "LOGIN", payload: json });
     }
   };
   

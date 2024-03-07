@@ -28,7 +28,7 @@ beforeAll(() => {
 });
 
 beforeEach(() => {
-  dispatch({ type: "LOGIN_SUCCESS", payload: mockUser });
+  dispatch({ type: "LOGIN", payload: mockUser });
   sample = genSampleWorkouts();
   mockWorkouts = sample.searchResults;
 });
@@ -37,7 +37,7 @@ afterEach(() => {
   act(() => dispatch({ type: "GO_TO_PAGE_NUMBER", payload: 0 }));
   act(() => dispatch({ type: "SET_ROUTINE_BALANCE", payload: [] }));
   act(() =>
-    dispatch({ type: "DELETE_ALL_WORKOUTS_SUCCESS", payload: "success" })
+    dispatch({ type: "RESET_WORKOUTS_STATE", payload: "success" })
   );
   act(() => dispatch({ type: "LOGOUT" }));
 });
@@ -57,7 +57,7 @@ describe("useDeleteWorkout()", () => {
     expect(typeof result.current.deleteWorkout).toBe("function");
   });
 
-  it("should delete a workout given that deleteWorkout was run with authorization and valid workout id", async () => {
+  it("should delete workout given that user was authorized and workout id valid", async () => {
     server.use(
       rest.delete(
         `${process.env.REACT_APP_API}/api/workouts/*`,
@@ -72,17 +72,19 @@ describe("useDeleteWorkout()", () => {
       )
     );
     let state = store.getState();
-    expect(state.workout.workouts.total).toBe(mockWorkouts.length);
-    expect(state.workout.workouts.workoutsChunk[1]._id).toBe(
+    expect(state.workouts.total).toBe(mockWorkouts.length);
+    expect(state.workouts.workoutsChunk[1]._id).toBe(
       mockWorkouts[1]._id
     );
     const { result } = renderHook(useDeleteWorkout, { wrapper });
     await act(() => result.current.deleteWorkout(mockWorkouts[1]._id));
     state = store.getState();
-    expect(state.workout.workouts.total).toBe(mockWorkouts.length - 1);
-    expect(state.workout.workouts.workoutsChunk[1]._id).not.toBe(
+    expect(state.workouts.total).toBe(mockWorkouts.length - 1);
+    expect(state.workouts.workoutsChunk[1]._id).not.toBe(
       mockWorkouts[1]._id
     );
+    expect(state.flashMessages.success).toBeTruthy();
+    expect(state.flashMessages.success).toMatch(/successfully deleted workout/i);
   });
 
   it("should update page state properly when all workouts from the current page have been deleted given that current page is not the first page", async () => {
@@ -103,7 +105,7 @@ describe("useDeleteWorkout()", () => {
     await act(() => dispatch({ type: "GO_TO_PAGE_NUMBER", payload: 1 }));
     await act(() =>
       dispatch({
-        type: "SET_WORKOUTS_SUCCESS",
+        type: "SET_WORKOUTS",
         payload: {
           total: sample.total,
           allUserWorkoutsMuscleGroups: sample.allWorkoutsMuscleGroups,
@@ -117,9 +119,9 @@ describe("useDeleteWorkout()", () => {
     );
     let state = store.getState();
     expect(state.page).toBe(1);
-    expect(state.workout.workouts.workoutsChunk.length).toBe(1);
+    expect(state.workouts.workoutsChunk.length).toBe(1);
     await act(() =>
-      result.current.deleteWorkout(state.workout.workouts.workoutsChunk[0]._id)
+      result.current.deleteWorkout(state.workouts.workoutsChunk[0]._id)
     );
     state = store.getState();
     expect(state.page).toBe(0);
@@ -142,7 +144,7 @@ describe("useDeleteWorkout()", () => {
     const { result } = renderHook(useDeleteWorkout, { wrapper });
     act(() =>
       dispatch({
-        type: "SET_WORKOUTS_SUCCESS",
+        type: "SET_WORKOUTS",
         payload: {
           total: sample.total,
           allUserWorkoutsMuscleGroups: sample.allWorkoutsMuscleGroups,
@@ -156,9 +158,9 @@ describe("useDeleteWorkout()", () => {
     );
     let state = store.getState();
     expect(state.page).toBe(0);
-    expect(state.workout.workouts.workoutsChunk.length).toBe(1);
+    expect(state.workouts.workoutsChunk.length).toBe(1);
     await act(() =>
-      result.current.deleteWorkout(state.workout.workouts.workoutsChunk[0]._id)
+      result.current.deleteWorkout(state.workouts.workoutsChunk[0]._id)
     );
     state = store.getState();
     setTimeout(() => {
@@ -166,7 +168,7 @@ describe("useDeleteWorkout()", () => {
     }, 500);
   });
 
-  it("should set deleteWorkoutError message given that deleteWorkout was run without authorization", async () => {
+  it("should set error given that user wasn't authorized", async () => {
     server.use(
       rest.delete(
         `${process.env.REACT_APP_API}/api/workouts/*`,
@@ -181,23 +183,23 @@ describe("useDeleteWorkout()", () => {
       )
     );
     let state = store.getState();
-    expect(state.workout.workouts.total).toBe(mockWorkouts.length);
-    expect(state.workout.workouts.workoutsChunk[1]._id).toBe(
+    expect(state.workouts.total).toBe(mockWorkouts.length);
+    expect(state.workouts.workoutsChunk[1]._id).toBe(
       mockWorkouts[1]._id
     );
-    act(() => dispatch({ type: "LOGOUT" }));
+    act(() => dispatch({ type: "LOGIN", payload: null }));
     const { result } = renderHook(useDeleteWorkout, { wrapper });
     await act(() => result.current.deleteWorkout(mockWorkouts[1]._id));
     state = store.getState();
-    expect(state.workout.workouts.total).toBe(mockWorkouts.length);
-    expect(state.workout.workouts.workoutsChunk[1]._id).toBe(
+    expect(state.workouts.total).toBe(mockWorkouts.length);
+    expect(state.workouts.workoutsChunk[1]._id).toBe(
       mockWorkouts[1]._id
     );
-    expect(state.workout.deleteWorkoutError).toBeTruthy();
-    expect(state.workout.deleteWorkoutError).toMatch(/not authorized/i);
+    expect(state.flashMessages.error).toBeTruthy();
+    expect(state.flashMessages.error).toMatch(/not authorized/i);
   });
 
-  it("should set deleteWorkoutError message given that deleteWorkout was run with invalid workout id", async () => {
+  it("should set error given that workout id was invalid", async () => {
     server.use(
       rest.delete(
         `${process.env.REACT_APP_API}/api/workouts/*`,
@@ -212,12 +214,12 @@ describe("useDeleteWorkout()", () => {
       )
     );
     let state = store.getState();
-    expect(state.workout.workouts.total).toBe(mockWorkouts.length);
+    expect(state.workouts.total).toBe(mockWorkouts.length);
     const { result } = renderHook(useDeleteWorkout, { wrapper });
     await act(() => result.current.deleteWorkout("invalidWorkoutId"));
     state = store.getState();
-    expect(state.workout.workouts.total).toBe(mockWorkouts.length);
-    expect(state.workout.deleteWorkoutError).toBeTruthy();
-    expect(state.workout.deleteWorkoutError).toMatch(/invalid workout id/i);
+    expect(state.workouts.total).toBe(mockWorkouts.length);
+    expect(state.flashMessages.error).toBeTruthy();
+    expect(state.flashMessages.error).toMatch(/invalid workout id/i);
   });
 });

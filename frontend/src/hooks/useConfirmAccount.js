@@ -6,24 +6,24 @@ export const useConfirmAccount = () => {
   const flashMessage = useFlashMessage();
 
   const confirmAccount = async (token) => {
-    dispatch({ type: "CONFIRM_ACCOUNT_REQ" });
+    dispatch({ type: "SET_LOADER" });
     if (!token) {
-      return flashMessage(
-        "CONFIRM_ACCOUNT_FAIL",
-        "Account confirmation token not found"
-      );
+      dispatch({ type: "UNSET_LOADER" });
+      return flashMessage("ERROR", "Account confirmation token not found");
     }
     const response = await fetch(
       `${process.env.REACT_APP_API}/api/users/${token}`
     );
     const json = await response.json();
     if (!response.ok) {
-      return flashMessage("CONFIRM_ACCOUNT_FAIL", json.error);
+      dispatch({ type: "UNSET_LOADER" });
+      return flashMessage("ERROR", json.error);
     }
     if (response.ok) {
-      return dispatch({ type: "CONFIRM_ACCOUNT_SUCCESS", payload: json.success });
+      dispatch({ type: "UNSET_LOADER" });
+      return flashMessage("SUCCESS", json.success);
     }
   };
-  
+
   return { confirmAccount };
 };

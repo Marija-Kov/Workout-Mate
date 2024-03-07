@@ -6,16 +6,14 @@ export default function useSendPasswordResetLink() {
   const flashMessage = useFlashMessage();
 
   const sendPasswordResetLink = async (email) => {
-    dispatch({ type: "SEND_PASSWORD_RESET_LINK_REQ" });
+    dispatch({ type: "SET_LOADER" });
     if (
       !email.match(
         /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
-      )
-    ) {
-      return flashMessage(
-        "SEND_PASSWORD_RESET_LINK_FAIL",
-        "Please enter valid email address"
-      );
+        )
+        ) {
+      dispatch({ type: "UNSET_LOADER" });
+      return flashMessage("ERROR", "Please enter valid email address");
     }
     const response = await fetch(
       `${process.env.REACT_APP_API}/api/reset-password`,
@@ -26,13 +24,15 @@ export default function useSendPasswordResetLink() {
           email: email,
         }),
       }
-    );
-    const json = await response.json();
-    if (!response.ok) {
-      return flashMessage("SEND_PASSWORD_RESET_LINK_FAIL", json.error);
+      );
+      const json = await response.json();
+      if (!response.ok) {
+      dispatch({ type: "UNSET_LOADER" });
+      return flashMessage("ERROR", json.error);
     }
     if (response.ok) {
-      return flashMessage("SEND_PASSWORD_RESET_LINK_SUCCESS", json.success);
+      dispatch({ type: "UNSET_LOADER" });
+      return flashMessage("SUCCESS", json.success);
     }
   };
   

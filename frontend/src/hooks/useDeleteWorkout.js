@@ -4,15 +4,16 @@ import { useFlashMessage } from "./useFlashMessage";
 export default function useDeleteWorkout() {
   const dispatch = useDispatch();
   const flashMessage = useFlashMessage();
-  const { user } = useSelector((state) => state.user);
-  const { workouts } = useSelector((state) => state.workout);
+  const user = useSelector((state) => state.user);
+  const workouts = useSelector((state) => state.workouts);
   const page = useSelector((state) => state.page);
   const { workoutsChunk, allUserWorkoutsMuscleGroups, total } = workouts;
 
   const deleteWorkout = async (id) => {
-    dispatch({ type: "DELETE_WORKOUT_REQ" });
+    dispatch({ type: "SET_LOADER" });
     if (!user) {
-      return flashMessage("DELETE_WORKOUT_FAIL", "Not authorized");
+      dispatch({ type: "UNSET_LOADER" });
+      return flashMessage("ERROR", "Not authorized");
     }
     const response = await fetch(
       `${process.env.REACT_APP_API}/api/workouts/${id}`,
@@ -22,10 +23,12 @@ export default function useDeleteWorkout() {
           Authorization: `Bearer ${user.token}`,
         },
       }
-    );
-    const json = await response.json();
-    if (response.ok) {
-      dispatch({ type: "DELETE_WORKOUT_SUCCESS", payload: json.workout });
+      );
+      const json = await response.json();
+      if (response.ok) {
+      dispatch({ type: "UNSET_LOADER" });
+      flashMessage("SUCCESS", "Successfully deleted workout");
+      dispatch({ type: "DELETE_WORKOUT", payload: json.workout});
       if (workoutsChunk.length === 1 && page === 0) {
         if (total > 1) {
           dispatch({ type: "NEXT_PAGE" });
@@ -43,7 +46,7 @@ export default function useDeleteWorkout() {
       });
     }
     if (!response.ok) {
-      return flashMessage("DELETE_WORKOUT_FAIL", json.error);
+      return flashMessage("ERROR", json.error);
     }
   };
   

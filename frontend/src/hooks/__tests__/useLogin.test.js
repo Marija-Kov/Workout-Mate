@@ -27,7 +27,7 @@ describe("useLogin()", () => {
     expect(typeof result.current.login).toBe("function");
   });
 
-  it("should set loginError message given that the server responded with an error", async () => {
+  it("should set error given that credentials were invalid", async () => {
     server.use(
       rest.post(
         `${process.env.REACT_APP_API}/api/users/login`,
@@ -42,22 +42,21 @@ describe("useLogin()", () => {
       )
     );
     let state = store.getState();
-    expect(state.user.user).toBeFalsy();
+    expect(state.user).toBeFalsy();
     const { result } = renderHook(useLogin, { wrapper });
     await act(async () => result.current.login());
     state = store.getState();
-    expect(state.user.user).toBeFalsy();
-    expect(state.user.loginError).toBeTruthy();
-    expect(state.user.loginError).toMatch(/invalid credentials/i);
+    expect(state.user).toBeFalsy();
+    expect(state.flashMessages.error).toBeTruthy();
+    expect(state.flashMessages.error).toMatch(/invalid credentials/i);
   });
 
-  it("should set user.user state to user object given that credentials were valid", async () => {
+  it("should log in given that credentials were valid", async () => {
     let state = store.getState();
-    expect(state.user.user).toBeFalsy();
+    expect(state.user).toBeFalsy();
     const { result } = renderHook(useLogin, { wrapper });
     await act(async () => result.current.login());
     state = store.getState();
-    expect(state.user.user).toBeTruthy();
-    dispatch({ type: "LOGOUT" });
+    expect(state.user).toBeTruthy();
   });
 });

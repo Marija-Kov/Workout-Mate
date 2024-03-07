@@ -35,7 +35,7 @@ export function genSampleWorkouts(searchFor = "", page = 1, itemsPerPage = 3) {
       user_id: "userid",
     };
     workouts.unshift(workout);
-    dispatch({ type: "CREATE_WORKOUT_SUCCESS", payload: workout });
+    dispatch({ type: "CREATE_WORKOUT", payload: workout });
   }
   let noWorkoutsByQuery = false;
   const searchResults = workouts.filter((e) => {

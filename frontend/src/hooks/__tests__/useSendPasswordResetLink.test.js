@@ -24,7 +24,7 @@ describe("useSendPasswordResetLink()", () => {
     expect(typeof result.current.sendPasswordResetLink).toBe("function");
   });
 
-  it("should set sendPasswordResetLinkError message given that the input is invalid (not an email or email that doesn't exist in the database)", async () => {
+  it("should set error given that the input is invalid", async () => {
     server.use(
       rest.post(
         `${process.env.REACT_APP_API}/api/reset-password`,
@@ -41,17 +41,17 @@ describe("useSendPasswordResetLink()", () => {
     const { result } = renderHook(useSendPasswordResetLink, { wrapper });
     await act(() => result.current.sendPasswordResetLink("gibberish"));
     let state = store.getState();
-    expect(state.user.sendPasswordResetLinkError).toBeTruthy();
-    expect(state.user.sendPasswordResetLinkError).toMatch(
+    expect(state.flashMessages.error).toBeTruthy();
+    expect(state.flashMessages.error).toMatch(
       /please enter valid email address/i
     );
   });
 
-  it("should set success message given that the input is valid and password reset email has been sent", async () => {
+  it("should set success message given that the input is valid", async () => {
     const { result } = renderHook(useSendPasswordResetLink, { wrapper });
     await act(() => result.current.sendPasswordResetLink("valid@e.mail"));
     let state = store.getState();
-    expect(state.user.success).toBeTruthy();
-    expect(state.user.success).toMatch(/reset link sent to inbox/i);
+    expect(state.flashMessages.success).toBeTruthy();
+    expect(state.flashMessages.success).toMatch(/reset link sent to inbox/i);
   });
 });

@@ -24,13 +24,13 @@ describe("useSignup()", () => {
     expect(typeof result.current.signup).toBe("function");
   });
 
-  it("should set signupError message given that input was invalid", async () => {
+  it("should set error given that input was invalid", async () => {
     server.use(
       rest.post(
         `${process.env.REACT_APP_API}/api/users/signup`,
         (req, res, ctx) => {
           return res(
-            ctx.status(400),
+            ctx.status(422),
             ctx.json({
               error: "Invalid input",
             })
@@ -41,16 +41,16 @@ describe("useSignup()", () => {
     const { result } = renderHook(useSignup, { wrapper });
     await act(async () => result.current.signup());
     let state = store.getState();
-    expect(state.user.signupError).toBeTruthy();
-    expect(state.user.signupError).toMatch(/invalid input/i);
+    expect(state.flashMessages.error).toBeTruthy();
+    expect(state.flashMessages.error).toMatch(/invalid input/i);
   });
 
   it("should set success message given that signup was successful", async () => {
     const { result } = renderHook(useSignup, { wrapper });
     await act(async () => result.current.signup());
     let state = store.getState();
-    expect(state.user.signupError).toBeFalsy();
-    expect(state.user.success).toBeTruthy();
-    expect(state.user.success).toMatch(/please check your inbox/i);
+    expect(state.flashMessages.error).toBeFalsy();
+    expect(state.flashMessages.success).toBeTruthy();
+    expect(state.flashMessages.success).toMatch(/please check your inbox/i);
   });
 });

@@ -4,12 +4,13 @@ import { useFlashMessage } from "./useFlashMessage";
 export const useDeleteAllWorkouts = () => {
   const dispatch = useDispatch();
   const flashMessage = useFlashMessage();
-  const { user } = useSelector((state) => state.user);
+  const user = useSelector((state) => state.user);
 
   const deleteAllWorkouts = async () => {
-    dispatch({ type: "DELETE_ALL_WORKOUTS_REQ" });
+    dispatch({ type: "SET_LOADER" });
     if (!user) {
-      return flashMessage("DELETE_ALL_WORKOUTS_FAIL", "Not authorized");
+      dispatch({ type: "UNSET_LOADER" });
+      return flashMessage("ERROR", "Not authorized");
     }
     const response = await fetch(`${process.env.REACT_APP_API}/api/workouts/`, {
       method: "DELETE",
@@ -18,16 +19,13 @@ export const useDeleteAllWorkouts = () => {
       },
     });
     if (response.ok) {
-      dispatch({
-        type: "DELETE_ALL_WORKOUTS_SUCCESS",
-        payload: "All workouts deleted successfully",
-      });
+      dispatch({ type: "UNSET_LOADER" });
+      dispatch({ type: "RESET_WORKOUTS_STATE" });
+      return flashMessage("SUCCESS", "Successfully deleted all workouts");
     }
     if (!response.ok) {
-      return flashMessage(
-        "DELETE_ALL_WORKOUTS_FAIL",
-        "Could not delete workouts"
-      );
+      dispatch({ type: "UNSET_LOADER" });
+      return flashMessage("ERROR", "Could not delete workouts");
     }
   };
 

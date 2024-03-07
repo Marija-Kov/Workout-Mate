@@ -4,14 +4,15 @@ import { useFlashMessage } from "./useFlashMessage";
 export const useCreateWorkout = () => {
   const dispatch = useDispatch();
   const flashMessage = useFlashMessage();
-  const { user } = useSelector((state) => state.user);
-  const { workouts } = useSelector((state) => state.workout);
+  const user = useSelector((state) => state.user);
+  const workouts = useSelector((state) => state.workouts);
   const { allUserWorkoutsMuscleGroups } = workouts;
 
   const createWorkout = async (workout) => {
-    dispatch({ type: "CREATE_WORKOUT_REQ" });
+    dispatch({ type: "SET_LOADER" });
     if (!user) {
-      return flashMessage("CREATE_WORKOUT_FAIL", "Not authorized");
+      dispatch({ type: "UNSET_LOADER" });
+      return flashMessage("ERROR", "Not authorized");
     }
 
     const response = await fetch(`${process.env.REACT_APP_API}/api/workouts`, {
@@ -24,10 +25,13 @@ export const useCreateWorkout = () => {
     });
     const json = await response.json();
     if (!response.ok) {
-      return flashMessage("CREATE_WORKOUT_FAIL", json.error);
+      dispatch({ type: "UNSET_LOADER" });
+      return flashMessage("ERROR", json.error);
     }
     if (response.ok) {
-      dispatch({ type: "CREATE_WORKOUT_SUCCESS", payload: json });
+      dispatch({ type: "UNSET_LOADER" });
+      flashMessage("SUCCESS", "Successfully created workout");
+      dispatch({ type: "CREATE_WORKOUT", payload: json });
       dispatch({ type: "GO_TO_PAGE_NUMBER", payload: 0 });
       dispatch({
         type: "SET_ROUTINE_BALANCE",

@@ -42,8 +42,8 @@ describe("useConfirmAccount()", () => {
     const { result } = renderHook(useConfirmAccount, { wrapper });
     await act(async () => result.current.confirmAccount(invalidToken));
     let state = store.getState();
-    expect(state.user.confirmAccountError).toBeTruthy();
-    expect(state.user.confirmAccountError).toMatch(
+    expect(state.flashMessages.error).toBeTruthy();
+    expect(state.flashMessages.error).toMatch(
       /invalid account confirmation token/i
     );
   });
@@ -66,8 +66,8 @@ describe("useConfirmAccount()", () => {
     const { result } = renderHook(useConfirmAccount, { wrapper });
     await act(async () => result.current.confirmAccount(noToken));
     let state = store.getState();
-    expect(state.user.confirmAccountError).toBeTruthy();
-    expect(state.user.confirmAccountError).toMatch(
+    expect(state.flashMessages.error).toBeTruthy();
+    expect(state.flashMessages.error).toMatch(
       /account confirmation token not found/i
     );
   });
@@ -77,7 +77,9 @@ describe("useConfirmAccount()", () => {
     const { result } = renderHook(useConfirmAccount, { wrapper });
     await act(async () => result.current.confirmAccount(validToken));
     let state = store.getState();
-    expect(state.user.success).toBeTruthy();
-    expect(state.user.success).toMatch(/account confirmed/i);
+    expect(state.flashMessages.success).toBeTruthy();
+    expect(state.flashMessages.success).toMatch(
+      /account confirmed/i
+    );
   });
 });
