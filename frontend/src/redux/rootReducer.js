@@ -5,14 +5,18 @@ import { pageReducer } from "./page/pageReducer";
 import { queryReducer } from "./query/queryReducer";
 import { toggleMountComponentsReducer } from "./toggleMountComponents/toggleMountComponentsReducer";
 import { routineBalanceReducer } from "./routineBalance/routineBalanceReducer";
+import { flashMessagesReducer } from "./flashMessages/flashMessagesReducer";
+import { loaderReducer } from "./loader/loaderReducer";
 
 const rootReducer = combineReducers({
   user: userReducer,
-  workout: workoutReducer,
+  workouts: workoutReducer,
   page: pageReducer,
   query: queryReducer,
   toggleMountComponents: toggleMountComponentsReducer,
   routineBalance: routineBalanceReducer,
+  flashMessages: flashMessagesReducer,
+  loader: loaderReducer
 });
 
 export default rootReducer;

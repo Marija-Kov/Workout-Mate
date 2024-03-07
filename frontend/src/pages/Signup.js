@@ -6,7 +6,7 @@ const Signup = () => {
   const email = React.useRef();
   const password = React.useRef();
   const { signup } = useSignup();
-  const { signupError, success, loading } = useSelector((state) => state.user);
+  const loading = useSelector((state) => state.loader);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -54,16 +54,6 @@ const Signup = () => {
               <div></div>
               <div></div>
             </div>
-          </div>
-        )}
-        {signupError && (
-          <div role="alert" className="error">
-            {signupError}
-          </div>
-        )}
-        {success && (
-          <div role="alert" className="success">
-            {success}
           </div>
         )}
       </form>

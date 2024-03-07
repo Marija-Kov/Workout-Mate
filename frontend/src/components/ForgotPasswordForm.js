@@ -1,12 +1,9 @@
 import React from "react";
 import useSendPasswordResetLink from "../hooks/useSendPasswordResetLink";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 export default function ForgotPasswordForm() {
   const dispatch = useDispatch();
-  const { sendPasswordResetLinkError, success } = useSelector(
-    (state) => state.user
-  );
   const { sendPasswordResetLink } = useSendPasswordResetLink();
   const email = React.useRef();
 
@@ -22,7 +19,6 @@ export default function ForgotPasswordForm() {
           className="close material-symbols-outlined"
           onClick={() => {
             dispatch({ type: "TOGGLE_MOUNT_FORGOT_PASSWORD_FORM" });
-            dispatch({ type: "RESET_USER_STATE" });
           }}
         >
           close
@@ -37,16 +33,6 @@ export default function ForgotPasswordForm() {
           ref={email}
         />
         <button className="proceed">Proceed</button>
-        {success && (
-          <div role="alert" className="success">
-            {success}
-          </div>
-        )}
-        {sendPasswordResetLinkError && (
-          <div role="alert" className="error">
-            {sendPasswordResetLinkError}
-          </div>
-        )}
       </form>
     </div>
   );

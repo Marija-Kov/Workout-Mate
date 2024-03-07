@@ -8,7 +8,7 @@ const ForgotPasswordForm = React.lazy(() =>
 
 const Login = () => {
   const dispatch = useDispatch();
-  const { loginError, loading } = useSelector((state) => state.user);
+  const loading = useSelector((state) => state.loader);
   const { isForgotPasswordFormMounted } = useSelector(
     (state) => state.toggleMountComponents
   );
@@ -69,11 +69,6 @@ const Login = () => {
                 <div></div>
                 <div></div>
               </div>
-            </div>
-          )}
-          {loginError && (
-            <div role="alert" className="error">
-              {loginError}
             </div>
           )}
         </form>

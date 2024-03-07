@@ -4,14 +4,15 @@ import { useFlashMessage } from "./useFlashMessage";
 export default function useEditWorkout() {
   const dispatch = useDispatch();
   const flashMessage = useFlashMessage();
-  const { user } = useSelector((state) => state.user);
-  const { workouts } = useSelector((state) => state.workout);
+  const user = useSelector((state) => state.user);
+  const workouts = useSelector((state) => state.workouts);
   const { allUserWorkoutsMuscleGroups } = workouts;
 
   const editWorkout = async (id, payload) => {
-    dispatch({ type: "UPDATE_WORKOUT_REQ" });
+    dispatch({ type: "SET_LOADER" });
     if (!user) {
-      return flashMessage("UPDATE_WORKOUT_FAIL", "You must be logged in");
+      dispatch({ type: "UNSET_LOADER" });
+      return flashMessage("ERROR", "Not authorized");
     }
     const response = await fetch(
       `${process.env.REACT_APP_API}/api/workouts/${id}`,
@@ -23,13 +24,16 @@ export default function useEditWorkout() {
           Authorization: `Bearer ${user.token}`,
         },
       }
-    );
-    const json = await response.json();
-    if (!response.ok) {
-      return flashMessage("UPDATE_WORKOUT_FAIL", json.error);
+      );
+      const json = await response.json();
+      if (!response.ok) {
+      dispatch({ type: "UNSET_LOADER" });
+      return flashMessage("ERROR", json.error);
     }
     if (response.ok) {
-      dispatch({ type: "UPDATE_WORKOUT_SUCCESS", payload: json });
+      dispatch({ type: "UNSET_LOADER" });
+      flashMessage("SUCCESS", "Successfully updated workout");
+      dispatch({ type: "UPDATE_WORKOUT", payload: json });
       if (payload.muscle_group)
         dispatch({
           type: "SET_ROUTINE_BALANCE",

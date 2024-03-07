@@ -2,14 +2,15 @@ import { useSelector, useDispatch } from "react-redux";
 import { useFlashMessage } from "./useFlashMessage";
 
 export const useSearch = () => {
-  const { user } = useSelector((state) => state.user);
+  const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const flashMessage = useFlashMessage();
 
   const search = async (query, page) => {
-    dispatch({ type: "SET_WORKOUTS_REQ" });
+    dispatch({ type: "SET_LOADER" });
     if (!user) {
-      return flashMessage("SET_WORKOUTS_FAIL", "Not authorized");
+      dispatch({ type: "UNSET_LOADER" });
+      return flashMessage("ERROR", "Not authorized");
     }
     const response = await fetch(
       `${process.env.REACT_APP_API}/api/workouts/?search=${query}&p=${page}`,
@@ -21,12 +22,14 @@ export const useSearch = () => {
     );
     const json = await response.json();
     if (response.ok) {
-      return dispatch({ type: "SET_WORKOUTS_SUCCESS", payload: json });
+      dispatch({ type: "UNSET_LOADER" });
+      return dispatch({ type: "SET_WORKOUTS", payload: json });
     }
     if (!response.ok) {
-      return flashMessage("SET_WORKOUTS_FAIL", json.error);
+      dispatch({ type: "UNSET_LOADER" });
+      return flashMessage("ERROR", json.error);
     }
   };
-  
+
   return { search };
 };

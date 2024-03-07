@@ -2,6 +2,7 @@ import { render, screen } from "@testing-library/react";
 import user from "@testing-library/user-event";
 import "@testing-library/jest-dom";
 import Login from "../Login";
+import App from "../../mocks/App";
 import { rest } from "msw";
 import { server } from "../../mocks/server";
 import { Provider } from "react-redux";
@@ -84,7 +85,7 @@ describe("<Login />", () => {
         `${process.env.REACT_APP_API}/api/users/login`,
         (req, res, ctx) => {
           return res(
-            ctx.status(400),
+            ctx.status(422),
             ctx.json({
               error: "Invalid input or user not confirmed",
             })
@@ -95,14 +96,16 @@ describe("<Login />", () => {
     user.setup();
     render(
       <Provider store={store}>
+        <App />
         <Login />
       </Provider>
     );
     const loginBtn = await screen.findByText("Log in");
     await user.click(loginBtn);
-    const errorEl = await screen.findByRole("alert");
-    expect(errorEl).toBeInTheDocument();
-    expect(errorEl).toHaveClass("error");
+    const error = await screen.findByRole("alert");
+    expect(error).toBeInTheDocument();
+    expect(error.textContent).toMatch(/invalid input or user not confirmed/i);
+    expect(error).toHaveAttribute("class", "error flashMessage");
   });
 
   it("should render Home page once 'log in' button is clicked given that server responds with success", async () => {

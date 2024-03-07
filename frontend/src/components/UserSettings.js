@@ -16,9 +16,8 @@ export default function UserSettings({ changeProfileImg }) {
   const { deleteUser } = useDeleteUser();
   const { deleteAllWorkouts } = useDeleteAllWorkouts();
   const { logout } = useLogout();
-  const { user, loading, updateUserError, success } = useSelector(
-    (state) => state.user
-  );
+  const user = useSelector((state) => state.user);
+  const loading = useSelector((state) => state.loader);
   const { isDeleteAccountDialogueMounted } = useSelector(
     (state) => state.toggleMountComponents
   );
@@ -95,7 +94,6 @@ export default function UserSettings({ changeProfileImg }) {
           className="close material-symbols-outlined"
           onClick={() => {
             dispatch({ type: "TOGGLE_MOUNT_USER_SETTINGS_FORM" });
-            dispatch({ type: "RESET_USER_MESSAGE_STATE" });
           }}
         >
           close
@@ -153,16 +151,6 @@ export default function UserSettings({ changeProfileImg }) {
         >
           Upload
         </button>
-        {updateUserError && (
-          <div role="alert" className="error">
-            {updateUserError}
-          </div>
-        )}
-        {success && (
-          <div role="alert" className="success">
-            {success}
-          </div>
-        )}
         {loading && (
           <h4 style={{ position: "absolute", zIndex: "10" }}>Loading...</h4>
         )}

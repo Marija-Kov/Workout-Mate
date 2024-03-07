@@ -37,7 +37,7 @@ describe("useCreateWorkout()", () => {
     expect(typeof result.current.createWorkout).toBe("function");
   });
 
-  it("should create a new workout when createWorkout was run with authorization and valid input", async () => {
+  it("should create a new workout given that user is authorized and input valid", async () => {
     const mockWorkout = {
       title: "squats",
       muscle_group: "leg",
@@ -60,43 +60,44 @@ describe("useCreateWorkout()", () => {
         }
       )
     );
-    dispatch({ type: "LOGIN_SUCCESS", payload: mockUser });
+    dispatch({ type: "LOGIN", payload: mockUser });
     let state = store.getState();
-    expect(state.workout.workouts.total).toBe(0);
+    const prevTotal = state.workouts.total;
     const { result } = renderHook(useCreateWorkout, { wrapper });
     await act(() => result.current.createWorkout(mockWorkout));
     state = store.getState();
-    expect(state.workout.workouts.total).toBe(1);
-    expect(state.workout.workouts.workoutsChunk[0].title).toMatch(
+    expect(state.workouts.total).toBe(prevTotal + 1);
+    expect(state.workouts.workoutsChunk[0].title).toMatch(
       mockWorkout.title
     );
-    act(() =>
-      dispatch({ type: "DELETE_ALL_WORKOUTS_SUCCESS", payload: "success" })
+    expect(state.flashMessages.success).toBeTruthy();
+    expect(state.flashMessages.success).toMatch(
+      /successfully created workout/i
     );
-    act(() => dispatch({ type: "LOGOUT" }));
   });
 
-  it("should set createWorkoutError message given that request wasn't authorized", async () => {
+  it("should set error given that request wasn't authorized", async () => {
     const mockWorkout = {
       title: "squats",
       muscle_group: "leg",
       reps: 20,
       load: 15,
     };
+    dispatch({ type: "LOGOUT" });
     const { result } = renderHook(useCreateWorkout, { wrapper });
     await act(() => result.current.createWorkout(mockWorkout));
     let state = store.getState();
-    expect(state.workout.createWorkoutError).toBeTruthy();
-    expect(state.workout.createWorkoutError).toMatch(/not authorized/i);
+    expect(state.flashMessages.error).toBeTruthy();
+    expect(state.flashMessages.error).toMatch(/not authorized/i);
   });
 
-  it("should set createWorkoutError message given that at least one input field was empty", async () => {
+  it("should set error given that at least one input field was empty", async () => {
     server.use(
       rest.post(
         `${process.env.REACT_APP_API}/api/workouts`,
         (req, res, ctx) => {
           return res(
-            ctx.status(400),
+            ctx.status(422),
             ctx.json({
               error: "Please fill out the empty fields",
             })
@@ -105,27 +106,24 @@ describe("useCreateWorkout()", () => {
       )
     );
     const mockWorkout = { title: "squats", reps: 20 };
-    dispatch({ type: "LOGIN_SUCCESS", payload: mockUser });
+    dispatch({ type: "LOGIN", payload: mockUser });
     let state = store.getState();
-    expect(state.workout.workouts.total).toBe(0);
+    const prevTotal = state.workouts.total;
     const { result } = renderHook(useCreateWorkout, { wrapper });
     await act(() => result.current.createWorkout(mockWorkout));
     state = store.getState();
-    expect(state.workout.createWorkoutError).toBeTruthy();
-    expect(state.workout.createWorkoutError).toMatch(/empty fields/i);
-    act(() =>
-      dispatch({ type: "DELETE_ALL_WORKOUTS_SUCCESS", payload: "success" })
-    );
-    act(() => dispatch({ type: "LOGOUT" }));
+    expect(state.workouts.total).toBe(prevTotal);
+    expect(state.flashMessages.error).toBeTruthy();
+    expect(state.flashMessages.error).toMatch(/empty fields/i);
   });
 
-  it("should set createWorkoutError message given that title input was too long", async () => {
+  it("should set error given that title input was too long", async () => {
     server.use(
       rest.post(
         `${process.env.REACT_APP_API}/api/workouts`,
         (req, res, ctx) => {
           return res(
-            ctx.status(400),
+            ctx.status(422),
             ctx.json({
               error: "Title too long - max 30 characters",
             })
@@ -139,27 +137,24 @@ describe("useCreateWorkout()", () => {
       reps: 20,
       load: 15,
     };
-    dispatch({ type: "LOGIN_SUCCESS", payload: mockUser });
+    dispatch({ type: "LOGIN", payload: mockUser });
     let state = store.getState();
-    expect(state.workout.workouts.total).toBe(0);
+    const prevTotal = state.workouts.total;
     const { result } = renderHook(useCreateWorkout, { wrapper });
     await act(() => result.current.createWorkout(mockWorkout));
     state = store.getState();
-    expect(state.workout.createWorkoutError).toBeTruthy();
-    expect(state.workout.createWorkoutError).toMatch(/title too long/i);
-    act(() =>
-      dispatch({ type: "DELETE_ALL_WORKOUTS_SUCCESS", payload: "success" })
-    );
-    act(() => dispatch({ type: "LOGOUT" }));
+    expect(state.workouts.total).toBe(prevTotal);
+    expect(state.flashMessages.error).toBeTruthy();
+    expect(state.flashMessages.error).toMatch(/title too long/i);
   });
 
-  it("should set createWorkoutError message given that title input contained non-alphabetic characters", async () => {
+  it("should set error given that title input contained non-alphabetic characters", async () => {
     server.use(
       rest.post(
         `${process.env.REACT_APP_API}/api/workouts`,
         (req, res, ctx) => {
           return res(
-            ctx.status(400),
+            ctx.status(422),
             ctx.json({
               error: "Title may contain only letters",
             })
@@ -173,29 +168,26 @@ describe("useCreateWorkout()", () => {
       reps: 20,
       load: 15,
     };
-    dispatch({ type: "LOGIN_SUCCESS", payload: mockUser });
+    dispatch({ type: "LOGIN", payload: mockUser });
     let state = store.getState();
-    expect(state.workout.workouts.total).toBe(0);
+    const prevTotal = state.workouts.total;
     const { result } = renderHook(useCreateWorkout, { wrapper });
     await act(() => result.current.createWorkout(mockWorkout));
     state = store.getState();
-    expect(state.workout.createWorkoutError).toBeTruthy();
-    expect(state.workout.createWorkoutError).toMatch(
+    expect(state.workouts.total).toBe(prevTotal);
+    expect(state.flashMessages.error).toBeTruthy();
+    expect(state.flashMessages.error).toMatch(
       /title may contain only letters/i
     );
-    act(() =>
-      dispatch({ type: "DELETE_ALL_WORKOUTS_SUCCESS", payload: "success" })
-    );
-    act(() => dispatch({ type: "LOGOUT" }));
   });
 
-  it("should set createWorkoutError message given that load input value was too large", async () => {
+  it("should set error given that load input value was too large", async () => {
     server.use(
       rest.post(
         `${process.env.REACT_APP_API}/api/workouts`,
         (req, res, ctx) => {
           return res(
-            ctx.status(400),
+            ctx.status(422),
             ctx.json({
               error: "load value too large",
             })
@@ -209,27 +201,24 @@ describe("useCreateWorkout()", () => {
       reps: 20,
       load: 15000,
     };
-    dispatch({ type: "LOGIN_SUCCESS", payload: mockUser });
+    dispatch({ type: "LOGIN", payload: mockUser });
     let state = store.getState();
-    expect(state.workout.workouts.total).toBe(0);
+    const prevTotal = state.workouts.total;
     const { result } = renderHook(useCreateWorkout, { wrapper });
     await act(() => result.current.createWorkout(mockWorkout));
     state = store.getState();
-    expect(state.workout.createWorkoutError).toBeTruthy();
-    expect(state.workout.createWorkoutError).toMatch(/load value too large/i);
-    act(() =>
-      dispatch({ type: "DELETE_ALL_WORKOUTS_SUCCESS", payload: "success" })
-    );
-    act(() => dispatch({ type: "LOGOUT" }));
+    expect(state.workouts.total).toBe(prevTotal);
+    expect(state.flashMessages.error).toBeTruthy();
+    expect(state.flashMessages.error).toMatch(/load value too large/i);
   });
 
-  it("should set createWorkoutError message given that reps input value was too large", async () => {
+  it("should set error given that reps input value was too large", async () => {
     server.use(
       rest.post(
         `${process.env.REACT_APP_API}/api/workouts`,
         (req, res, ctx) => {
           return res(
-            ctx.status(400),
+            ctx.status(422),
             ctx.json({
               error: "reps value too large",
             })
@@ -243,17 +232,14 @@ describe("useCreateWorkout()", () => {
       reps: 20000,
       load: 15,
     };
-    dispatch({ type: "LOGIN_SUCCESS", payload: mockUser });
+    dispatch({ type: "LOGIN", payload: mockUser });
     let state = store.getState();
-    expect(state.workout.workouts.total).toBe(0);
+    const prevTotal = state.workouts.total;
     const { result } = renderHook(useCreateWorkout, { wrapper });
     await act(() => result.current.createWorkout(mockWorkout));
     state = store.getState();
-    expect(state.workout.createWorkoutError).toBeTruthy();
-    expect(state.workout.createWorkoutError).toMatch(/reps value too large/i);
-    act(() =>
-      dispatch({ type: "DELETE_ALL_WORKOUTS_SUCCESS", payload: "success" })
-    );
-    act(() => dispatch({ type: "LOGOUT" }));
+    expect(state.workouts.total).toBe(prevTotal);
+    expect(state.flashMessages.error).toBeTruthy();
+    expect(state.flashMessages.error).toMatch(/reps value too large/i);
   });
 });

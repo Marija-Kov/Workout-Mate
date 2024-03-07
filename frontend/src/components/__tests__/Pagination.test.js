@@ -20,13 +20,13 @@ beforeAll(() => {
     profileImg: undefined,
     tokenExpires: Date.now() + 3600000,
   };
-  dispatch({ type: "LOGIN_SUCCESS", payload: mockUser });
+  dispatch({ type: "LOGIN", payload: mockUser });
   mockWorkouts = genSampleWorkouts();
 });
 afterEach(() => dispatch({ type: "RESET_PAGE_STATE" }));
 afterAll(() => {
   dispatch({
-    type: "DELETE_ALL_WORKOUTS_SUCCESS",
+    type: "RESET_WORKOUTS_STATE",
     payload: "All workouts deleted successfully",
   });
   dispatch({ type: "LOGOUT" });
@@ -55,8 +55,8 @@ describe("<Pagination />", () => {
     expect(page2).toHaveAttribute("class", "num--page");
     expect(page3).toHaveAttribute("class", "num--page");
     let state = store.getState();
-    let total = state.workout.workouts.total;
-    let limit = state.workout.workouts.limit;
+    let total = state.workouts.total;
+    let limit = state.workouts.limit;
     expect(numButtons.length).toBe(Math.ceil(total / limit));
   });
 

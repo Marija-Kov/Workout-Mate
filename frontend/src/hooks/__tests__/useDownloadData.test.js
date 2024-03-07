@@ -41,21 +41,21 @@ describe("useDownloadData()", () => {
     expect(typeof result.current.downloadData).toBe("function");
   });
 
-  it("should set downloadDataError message given that request wasn't authorized", async () => {
+  it("should set error given that user isn't authorized", async () => {
+    dispatch({ type: "LOGOUT" });
     const { result } = renderHook(useDownloadData, { wrapper });
     await act(() => result.current.downloadData());
     let state = store.getState();
-    expect(state.user.downloadDataError).toBeTruthy();
-    expect(state.user.downloadDataError).toMatch(/not authorized/i);
+    expect(state.flashMessages.error).toBeTruthy();
+    expect(state.flashMessages.error).toMatch(/not authorized/i);
   });
 
   it("should set success message given that the download started", async () => {
-    dispatch({ type: "LOGIN_SUCCESS", payload: mockUser });
+    dispatch({ type: "LOGIN", payload: mockUser });
     const { result } = renderHook(useDownloadData, { wrapper });
     await act(() => result.current.downloadData());
     let state = store.getState();
-    expect(state.user.success).toBeTruthy();
-    expect(state.user.success).toMatch(/data download started/i);
-    act(() => dispatch({ type: "RESET_USER_STATE" }));
+    expect(state.flashMessages.success).toBeTruthy();
+    expect(state.flashMessages.success).toMatch(/data download started/i);
   });
 });

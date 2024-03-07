@@ -8,7 +8,6 @@ import store from "../../redux/store";
 let wrapper;
 let dispatch;
 let mockUser;
-let mockWorkouts;
 
 beforeAll(() => {
   wrapper = ({ children }) => {
@@ -23,31 +22,12 @@ beforeAll(() => {
     profileImg: undefined,
     tokenExpires: Date.now() + 3600000,
   };
-  mockWorkouts = [
-    {
-      _id: "mockId1",
-      title: "lunges",
-      muscle_group: "leg",
-      reps: "44",
-      load: "21",
-      user_id: "userid",
-    },
-    {
-      _id: "mockId2",
-      title: "situps",
-      muscle_group: "ab",
-      reps: "44",
-      load: "21",
-      user_id: "userid",
-    },
-  ];
 });
 
 afterAll(() => {
   wrapper = null;
   dispatch = null;
   mockUser = null;
-  mockWorkouts = null;
 });
 
 describe("useDeleteAllWorkouts()", () => {
@@ -57,47 +37,46 @@ describe("useDeleteAllWorkouts()", () => {
     expect(typeof result.current.deleteAllWorkouts).toBe("function");
   });
 
-  it("should delete all workouts given that deleteAllWorkouts was run with authorization", async () => {
-    act(() => dispatch({ type: "LOGIN_SUCCESS", payload: mockUser }));
-    for (let i = 0; i < mockWorkouts.length; ++i) {
-      dispatch({ type: "CREATE_WORKOUT_SUCCESS", payload: mockWorkouts[i] });
-    }
+  it("should delete all workouts given that user is authorized", async () => {
+    act(() => dispatch({ type: "LOGIN", payload: mockUser }));
+    dispatch({ type: "SET_WORKOUTS", payload: {
+      total: 2,
+      limit: 3,
+      allUserWorkoutsMuscleGroups: [],
+      workoutsChunk: [],
+      pageSpread: [1],
+    }, });
     let state = store.getState();
-    expect(state.workout.workouts.total).toBe(2);
+    expect(state.workouts.total).not.toBe(0);
     const { result } = renderHook(useDeleteAllWorkouts, { wrapper });
     await act(() => result.current.deleteAllWorkouts());
     state = store.getState();
-    expect(state.workout.workouts.total).toBe(0);
-    expect(state.workout.deleteAllWorkoutsSuccess).toBeTruthy();
-    expect(state.workout.deleteAllWorkoutsError).toBeFalsy();
-    act(() => dispatch({ type: "LOGOUT" }));
+    expect(state.workouts.total).toBe(0);
+    expect(state.flashMessages.success).toBeTruthy();
+    expect(state.flashMessages.success).toMatch(/successfully deleted all workouts/i);
   });
 
-  it("should set deleteAllWorkoutsError message given that deleteAllWorkouts was run without authorization", async () => {
-    act(() => dispatch({ type: "LOGIN_SUCCESS", payload: mockUser }));
-    for (let i = 0; i < mockWorkouts.length; ++i) {
-      dispatch({ type: "CREATE_WORKOUT_SUCCESS", payload: mockWorkouts[i] });
-    }
+  it("should set error given that user isn't authorized", async () => {
+    act(() => dispatch({ type: "LOGIN", payload: mockUser }));
+    dispatch({ type: "SET_WORKOUTS", payload: {
+      total: 2,
+      limit: 3,
+      allUserWorkoutsMuscleGroups: [],
+      workoutsChunk: [],
+      pageSpread: [1],
+    }, });
     let state = store.getState();
-    expect(state.workout.workouts.total).toBe(2);
-    act(() => dispatch({ type: "LOGOUT" }));
+    expect(state.workouts.total).not.toBe(0);
+    act(() => dispatch({ type: "LOGIN", payload: null }));
     const { result } = renderHook(useDeleteAllWorkouts, { wrapper });
     await act(() => result.current.deleteAllWorkouts());
     state = store.getState();
-    expect(state.workout.deleteAllWorkoutsSuccess).toBeFalsy();
-    expect(state.workout.deleteAllWorkoutsError).toBeTruthy();
-    expect(state.workout.deleteAllWorkoutsError).toMatch(/not authorized/i);
-    act(() => dispatch({ type: "LOGIN_SUCCESS", payload: mockUser }));
-    state = store.getState();
-    expect(state.workout.workouts.total).toBe(2);
-    dispatch({
-      type: "DELETE_ALL_WORKOUTS_SUCCESS",
-      payload: "All workouts deleted successfully",
-    });
-    act(() => dispatch({ type: "LOGOUT" }));
+    expect(state.flashMessages.error).toBeTruthy();
+    expect(state.flashMessages.error).toMatch(/not authorized/i);
+    expect(state.workouts.total).not.toBe(0);
   });
 
-  it("should set deleteAllWorkoutsError deleteAllWorkouts was not successful", async () => {
+  it("should set error if deletion was not successful", async () => {
     server.use(
       rest.delete(
         `${process.env.REACT_APP_API}/api/workouts/`,
@@ -106,22 +85,22 @@ describe("useDeleteAllWorkouts()", () => {
         }
       )
     );
-    act(() => dispatch({ type: "LOGIN_SUCCESS", payload: mockUser }));
-    for (let i = 0; i < mockWorkouts.length; ++i) {
-      dispatch({ type: "CREATE_WORKOUT_SUCCESS", payload: mockWorkouts[i] });
-    }
+    act(() => dispatch({ type: "LOGIN", payload: mockUser }));
+    dispatch({ type: "SET_WORKOUTS", payload: {
+      total: 2,
+      limit: 3,
+      allUserWorkoutsMuscleGroups: [],
+      workoutsChunk: [],
+      pageSpread: [1],
+    }, });
     let state = store.getState();
-    expect(state.workout.workouts.total).toBe(2);
+    expect(state.workouts.total).not.toBe(0);
     const { result } = renderHook(useDeleteAllWorkouts, { wrapper });
     await act(() => result.current.deleteAllWorkouts());
     state = store.getState();
-    expect(state.workout.deleteAllWorkoutsSuccess).toBeFalsy();
-    expect(state.workout.deleteAllWorkoutsError).toBeTruthy();
-    expect(state.workout.workouts.total).toBe(2);
-    dispatch({
-      type: "DELETE_ALL_WORKOUTS_SUCCESS",
-      payload: "All workouts deleted successfully",
-    });
-    act(() => dispatch({ type: "LOGOUT" }));
+    expect(state.flashMessages.success).toBeFalsy();
+    expect(state.flashMessages.error).toBeTruthy();
+    expect(state.flashMessages.error).toMatch(/could not delete workouts/i);
+    expect(state.workouts.total).not.toBe(0);
   });
 });

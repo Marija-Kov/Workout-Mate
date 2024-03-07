@@ -16,8 +16,6 @@ beforeAll(() => {
   dispatch = store.dispatch;
 });
 
-// TODO: Reset state to init after every test.
-
 afterAll(() => {
   wrapper = null;
   dispatch = null;
@@ -30,7 +28,7 @@ describe("useResetPassword()", () => {
     expect(typeof result.current.resetPassword).toBe("function");
   });
 
-  it("should set resetPasswordError message given that resetPassword was run with bad input", async () => {
+  it("should set error given that passwords are not matching or not strong enough", async () => {
     server.use(
       rest.patch(
         `${process.env.REACT_APP_API}/api/reset-password/*`,
@@ -47,8 +45,8 @@ describe("useResetPassword()", () => {
     const { result } = renderHook(useResetPassword, { wrapper });
     await act(() => result.current.resetPassword("token", "abcABC123", null));
     let state = store.getState();
-    expect(state.user.resetPasswordError).toBeTruthy();
-    expect(state.user.resetPasswordError).toMatch(
+    expect(state.flashMessages.error).toBeTruthy();
+    expect(state.flashMessages.error).toMatch(
       /passwords not matching or not strong enough/i
     );
   });
@@ -59,7 +57,7 @@ describe("useResetPassword()", () => {
       result.current.resetPassword("token", "abcABC123!", "abcABC123!")
     );
     let state = store.getState();
-    expect(state.user.success).toBeTruthy();
-    expect(state.user.success).toMatch(/password reset successfully/i);
+    expect(state.flashMessages.success).toBeTruthy();
+    expect(state.flashMessages.success).toMatch(/password reset successfully/i);
   });
 });

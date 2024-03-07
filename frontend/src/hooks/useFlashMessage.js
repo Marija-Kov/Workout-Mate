@@ -5,9 +5,13 @@ export const useFlashMessage = () => {
   const flashMessage = (action, message) => {
     dispatch({ type: action, payload: message });
     setTimeout(() => {
-      return action.includes("WORKOUT")
-        ? dispatch({ type: "RESET_WORKOUT_ERROR_MESSAGES" })
-        : dispatch({ type: "RESET_USER_MESSAGE_STATE" });
+      if (["SUCCESS", "ERROR"].includes(action)) {
+        return dispatch({ type: "RESET_FLASH_MESSAGES" });
+      } else if (action.includes("WORKOUT")) {
+        return dispatch({ type: "RESET_WORKOUT_ERROR_MESSAGES" });
+      } else {
+        return dispatch({ type: "RESET_USER_MESSAGE_STATE" });
+      }
     }, 5000);
   };
   return flashMessage;

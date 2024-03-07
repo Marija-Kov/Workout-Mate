@@ -1,181 +1,63 @@
 import * as a from "./workoutActionTypes";
 
 const init = {
-  workouts: {
-    total: 0,
-    limit: 3,
-    allUserWorkoutsMuscleGroups: [],
-    workoutsChunk: [],
-    pageSpread: [1],
-  },
-  loading: false,
-  setWorkoutsError: null,
-  createWorkoutError: null,
-  updateWorkoutError: null,
-  deleteWorkoutError: null,
+  total: 0,
+  limit: 3,
+  allUserWorkoutsMuscleGroups: [],
+  workoutsChunk: [],
+  pageSpread: [1],
 };
 
 export const workoutReducer = (state = init, action) => {
   switch (action.type) {
-    case a.SET_WORKOUTS_REQ:
+    case a.SET_WORKOUTS:
+      return action.payload;
+    case a.CREATE_WORKOUT:
+      ++state.total;
       return {
         ...state,
-        loading: true,
+        workoutsChunk: [action.payload, ...state.workoutsChunk],
+        allUserWorkoutsMuscleGroups: [
+          action.payload.muscle_group,
+          ...state.allUserWorkoutsMuscleGroups,
+        ],
+        pageSpread: pageSpreadHelper(state.total, state.limit),
       };
-    case a.SET_WORKOUTS_SUCCESS:
-      return {
-        workouts: action.payload,
-        loading: false,
-        setWorkoutsError: null,
-      };
-    case a.SET_WORKOUTS_FAIL:
-      return {
-        ...state,
-        loading: false,
-        setWorkoutsError: action.payload,
-      };
-    case a.CREATE_WORKOUT_REQ:
-      return {
-        ...state,
-        loading: true,
-      };
-    case a.CREATE_WORKOUT_SUCCESS:
-      ++state.workouts.total;
-      return {
-        workouts: {
-          ...state.workouts,
-          workoutsChunk: [action.payload, ...state.workouts.workoutsChunk],
-          allUserWorkoutsMuscleGroups: [
-            action.payload.muscle_group,
-            ...state.workouts.allUserWorkoutsMuscleGroups,
-          ],
-          pageSpread: pageSpreadHelper(
-            state.workouts.total,
-            state.workouts.limit
-          ),
-        },
-        loading: false,
-        createWorkoutError: null,
-      };
-    case a.CREATE_WORKOUT_FAIL:
-      return {
-        ...state,
-        loading: false,
-        createWorkoutError: action.payload,
-      };
-    case a.UPDATE_WORKOUT_REQ:
-      return {
-        ...state,
-        loading: true,
-      };
-    case a.UPDATE_WORKOUT_SUCCESS:
+    case a.UPDATE_WORKOUT:
       if (action.payload.muscle_group) {
-        const prevMuscleGroupIndex =
-          state.workouts.allUserWorkoutsMuscleGroups.indexOf(
-            state.workouts.workoutsChunk.filter(
-              (e) => e._id === action.payload._id
-            )[0].muscle_group
-          );
-        state.workouts.allUserWorkoutsMuscleGroups.splice(
-          prevMuscleGroupIndex,
-          1
+        const prevMuscleGroupIndex = state.allUserWorkoutsMuscleGroups.indexOf(
+          state.workoutsChunk.filter((e) => e._id === action.payload._id)[0]
+            .muscle_group
         );
+        state.allUserWorkoutsMuscleGroups.splice(prevMuscleGroupIndex, 1);
       }
-      state.workouts.workoutsChunk = state.workouts.workoutsChunk.filter(
+      state.workoutsChunk = state.workoutsChunk.filter(
         (e) => e._id !== action.payload._id
       );
       const updateMuscleGroups = action.payload.muscle_group
-        ? [
-            ...state.workouts.allUserWorkoutsMuscleGroups,
-            action.payload.muscle_group,
-          ]
-        : state.workouts.allUserWorkoutsMuscleGroups;
-      return {
-        workouts: {
-          ...state.workouts,
-          allUserWorkoutsMuscleGroups: updateMuscleGroups,
-          workoutsChunk: [action.payload, ...state.workouts.workoutsChunk],
-        },
-        loading: false,
-        updateWorkoutError: null,
-      };
-    case a.UPDATE_WORKOUT_FAIL:
+        ? [...state.allUserWorkoutsMuscleGroups, action.payload.muscle_group]
+        : state.allUserWorkoutsMuscleGroups;
       return {
         ...state,
-        loading: false,
-        updateWorkoutError: action.payload,
+        allUserWorkoutsMuscleGroups: updateMuscleGroups,
+        workoutsChunk: [action.payload, ...state.workoutsChunk],
       };
-    case a.DELETE_WORKOUT_REQ:
-      return {
-        ...state,
-        loading: true,
-      };
-    case a.DELETE_WORKOUT_SUCCESS:
-      --state.workouts.total;
-      const newWorkoutsChunk = state.workouts.workoutsChunk.filter(
+    case a.DELETE_WORKOUT:
+      --state.total;
+      const newWorkoutsChunk = state.workoutsChunk.filter(
         (e) => e._id !== action.payload._id
       );
-      const prevMuscleGroupIndex =
-        state.workouts.allUserWorkoutsMuscleGroups.indexOf(
-          state.workouts.workoutsChunk.filter(
-            (e) => e._id === action.payload._id
-          )[0].muscle_group
-        );
-      state.workouts.allUserWorkoutsMuscleGroups.splice(
-        prevMuscleGroupIndex,
-        1
+      const prevMuscleGroupIndex = state.allUserWorkoutsMuscleGroups.indexOf(
+        state.workoutsChunk.filter((e) => e._id === action.payload._id)[0]
+          .muscle_group
       );
-      return {
-        workouts: {
-          ...state.workouts,
-          workoutsChunk: newWorkoutsChunk,
-          pageSpread: pageSpreadHelper(
-            state.workouts.total,
-            state.workouts.limit
-          ),
-        },
-        loading: false,
-        deleteWorkoutError: null,
-      };
-    case a.DELETE_WORKOUT_FAIL:
+      state.allUserWorkoutsMuscleGroups.splice(prevMuscleGroupIndex, 1);
       return {
         ...state,
-        loading: false,
-        deleteWorkoutError: action.payload,
+        workoutsChunk: newWorkoutsChunk,
+        pageSpread: pageSpreadHelper(state.total, state.limit),
       };
-    case a.DELETE_ALL_WORKOUTS_REQ:
-      return {
-        ...state,
-        loading: true,
-      };
-    case a.DELETE_ALL_WORKOUTS_SUCCESS:
-      return {
-        workouts: {
-          total: 0,
-          limit: 3,
-          allUserWorkoutsMuscleGroups: [],
-          workoutsChunk: [],
-          pageSpread: [1],
-        },
-        loading: false,
-        deleteAllWorkoutsSuccess: true,
-        deleteAllWorkoutsError: null,
-      };
-    case a.DELETE_ALL_WORKOUTS_FAIL:
-      return {
-        ...state,
-        loading: false,
-        deleteAllWorkoutsError: action.payload,
-      };
-    case a.RESET_WORKOUT_ERROR_MESSAGES:
-      return {
-        ...state,
-        setWorkoutsError: null,
-        createWorkoutError: null,
-        updateWorkoutError: null,
-        deleteWorkoutError: null,
-      };
-    case a.RESET_WORKOUT_STATE:
+    case a.RESET_WORKOUTS_STATE:
       return init;
     default:
       return state;

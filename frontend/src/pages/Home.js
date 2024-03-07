@@ -16,9 +16,8 @@ export default function Home() {
   const { isCreateWorkoutFormMounted, isEditWorkoutFormMounted } = useSelector(
     (state) => state.toggleMountComponents
   );
-  const { workouts, loading, setWorkoutsError } = useSelector(
-    (state) => state.workout
-  );
+  const workouts = useSelector((state) => state.workouts);
+  const loading = useSelector((state) => state.loader);
   const { allUserWorkoutsMuscleGroups, noWorkoutsByQuery } = workouts;
   const page = useSelector((state) => state.page);
   const query = useSelector((state) => state.query);
@@ -26,10 +25,6 @@ export default function Home() {
   const { search } = useSearch();
   const muscleGroups =
     allUserWorkoutsMuscleGroups && allUserWorkoutsMuscleGroups.length;
-
-  useEffect(() => {
-    dispatch({ type: "SET_WORKOUTS_REQ" });
-  }, []);
 
   useEffect(() => {
     const runSearch = setTimeout(() => {
@@ -93,11 +88,6 @@ export default function Home() {
     <div className="home--container" onClick={logOutIfTokenExpired}>
       <div className="home">
         {muscleGroups ? <Search /> : ""}
-        {setWorkoutsError && (
-          <div role="alert" className="error">
-            {setWorkoutsError}
-          </div>
-        )}
 
         <div aria-label="workouts" className="workouts--container">
           {total && muscleGroups

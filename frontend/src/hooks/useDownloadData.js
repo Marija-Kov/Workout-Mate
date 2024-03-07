@@ -3,14 +3,15 @@ import { downloadJsonFile } from "../utils/downloadJsonFile";
 import { useFlashMessage } from "./useFlashMessage";
 
 export function useDownloadData() {
-  const { user } = useSelector((state) => state.user);
+  const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const flashMessage = useFlashMessage();
 
   const downloadData = async () => {
-    dispatch({ type: "DOWNLOAD_DATA_REQ" });
+    dispatch({ type: "SET_LOADER" });
     if (!user) {
-      return flashMessage("DOWNLOAD_DATA_FAIL", "Not authorized");
+      dispatch({ type: "UNSET_LOADER" });
+      return flashMessage("ERROR", "Not authorized");
     }
     const response = await fetch(
       `${process.env.REACT_APP_API}/api/users/download/${user.id}`,
@@ -19,14 +20,16 @@ export function useDownloadData() {
           Authorization: `Bearer ${user.token}`,
         },
       }
-    );
-    if (!response.ok) {
-      return flashMessage("DOWNLOAD_DATA_FAIL", "Could not get data");
+      );
+      if (!response.ok) {
+      dispatch({ type: "UNSET_LOADER" });
+      return flashMessage("ERROR", "Could not get data");
     }
     if (response.ok) {
+      dispatch({ type: "UNSET_LOADER" });
       const data = await response.json();
       downloadJsonFile(data);
-      return flashMessage("DOWNLOAD_DATA_SUCCESS", "Data download started");
+      return flashMessage("SUCCESS", "Data download started");
     }
   };
   

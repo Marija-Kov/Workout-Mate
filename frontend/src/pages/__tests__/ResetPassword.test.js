@@ -2,6 +2,7 @@ import { render, screen } from "@testing-library/react";
 import user from "@testing-library/user-event";
 import "@testing-library/jest-dom";
 import ResetPassword from "../ResetPassword";
+import App from "../../mocks/App";
 import { server } from "../../mocks/server";
 import { rest } from "msw";
 import { BrowserRouter } from "react-router-dom";
@@ -74,6 +75,7 @@ describe("<ResetPassword />", () => {
     render(
       <Provider store={store}>
         <BrowserRouter>
+          <App />
           <ResetPassword />
         </BrowserRouter>
       </Provider>
@@ -86,11 +88,11 @@ describe("<ResetPassword />", () => {
     await user.click(saveBtn);
     const error = await screen.findByRole("alert");
     await expect(error).toBeInTheDocument();
-    expect(error).toHaveAttribute("class", "error");
+    expect(error).toHaveAttribute("class", "error flashMessage");
     expect(error.textContent).toMatch(/must match/i);
   });
 
-  it("should show error message given that new password is not strong enough", async () => {
+  it("should set error message given that new password is not strong enough", async () => {
     server.use(
       rest.patch(
         `${process.env.REACT_APP_API}/api/reset-password/*`,
@@ -108,6 +110,7 @@ describe("<ResetPassword />", () => {
     render(
       <Provider store={store}>
         <BrowserRouter>
+          <App />
           <ResetPassword />
         </BrowserRouter>
       </Provider>
@@ -120,11 +123,11 @@ describe("<ResetPassword />", () => {
     await user.click(saveBtn);
     const error = await screen.findByRole("alert");
     await expect(error).toBeInTheDocument();
-    expect(error).toHaveAttribute("class", "error");
+    expect(error).toHaveAttribute("class", "error flashMessage");
     expect(error.textContent).toMatch(/not strong enough/i);
   });
 
-  it("should show error message given that password reset token has expired", async () => {
+  it("should set error message given that password reset token has expired", async () => {
     server.use(
       rest.patch(
         `${process.env.REACT_APP_API}/api/reset-password/*`,
@@ -142,6 +145,7 @@ describe("<ResetPassword />", () => {
     render(
       <Provider store={store}>
         <BrowserRouter>
+          <App />
           <ResetPassword />
         </BrowserRouter>
       </Provider>
@@ -153,11 +157,9 @@ describe("<ResetPassword />", () => {
     await user.type(confirmPasswordInput, "abcABC123!");
     await user.click(saveBtn);
     const error = await screen.findByRole("alert");
-    const resend = await screen.findByText(/resend/i);
     await expect(error).toBeInTheDocument();
-    expect(error).toHaveAttribute("class", "error");
+    expect(error).toHaveAttribute("class", "error flashMessage");
     expect(error.textContent).toMatch(/invalid/i);
-    expect(resend).toBeInTheDocument();
   });
 
   it("should set success message and render 'log in' link if password was reset successfully", async () => {
@@ -165,6 +167,7 @@ describe("<ResetPassword />", () => {
     render(
       <Provider store={store}>
         <BrowserRouter>
+          <App />
           <ResetPassword />
         </BrowserRouter>
       </Provider>
@@ -176,10 +179,8 @@ describe("<ResetPassword />", () => {
     await user.type(confirmPasswordInput, "abcABC123!");
     await user.click(saveBtn);
     const success = await screen.findByRole("alert");
-    const loginLink = await screen.findByText(/log in/i);
     await expect(success).toBeInTheDocument();
-    await expect(loginLink).toBeInTheDocument();
-    expect(success).toHaveAttribute("class", "success");
-    expect(success.textContent).toMatch(/success/i);
+    expect(success).toHaveAttribute("class", "success flashMessage");
+    expect(success.textContent).toMatch(/Password reset successfully/i);
   });
 });

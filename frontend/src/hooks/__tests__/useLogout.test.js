@@ -36,14 +36,14 @@ describe("useLogout()", () => {
   });
 
   it("should log the user out properly", () => {
-    dispatch({ type: "LOGIN_SUCCESS", payload: mockUser });
+    dispatch({ type: "LOGIN", payload: mockUser });
     let state = store.getState();
-    expect(state.user.user).toBeTruthy();
+    expect(state.user).toBeTruthy();
     const { result } = renderHook(useLogout, { wrapper });
     act(() => result.current.logout());
     state = store.getState();
-    expect(state.user.user).toBeFalsy();
-    expect(state.workout.workouts.total).toBeFalsy();
+    expect(state.user).toBeFalsy();
+    expect(state.workouts.total).toBeFalsy();
     for (let key in state.routineBalance) {
       expect(state.routineBalance[key]).toBe(0);
     }

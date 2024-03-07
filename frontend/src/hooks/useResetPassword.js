@@ -6,12 +6,10 @@ export default function useResetPassword() {
   const flashMessage = useFlashMessage();
 
   const resetPassword = async (token, password, confirmPassword) => {
-    dispatch({ type: "RESET_PASSWORD_REQ" });
+    dispatch({ type: "SET_LOADER" });
     if (!token) {
-      return flashMessage(
-        "RESET_PASSWORD_FAIL",
-        "Reset password token not found"
-      );
+      dispatch({ type: "UNSET_LOADER" });
+      return flashMessage("ERROR", "Reset password token not found");
     }
     const response = await fetch(
       `${process.env.REACT_APP_API}/api/reset-password/${token}`,
@@ -28,9 +26,12 @@ export default function useResetPassword() {
     );
     const json = await response.json();
     if (!response.ok) {
-      return flashMessage("RESET_PASSWORD_FAIL", json.error);
-    } else if (response.ok) {
-      return dispatch({ type: "RESET_PASSWORD_SUCCESS", payload: json.success });
+      dispatch({ type: "UNSET_LOADER" });
+      return flashMessage("ERROR", json.error);
+    } 
+    if (response.ok) {
+      dispatch({ type: "UNSET_LOADER" });
+      return flashMessage("SUCCESS", json.success);
     }
   };
 

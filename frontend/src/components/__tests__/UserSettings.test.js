@@ -1,4 +1,5 @@
 import UserSettings from "../UserSettings";
+import App from "../../mocks/App";
 import user from "@testing-library/user-event";
 import { rest } from "msw";
 import { server } from "../../mocks/server";
@@ -17,7 +18,7 @@ let mockUser = {
 };
 
 beforeAll(() => (dispatch = store.dispatch));
-beforeEach(() => dispatch({ type: "LOGIN_SUCCESS", payload: mockUser }));
+beforeEach(() => dispatch({ type: "LOGIN", payload: mockUser }));
 afterEach(() => dispatch({ type: "LOGOUT" }));
 afterAll(() => {
   dispatch = null;
@@ -117,7 +118,7 @@ describe("<UserSettings/>", () => {
     expect(upload).toHaveAttribute("disabled");
   });
 
-  it("should render updateUserError message if server responded with an error", async () => {
+  it("should render error message if server responded with an error", async () => {
     server.use(
       rest.patch(
         `${process.env.REACT_APP_API}/api/users/*`,
@@ -134,6 +135,7 @@ describe("<UserSettings/>", () => {
     user.setup();
     render(
       <Provider store={store}>
+        <App />
         <UserSettings />
       </Provider>
     );
@@ -141,11 +143,13 @@ describe("<UserSettings/>", () => {
     await user.type(newUsername, "daredev");
     const upload = screen.getByText("Upload");
     await user.click(upload);
-    const errorMessage = await screen.findByText(/something went wrong/i);
-    expect(errorMessage).toBeInTheDocument();
+    const error = await screen.findByRole("alert");
+    expect(error).toBeInTheDocument();
+    expect(error.textContent).toMatch(/something went wrong/i);
+    expect(error).toHaveAttribute("class", "error flashMessage");
   });
 
-  it("should render updateUserError message if the user is not authorized", async () => {
+  it("should render error message if the user is not authorized", async () => {
     server.use(
       rest.patch(
         `${process.env.REACT_APP_API}/api/users/*`,
@@ -162,6 +166,7 @@ describe("<UserSettings/>", () => {
     user.setup();
     render(
       <Provider store={store}>
+        <App />
         <UserSettings />
       </Provider>
     );
@@ -169,14 +174,17 @@ describe("<UserSettings/>", () => {
     await user.type(newUsername, "daredev");
     const upload = screen.getByText("Upload");
     await user.click(upload);
-    const errorMessage = await screen.findByText(/not authorized/i);
-    expect(errorMessage).toBeInTheDocument();
+    const error = await screen.findByRole("alert");
+    expect(error).toBeInTheDocument();
+    expect(error.textContent).toMatch(/not authorized/i);
+    expect(error).toHaveAttribute("class", "error flashMessage");
   });
 
   it("should render success message if profile was updated successfully", async () => {
     user.setup();
     render(
       <Provider store={store}>
+        <App />
         <UserSettings />
       </Provider>
     );
@@ -184,8 +192,10 @@ describe("<UserSettings/>", () => {
     await user.type(newUsername, "daredev");
     const upload = screen.getByText("Upload");
     await user.click(upload);
-    const successMessage = await screen.findByText(/profile updated/i);
-    expect(successMessage).toBeInTheDocument();
+    const success = await screen.findByRole("alert");
+    expect(success).toBeInTheDocument();
+    expect(success.textContent).toMatch(/profile updated/i);
+    expect(success).toHaveAttribute("class", "success flashMessage");
   });
 
   it("should render delete account dialogue component when 'delete account' button is clicked", async () => {

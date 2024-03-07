@@ -2,6 +2,7 @@ import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import user from "@testing-library/user-event";
 import UserMenu from "../UserMenu";
+import App from "../../mocks/App";
 import { Provider } from "react-redux";
 import store from "../../redux/store";
 

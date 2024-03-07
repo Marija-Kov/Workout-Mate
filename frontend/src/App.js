@@ -12,10 +12,11 @@ const ResetPassword = React.lazy(() => import("./pages/ResetPassword"));
 const ConfirmedAccount = React.lazy(() => import("./pages/ConfirmedAccount"));
 
 function App() {
-  const { user } = useSelector((state) => state.user);
+  const user = useSelector((state) => state.user);
   const { isSpunDownServerAlertMounted } = useSelector(
     (state) => state.toggleMountComponents
   );
+  const { success, error } = useSelector((state) => state.flashMessages);
   const dispatch = useDispatch();
   const { getUrl } = useGetUrl();
 
@@ -56,6 +57,8 @@ function App() {
               </button>
             </div>
           )}
+          { error && <div role="alert" className="error flashMessage"><p>{error}</p></div> }
+          { success && <div role="alert" className="success flashMessage"><p>{success}</p></div> }
           <Routes>
             <Route
               path="/login"

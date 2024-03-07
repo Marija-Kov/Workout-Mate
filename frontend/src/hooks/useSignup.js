@@ -6,7 +6,7 @@ export const useSignup = () => {
   const flashMessage = useFlashMessage();
 
   const signup = async (credentials) => {
-    dispatch({ type: "SIGNUP_REQ" });
+    dispatch({ type: "SET_LOADER" });
     const response = await fetch(
       `${process.env.REACT_APP_API}/api/users/signup`,
       {
@@ -17,12 +17,14 @@ export const useSignup = () => {
     );
     const json = await response.json();
     if (!response.ok) {
-      return flashMessage("SIGNUP_FAIL", json.error);
+      dispatch({ type: "UNSET_LOADER" });
+      return flashMessage("ERROR", json.error);
     }
     if (response.ok) {
-      return flashMessage("SIGNUP_SUCCESS", json.success);
+      dispatch({ type: "UNSET_LOADER" });
+      return flashMessage("SUCCESS", json.success);
     }
   };
-  
+
   return { signup };
 };
