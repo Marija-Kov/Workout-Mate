@@ -3,15 +3,18 @@
 
 .flashMessage {
   z-index: 20;
-  position: absolute;
-  bottom: 20%;
-  right: 10%;
+  position: fixed;
+  bottom: 5%;
+  left: 0;
+  right: 0;
+  width: 300px;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 10px;
 }
 
 div.error {
   text-align: center;
-  max-width: 400px;
-  margin-top: 20px;
   padding: 5px;
   background: vars.$error--bkg;
   border: 1px solid vars.$error;
@@ -21,7 +24,6 @@ div.error {
 
 div.success {
   text-align: center;
-  margin-top: 20px;
   padding: 5px;
   background: vars.$success--bkg;
   border: 1px solid vars.$success;
