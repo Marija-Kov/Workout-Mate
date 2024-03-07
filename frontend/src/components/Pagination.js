@@ -3,7 +3,7 @@ import uuid from "react-uuid";
 
 export default function Pagination() {
   const dispatch = useDispatch();
-  const { workouts } = useSelector((state) => state.workout);
+  const workouts = useSelector((state) => state.workouts);
   const page = useSelector((state) => state.page);
   const { total, limit, pageSpread } = workouts;
 

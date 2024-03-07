@@ -3,12 +3,13 @@ import { useGetAccountConfirmationToken } from "../hooks/useGetAccountConfirmati
 import { useConfirmAccount } from "../hooks/useConfirmAccount";
 import { useLogout } from "../hooks/useLogout";
 import { useSelector } from "react-redux";
+import { Navigate } from "react-router-dom";
 
 export default function ConfirmedAccount() {
-  const { confirmAccountError, success } = useSelector((state) => state.user);
   const { getAccountConfirmationToken } = useGetAccountConfirmationToken();
   const { confirmAccount } = useConfirmAccount();
   const { logout } = useLogout();
+  const { success } = useSelector((state) => state.flashMessages);
 
   useEffect(() => {
     logout();
@@ -17,16 +18,7 @@ export default function ConfirmedAccount() {
 
   return (
     <div className="confirmed--container">
-      {success ? (
-        <div role="alert" className="confirmed--account--success">
-          <h2>Account confirmed</h2>
-          <p>{success}</p>
-        </div>
-      ) : (
-        <div role="alert" className="error">
-          {confirmAccountError}{" "}
-        </div>
-      )}
+     {success && <Navigate to="/login" />}
     </div>
   );
 }

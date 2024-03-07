@@ -2,6 +2,8 @@ import { render, screen, act } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import { jest } from "@jest/globals";
 import ConfirmedAccount from "../ConfirmedAccount";
+import { BrowserRouter } from "react-router-dom";
+import App from "../../mocks/App";
 import { Provider } from "react-redux";
 import store from "../../redux/store";
 
@@ -32,33 +34,37 @@ describe("<ConfirmedAccount />", () => {
   it("should render success message given that confirmation was successful", async () => {
     render(
       <Provider store={store}>
-        <ConfirmedAccount />
+        <BrowserRouter>
+          <App />
+          <ConfirmedAccount />
+        </BrowserRouter>
       </Provider>
     );
     await act(() =>
       dispatch({
-        type: "CONFIRM_ACCOUNT_SUCCESS",
+        type: "SUCCESS",
         payload: "Account confirmed",
       })
     );
     const success = await screen.findByRole("alert");
     expect(success).toBeInTheDocument();
-    expect(success).not.toHaveClass("error");
+    expect(success).toHaveAttribute("class", "success flashMessage");
     expect(success.textContent).toMatch(/account confirmed/i);
   });
 
   it("should render error message given that confirmation token wasn't found or is expired", async () => {
     render(
       <Provider store={store}>
-        <ConfirmedAccount />
+        <BrowserRouter>
+          <App />
+          <ConfirmedAccount />
+        </BrowserRouter>
       </Provider>
     );
-    await act(() =>
-      dispatch({ type: "CONFIRM_ACCOUNT_FAIL", payload: "Not found" })
-    );
-    const errorEl = await screen.findByRole("alert");
-    expect(errorEl).toBeInTheDocument();
-    expect(errorEl).toHaveClass("error");
-    expect(errorEl.textContent).toMatch(/not found/i);
+    await act(() => dispatch({ type: "ERROR", payload: "Not found" }));
+    const error = await screen.findByRole("alert");
+    expect(error).toBeInTheDocument();
+    expect(error).toHaveAttribute("class", "error flashMessage");
+    expect(error.textContent).toMatch(/not found/i);
   });
 });

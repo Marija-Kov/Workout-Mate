@@ -1,5 +1,6 @@
 import React from "react";
 import EditWorkout from "../EditWorkout";
+import App from "../../mocks/App";
 import user from "@testing-library/user-event";
 import { render, screen, act } from "@testing-library/react";
 import { rest } from "msw";
@@ -22,8 +23,11 @@ beforeAll(() => {
 });
 
 beforeEach(() => {
-  dispatch({ type: "LOGIN_SUCCESS", payload: {} });
-  dispatch({ type: "TOGGLE_MOUNT_EDIT_WORKOUT_FORM", payload: mockPrepopulatedForm });
+  dispatch({ type: "LOGIN", payload: {} });
+  dispatch({
+    type: "TOGGLE_MOUNT_EDIT_WORKOUT_FORM",
+    payload: mockPrepopulatedForm,
+  });
 });
 
 afterEach(() => {
@@ -131,6 +135,7 @@ describe("<EditWorkout/>", () => {
     user.setup();
     render(
       <Provider store={store}>
+        <App />
         <EditWorkout />
       </Provider>
     );
@@ -148,8 +153,8 @@ describe("<EditWorkout/>", () => {
     await user.click(submit);
     const error = await screen.findByRole("alert");
     expect(error).toBeInTheDocument();
-    expect(error).toHaveAttribute("class", "error");
-    expect(error.textContent).toMatch(/must be logged in/i);
+    expect(error.textContent).toMatch(/not authorized/i);
+    expect(error).toHaveAttribute("class", "error flashMessage");
   });
 
   it("should signal input error when user attempts to submit form with too long title", async () => {
@@ -169,6 +174,7 @@ describe("<EditWorkout/>", () => {
     user.setup();
     render(
       <Provider store={store}>
+        <App />
         <EditWorkout />
       </Provider>
     );
@@ -184,7 +190,7 @@ describe("<EditWorkout/>", () => {
     expect(titleInput).toHaveAttribute("class", "error");
     const error = await screen.findByRole("alert");
     expect(error.textContent).toMatch(/max 30 characters/i);
-    expect(error).toHaveAttribute("class", "error");
+    expect(error).toHaveAttribute("class", "error flashMessage");
   });
 
   it("should signal input error when user attempts to submit form with title containing non-alphabetic characters", async () => {
@@ -204,6 +210,7 @@ describe("<EditWorkout/>", () => {
     user.setup();
     render(
       <Provider store={store}>
+        <App />
         <EditWorkout />
       </Provider>
     );
@@ -216,7 +223,7 @@ describe("<EditWorkout/>", () => {
     expect(titleInput).toHaveAttribute("class", "error");
     const error = await screen.findByRole("alert");
     expect(error.textContent).toMatch(/may contain only letters/i);
-    expect(error).toHaveAttribute("class", "error");
+    expect(error).toHaveAttribute("class", "error flashMessage");
   });
 
   it("should signal input error when user attempts to submit form with too large reps number", async () => {
@@ -236,6 +243,7 @@ describe("<EditWorkout/>", () => {
     user.setup();
     render(
       <Provider store={store}>
+        <App />
         <EditWorkout />
       </Provider>
     );
@@ -248,7 +256,7 @@ describe("<EditWorkout/>", () => {
     expect(repsInput).toHaveAttribute("class", "error");
     const error = await screen.findByRole("alert");
     expect(error.textContent).toMatch(/reps value too large/i);
-    expect(error).toHaveAttribute("class", "error");
+    expect(error).toHaveAttribute("class", "error flashMessage");
   });
 
   it("should signal input error when user attempts to submit form with too large load number", async () => {
@@ -268,6 +276,7 @@ describe("<EditWorkout/>", () => {
     user.setup();
     render(
       <Provider store={store}>
+        <App />
         <EditWorkout />
       </Provider>
     );
@@ -280,7 +289,7 @@ describe("<EditWorkout/>", () => {
     expect(loadInput).toHaveAttribute("class", "error");
     const error = await screen.findByRole("alert");
     expect(error.textContent).toMatch(/load value too large/i);
-    expect(error).toHaveAttribute("class", "error");
+    expect(error).toHaveAttribute("class", "error flashMessage");
   });
 
   it("should submit updated input fields given that input is valid", async () => {
@@ -302,6 +311,7 @@ describe("<EditWorkout/>", () => {
     user.setup();
     render(
       <Provider store={store}>
+        <App />
         <EditWorkout />
       </Provider>
     );
@@ -312,7 +322,10 @@ describe("<EditWorkout/>", () => {
     await user.clear(loadInput);
     await user.type(loadInput, "15");
     await user.click(submit);
-    const error = screen.queryAllByRole("alert");
-    expect(error.length).toEqual(0);
+    await act(() => dispatch({ type: "SUCCESS", payload: "Successfully updated workout"}))
+    const success = await screen.findByRole("alert");
+    expect(success).toBeInTheDocument();
+    expect(success.textContent).toMatch(/successfully updated workout/i);
+    expect(success).toHaveAttribute("class", "success flashMessage");
   });
 });

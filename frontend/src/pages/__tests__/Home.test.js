@@ -31,7 +31,7 @@ jest.mock("../../hooks/useSearch", () => ({
 }));
 
 afterEach(() => {
-  store.dispatch({ type: "DELETE_ALL_WORKOUTS_SUCCESS" });
+  store.dispatch({ type: "RESET_WORKOUTS_STATE" });
 });
 
 afterAll(() => {
@@ -45,8 +45,9 @@ describe("<Home />", () => {
         <Home />
       </Provider>
     );
+    act(() => store.dispatch({ type: "SET_LOADER"}));
     const state = store.getState();
-    expect(state.workout.loading).toBeTruthy();
+    expect(state.loader).toBeTruthy();
     expect(ChartPlaceholder).toHaveBeenCalled();
     expect(WorkoutsPlaceholder).toHaveBeenCalled();
   });
@@ -58,7 +59,7 @@ describe("<Home />", () => {
       </Provider>
     );
     await act(() =>
-      store.dispatch({ type: "SET_WORKOUTS_SUCCESS", payload: [] })
+      store.dispatch({ type: "SET_WORKOUTS", payload: [] })
     );
     const getStarted = await screen.findByText(/get started/i);
     const addWorkoutBtn = await screen.findByText(/buff it up/i);
@@ -92,7 +93,7 @@ describe("<Home />", () => {
       </Provider>
     );
     await act(() =>
-      store.dispatch({ type: "SET_WORKOUTS_SUCCESS", payload: [] })
+      store.dispatch({ type: "SET_WORKOUTS", payload: [] })
     );
     const addWorkoutBtn = await screen.findByText(/buff it up/i);
     await user.click(addWorkoutBtn);

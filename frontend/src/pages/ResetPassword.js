@@ -1,10 +1,10 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import useResetPassword from "../hooks/useResetPassword";
 import { useSelector } from "react-redux";
 
 export default function ResetPassword() {
-  const { resetPasswordError, success } = useSelector((state) => state.user);
+  const { success } = useSelector((state) => state.flashMessages);
   const { resetPassword } = useResetPassword();
   const password = React.useRef();
   const confirmPassword = React.useRef();
@@ -37,27 +37,8 @@ export default function ResetPassword() {
           placeholder="confirm new password"
           ref={confirmPassword}
         />
-        {!success && <button>Save</button>}
-        {resetPasswordError && (
-          <div role="alert" className="error">
-            {resetPasswordError}.
-          </div>
-        )}
-        {resetPasswordError && resetPasswordError.match(/invalid/i) && (
-          <p>
-            <Link to="/login">Go back</Link> to resend the request.
-          </p>
-        )}
-        {success && (
-          <div role="alert" className="success">
-            {success}
-          </div>
-        )}
-        {success && (
-          <p>
-            <Link to="/login">Log in</Link>
-          </p>
-        )}
+        <button>Save</button>
+        {success && <Navigate to="/login" />}
       </form>
     </div>
   );

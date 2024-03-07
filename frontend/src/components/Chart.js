@@ -9,7 +9,7 @@ ChartJS.register(ArcElement, Tooltip);
 
 export const Chart = () => {
   const dispatch = useDispatch();
-  const { workouts } = useSelector((state) => state.workout);
+  const workouts = useSelector((state) => state.workouts);
   const { allUserWorkoutsMuscleGroups } = workouts;
   const {
     chest,

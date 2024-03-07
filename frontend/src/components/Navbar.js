@@ -7,7 +7,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 export default function Navbar() {
   const dispatch = useDispatch();
-  const { user } = useSelector((state) => state.user);
+  const user = useSelector((state) => state.user);
   const { isUserMenuMounted, isUserSettingsFormMounted } = useSelector(
     (state) => state.toggleMountComponents
   );
@@ -69,7 +69,6 @@ export default function Navbar() {
         {!user && (
           <div
             className="about--login--signup--nav"
-            onClick={() => dispatch({ type: "RESET_USER_STATE" })}
           >
             <Link to="/about" aria-label="about">
               <span className="about--btn">About</span>

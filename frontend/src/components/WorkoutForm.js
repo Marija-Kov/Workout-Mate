@@ -1,11 +1,10 @@
 import { useState, useRef } from "react";
 import { useCreateWorkout } from "../hooks/useCreateWorkout";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 export default function WorkoutForm() {
   const dispatch = useDispatch();
   const { createWorkout } = useCreateWorkout();
-  const { createWorkoutError } = useSelector((state) => state.workout);
   const title = useRef();
   const muscle_group = useRef();
   const load = useRef();
@@ -47,7 +46,6 @@ export default function WorkoutForm() {
           className="close material-symbols-outlined"
           onClick={() => {
             dispatch({ type: "TOGGLE_MOUNT_CREATE_WORKOUT_FORM" });
-            dispatch({ type: "RESET_WORKOUT_ERROR_MESSAGES" });
           }}
         >
           close
@@ -102,11 +100,6 @@ export default function WorkoutForm() {
           className={badInput.includes("load") ? "error" : ""}
         />
         <button className="workout--form--btn">Add workout</button>
-        {createWorkoutError && (
-          <div role="alert" className="error">
-            {createWorkoutError}
-          </div>
-        )}
       </form>
     </div>
   );

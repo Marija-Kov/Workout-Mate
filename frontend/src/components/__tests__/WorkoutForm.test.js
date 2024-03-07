@@ -1,4 +1,5 @@
 import WorkoutForm from "../WorkoutForm";
+import App from "../../mocks/App";
 import user from "@testing-library/user-event";
 import { render, screen, act } from "@testing-library/react";
 import { rest } from "msw";
@@ -17,7 +18,7 @@ let mockUser = {
 };
 
 beforeAll(() => (dispatch = store.dispatch));
-beforeEach(() => dispatch({ type: "LOGIN_SUCCESS", payload: mockUser }));
+beforeEach(() => dispatch({ type: "LOGIN", payload: mockUser }));
 afterEach(() => {
   dispatch({ type: "RESET_WORKOUTS_STATE" });
   act(() => dispatch({ type: "LOGOUT" }));
@@ -96,7 +97,7 @@ describe("<WorkoutForm/>", () => {
     expect(loadInput).toHaveValue(22);
   });
 
-  it("should signal input error when user attempts to submit form with missing input value(s)", async () => {
+  it("should signal input error when input value(s) are missing", async () => {
     server.use(
       rest.post(
         `${process.env.REACT_APP_API}/api/workouts`,
@@ -113,6 +114,7 @@ describe("<WorkoutForm/>", () => {
     user.setup();
     render(
       <Provider store={store}>
+        <App />
         <WorkoutForm />
       </Provider>
     );
@@ -135,11 +137,12 @@ describe("<WorkoutForm/>", () => {
     expect(repsInput).toHaveAttribute("class", "error");
     expect(loadInput).not.toHaveAttribute("class", "error");
     const error = await screen.findByRole("alert");
+    expect(error).toBeInTheDocument();
     expect(error.textContent).toMatch(/please fill out the empty fields/i);
-    expect(error).toHaveAttribute("class", "error");
+    expect(error).toHaveAttribute("class", "error flashMessage");
   });
 
-  it("should signal input error when user attempts to submit form with too long title", async () => {
+  it("should signal input error when title is too long", async () => {
     server.use(
       rest.post(
         `${process.env.REACT_APP_API}/api/workouts`,
@@ -156,6 +159,7 @@ describe("<WorkoutForm/>", () => {
     user.setup();
     render(
       <Provider store={store}>
+        <App />
         <WorkoutForm />
       </Provider>
     );
@@ -175,11 +179,12 @@ describe("<WorkoutForm/>", () => {
     titleInput = await screen.findByTestId("title");
     expect(titleInput).toHaveAttribute("class", "error");
     const error = await screen.findByRole("alert");
+    expect(error).toBeInTheDocument()
     expect(error.textContent).toMatch(/max 30 characters/i);
-    expect(error).toHaveAttribute("class", "error");
+    expect(error).toHaveAttribute("class", "error flashMessage");
   });
 
-  it("should signal input error when user attempts to submit form with title containing non-alphabetic characters", async () => {
+  it("should signal input error if title contains non-alphabetic characters", async () => {
     server.use(
       rest.post(
         `${process.env.REACT_APP_API}/api/workouts`,
@@ -196,6 +201,7 @@ describe("<WorkoutForm/>", () => {
     user.setup();
     render(
       <Provider store={store}>
+        <App />
         <WorkoutForm />
       </Provider>
     );
@@ -212,11 +218,12 @@ describe("<WorkoutForm/>", () => {
     titleInput = await screen.findByTestId("title");
     expect(titleInput).toHaveAttribute("class", "error");
     const error = await screen.findByRole("alert");
+    expect(error).toBeInTheDocument();
     expect(error.textContent).toMatch(/may contain only letters/i);
-    expect(error).toHaveAttribute("class", "error");
+    expect(error).toHaveAttribute("class", "error flashMessage");
   });
 
-  it("should signal input error when user attempts to submit form with too large reps number", async () => {
+  it("should signal input error if reps value is too large", async () => {
     server.use(
       rest.post(
         `${process.env.REACT_APP_API}/api/workouts`,
@@ -233,6 +240,7 @@ describe("<WorkoutForm/>", () => {
     user.setup();
     render(
       <Provider store={store}>
+        <App />
         <WorkoutForm />
       </Provider>
     );
@@ -249,11 +257,12 @@ describe("<WorkoutForm/>", () => {
     repsInput = await screen.findByTestId("reps");
     expect(repsInput).toHaveAttribute("class", "error");
     const error = await screen.findByRole("alert");
+    expect(error).toBeInTheDocument();
     expect(error.textContent).toMatch(/reps value too large/i);
-    expect(error).toHaveAttribute("class", "error");
+    expect(error).toHaveAttribute("class", "error flashMessage");
   });
 
-  it("should signal input error when user attempts to submit form with too large load number", async () => {
+  it("should signal input error when load value is too large", async () => {
     server.use(
       rest.post(
         `${process.env.REACT_APP_API}/api/workouts`,
@@ -270,6 +279,7 @@ describe("<WorkoutForm/>", () => {
     user.setup();
     render(
       <Provider store={store}>
+        <App />
         <WorkoutForm />
       </Provider>
     );
@@ -286,11 +296,12 @@ describe("<WorkoutForm/>", () => {
     loadInput = await screen.findByTestId("load");
     expect(loadInput).toHaveAttribute("class", "error");
     const error = await screen.findByRole("alert");
+    expect(error).toBeInTheDocument();
     expect(error.textContent).toMatch(/load value too large/i);
-    expect(error).toHaveAttribute("class", "error");
+    expect(error).toHaveAttribute("class", "error flashMessage");
   });
 
-  it("should respond with error message if authentication token expired and user attempts to submit", async () => {
+  it("should respond with error if user is not authorized", async () => {
     server.use(
       rest.post(
         `${process.env.REACT_APP_API}/api/workouts`,
@@ -307,6 +318,7 @@ describe("<WorkoutForm/>", () => {
     user.setup();
     render(
       <Provider store={store}>
+        <App />
         <WorkoutForm />
       </Provider>
     );
@@ -321,14 +333,16 @@ describe("<WorkoutForm/>", () => {
     await user.type(loadInput, "20");
     await user.click(submit);
     const error = await screen.findByRole("alert");
+    expect(error).toBeInTheDocument();
     expect(error.textContent).toMatch(/not authorized/i);
-    expect(error).toHaveAttribute("class", "error");
+    expect(error).toHaveAttribute("class", "error flashMessage");
   });
 
-  it("should not respond with error when user submits form with valid input", async () => {
+  it("should respond with success if input is valid and user authorized", async () => {
     user.setup();
     render(
       <Provider store={store}>
+        <App />
         <WorkoutForm />
       </Provider>
     );
@@ -341,14 +355,10 @@ describe("<WorkoutForm/>", () => {
     await user.selectOptions(muscleGroupSelect, "biceps");
     await user.type(repsInput, "33");
     await user.type(loadInput, "20");
-    let state = store.getState();
-    expect(state.workout.workouts.total).toBe(0);
     await user.click(submit);
-    const error = screen.queryAllByRole("alert");
-    expect(error.length).toBe(0);
-    state = store.getState();
-    expect(state.workout.workouts.total).toBe(1);
-    act(() => dispatch({ type: "DELETE_ALL_WORKOUTS_SUCCESS" }));
-    act(() => dispatch({ type: "RESET_ROUTINE_BALANCE_STATE" }));
+    const success = await screen.findByRole("alert");
+    expect(success).toBeInTheDocument();
+    expect(success.textContent).toMatch(/successfully created workout/i);
+    expect(success).toHaveAttribute("class", "success flashMessage");
   });
 });

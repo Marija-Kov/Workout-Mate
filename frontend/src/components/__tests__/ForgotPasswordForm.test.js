@@ -1,4 +1,5 @@
 import ForgotPasswordForm from "../ForgotPasswordForm";
+import App from "../../mocks/App";
 import user from "@testing-library/user-event";
 import { render, screen } from "@testing-library/react";
 import { rest } from "msw";
@@ -65,6 +66,7 @@ describe("<ForgotPasswordForm />", () => {
     user.setup();
     render(
       <Provider store={store}>
+        <App />
         <ForgotPasswordForm />
       </Provider>
     );
@@ -74,7 +76,7 @@ describe("<ForgotPasswordForm />", () => {
     await user.click(submitBtn);
     const error = await screen.findByRole("alert");
     expect(error).toBeInTheDocument();
-    expect(error).toHaveAttribute("class", "error");
+    expect(error).toHaveAttribute("class", "error flashMessage");
     expect(error.textContent).toMatch(/please enter valid email address/i);
   });
 
@@ -82,6 +84,7 @@ describe("<ForgotPasswordForm />", () => {
     user.setup();
     render(
       <Provider store={store}>
+        <App />
         <ForgotPasswordForm />
       </Provider>
     );
@@ -91,7 +94,7 @@ describe("<ForgotPasswordForm />", () => {
     await user.click(submitBtn);
     const successMessage = await screen.findByRole("alert");
     expect(successMessage).toBeInTheDocument();
-    expect(successMessage).toHaveAttribute("class", "success");
+    expect(successMessage).toHaveAttribute("class", "success flashMessage");
     expect(successMessage.textContent).toMatch(/reset link sent to inbox/i);
   });
 });

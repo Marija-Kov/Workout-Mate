@@ -15,7 +15,6 @@ export default function EditWorkout() {
     prevReps,
     prevLoad,
   } = prepopulateEditWorkoutForm;
-  const { updateWorkoutError } = useSelector((state) => state.workout);
   const title = useRef();
   const muscle_group = useRef();
   const reps = useRef();
@@ -114,11 +113,6 @@ export default function EditWorkout() {
         <button className="edit--form--btn" onClick={(e) => handleUpdate(e)}>
           Save changes
         </button>
-        {updateWorkoutError && (
-          <div role="alert" className="error">
-            {updateWorkoutError}
-          </div>
-        )}
       </form>
     </div>
   );

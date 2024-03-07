@@ -67,7 +67,7 @@ describe("<Navbar />", () => {
 
   it("should render the navbar correctly when the user is logged in as well as focus the elements in the right order", async () => {
     user.setup();
-    dispatch({ type: "LOGIN_SUCCESS", payload: mockUser });
+    dispatch({ type: "LOGIN", payload: mockUser });
     render(
       <Provider store={store}>
         <BrowserRouter>
@@ -85,7 +85,7 @@ describe("<Navbar />", () => {
 
   it("should render User menu once user clicks on avatar", async () => {
     user.setup();
-    dispatch({ type: "LOGIN_SUCCESS", payload: mockUser });
+    dispatch({ type: "LOGIN", payload: mockUser });
     render(
       <Provider store={store}>
         <BrowserRouter>
@@ -106,7 +106,7 @@ describe("<Navbar />", () => {
 
   it("should render User Settings once isUserSettingsFormMounted state is set to true", async () => {
     user.setup();
-    dispatch({ type: "LOGIN_SUCCESS", payload: mockUser });
+    dispatch({ type: "LOGIN", payload: mockUser });
     render(
       <Provider store={store}>
         <BrowserRouter>

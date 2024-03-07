@@ -12,7 +12,7 @@ const ResetPassword = React.lazy(() => import("./pages/ResetPassword"));
 const ConfirmedAccount = React.lazy(() => import("./pages/ConfirmedAccount"));
 
 function App() {
-  const { user } = useSelector((state) => state.user);
+  const user = useSelector((state) => state.user);
   const { isSpunDownServerAlertMounted } = useSelector(
     (state) => state.toggleMountComponents
   );

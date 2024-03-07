@@ -2,7 +2,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useSearch } from "../hooks/useSearch";
 
 export default function Search() {
-  const { loading } = useSelector((state) => state.workout);
+  const loading = useSelector((state) => state.loader);
   const dispatch = useDispatch();
   const page = useSelector((state) => state.page);
   const query = useSelector((state) => state.query);

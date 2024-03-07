@@ -17,7 +17,7 @@ let mockUser = {
 
 beforeAll(() => {
   dispatch = store.dispatch;
-  dispatch({ type: "LOGIN_SUCCESS", payload: mockUser });
+  dispatch({ type: "LOGIN", payload: mockUser });
 });
 afterEach(() => {
   act(() => dispatch({ type: "RESET_QUERY_STATE" }));
@@ -75,7 +75,7 @@ describe("<Search />", () => {
     );
     const searchForm = screen.getByTestId("search-form");
     const searchBtn = screen.getByRole("button");
-    act(() => dispatch({ type: "SET_WORKOUTS_REQ" }));
+    act(() => dispatch({ type: "SET_LOADER" }));
     expect(searchForm).toHaveAttribute("class", "search--bar is--loading");
     expect(searchBtn).toBeDisabled();
   });
