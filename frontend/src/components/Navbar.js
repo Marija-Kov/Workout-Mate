@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Buffer } from "buffer";
 import { Link } from "react-router-dom";
 import { logOutIfTokenExpired } from "../utils/logOutIfTokenExpired";
 import UserMenu from "./UserMenu";
@@ -17,7 +18,8 @@ export default function Navbar() {
   );
 
   const changeProfileImg = (img) => {
-    setProfileImg(img);
+    if (Buffer.byteLength(img) > 1048576) return;
+    return setProfileImg(img);
   };
 
   useEffect(() => {
@@ -67,9 +69,7 @@ export default function Navbar() {
           </div>
         )}
         {!user && (
-          <div
-            className="about--login--signup--nav"
-          >
+          <div className="about--login--signup--nav">
             <Link to="/about" aria-label="about">
               <span className="about--btn">About</span>
             </Link>
