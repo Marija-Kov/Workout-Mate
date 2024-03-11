@@ -8,17 +8,20 @@ const workoutRoutes = require("./routes/workouts");
 const userRoutes = require("./routes/users");
 const passwordResetRoutes = require("./routes/resetPassword");
 const { errorHandler } = require("./error/error");
+const cookieParser = require('cookie-parser');
 
 const app = express();
+app.use(cookieParser());
 app.use(
   cors({
     origin: process.env.ORIGIN,
+    credentials: true
   })
-);
-app.use(express.json({ limit: "50mb" }));
-app.use(
-  express.urlencoded({ limit: "50mb", extended: true, parameterLimit: 50000 })
-);
+  );
+  app.use(express.json({ limit: "50mb" }));
+  app.use(
+    express.urlencoded({ limit: "50mb", extended: true, parameterLimit: 50000 })
+    );
 
 if (process.env.NODE_ENV !== "test") {
   mongoose

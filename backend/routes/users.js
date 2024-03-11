@@ -7,6 +7,7 @@ const { tryCatch } = require("../error/tryCatch");
 router.post("/signup", tryCatch(authController.signup_post));
 router.get("/:accountConfirmationToken", tryCatch(authController.verify_user));
 router.post("/login", tryCatch(authController.login_post));
+router.post("/logout", tryCatch(authController.logout));
 
 router.use(requireAuth);
 

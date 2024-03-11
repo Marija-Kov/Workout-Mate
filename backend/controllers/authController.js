@@ -35,7 +35,21 @@ module.exports.login_post = async (req, res) => {
   );
   res
     .status(200)
-    .json({ id, email, token, username, profileImg, tokenExpires });
+    .cookie("token", token, {
+      httpOnly: true,
+      secure: true,
+      maxAge: tokenExpires,
+    })
+    .json({ id, email, username, profileImg });
+};
+
+module.exports.logout = async (req, res) => {
+  return res
+    .status(200)
+    .cookie("token", "logout", {
+      maxAge: 0,
+    })
+    .json({ loggedOut: true });
 };
 
 module.exports.user_update_patch = async (req, res) => {

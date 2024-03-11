@@ -13,7 +13,8 @@ async function mockUser(
     .body;
   if (status === "confirmed") return userConfirmed;
 
-  const userLoggedIn = (await agent.post("/api/users/login").send(user)).body;
+  const resLoggedIn = await agent.post("/api/users/login").send(user);
+  const userLoggedIn = { ...resLoggedIn.body, token: getToken(resLoggedIn) };
   if (status === "logged-in") return userLoggedIn;
 
   const userHasWorkouts = await addWorkouts(userLoggedIn, agent);
@@ -34,7 +35,7 @@ async function addWorkouts(userLoggedIn, agent) {
       await agent
         .post("/api/workouts/")
         .send(sampleWorkouts[i])
-        .set("Authorization", `Bearer ${userLoggedIn.token}`)
+        .set("Cookie", `token=${userLoggedIn.token}`)
     ).body;
     workouts.unshift(workout);
   }
@@ -60,7 +61,7 @@ async function maxOutWorkouts(user, agent) {
     await agent
       .post("/api/workouts/")
       .send(sampleWorkouts[i])
-      .set("Authorization", `Bearer ${user.token}`);
+      .set("Cookie", `token=${user.token}`);
   }
 }
 
@@ -75,8 +76,16 @@ function ISO8601ToMilliseconds(ISO8601) {
   return ms + 1000 * (s + 60 * (min + 60 * (h + 24 * (d + 30 * (m + y * 12)))));
 }
 
+function getToken(res) {
+  const cookies = res.headers["set-cookie"];
+  const tokenCookie = cookies.filter((e) => e.match(/token=/i))[0];
+  const token = tokenCookie.split("; ")[0].split("=")[1];
+  return token;
+}
+
 module.exports = {
   mockUser,
   maxOutWorkouts,
   ISO8601ToMilliseconds,
+  getToken,
 };
