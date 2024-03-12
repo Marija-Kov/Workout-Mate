@@ -93,8 +93,8 @@ const login = async (email, password) => {
   }
   const { _id, username, profileImg } = user;
   const token = jwt.sign({ _id }, process.env.SECRET);
-  const tokenExpires = Date.now() + Number(process.env.AUTH_TOKEN_EXPIRES_IN) * 1000;
-  return { id: _id, token, username, profileImg, tokenExpires };
+  const tokenExpires = Number(process.env.AUTH_TOKEN_EXPIRES_IN) * 1000;
+  return { token, username, profileImg, tokenExpires };
 };
 
 const updateUser = async (id, body) => { 

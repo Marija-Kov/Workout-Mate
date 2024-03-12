@@ -6,6 +6,7 @@ const {
   deleteUser,
   downloadUserData,
 } = require("../businessLogic/auth");
+const jwt = require("jsonwebtoken");
 
 module.exports.signup_post = async (req, res) => {
   const { email, password } = req.body;
@@ -29,7 +30,7 @@ module.exports.verify_user = async (req, res) => {
 
 module.exports.login_post = async (req, res) => {
   const { email, password } = req.body;
-  const { id, token, username, profileImg, tokenExpires } = await login(
+  const { token, username, profileImg, tokenExpires } = await login(
     email,
     password
   );
@@ -40,7 +41,7 @@ module.exports.login_post = async (req, res) => {
       secure: true,
       maxAge: tokenExpires,
     })
-    .json({ id, email, username, profileImg });
+    .json({ email, username, profileImg });
 };
 
 module.exports.logout = async (req, res) => {
@@ -53,31 +54,30 @@ module.exports.logout = async (req, res) => {
 };
 
 module.exports.user_update_patch = async (req, res) => {
-  const user = req.user;
-  const { id } = req.params;
-  const token = req.headers.authorization.slice(7);
+  const token = req.cookies.token;
+  const { _id } = jwt.verify(token, process.env.SECRET);
   const body = req.body;
-  const { email, username, profileImg } = await updateUser(user, id, body);
+  const { email, username, profileImg } = await updateUser(_id, body);
   return res.status(200).json({
     user: {
-      id,
       email,
       username,
       profileImg,
-      token,
     },
     success: "Profile updated.",
   });
 };
 
 module.exports.user_deletion = async (req, res) => {
-  const { id } = req.params;
-  await deleteUser(id);
+  const token = req.cookies.token;
+  const { _id } = jwt.verify(token, process.env.SECRET);
+  await deleteUser(_id);
   res.status(200).json({ success: "Account deleted successfully" });
 };
 
 module.exports.download_user_data = async (req, res) => {
-  const { id } = req.params;
-  const { user, workouts } = await downloadUserData(id);
+  const token = req.cookies.token;
+  const { _id } = jwt.verify(token, process.env.SECRET);
+  const { user, workouts } = await downloadUserData(_id);
   res.status(200).json({ user, workouts });
 };

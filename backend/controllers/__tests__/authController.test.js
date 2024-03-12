@@ -299,7 +299,6 @@ describe("authController", () => {
         .set("Cookie", `token=${token}`);
       expect(res.status).toBe(200);
       expect(res.body.user).toBeTruthy();
-      expect(res.body.user._id).toBe(id);
       expect(res.body.workouts).toBeTruthy();
     });
   });

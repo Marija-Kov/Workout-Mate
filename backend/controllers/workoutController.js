@@ -5,19 +5,22 @@ const {
   deleteWorkout,
   deleteAllWorkouts,
 } = require("../businessLogic/workout");
+const jwt = require("jsonwebtoken");
 
 module.exports.get_all_user_workouts = async (req, res) => {
-  const user = req.user;
+  const token = req.cookies.token;
+  const { _id } = jwt.verify(token, process.env.SECRET);
   const page = req.query.p || 0;
   const searchQuery = req.query.search || null;
-  const result = await getAllWorkouts(user, page, searchQuery);
+  const result = await getAllWorkouts(_id, page, searchQuery);
   res.status(200).json(result);
 };
 
 module.exports.add_workout = async (req, res) => {
-  const user = req.user;
+  const token = req.cookies.token;
+  const { _id } = jwt.verify(token, process.env.SECRET);
   const { title, muscle_group, reps, load } = req.body;
-  const workout = await addWorkout(title, muscle_group, reps, load, user);
+  const workout = await addWorkout(title, muscle_group, reps, load, _id);
   res.status(201).json(workout);
 };
 
@@ -35,7 +38,8 @@ module.exports.delete_workout = async (req, res) => {
 };
 
 module.exports.delete_all_user_workouts = async (req, res) => {
-  const user = req.user;
-  const workouts = await deleteAllWorkouts(user);
+  const token = req.cookies.token;
+  const { _id } = jwt.verify(token, process.env.SECRET);
+  const workouts = await deleteAllWorkouts(_id);
   res.status(200).json(workouts);
 };
