@@ -9,7 +9,7 @@ async function mockUser(
   const userPending = (await agent.post("/api/users/signup").send(user)).body;
   if (status === "pending") return userPending;
 
-  const userConfirmed = (await agent.get(`/api/users/${userPending.token}`))
+  const userConfirmed = (await agent.get(`/api/users/confirmaccount/${userPending.token}`))
     .body;
   if (status === "confirmed") return userConfirmed;
 

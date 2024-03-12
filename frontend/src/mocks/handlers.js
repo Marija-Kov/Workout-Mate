@@ -16,7 +16,7 @@ export const handlers = [
     }
   ),
 
-  rest.get(`${process.env.REACT_APP_API}/api/users/*`, (req, res, ctx) => {
+  rest.get(`${process.env.REACT_APP_API}/api/users/confirmaccount/*`, (req, res, ctx) => {
     return res(
       ctx.status(200),
       ctx.json({

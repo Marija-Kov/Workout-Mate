@@ -77,10 +77,10 @@ describe("authController", () => {
         });
       }
       const resOldestUser = await agent.get(
-        `/api/users/${oldestUserPendingToken}`
+        `/api/users/confirmaccount/${oldestUserPendingToken}`
       );
       const res2ndOldestUser = await agent.get(
-        `/api/users/${secondOldestUserPendingToken}`
+        `/api/users/confirmaccount/${secondOldestUserPendingToken}`
       );
       expect(resOldestUser.status).toBe(404);
       expect(resOldestUser.body.error).toBeTruthy();
@@ -89,9 +89,9 @@ describe("authController", () => {
     });
   });
 
-  describe("GET /api/users/:accountConfirmationToken", () => {
+  describe("GET /api/users/confirmaccount/:accountConfirmationToken", () => {
     it("should respond with error if the confirmation token was invalid", async () => {
-      const res = await agent.get(`/api/users/forgedOrExpiredToken`);
+      const res = await agent.get(`/api/users/confirmaccount/forgedOrExpiredToken`);
       expect(res.status).toBe(404);
       expect(res.body).toHaveProperty(
         "error",
@@ -102,7 +102,7 @@ describe("authController", () => {
     it("should respond with success message if the confirmation token was valid", async () => {
       const user = { email: "a@b.c", password: "abcABC123!" };
       const { token } = (await agent.post("/api/users/signup").send(user)).body;
-      const res = await agent.get(`/api/users/${token}`);
+      const res = await agent.get(`/api/users/confirmaccount/${token}`);
       expect(res.status).toBe(200);
       expect(res.body).toHaveProperty(
         "success",
