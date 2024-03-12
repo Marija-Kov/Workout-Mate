@@ -14,9 +14,7 @@ export const useDeleteAllWorkouts = () => {
     }
     const response = await fetch(`${process.env.REACT_APP_API}/api/workouts/`, {
       method: "DELETE",
-      headers: {
-        Authorization: `Bearer ${user.token}`,
-      },
+      credentials: "include",
     });
     if (response.ok) {
       dispatch({ type: "UNSET_LOADER" });

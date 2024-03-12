@@ -20,9 +20,9 @@ export default function useEditWorkout() {
         method: "PATCH",
         body: JSON.stringify(payload),
         headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${user.token}`,
+          "Content-Type": "application/json", 
         },
+        credentials: "include",
       }
       );
       const json = await response.json();

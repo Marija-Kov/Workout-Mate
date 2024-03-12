@@ -1,9 +1,23 @@
 import { useDispatch } from "react-redux";
+import { useFlashMessage } from "./useFlashMessage";
 
 export const useLogout = () => {
   const dispatch = useDispatch();
+  const flashMessage = useFlashMessage();
 
-  const logout = () => {
+  const logout = async () => {
+    const response = await fetch(
+      `${process.env.REACT_APP_API}/api/users/logout`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ logout: true }),
+        credentials: "include"
+      }
+    );
+    if(!response.ok) {
+      return flashMessage("ERROR", "Could not log out");
+    }
     if (localStorage.getItem("user")) {
       localStorage.removeItem("user");
     }

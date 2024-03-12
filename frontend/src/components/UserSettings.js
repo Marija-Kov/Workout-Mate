@@ -79,7 +79,7 @@ export default function UserSettings({ changeProfileImg }) {
   const deleteAccount = async () => {
     await deleteAllWorkouts();
     await deleteUser(user.id);
-    logout();
+    await logout();
   };
 
   const runDownloadData = async (e) => {

@@ -16,9 +16,7 @@ export function useDownloadData() {
     const response = await fetch(
       `${process.env.REACT_APP_API}/api/users/download/${user.id}`,
       {
-        headers: {
-          Authorization: `Bearer ${user.token}`,
-        },
+        credentials: "include",
       }
       );
       if (!response.ok) {

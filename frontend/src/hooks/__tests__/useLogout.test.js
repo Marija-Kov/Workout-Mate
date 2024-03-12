@@ -15,10 +15,8 @@ beforeAll(() => {
   mockUser = {
     id: "userid",
     email: "keech@mail.yu",
-    token: "authorizationToken",
     username: undefined,
     profileImg: undefined,
-    tokenExpires: Date.now() + 3600000,
   };
 });
 
@@ -35,12 +33,12 @@ describe("useLogout()", () => {
     expect(typeof result.current.logout).toBe("function");
   });
 
-  it("should log the user out properly", () => {
+  it("should log the user out properly", async () => {
     dispatch({ type: "LOGIN", payload: mockUser });
     let state = store.getState();
     expect(state.user).toBeTruthy();
     const { result } = renderHook(useLogout, { wrapper });
-    act(() => result.current.logout());
+    await act(() => result.current.logout());
     state = store.getState();
     expect(state.user).toBeFalsy();
     expect(state.workouts.total).toBeFalsy();

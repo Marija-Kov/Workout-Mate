@@ -15,10 +15,8 @@ beforeAll(() => {
   mockUser = {
     id: "userid",
     email: "keech@mail.yu",
-    token: "authorizationToken",
     username: undefined,
     profileImg: undefined,
-    tokenExpires: Date.now() + 3600000,
   };
   jest.mock("../../utils/downloadJsonFile", () => ({
     downloadJsonFile: jest.fn(),

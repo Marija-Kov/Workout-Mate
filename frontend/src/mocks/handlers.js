@@ -1,6 +1,8 @@
 import { rest } from "msw";
 
 export const handlers = [
+  /* User routes */
+
   rest.post(
     `${process.env.REACT_APP_API}/api/users/signup`,
     (req, res, ctx) => {
@@ -39,6 +41,38 @@ export const handlers = [
       );
     }
   ),
+
+  rest.patch(`${process.env.REACT_APP_API}/api/users/*`, (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        user: {
+          username: "daredev",
+        },
+        success: "Profile updated",
+      })
+    );
+  }),
+
+  rest.delete(`${process.env.REACT_APP_API}/api/users/*`, (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        success: "Account deleted successfully",
+      })
+    );
+  }),
+
+  rest.post(`${process.env.REACT_APP_API}/api/users/logout`, (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        loggedOut: true,
+      })
+    );
+  }),
+
+  /* Workouts routes */
 
   rest.patch(`${process.env.REACT_APP_API}/api/workouts/*`, (req, res, ctx) => {
     return res(
@@ -97,26 +131,7 @@ export const handlers = [
     );
   }),
 
-  rest.patch(`${process.env.REACT_APP_API}/api/users/*`, (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
-        user: {
-          username: "daredev",
-        },
-        success: "Profile updated",
-      })
-    );
-  }),
-
-  rest.delete(`${process.env.REACT_APP_API}/api/users/*`, (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
-        success: "Account deleted successfully",
-      })
-    );
-  }),
+  /* Password reset routes */
 
   rest.post(
     `${process.env.REACT_APP_API}/api/reset-password`,

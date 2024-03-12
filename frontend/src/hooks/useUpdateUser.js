@@ -44,14 +44,12 @@ export const useUpdateUser = () => {
       {
         method: "PATCH",
         body: JSON.stringify(body),
-        headers: {
-          "Content-type": "application/json",
-          Authorization: `Bearer ${user.token}`,
-        },
+        headers: { "Content-type": "application/json" },
+        credentials: "include",
       }
-      );
-      const json = await response.json();
-      if (!response.ok) {
+    );
+    const json = await response.json();
+    if (!response.ok) {
       dispatch({ type: "UNSET_LOADER" });
       return flashMessage("ERROR", json.error);
     }
