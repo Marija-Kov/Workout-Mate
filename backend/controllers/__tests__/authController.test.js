@@ -171,7 +171,7 @@ describe("authController", () => {
     });
   });
 
-  describe("PATCH /api/users/:id", () => {
+  describe("PATCH /api/users", () => {
     it("should respond with error in case of unauthorized update attempt", async () => {
       const { id } = await mockUser("confirmed", agent);
       const newUsername = "theDawg76";
@@ -263,9 +263,8 @@ describe("authController", () => {
     });
   });
 
-  describe("DELETE /api/users/:id", () => {
+  describe("DELETE /api/users", () => {
     it("should respond with error if no authorization token was found", async () => {
-      const { id } = await mockUser("logged-in", agent);
       const res = await agent.delete(`/api/users`);
       expect(res.status).toBe(401);
       expect(res.body.error).toBeTruthy();

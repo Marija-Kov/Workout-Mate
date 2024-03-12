@@ -9,8 +9,6 @@ import store from "../../redux/store";
 
 let dispatch;
 let mockUser = {
-  id: "userid",
-  email: "keech@mail.yu",
   username: undefined,
   profileImg: undefined,
 };
@@ -119,7 +117,7 @@ describe("<UserSettings/>", () => {
   it("should render error message if server responded with an error", async () => {
     server.use(
       rest.patch(
-        `${process.env.REACT_APP_API}/api/users/*`,
+        `${process.env.REACT_APP_API}/api/users`,
         (req, res, ctx) => {
           return res(
             ctx.status(500),
@@ -150,7 +148,7 @@ describe("<UserSettings/>", () => {
   it("should render error message if the user is not authorized", async () => {
     server.use(
       rest.patch(
-        `${process.env.REACT_APP_API}/api/users/*`,
+        `${process.env.REACT_APP_API}/api/users`,
         (req, res, ctx) => {
           return res(
             ctx.status(401),

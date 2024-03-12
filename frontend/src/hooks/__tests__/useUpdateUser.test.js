@@ -1,11 +1,9 @@
 import { renderHook, act } from "@testing-library/react";
-import { rest } from "msw";
 import {
   writeLargeFile,
   readLargeFile,
   deleteLargeFile,
 } from "../../utils/test/largeImageFile";
-import { server } from "../../mocks/server";
 import { useUpdateUser } from "../useUpdateUser";
 import { Provider } from "react-redux";
 import store from "../../redux/store";

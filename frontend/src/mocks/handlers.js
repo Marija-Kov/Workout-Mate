@@ -51,6 +51,16 @@ export const handlers = [
     );
   }),
 
+  rest.get(`${process.env.REACT_APP_API}/api/users/download`, (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        user: {},
+        workouts: [],
+      })
+    );
+  }),
+
   rest.delete(`${process.env.REACT_APP_API}/api/users`, (req, res, ctx) => {
     return res(
       ctx.status(200),

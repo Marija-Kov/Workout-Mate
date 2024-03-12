@@ -16,8 +16,6 @@ beforeAll(() => {
   };
   dispatch = store.dispatch;
   mockUser = {
-    id: "userid",
-    email: "keech@mail.yu",
     username: undefined,
     profileImg: undefined,
   };
