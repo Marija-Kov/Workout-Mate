@@ -20,8 +20,6 @@ beforeAll(async () => {
   };
   dispatch = store.dispatch;
   mockUser = {
-    id: "userid",
-    email: "keech@mail.yu",
     username: undefined,
     profileImg: undefined,
   };
@@ -95,27 +93,6 @@ describe("useUpdateUser()", () => {
       username: "keech.rr_",
       profileImg: "profileImgString",
     };
-    server.use(
-      rest.patch(
-        `${process.env.REACT_APP_API}/api/users/*`,
-        (req, res, ctx) => {
-          return res(
-            ctx.status(200),
-            ctx.json({
-              user: {
-                id: mockUser.id,
-                email: mockUser.email,
-                token: mockUser.token,
-                username: newData.username,
-                profileImg: newData.profileImg,
-                tokenExpires: mockUser.tokenExpires,
-              },
-              success: "Profile updated",
-            })
-          );
-        }
-      )
-    );
     dispatch({ type: "LOGIN", payload: mockUser });
     const { result } = renderHook(useUpdateUser, { wrapper });
     await act(() =>

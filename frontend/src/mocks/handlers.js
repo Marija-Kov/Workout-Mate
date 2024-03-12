@@ -31,30 +31,27 @@ export const handlers = [
       return res(
         ctx.status(200),
         ctx.json({
-          id: "userid",
-          email: "keech@mail.yu",
           username: undefined,
           profileImg: undefined,
-          token: "authorizationToken",
-          tokenExpires: Date.now() + 3600000,
         })
       );
     }
   ),
 
-  rest.patch(`${process.env.REACT_APP_API}/api/users/*`, (req, res, ctx) => {
+  rest.patch(`${process.env.REACT_APP_API}/api/users`, (req, res, ctx) => {
     return res(
       ctx.status(200),
       ctx.json({
         user: {
-          username: "daredev",
+          username: "keech.rr_",
+          profileImg: "profileImgString",
         },
         success: "Profile updated",
       })
     );
   }),
 
-  rest.delete(`${process.env.REACT_APP_API}/api/users/*`, (req, res, ctx) => {
+  rest.delete(`${process.env.REACT_APP_API}/api/users`, (req, res, ctx) => {
     return res(
       ctx.status(200),
       ctx.json({

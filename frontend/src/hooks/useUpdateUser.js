@@ -40,7 +40,7 @@ export const useUpdateUser = () => {
       body.username = username;
     }
     const response = await fetch(
-      `${process.env.REACT_APP_API}/api/users/${user.id}`,
+      `${process.env.REACT_APP_API}/api/users`,
       {
         method: "PATCH",
         body: JSON.stringify(body),

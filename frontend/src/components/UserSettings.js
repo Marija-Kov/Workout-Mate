@@ -16,7 +16,6 @@ export default function UserSettings({ changeProfileImg }) {
   const { deleteUser } = useDeleteUser();
   const { deleteAllWorkouts } = useDeleteAllWorkouts();
   const { logout } = useLogout();
-  const user = useSelector((state) => state.user);
   const loading = useSelector((state) => state.loader);
   const { isDeleteAccountDialogueMounted } = useSelector(
     (state) => state.toggleMountComponents
@@ -78,7 +77,7 @@ export default function UserSettings({ changeProfileImg }) {
 
   const deleteAccount = async () => {
     await deleteAllWorkouts();
-    await deleteUser(user.id);
+    await deleteUser();
     await logout();
   };
 

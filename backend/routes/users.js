@@ -11,8 +11,8 @@ router.post("/logout", tryCatch(authController.logout));
 
 router.use(requireAuth);
 
-router.patch("/:id", tryCatch(authController.user_update_patch));
-router.delete("/:id", tryCatch(authController.user_deletion));
-router.get("/download/:id", tryCatch(authController.download_user_data));
+router.patch("/", tryCatch(authController.user_update_patch));
+router.delete("/", tryCatch(authController.user_deletion));
+router.get("/download", tryCatch(authController.download_user_data));
 
 module.exports = router;

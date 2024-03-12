@@ -14,7 +14,7 @@ export function useDownloadData() {
       return flashMessage("ERROR", "Not authorized");
     }
     const response = await fetch(
-      `${process.env.REACT_APP_API}/api/users/download/${user.id}`,
+      `${process.env.REACT_APP_API}/api/users/download`,
       {
         credentials: "include",
       }
