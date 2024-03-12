@@ -2,9 +2,6 @@ const Workout = require("../dataAccessLayer/workoutRepository");
 const { ApiError } = require("../error/error");
 
 const getAllWorkouts = async (user, page, searchQuery) => {
-  if (!user) {
-    ApiError.notAuthorized("Not authorized");
-  }
   const user_id = user._id;
   const limit = 3;
   const allUserWorkoutsMuscleGroups = (await Workout.getAll(user_id)).map(
@@ -33,9 +30,6 @@ const getAllWorkouts = async (user, page, searchQuery) => {
 };
 
 const addWorkout = async (title, muscleGroup, reps, load, user) => {
-  if (!user) {
-    ApiError.notAuthorized("Not authorized");
-  }
   if (!title || !muscleGroup || !String(reps) || !String(load)) {
     ApiError.badInput("Please fill out the empty fields");
   }
@@ -116,9 +110,6 @@ const deleteWorkout = async (id) => {
 };
 
 const deleteAllWorkouts = async (user) => {
-  if (!user) {
-    ApiError.notAuthorized("Not authorized");
-  }
   const user_id = user._id;
   const workouts = await Workout.deleteAll(user_id);
   return workouts;

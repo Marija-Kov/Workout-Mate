@@ -97,10 +97,7 @@ const login = async (email, password) => {
   return { id: _id, token, username, profileImg, tokenExpires };
 };
 
-const updateUser = async (user, id, body) => {
-  if (!user) {
-    ApiError.notAuthorized("Not authorized");
-  }
+const updateUser = async (id, body) => { 
   if ((!body.username || !body.username.trim()) && !body.profileImg) {
     return await User.findById(id);
   }
@@ -136,9 +133,6 @@ const updateUser = async (user, id, body) => {
 };
 
 const deleteUser = async (id) => {
-  if (!id) {
-    ApiError.notAuthorized("Not authorized");
-  }
   await User.delete(id);
 };
 
