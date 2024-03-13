@@ -4,7 +4,6 @@ import WorkoutForm from "../components/WorkoutForm";
 import Pagination from "../components/Pagination";
 import { useSearch } from "../hooks/useSearch";
 import Search from "../components/Search";
-import { logOutIfTokenExpired } from "../utils/logOutIfTokenExpired";
 import { Chart } from "../components/Chart";
 import { ChartPlaceholder } from "../components/ChartPlaceholder";
 import { WorkoutsPlaceholder } from "../components/WorkoutsPlaceholder";
@@ -85,7 +84,7 @@ export default function Home() {
   };
 
   return (
-    <div className="home--container" onClick={logOutIfTokenExpired}>
+    <div className="home--container">
       <div className="home">
         {muscleGroups ? <Search /> : ""}
 
@@ -107,7 +106,7 @@ export default function Home() {
             }
             disabled={loading}
           >
-            + Buff It Up
+            Buff It Up
           </button>
         )}
 
