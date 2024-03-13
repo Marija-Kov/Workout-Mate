@@ -12,8 +12,12 @@ export default function ConfirmedAccount() {
   const { success } = useSelector((state) => state.flashMessages);
 
   useEffect(() => {
-    logout();
-    confirmAccount(getAccountConfirmationToken());
+    const logoutAndConfirm = async () => {
+      await logout();
+      confirmAccount(getAccountConfirmationToken());
+    };
+  
+    logoutAndConfirm();
   }, []);
 
   return (

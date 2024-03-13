@@ -62,7 +62,7 @@ const verify_user = async (token) => {
   const user = await User.findConfirmationToken(token);
   if (!user) {
     ApiError.notFound(
-      "Couldn't find user with provided confirmation token - this might be because the account has already been confirmed"
+      "Couldn't find confirmation token - might have already been confirmed"
     );
   }
   await User.activate(user._id);

@@ -78,7 +78,7 @@ function App() {
             />
             <Route path="/reset-password" element={<ResetPassword />} />
             <Route
-              path="/confirmaccount/:accountConfirmationToken"
+              path="/:accountConfirmationToken"
               element={<ConfirmedAccount />}
             />
           </Routes>

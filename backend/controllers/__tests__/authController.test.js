@@ -95,7 +95,7 @@ describe("authController", () => {
       expect(res.status).toBe(404);
       expect(res.body).toHaveProperty(
         "error",
-        "Couldn't find user with provided confirmation token - this might be because the account has already been confirmed"
+        "Couldn't find confirmation token - might have already been confirmed"
       );
     });
 
