@@ -51,16 +51,7 @@ export default function Home() {
     if (loading) {
       return <WorkoutsPlaceholder />;
     }
-    if (!muscleGroups) {
-      return (
-        <div className="get--started">
-          Get started.
-          <br></br>
-          No pressure
-          <span>🥤</span>
-        </div>
-      );
-    } else {
+    if (muscleGroups) {
       if (noWorkoutsByQuery) {
         return <div className="no--workouts--found">{noWorkoutsByQuery}</div>;
       }

@@ -61,9 +61,7 @@ describe("<Home />", () => {
     await act(() =>
       store.dispatch({ type: "SET_WORKOUTS", payload: [] })
     );
-    const getStarted = await screen.findByText(/get started/i);
     const addWorkoutBtn = await screen.findByText(/buff it up/i);
-    expect(getStarted).toBeInTheDocument();
     expect(addWorkoutBtn).toBeInTheDocument();
     expect(addWorkoutBtn).toHaveClass("no--workouts--yet");
   });
