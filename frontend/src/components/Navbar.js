@@ -27,12 +27,9 @@ export default function Navbar() {
     const username = localStorage.getItem("username");
     if (username) {
       setUsername(username);
-    } else if (user.username) {
-      setUsername(user.username);
     } else {
-      const i = user.email.indexOf("@");
-      setUsername(`${user.email.slice(0, i)}`);
-    }
+      setUsername(user.username);
+    } 
     const newImg = localStorage.getItem("newImg");
     if (newImg) {
       setProfileImg(newImg);

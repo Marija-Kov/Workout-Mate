@@ -15,15 +15,16 @@ class UserRepository {
     }
   }
   async create(email, password) {
+    const defaultUsername = email.slice(0, email.indexOf("@"));
     const sql = ` 
-    INSERT INTO wm_users (email, password)
-    VALUES ($1, $2)
-    RETURNING _id, email;
+    INSERT INTO wm_users (email, password, username)
+    VALUES ($1, $2, $3)
+    RETURNING _id, email, username;
     `;
     try {
       if (process.env.NODE_ENV === "test") {
         return new Promise((resolve, reject) => {
-          this.db.get(sql, [email, password], (err, row) => {
+          this.db.get(sql, [email, password, defaultUsername], (err, row) => {
             if (err) {
               reject(err);
             } else {
@@ -33,7 +34,11 @@ class UserRepository {
         });
       } else {
         const client = await this.pool.connect();
-        const result = await client.query(sql, [email, password]);
+        const result = await client.query(sql, [
+          email,
+          password,
+          defaultUsername,
+        ]);
         client.release();
         return result.rows[0];
       }
@@ -135,11 +140,11 @@ class UserRepository {
   }
 
   async findAll() {
+    const sql = `
+     SELECT _id FROM wm_users
+     ORDER BY _id ASC;
+    `;
     try {
-      const sql = `
-       SELECT _id FROM wm_users
-       ORDER BY _id ASC;
-      `;
       if (process.env.NODE_ENV === "test") {
         return new Promise((resolve, reject) => {
           this.db.all(sql, [], (err, rows) => {

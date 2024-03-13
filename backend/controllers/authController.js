@@ -41,7 +41,7 @@ module.exports.login_post = async (req, res) => {
       secure: true,
       maxAge: tokenExpires,
     })
-    .json({ email, username, profileImg });
+    .json({ username, profileImg });
 };
 
 module.exports.logout = async (req, res) => {
