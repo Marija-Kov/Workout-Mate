@@ -62,7 +62,7 @@ const verify_user = async (token) => {
   const user = await User.findConfirmationToken(token);
   if (!user) {
     ApiError.notFound(
-      "Couldn't find user with provided confirmation token - this might be because the account has already been confirmed"
+      "Couldn't find confirmation token - might have already been confirmed"
     );
   }
   await User.activate(user._id);
@@ -93,14 +93,11 @@ const login = async (email, password) => {
   }
   const { _id, username, profileImg } = user;
   const token = jwt.sign({ _id }, process.env.SECRET);
-  const tokenExpires = Date.now() + Number(process.env.AUTH_TOKEN_EXPIRES_IN) * 1000;
-  return { id: _id, token, username, profileImg, tokenExpires };
+  const tokenExpires = Number(process.env.AUTH_TOKEN_EXPIRES_IN) * 1000;
+  return { token, username, profileImg, tokenExpires };
 };
 
-const updateUser = async (user, id, body) => {
-  if (!user) {
-    ApiError.notAuthorized("Not authorized");
-  }
+const updateUser = async (id, body) => { 
   if ((!body.username || !body.username.trim()) && !body.profileImg) {
     return await User.findById(id);
   }
@@ -136,9 +133,6 @@ const updateUser = async (user, id, body) => {
 };
 
 const deleteUser = async (id) => {
-  if (!id) {
-    ApiError.notAuthorized("Not authorized");
-  }
   await User.delete(id);
 };
 

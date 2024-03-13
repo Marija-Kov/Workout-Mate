@@ -8,7 +8,7 @@ afterAll(async () => await closeSqlite());
 
 describe("passwordResetController", () => {
   describe("POST /api/reset-password/", () => {
-    it("should respond with error if the email address is not registered", async () => {
+    it("should respond with error if the user is not registered", async () => {
       const res = await mockPasswordResetResponse_POST("not-registered");
       expect(res.status).toBe(404);
       expect(res.body).toHaveProperty(
@@ -17,7 +17,7 @@ describe("passwordResetController", () => {
       );
     });
 
-    it("should respond with error if the user with the entered email is not confirmed", async () => {
+    it("should respond with error if the user is not confirmed", async () => {
       const res = await mockPasswordResetResponse_POST("registered");
       expect(res.status).toBe(401);
       expect(res.body).toHaveProperty(
@@ -26,7 +26,7 @@ describe("passwordResetController", () => {
       );
     });
 
-    it("should respond with 'reset link sent' message if the confirmed user with the entered email was found", async () => {
+    it("should respond with 'reset link sent' message if the user is confirmed", async () => {
       const res = await mockPasswordResetResponse_POST("confirmed");
       expect(res.status).toBe(200);
       expect(res.body).toHaveProperty(
@@ -37,7 +37,7 @@ describe("passwordResetController", () => {
   });
 
   describe("PATCH /api/reset-password/:token", () => {
-    it("should respond with error if no user with the received reset password token was found", async () => {
+    it("should respond with error if no user with the received token was found", async () => {
       const res = await mockPasswordResetResponse_PATCH("invalid-token");
       expect(res.status).toBe(422);
       expect(res.body).toHaveProperty("error", "Invalid token");
@@ -88,9 +88,10 @@ async function mockPasswordResetResponse_POST(status) {
   if (status === "confirmed") {
     const user = (
       await agent.post("/api/users/signup").send({ email, password })
-    ).body;
-    await agent.get(`/api/users/${user.token}`);
-    return await agent.post(`/api/reset-password`).send({ email });
+      ).body;
+      await agent.get(`/api/users/confirmaccount/${user.token}`);
+      const res = await agent.post(`/api/reset-password`).send({ email });
+      return res;
   }
   return await agent.post(`/api/reset-password`).send({ email });
 }

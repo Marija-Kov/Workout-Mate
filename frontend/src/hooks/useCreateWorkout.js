@@ -19,9 +19,9 @@ export const useCreateWorkout = () => {
       method: "POST",
       body: JSON.stringify(workout),
       headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${user.token}`,
+        "Content-Type": "application/json"
       },
+      credentials: "include",
     });
     const json = await response.json();
     if (!response.ok) {

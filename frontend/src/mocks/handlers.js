@@ -1,6 +1,8 @@
 import { rest } from "msw";
 
 export const handlers = [
+  /* User routes */
+
   rest.post(
     `${process.env.REACT_APP_API}/api/users/signup`,
     (req, res, ctx) => {
@@ -14,7 +16,7 @@ export const handlers = [
     }
   ),
 
-  rest.get(`${process.env.REACT_APP_API}/api/users/*`, (req, res, ctx) => {
+  rest.get(`${process.env.REACT_APP_API}/api/users/confirmaccount/*`, (req, res, ctx) => {
     return res(
       ctx.status(200),
       ctx.json({
@@ -29,16 +31,55 @@ export const handlers = [
       return res(
         ctx.status(200),
         ctx.json({
-          id: "userid",
-          email: "keech@mail.yu",
           username: undefined,
           profileImg: undefined,
-          token: "authorizationToken",
-          tokenExpires: Date.now() + 3600000,
         })
       );
     }
   ),
+
+  rest.patch(`${process.env.REACT_APP_API}/api/users`, (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        user: {
+          username: "keech.rr_",
+          profileImg: "profileImgString",
+        },
+        success: "Profile updated",
+      })
+    );
+  }),
+
+  rest.get(`${process.env.REACT_APP_API}/api/users/download`, (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        user: {},
+        workouts: [],
+      })
+    );
+  }),
+
+  rest.delete(`${process.env.REACT_APP_API}/api/users`, (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        success: "Account deleted successfully",
+      })
+    );
+  }),
+
+  rest.post(`${process.env.REACT_APP_API}/api/users/logout`, (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        loggedOut: true,
+      })
+    );
+  }),
+
+  /* Workouts routes */
 
   rest.patch(`${process.env.REACT_APP_API}/api/workouts/*`, (req, res, ctx) => {
     return res(
@@ -97,26 +138,7 @@ export const handlers = [
     );
   }),
 
-  rest.patch(`${process.env.REACT_APP_API}/api/users/*`, (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
-        user: {
-          username: "daredev",
-        },
-        success: "Profile updated",
-      })
-    );
-  }),
-
-  rest.delete(`${process.env.REACT_APP_API}/api/users/*`, (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
-        success: "Account deleted successfully",
-      })
-    );
-  }),
+  /* Password reset routes */
 
   rest.post(
     `${process.env.REACT_APP_API}/api/reset-password`,

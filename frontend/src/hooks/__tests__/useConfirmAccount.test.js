@@ -27,7 +27,7 @@ describe("useConfirmAccount()", () => {
   it("should set confirmAccountError message given that token is invalid", async () => {
     server.use(
       rest.get(
-        `${process.env.REACT_APP_API}/api/users/:accountConfirmationToken`,
+        `${process.env.REACT_APP_API}/api/users/confirmaccount/:accountConfirmationToken`,
         (req, res, ctx) => {
           return res(
             ctx.status(404),
@@ -51,7 +51,7 @@ describe("useConfirmAccount()", () => {
   it("should set confirmAccountError message given that token is not found", async () => {
     server.use(
       rest.get(
-        `${process.env.REACT_APP_API}/api/users/:accountConfirmationToken`,
+        `${process.env.REACT_APP_API}/api/users/confirmaccount/:accountConfirmationToken`,
         (req, res, ctx) => {
           return res(
             ctx.status(404),

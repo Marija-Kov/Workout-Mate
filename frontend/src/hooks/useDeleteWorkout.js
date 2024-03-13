@@ -19,9 +19,7 @@ export default function useDeleteWorkout() {
       `${process.env.REACT_APP_API}/api/workouts/${id}`,
       {
         method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${user.token}`,
-        },
+        credentials: "include",
       }
       );
       const json = await response.json();

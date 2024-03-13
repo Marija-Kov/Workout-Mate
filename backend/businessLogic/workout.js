@@ -1,11 +1,7 @@
 const Workout = require("../dataAccessLayer/workoutRepository");
 const { ApiError } = require("../error/error");
 
-const getAllWorkouts = async (user, page, searchQuery) => {
-  if (!user) {
-    ApiError.notAuthorized("Not authorized");
-  }
-  const user_id = user._id;
+const getAllWorkouts = async (user_id, page, searchQuery) => {
   const limit = 3;
   const allUserWorkoutsMuscleGroups = (await Workout.getAll(user_id)).map(
     (workout) => workout.muscle_group
@@ -32,10 +28,7 @@ const getAllWorkouts = async (user, page, searchQuery) => {
   };
 };
 
-const addWorkout = async (title, muscleGroup, reps, load, user) => {
-  if (!user) {
-    ApiError.notAuthorized("Not authorized");
-  }
+const addWorkout = async (title, muscleGroup, reps, load, user_id) => {
   if (!title || !muscleGroup || !String(reps) || !String(load)) {
     ApiError.badInput("Please fill out the empty fields");
   }
@@ -51,7 +44,6 @@ const addWorkout = async (title, muscleGroup, reps, load, user) => {
   if (load && load > 9999) {
     ApiError.badInput("Load value too large");
   }
-  const user_id = user._id;
   const allWorkoutsByUser = await Workout.getAll(user_id);
   const limit =
     process.env.NODE_ENV !== "test"
@@ -115,11 +107,7 @@ const deleteWorkout = async (id) => {
   return { workout: workout, remaining: workouts.length };
 };
 
-const deleteAllWorkouts = async (user) => {
-  if (!user) {
-    ApiError.notAuthorized("Not authorized");
-  }
-  const user_id = user._id;
+const deleteAllWorkouts = async (user_id) => {
   const workouts = await Workout.deleteAll(user_id);
   return workouts;
 };

@@ -16,12 +16,8 @@ beforeAll(() => {
   };
   dispatch = store.dispatch;
   mockUser = {
-    id: "userid",
-    email: "keech@mail.yu",
-    token: "authorizationToken",
     username: undefined,
     profileImg: undefined,
-    tokenExpires: Date.now() + 3600000,
   };
 });
 

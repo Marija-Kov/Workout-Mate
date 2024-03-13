@@ -14,7 +14,7 @@ export default function UserMenu() {
       >
         Settings
       </button>
-      <button className="user--menu--item" onClick={() => logout()}>
+      <button className="user--menu--item" onClick={logout}>
         Log Out
       </button>
     </div>

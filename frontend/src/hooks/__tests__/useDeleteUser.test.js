@@ -15,12 +15,8 @@ beforeAll(() => {
   };
   dispatch = store.dispatch;
   mockUser = {
-    id: "userid",
-    email: "keech@mail.yu",
-    token: "authorizationToken",
     username: undefined,
     profileImg: undefined,
-    tokenExpires: Date.now() + 3600000,
   };
 });
 
@@ -56,28 +52,6 @@ describe("useDeleteUser()", () => {
     let state = store.getState();
     expect(state.flashMessages.error).toBeTruthy();
     expect(state.flashMessages.error).toMatch(/not authorized/i);
-  });
-
-  it("should set error given that user id wasn't found", async () => {
-    server.use(
-      rest.delete(
-        `${process.env.REACT_APP_API}/api/users/*`,
-        (req, res, ctx) => {
-          return res(
-            ctx.status(404),
-            ctx.json({
-              error: "User id not found",
-            })
-          );
-        }
-      )
-    );
-    const { result } = renderHook(useDeleteUser, { wrapper });
-    act(() => dispatch({ type: "LOGIN", payload: mockUser }));
-    await act(() => result.current.deleteUser("invalidUserId"));
-    let state = store.getState();
-    expect(state.flashMessages.error).toBeTruthy();
-    expect(state.flashMessages.error).toMatch(/user id not found/i);
   });
 
   it("should delete user successfully given that the user is authorized", async () => {

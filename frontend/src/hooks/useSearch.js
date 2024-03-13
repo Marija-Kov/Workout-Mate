@@ -15,9 +15,7 @@ export const useSearch = () => {
     const response = await fetch(
       `${process.env.REACT_APP_API}/api/workouts/?search=${query}&p=${page}`,
       {
-        headers: {
-          Authorization: `Bearer ${user.token}`,
-        },
+        credentials: "include",
       }
     );
     const json = await response.json();

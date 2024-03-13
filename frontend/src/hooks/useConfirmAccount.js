@@ -12,7 +12,7 @@ export const useConfirmAccount = () => {
       return flashMessage("ERROR", "Account confirmation token not found");
     }
     const response = await fetch(
-      `${process.env.REACT_APP_API}/api/users/${token}`
+      `${process.env.REACT_APP_API}/api/users/confirmaccount/${token}`
     );
     const json = await response.json();
     if (!response.ok) {

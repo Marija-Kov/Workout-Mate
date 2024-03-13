@@ -11,10 +11,8 @@ let dispatch;
 let mockUser = {
   id: "userid",
   email: "keech@mail.yu",
-  token: "authorizationToken",
   username: undefined,
   profileImg: undefined,
-  tokenExpires: Date.now() + 3600000,
 };
 
 beforeAll(() => (dispatch = store.dispatch));

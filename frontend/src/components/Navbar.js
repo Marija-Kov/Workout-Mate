@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Buffer } from "buffer";
 import { Link } from "react-router-dom";
-import { logOutIfTokenExpired } from "../utils/logOutIfTokenExpired";
 import UserMenu from "./UserMenu";
 import UserSettings from "./UserSettings";
 import { useSelector, useDispatch } from "react-redux";
@@ -27,12 +26,9 @@ export default function Navbar() {
     const username = localStorage.getItem("username");
     if (username) {
       setUsername(username);
-    } else if (user.username) {
-      setUsername(user.username);
     } else {
-      const i = user.email.indexOf("@");
-      setUsername(`${user.email.slice(0, i)}`);
-    }
+      setUsername(user.username);
+    } 
     const newImg = localStorage.getItem("newImg");
     if (newImg) {
       setProfileImg(newImg);
@@ -46,7 +42,6 @@ export default function Navbar() {
   return (
     <header
       className={user ? "header--blur" : ""}
-      onClick={user && logOutIfTokenExpired}
     >
       <div className="container">
         <h1 className={user ? "logged--in--logo" : "logo"}>

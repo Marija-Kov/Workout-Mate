@@ -40,18 +40,16 @@ export const useUpdateUser = () => {
       body.username = username;
     }
     const response = await fetch(
-      `${process.env.REACT_APP_API}/api/users/${user.id}`,
+      `${process.env.REACT_APP_API}/api/users`,
       {
         method: "PATCH",
         body: JSON.stringify(body),
-        headers: {
-          "Content-type": "application/json",
-          Authorization: `Bearer ${user.token}`,
-        },
+        headers: { "Content-type": "application/json" },
+        credentials: "include",
       }
-      );
-      const json = await response.json();
-      if (!response.ok) {
+    );
+    const json = await response.json();
+    if (!response.ok) {
       dispatch({ type: "UNSET_LOADER" });
       return flashMessage("ERROR", json.error);
     }

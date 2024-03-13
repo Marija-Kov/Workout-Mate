@@ -6,19 +6,17 @@ export const useDeleteUser = () => {
   const dispatch = useDispatch();
   const flashMessage = useFlashMessage();
 
-  const deleteUser = async (id) => {
+  const deleteUser = async () => {
     dispatch({ type: "SET_LOADER" });
     if (!user) {
       dispatch({ type: "UNSET_LOADER" });
       return flashMessage("ERROR", "Not authorized");
     }
     const response = await fetch(
-      `${process.env.REACT_APP_API}/api/users/${id}`,
+      `${process.env.REACT_APP_API}/api/users`,
       {
         method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${user.token}`,
-        },
+        credentials: "include",
       }
       );
       const json = await response.json();

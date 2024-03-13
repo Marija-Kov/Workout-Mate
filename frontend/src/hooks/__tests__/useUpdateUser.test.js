@@ -1,11 +1,9 @@
 import { renderHook, act } from "@testing-library/react";
-import { rest } from "msw";
 import {
   writeLargeFile,
   readLargeFile,
   deleteLargeFile,
 } from "../../utils/test/largeImageFile";
-import { server } from "../../mocks/server";
 import { useUpdateUser } from "../useUpdateUser";
 import { Provider } from "react-redux";
 import store from "../../redux/store";
@@ -20,12 +18,8 @@ beforeAll(async () => {
   };
   dispatch = store.dispatch;
   mockUser = {
-    id: "userid",
-    email: "keech@mail.yu",
-    token: "authorizationToken",
     username: undefined,
     profileImg: undefined,
-    tokenExpires: Date.now() + 3600000,
   };
   writeLargeFile();
 });
@@ -97,27 +91,6 @@ describe("useUpdateUser()", () => {
       username: "keech.rr_",
       profileImg: "profileImgString",
     };
-    server.use(
-      rest.patch(
-        `${process.env.REACT_APP_API}/api/users/*`,
-        (req, res, ctx) => {
-          return res(
-            ctx.status(200),
-            ctx.json({
-              user: {
-                id: mockUser.id,
-                email: mockUser.email,
-                token: mockUser.token,
-                username: newData.username,
-                profileImg: newData.profileImg,
-                tokenExpires: mockUser.tokenExpires,
-              },
-              success: "Profile updated",
-            })
-          );
-        }
-      )
-    );
     dispatch({ type: "LOGIN", payload: mockUser });
     const { result } = renderHook(useUpdateUser, { wrapper });
     await act(() =>
