@@ -38,6 +38,7 @@ module.exports.login_post = async (req, res) => {
     .status(200)
     .cookie("token", token, {
       httpOnly: true,
+      sameSite: "none",
       secure: true,
       maxAge: tokenExpires,
     })
