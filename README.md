@@ -93,6 +93,7 @@ to run backend and frontend tests in corresponding directories.
 
 - [NodeJS](https://nodejs.org/en/) - Server logic
 - [Express](https://expressjs.com/) - Routing
+- [Cookie-parser](https://github.com/expressjs/cookie-parser)
 - [MongoDB](https://account.mongodb.com/account/login) - Database
 - [Supabase](https://supabase.com) - Database
 - [Node-Postgres](https://github.com/brianc/node-postgres) - PostgreSQL client for Node.js
