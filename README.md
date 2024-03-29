@@ -131,10 +131,10 @@ to run backend and frontend tests in corresponding directories.
 ## Environment variables <a name = "environment-variables"></a>
 If you want to run the app in your local environment, you'll need to create a .env file in each of the second-level directories and provide values for the variables below.<br>
 ### Backend .env
-SB_USER= <br>
-SB_PASSWORD= <br>
-SB_HOST= <br>
-SB_DATABASE= <br>
+PG_USER= <br>
+PG_PASSWORD= <br>
+PG_HOST= <br>
+PG_DB= <br>
 MONGO_URI= <br>
 PORT= <br>
 SECRET= <br>

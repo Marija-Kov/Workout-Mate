@@ -7,10 +7,10 @@ class UserRepository {
       this.db = require("../controllers/test-utils/sqliteDb");
     } else {
       this.pool = new Pool({
-        user: process.env.SB_USER,
-        password: process.env.SB_PASSWORD,
-        host: process.env.SB_HOST,
-        database: process.env.SB_DATABASE,
+        user: process.env.PG_USER,
+        password: process.env.PG_PASSWORD,
+        host: process.env.PG_HOST,
+        database: process.env.PG_DB,
       });
     }
   }
