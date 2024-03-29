@@ -76,7 +76,32 @@ You can download your data from Workout Mate database as a JSON file by clicking
 ## Local Usage <a name = "localUsage"></a>
 
 1. Clone the repo;
-2. While in root directory, copy-paste and run:
+2. Create and populate ```.env``` file;
+3. Run this script on your postgres database:
+```
+ CREATE TABLE wm_users (
+    _id INT8 PRIMARY KEY, 
+    created_at TIMESTAMPTZ DEFAULT (now()), 
+    email TEXT, 
+    password TEXT, 
+    username TEXT, 
+    profile_image TEXT,
+    account_status TEXT DEFAULT ('pending')
+);
+CREATE TABLE account_confirmation (
+    id INT8 PRIMARY KEY, 
+    user_id INT8,
+    token TEXT,
+    expires TIMESTAMPTZ DEFAULT (now() + '1 day'::interval)
+);
+CREATE TABLE password_reset (
+    id INT8 PRIMARY KEY, 
+    user_id INT8,
+    token TEXT,
+    expires TIMESTAMPTZ DEFAULT (now() + '1 day'::interval)
+);
+```
+4. While in root directory, copy-paste and run:
 
 ```
 cd backend && npm install && npm run dev && cd ../frontend && npm install && npm start
