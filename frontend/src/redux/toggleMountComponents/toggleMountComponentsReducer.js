@@ -3,7 +3,7 @@ import * as a from "./toggleMountComponentsActionTypes";
 const init = {
   isCreateWorkoutFormMounted: false,
   isEditWorkoutFormMounted: false,
-  prepopulateEditWorkoutForm: null,
+  prepopulateEditWorkoutForm: {},
   isForgotPasswordFormMounted: false,
   isUserMenuMounted: false,
   isUserSettingsFormMounted: false,
@@ -26,7 +26,7 @@ export const toggleMountComponentsReducer = (state = init, action) => {
       return {
         ...state,
         isEditWorkoutFormMounted: !state.isEditWorkoutFormMounted,
-        prepopulateEditWorkoutForm: action.payload || null,
+        prepopulateEditWorkoutForm: action.payload || {},
         isCreateWorkoutFormMounted: false,
         isUserMenuMounted: false,
         isUserSettingsFormMounted: false,
