@@ -45,8 +45,13 @@ describe("useLogout()", () => {
     }
     expect(state.page).toBe(0);
     expect(state.query).toBe("");
-    for (let key in state.toggleMountComponents) {
-      expect(state.toggleMountComponents[key]).toBeFalsy();
-    }
+    expect(state.toggleMountComponents.isCreateWorkoutFormMounted).toBeFalsy();
+    expect(state.toggleMountComponents.isEditWorkoutFormMounted).toBeFalsy();
+    expect(state.toggleMountComponents.prepopulateEditWorkoutForm).toEqual({});
+    expect(state.toggleMountComponents.isForgotPasswordFormMounted).toBeFalsy();
+    expect(state.toggleMountComponents.isUserMenuMounted).toBeFalsy();
+    expect(state.toggleMountComponents.isUserSettingsFormMounted).toBeFalsy();
+    expect(state.toggleMountComponents.isDeleteAccountDialogueMounted).toBeFalsy();
+    expect(state.toggleMountComponents.isSpunDownServerAlertMounted).toBeFalsy();
   });
 });
