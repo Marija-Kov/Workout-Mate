@@ -45,10 +45,7 @@ const addWorkout = async (title, muscleGroup, reps, load, user_id) => {
     ApiError.badInput("Load value too large");
   }
   const allWorkoutsByUser = await Workout.getAll(user_id);
-  const limit =
-    process.env.NODE_ENV !== "test"
-      ? Number(process.env.MAX_WORKOUTS_PER_USER)
-      : Number(process.env.TEST_MAX_WORKOUTS_PER_USER);
+  const limit = Number(process.env.MAX_WORKOUTS_PER_USER) || 30;
   if (allWorkoutsByUser.length === limit) {
     const id = allWorkoutsByUser[0]._id;
     await Workout.delete(id);

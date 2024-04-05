@@ -31,16 +31,13 @@ const signup = async (email, password) => {
   const confirmationToken = jwt.sign({ id }, process.env.SECRET);
   await User.saveConfirmationToken(id, confirmationToken);
   const registeredUsers = await User.findAll();
-  const limit =
-    process.env.NODE_ENV !== "test"
-      ? Number(process.env.MAX_USERS)
-      : Number(process.env.TEST_MAX_USERS);
+  const limit = Number(process.env.MAX_USERS) || 10;
   if (registeredUsers.length >= limit) {
     const id = registeredUsers[0]._id;
     await User.delete(id);
     await Workout.deleteAll(id);
   }
-  const clientUrl = process.env.CLIENT_URL;
+  const clientUrl = process.env.CLIENT_URL || "localhost:3000";
   const accountVerificationLink = `${clientUrl}/users?accountConfirmationToken=${confirmationToken}`;
   if (process.env.NODE_ENV !== "test") {
     sendEmail(
@@ -93,7 +90,7 @@ const login = async (email, password) => {
   }
   const { _id, username, profileImg } = user;
   const token = jwt.sign({ _id }, process.env.SECRET);
-  const tokenExpires = Number(process.env.AUTH_TOKEN_EXPIRES_IN) * 1000;
+  const tokenExpires = Number(process.env.AUTH_TOKEN_EXPIRES_IN_MS) || 86400000;
   return { token, username, profileImg, tokenExpires };
 };
 

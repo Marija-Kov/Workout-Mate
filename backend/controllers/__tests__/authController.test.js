@@ -56,7 +56,7 @@ describe("authController", () => {
     });
 
     it("should delete oldest user in the database given that the number of users has reached the limit", async () => {
-      const dbLimit = process.env.TEST_MAX_USERS;
+      const dbLimit = process.env.MAX_USERS || 5;
       const users = ["a@a.a", "b@b.b", "c@c.c", "d@d.d", "e@e.e"];
       const oldestUserPendingToken = (
         await mockUser("pending", agent, {
@@ -304,7 +304,7 @@ describe("authController", () => {
 
   describe("ANY /api/users", () => {
     it("should respond with error if too many requests were sent in a short amount of time", async () => {
-      const maxReq = process.env.TEST_MAX_API_USERS_REQS;
+      const maxReq = Number(process.env.MAX_API_USERS_REQS) || 30;
       let res;
       for (let i = 0; i <= maxReq; ++i) {
         res = await agent.post("/api/users/signup").send({});

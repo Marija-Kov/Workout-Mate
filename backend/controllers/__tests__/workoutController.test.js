@@ -456,7 +456,7 @@ describe("workoutController", () => {
   describe("ANY /api/workouts/", () => {
     it("should respond with error if too many requests were sent in a short amount of time", async () => {
       const { token } = await mockUser("logged-in", agent);
-      const maxReq = Number(process.env.TEST_MAX_API_WORKOUTS_REQS);
+      const maxReq = Number(process.env.MAX_API_WORKOUTS_REQS) || 20;
       let res;
       for (let i = 0; i <= maxReq + 1; ++i) {
         res = await agent.get("/api/workouts/").set("Cookie", `token=${token}`);

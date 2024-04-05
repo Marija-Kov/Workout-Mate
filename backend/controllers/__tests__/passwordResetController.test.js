@@ -66,7 +66,7 @@ describe("passwordResetController", () => {
 
   describe("ANY /api/reset-password", () => {
     it("should respond with error if too many requests were sent in a short amount of time", async () => {
-      const max = Number(process.env.TEST_MAX_API_RESET_PASSWORD_REQS);
+      const max = Number(process.env.MAX_API_RESET_PASSWORD_REQS) || 20;
       for (let i = 0; i <= max; ++i) {
         await mockPasswordResetResponse_POST("a@b.c", "registered");
       }

@@ -23,7 +23,7 @@ const forgotPassword = async (email) => {
   const resetToken = crypto.randomBytes(32).toString("hex");
   const { _id } = user;
   await User.savePasswordResetToken(_id, resetToken);
-  const clientUrl = process.env.CLIENT_URL;
+  const clientUrl = process.env.CLIENT_URL || "localhost:3000";
   const resetLink = `${clientUrl}/reset-password?token=${resetToken}`;
   sendEmail(
     email,
