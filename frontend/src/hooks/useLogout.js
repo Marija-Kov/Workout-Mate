@@ -4,11 +4,12 @@ import { useHardStateResetAndClearLocalStorage } from "./useHardStateResetAndCle
 export const useLogout = () => {
   const flashMessage = useFlashMessage();
   const { hardStateResetAndClearLocalStorage } =
-    useHardStateResetAndClearLocalStorage();
+  useHardStateResetAndClearLocalStorage();
+  const url = process.env.REACT_APP_API || "http://localhost:6060";
 
   const logout = async () => {
     const response = await fetch(
-      `${process.env.REACT_APP_API}/api/users/logout`,
+      `${url}/api/users/logout`,
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },

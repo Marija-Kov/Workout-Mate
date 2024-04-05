@@ -6,15 +6,18 @@ import { Provider } from "react-redux";
 import store from "../../redux/store";
 
 let wrapper;
+let url;
 
 beforeAll(() => {
   wrapper = ({ children }) => {
     return <Provider store={store}>{children}</Provider>;
   };
+  url = process.env.REACT_APP_API || "http://localhost:6060";
 });
 
 afterAll(() => {
   wrapper = null;
+  url = null;
 });
 
 describe("useSignup()", () => {
@@ -27,7 +30,7 @@ describe("useSignup()", () => {
   it("should set error given that input was invalid", async () => {
     server.use(
       rest.post(
-        `${process.env.REACT_APP_API}/api/users/signup`,
+        `${url}/api/users/signup`,
         (req, res, ctx) => {
           return res(
             ctx.status(422),

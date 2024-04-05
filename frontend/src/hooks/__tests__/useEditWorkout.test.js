@@ -9,6 +9,7 @@ let wrapper;
 let dispatch;
 let mockUser;
 let mockWorkout;
+let url;
 
 beforeAll(() => {
   wrapper = ({ children }) => {
@@ -27,6 +28,7 @@ beforeAll(() => {
     load: "21",
     user_id: "userid",
   };
+  url = process.env.REACT_APP_API || "http://localhost:6060";
 });
 
 beforeEach(() => {
@@ -39,6 +41,7 @@ afterAll(() => {
   dispatch = null;
   mockUser = null;
   mockWorkout = null;
+  url = null;
 });
 
 describe("useEditWorkout()", () => {
@@ -68,7 +71,7 @@ describe("useEditWorkout()", () => {
   it("should set error given that title is too long", async () => {
     server.use(
       rest.patch(
-        `${process.env.REACT_APP_API}/api/workouts/*`,
+        `${url}/api/workouts/*`,
         (req, res, ctx) => {
           return res(
             ctx.status(400),
@@ -101,7 +104,7 @@ describe("useEditWorkout()", () => {
   it("should set error given that title contains non-alphabetic characters", async () => {
     server.use(
       rest.patch(
-        `${process.env.REACT_APP_API}/api/workouts/*`,
+        `${url}/api/workouts/*`,
         (req, res, ctx) => {
           return res(
             ctx.status(400),
@@ -132,7 +135,7 @@ describe("useEditWorkout()", () => {
   it("should set error given that reps value is too large", async () => {
     server.use(
       rest.patch(
-        `${process.env.REACT_APP_API}/api/workouts/*`,
+        `${url}/api/workouts/*`,
         (req, res, ctx) => {
           return res(
             ctx.status(400),
@@ -161,7 +164,7 @@ describe("useEditWorkout()", () => {
   it("should set error given that load value is too large", async () => {
     server.use(
       rest.patch(
-        `${process.env.REACT_APP_API}/api/workouts/*`,
+        `${url}/api/workouts/*`,
         (req, res, ctx) => {
           return res(
             ctx.status(400),
@@ -191,7 +194,7 @@ describe("useEditWorkout()", () => {
     const mockUpdate = { title: "squats" };
     server.use(
       rest.patch(
-        `${process.env.REACT_APP_API}/api/workouts/*`,
+        `${url}/api/workouts/*`,
         (req, res, ctx) => {
           return res(
             ctx.status(200),

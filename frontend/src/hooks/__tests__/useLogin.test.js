@@ -7,17 +7,20 @@ import store from "../../redux/store";
 
 let wrapper;
 let dispatch;
+let url;
 
 beforeAll(() => {
   wrapper = ({ children }) => {
     return <Provider store={store}>{children}</Provider>;
   };
   dispatch = store.dispatch;
+  url = process.env.REACT_APP_API || "http://localhost:6060";
 });
 
 afterAll(() => {
   wrapper = null;
   dispatch = null;
+  url = null;
 });
 
 describe("useLogin()", () => {
@@ -30,7 +33,7 @@ describe("useLogin()", () => {
   it("should set error given that credentials were invalid", async () => {
     server.use(
       rest.post(
-        `${process.env.REACT_APP_API}/api/users/login`,
+        `${url}/api/users/login`,
         (req, res, ctx) => {
           return res(
             ctx.status(400),

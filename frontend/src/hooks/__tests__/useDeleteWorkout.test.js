@@ -11,6 +11,7 @@ let dispatch;
 let mockUser;
 let sample;
 let mockWorkouts;
+let url;
 
 beforeAll(() => {
   wrapper = ({ children }) => {
@@ -21,6 +22,7 @@ beforeAll(() => {
     username: undefined,
     profileImg: undefined,
   };
+  url = process.env.REACT_APP_API || "http://localhost:6060";
 });
 
 beforeEach(() => {
@@ -44,6 +46,7 @@ afterAll(() => {
   mockUser = null;
   sample = null;
   mockWorkouts = null;
+  url = null;
 });
 
 describe("useDeleteWorkout()", () => {
@@ -56,7 +59,7 @@ describe("useDeleteWorkout()", () => {
   it("should delete workout given that user was authorized and workout id valid", async () => {
     server.use(
       rest.delete(
-        `${process.env.REACT_APP_API}/api/workouts/*`,
+        `${url}/api/workouts/*`,
         (req, res, ctx) => {
           return res(
             ctx.status(200),
@@ -86,7 +89,7 @@ describe("useDeleteWorkout()", () => {
   it("should update page state properly when all workouts from the current page have been deleted given that current page is not the first page", async () => {
     server.use(
       rest.delete(
-        `${process.env.REACT_APP_API}/api/workouts/*`,
+        `${url}/api/workouts/*`,
         (req, res, ctx) => {
           return res(
             ctx.status(200),
@@ -126,7 +129,7 @@ describe("useDeleteWorkout()", () => {
   it("should update page state properly when all workouts from the current page have been deleted given that current page is the first page", async () => {
     server.use(
       rest.delete(
-        `${process.env.REACT_APP_API}/api/workouts/*`,
+        `${url}/api/workouts/*`,
         (req, res, ctx) => {
           return res(
             ctx.status(200),
@@ -167,7 +170,7 @@ describe("useDeleteWorkout()", () => {
   it("should set error given that user wasn't authorized", async () => {
     server.use(
       rest.delete(
-        `${process.env.REACT_APP_API}/api/workouts/*`,
+        `${url}/api/workouts/*`,
         (req, res, ctx) => {
           return res(
             ctx.status(200),
@@ -198,7 +201,7 @@ describe("useDeleteWorkout()", () => {
   it("should set error given that workout id was invalid", async () => {
     server.use(
       rest.delete(
-        `${process.env.REACT_APP_API}/api/workouts/*`,
+        `${url}/api/workouts/*`,
         (req, res, ctx) => {
           return res(
             ctx.status(404),

@@ -7,6 +7,7 @@ export const useCreateWorkout = () => {
   const user = useSelector((state) => state.user);
   const workouts = useSelector((state) => state.workouts);
   const { allUserWorkoutsMuscleGroups } = workouts;
+  const url = process.env.REACT_APP_API || "http://localhost:6060";
 
   const createWorkout = async (workout) => {
     dispatch({ type: "SET_LOADER" });
@@ -15,7 +16,7 @@ export const useCreateWorkout = () => {
       return flashMessage("ERROR", "Not authorized");
     }
 
-    const response = await fetch(`${process.env.REACT_APP_API}/api/workouts`, {
+    const response = await fetch(`${url}/api/workouts`, {
       method: "POST",
       body: JSON.stringify(workout),
       headers: {

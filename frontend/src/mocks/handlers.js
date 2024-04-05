@@ -1,10 +1,11 @@
 import { rest } from "msw";
+const url = process.env.REACT_APP_API || "http://localhost:6060";
 
 export const handlers = [
   /* User routes */
 
   rest.post(
-    `${process.env.REACT_APP_API}/api/users/signup`,
+    `${url}/api/users/signup`,
     (req, res, ctx) => {
       return res(
         ctx.status(200),
@@ -16,7 +17,7 @@ export const handlers = [
     }
   ),
 
-  rest.get(`${process.env.REACT_APP_API}/api/users/confirmaccount/*`, (req, res, ctx) => {
+  rest.get(`${url}/api/users/confirmaccount/*`, (req, res, ctx) => {
     return res(
       ctx.status(200),
       ctx.json({
@@ -26,7 +27,7 @@ export const handlers = [
   }),
 
   rest.post(
-    `${process.env.REACT_APP_API}/api/users/login`,
+    `${url}/api/users/login`,
     async (req, res, ctx) => {
       return res(
         ctx.status(200),
@@ -38,7 +39,7 @@ export const handlers = [
     }
   ),
 
-  rest.patch(`${process.env.REACT_APP_API}/api/users`, (req, res, ctx) => {
+  rest.patch(`${url}/api/users`, (req, res, ctx) => {
     return res(
       ctx.status(200),
       ctx.json({
@@ -51,7 +52,7 @@ export const handlers = [
     );
   }),
 
-  rest.get(`${process.env.REACT_APP_API}/api/users/download`, (req, res, ctx) => {
+  rest.get(`${url}/api/users/download`, (req, res, ctx) => {
     return res(
       ctx.status(200),
       ctx.json({
@@ -61,7 +62,7 @@ export const handlers = [
     );
   }),
 
-  rest.delete(`${process.env.REACT_APP_API}/api/users`, (req, res, ctx) => {
+  rest.delete(`${url}/api/users`, (req, res, ctx) => {
     return res(
       ctx.status(200),
       ctx.json({
@@ -70,7 +71,7 @@ export const handlers = [
     );
   }),
 
-  rest.post(`${process.env.REACT_APP_API}/api/users/logout`, (req, res, ctx) => {
+  rest.post(`${url}/api/users/logout`, (req, res, ctx) => {
     return res(
       ctx.status(200),
       ctx.json({
@@ -81,7 +82,7 @@ export const handlers = [
 
   /* Workouts routes */
 
-  rest.patch(`${process.env.REACT_APP_API}/api/workouts/*`, (req, res, ctx) => {
+  rest.patch(`${url}/api/workouts/*`, (req, res, ctx) => {
     return res(
       ctx.status(200),
       ctx.json({
@@ -92,7 +93,7 @@ export const handlers = [
     );
   }),
 
-  rest.delete(`${process.env.REACT_APP_API}/api/workouts`, (req, res, ctx) => {
+  rest.delete(`${url}/api/workouts`, (req, res, ctx) => {
     return res(
       ctx.status(200),
       ctx.json({
@@ -102,7 +103,7 @@ export const handlers = [
   }),
 
   rest.delete(
-    `${process.env.REACT_APP_API}/api/workouts/*`,
+    `${url}/api/workouts/*`,
     (req, res, ctx) => {
       return res(
         ctx.status(200),
@@ -113,7 +114,7 @@ export const handlers = [
     }
   ),
 
-  rest.post(`${process.env.REACT_APP_API}/api/workouts`, (req, res, ctx) => {
+  rest.post(`${url}/api/workouts`, (req, res, ctx) => {
     return res(
       ctx.status(200),
       ctx.json({
@@ -125,7 +126,7 @@ export const handlers = [
     );
   }),
 
-  rest.get(`${process.env.REACT_APP_API}/api/workouts/*`, (req, res, ctx) => {
+  rest.get(`${url}/api/workouts/*`, (req, res, ctx) => {
     return res(
       ctx.status(200),
       ctx.json({
@@ -141,7 +142,7 @@ export const handlers = [
   /* Password reset routes */
 
   rest.post(
-    `${process.env.REACT_APP_API}/api/reset-password`,
+    `${url}/api/reset-password`,
     (req, res, ctx) => {
       return res(
         ctx.status(200),
@@ -153,7 +154,7 @@ export const handlers = [
   ),
 
   rest.patch(
-    `${process.env.REACT_APP_API}/api/reset-password/*`,
+    `${url}/api/reset-password/*`,
     (req, res, ctx) => {
       return res(
         ctx.status(200),

@@ -8,6 +8,7 @@ import store from "../../redux/store";
 let wrapper;
 let mockUser;
 let dispatch;
+let url;
 
 beforeAll(() => {
   wrapper = ({ children }) => {
@@ -18,12 +19,14 @@ beforeAll(() => {
     username: undefined,
     profileImg: undefined,
   };
+  url = process.env.REACT_APP_API || "http://localhost:6060";
 });
 
 afterAll(() => {
   wrapper = null;
   mockUser = null;
   dispatch = null;
+  url = null;
 });
 
 describe("useDeleteUser()", () => {
@@ -36,7 +39,7 @@ describe("useDeleteUser()", () => {
   it("should set error given that user isn't authorized", async () => {
     server.use(
       rest.delete(
-        `${process.env.REACT_APP_API}/api/users/*`,
+        `${url}/api/users/*`,
         (req, res, ctx) => {
           return res(
             ctx.status(401),

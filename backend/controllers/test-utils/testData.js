@@ -44,23 +44,24 @@ async function addWorkouts(userLoggedIn, agent) {
 
 async function maxOutWorkouts(user, agent) {
   /*
-      limit = process.env.TEST_MAX_WORKOUTS_PER_USER;
+      limit = process.env.MAX_WORKOUTS_PER_USER;
       sampleWorkouts.length must be limit - 1
       if the condition for deletion of the oldest entry is number of workouts being 
       EQUAL TO limit and given that the test is asserting the existence of each of
       the two previously posted workouts where more recent one is supposed to exist
       and the less recent one not to exist.
     */
-  const sampleWorkouts = [
-    { title: "Bench Press", muscle_group: "chest", reps: 20, load: 20 },
-    { title: "Pushups", muscle_group: "chest", reps: 30, load: 0 },
-    { title: "Situps", muscle_group: "ab", reps: 40, load: 0 },
-    { title: "Squats", muscle_group: "leg", reps: 20, load: 23 },
-  ];
-  for (let i = 0; i < sampleWorkouts.length; ++i) {
+  const limit = Number(process.env.MAX_WORKOUTS_PER_USER) || 5;
+  const sampleWorkout = {
+    title: "Bench Press",
+    muscle_group: "chest",
+    reps: 20,
+    load: 20,
+  };
+  for (let i = 0; i < limit - 1; ++i) {
     await agent
       .post("/api/workouts/")
-      .send(sampleWorkouts[i])
+      .send(sampleWorkout)
       .set("Cookie", `token=${user.token}`);
   }
 }

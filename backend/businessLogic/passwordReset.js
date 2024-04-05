@@ -22,11 +22,8 @@ const forgotPassword = async (email) => {
   }
   const resetToken = crypto.randomBytes(32).toString("hex");
   const { _id } = user;
-    process.env.NODE_ENV !== "test"
-      ? Number(process.env.RESET_PASSWORD_TOKEN_EXPIRES_IN)
-      : Number(process.env.TEST_RESET_PASSWORD_TOKEN_EXPIRES_IN);
   await User.savePasswordResetToken(_id, resetToken);
-  const clientUrl = process.env.CLIENT_URL;
+  const clientUrl = process.env.CLIENT_URL || "localhost:3000";
   const resetLink = `${clientUrl}/reset-password?token=${resetToken}`;
   sendEmail(
     email,

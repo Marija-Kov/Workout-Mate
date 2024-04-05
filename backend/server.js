@@ -9,12 +9,13 @@ const userRoutes = require("./routes/users");
 const passwordResetRoutes = require("./routes/resetPassword");
 const { errorHandler } = require("./error/error");
 const cookieParser = require('cookie-parser');
+const { prototype } = require("nodemailer/lib/dkim");
 
 const app = express();
 app.use(cookieParser());
 app.use(
   cors({
-    origin: process.env.ORIGIN,
+    origin: process.env.ORIGIN || "http://localhost:3000",
     credentials: true
   })
   );
@@ -30,8 +31,9 @@ if (process.env.NODE_ENV !== "test") {
       useUnifiedTopology: true,
     })
     .then(() => {
-      app.listen(process.env.PORT, () => {
-        console.log(`connected to db & listening on port ${process.env.PORT}`);
+      const port = Number(process.env.PORT) || 6060;
+      app.listen(port, () => {
+        console.log(`connected to db & listening on port ${port}`);
       });
     })
     .catch((err) => {

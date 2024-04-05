@@ -6,6 +6,7 @@ export const useUpdateUser = () => {
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const flashMessage = useFlashMessage();
+  const url = process.env.REACT_APP_API || "http://localhost:6060";
 
   const updateUser = async (username, profileImg) => {
     dispatch({ type: "SET_LOADER" });
@@ -40,7 +41,7 @@ export const useUpdateUser = () => {
       body.username = username;
     }
     const response = await fetch(
-      `${process.env.REACT_APP_API}/api/users`,
+      `${url}/api/users`,
       {
         method: "PATCH",
         body: JSON.stringify(body),

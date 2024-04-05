@@ -4,6 +4,7 @@ import { useFlashMessage } from "./useFlashMessage";
 export default function useSendPasswordResetLink() {
   const dispatch = useDispatch();
   const flashMessage = useFlashMessage();
+  const url = process.env.REACT_APP_API || "http://localhost:6060";
 
   const sendPasswordResetLink = async (email) => {
     dispatch({ type: "SET_LOADER" });
@@ -16,7 +17,7 @@ export default function useSendPasswordResetLink() {
       return flashMessage("ERROR", "Please enter valid email address");
     }
     const response = await fetch(
-      `${process.env.REACT_APP_API}/api/reset-password`,
+      `${url}/api/reset-password`,
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
