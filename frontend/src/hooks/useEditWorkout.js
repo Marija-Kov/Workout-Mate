@@ -7,6 +7,7 @@ export default function useEditWorkout() {
   const user = useSelector((state) => state.user);
   const workouts = useSelector((state) => state.workouts);
   const { allUserWorkoutsMuscleGroups } = workouts;
+  const url = process.env.REACT_APP_API || "http://localhost:6060";
 
   const editWorkout = async (id, payload) => {
     dispatch({ type: "SET_LOADER" });
@@ -15,7 +16,7 @@ export default function useEditWorkout() {
       return flashMessage("ERROR", "Not authorized");
     }
     const response = await fetch(
-      `${process.env.REACT_APP_API}/api/workouts/${id}`,
+      `${url}/api/workouts/${id}`,
       {
         method: "PATCH",
         body: JSON.stringify(payload),

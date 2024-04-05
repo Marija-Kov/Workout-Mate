@@ -6,15 +6,17 @@ import { Provider } from "react-redux";
 import store from "../../redux/store";
 
 let wrapper;
-
+let url;
 beforeAll(() => {
   wrapper = ({ children }) => {
     return <Provider store={store}>{children}</Provider>;
   };
+  url = process.env.REACT_APP_API || "http://localhost:6060";
 });
 
 afterAll(() => {
   wrapper = null;
+  url = null;
 });
 
 describe("useConfirmAccount()", () => {
@@ -27,7 +29,7 @@ describe("useConfirmAccount()", () => {
   it("should set confirmAccountError message given that token is invalid", async () => {
     server.use(
       rest.get(
-        `${process.env.REACT_APP_API}/api/users/confirmaccount/:accountConfirmationToken`,
+        `${url}/api/users/confirmaccount/:accountConfirmationToken`,
         (req, res, ctx) => {
           return res(
             ctx.status(404),
@@ -51,7 +53,7 @@ describe("useConfirmAccount()", () => {
   it("should set confirmAccountError message given that token is not found", async () => {
     server.use(
       rest.get(
-        `${process.env.REACT_APP_API}/api/users/confirmaccount/:accountConfirmationToken`,
+        `${url}/api/users/confirmaccount/:accountConfirmationToken`,
         (req, res, ctx) => {
           return res(
             ctx.status(404),

@@ -5,6 +5,7 @@ export const useDeleteUser = () => {
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const flashMessage = useFlashMessage();
+  const url = process.env.REACT_APP_API || "http://localhost:6060";
 
   const deleteUser = async () => {
     dispatch({ type: "SET_LOADER" });
@@ -13,7 +14,7 @@ export const useDeleteUser = () => {
       return flashMessage("ERROR", "Not authorized");
     }
     const response = await fetch(
-      `${process.env.REACT_APP_API}/api/users`,
+      `${url}/api/users`,
       {
         method: "DELETE",
         credentials: "include",

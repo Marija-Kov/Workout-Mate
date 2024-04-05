@@ -8,6 +8,7 @@ import { Provider } from "react-redux";
 let wrapper;
 let dispatch;
 let mockUser;
+let url;
 
 beforeAll(() => {
   wrapper = ({ children }) => {
@@ -18,12 +19,14 @@ beforeAll(() => {
     username: undefined,
     profileImg: undefined,
   };
+  url = process.env.REACT_APP_API || "http://localhost:6060";
 });
 
 afterAll(() => {
   wrapper = null;
   dispatch = null;
   mockUser = null;
+  url = null;
 });
 
 describe("useCreateWorkout()", () => {
@@ -42,7 +45,7 @@ describe("useCreateWorkout()", () => {
     };
     server.use(
       rest.post(
-        `${process.env.REACT_APP_API}/api/workouts`,
+        `${url}/api/workouts`,
         (req, res, ctx) => {
           return res(
             ctx.status(200),
@@ -90,7 +93,7 @@ describe("useCreateWorkout()", () => {
   it("should set error given that at least one input field was empty", async () => {
     server.use(
       rest.post(
-        `${process.env.REACT_APP_API}/api/workouts`,
+        `${url}/api/workouts`,
         (req, res, ctx) => {
           return res(
             ctx.status(422),
@@ -116,7 +119,7 @@ describe("useCreateWorkout()", () => {
   it("should set error given that title input was too long", async () => {
     server.use(
       rest.post(
-        `${process.env.REACT_APP_API}/api/workouts`,
+        `${url}/api/workouts`,
         (req, res, ctx) => {
           return res(
             ctx.status(422),
@@ -147,7 +150,7 @@ describe("useCreateWorkout()", () => {
   it("should set error given that title input contained non-alphabetic characters", async () => {
     server.use(
       rest.post(
-        `${process.env.REACT_APP_API}/api/workouts`,
+        `${url}/api/workouts`,
         (req, res, ctx) => {
           return res(
             ctx.status(422),
@@ -180,7 +183,7 @@ describe("useCreateWorkout()", () => {
   it("should set error given that load input value was too large", async () => {
     server.use(
       rest.post(
-        `${process.env.REACT_APP_API}/api/workouts`,
+        `${url}/api/workouts`,
         (req, res, ctx) => {
           return res(
             ctx.status(422),
@@ -211,7 +214,7 @@ describe("useCreateWorkout()", () => {
   it("should set error given that reps input value was too large", async () => {
     server.use(
       rest.post(
-        `${process.env.REACT_APP_API}/api/workouts`,
+        `${url}/api/workouts`,
         (req, res, ctx) => {
           return res(
             ctx.status(422),

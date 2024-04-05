@@ -22,7 +22,8 @@ function App() {
 
   React.useEffect(() => {
     const url = getUrl();
-    if (!url.includes(process.env.REACT_APP_WEB_SERVICE)) {
+    const service = process.env.REACT_APP_WEB_SERVICE || "localhost";
+    if (!url.includes(service)) {
       return;
     }
     if (!localStorage.getItem("alerted")) {

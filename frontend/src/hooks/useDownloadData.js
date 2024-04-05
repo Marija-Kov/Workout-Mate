@@ -6,6 +6,7 @@ export function useDownloadData() {
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const flashMessage = useFlashMessage();
+  const url = process.env.REACT_APP_API || "http://localhost:6060";
 
   const downloadData = async () => {
     dispatch({ type: "SET_LOADER" });
@@ -14,7 +15,7 @@ export function useDownloadData() {
       return flashMessage("ERROR", "Not authorized");
     }
     const response = await fetch(
-      `${process.env.REACT_APP_API}/api/users/download`,
+      `${url}/api/users/download`,
       {
         credentials: "include",
       }

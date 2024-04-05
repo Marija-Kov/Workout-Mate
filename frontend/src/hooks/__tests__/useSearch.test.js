@@ -9,6 +9,7 @@ import store from "../../redux/store";
 let wrapper;
 let dispatch;
 let mockUser;
+let url;
 
 beforeAll(() => {
   wrapper = ({ children }) => {
@@ -19,12 +20,14 @@ beforeAll(() => {
     username: undefined,
     profileImg: undefined,
   };
+  url = process.env.REACT_APP_API || "http://localhost:6060";
 });
 
 afterAll(() => {
   wrapper = null;
   dispatch = null;
   mockUser = null;
+  url = null;
 });
 
 describe("useSearch()", () => {
@@ -46,7 +49,7 @@ describe("useSearch()", () => {
   it("should set error if something goes wrong on the server side", async () => {
     server.use(
       rest.get(
-        `${process.env.REACT_APP_API}/api/workouts/*`,
+        `${url}/api/workouts/*`,
         (req, res, ctx) => {
           return res(
             ctx.status(500),
@@ -95,7 +98,7 @@ describe("useSearch()", () => {
     ];
     server.use(
       rest.get(
-        `${process.env.REACT_APP_API}/api/workouts/*`,
+        `${url}/api/workouts/*`,
         (req, res, ctx) => {
           return res(
             ctx.status(200),

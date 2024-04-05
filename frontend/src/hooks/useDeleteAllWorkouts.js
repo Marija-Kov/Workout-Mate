@@ -5,6 +5,7 @@ export const useDeleteAllWorkouts = () => {
   const dispatch = useDispatch();
   const flashMessage = useFlashMessage();
   const user = useSelector((state) => state.user);
+  const url = process.env.REACT_APP_API || "http://localhost:6060";
 
   const deleteAllWorkouts = async () => {
     dispatch({ type: "SET_LOADER" });
@@ -12,7 +13,7 @@ export const useDeleteAllWorkouts = () => {
       dispatch({ type: "UNSET_LOADER" });
       return flashMessage("ERROR", "Not authorized");
     }
-    const response = await fetch(`${process.env.REACT_APP_API}/api/workouts/`, {
+    const response = await fetch(`${url}/api/workouts/`, {
       method: "DELETE",
       credentials: "include",
     });

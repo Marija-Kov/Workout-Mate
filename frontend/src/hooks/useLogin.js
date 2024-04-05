@@ -4,11 +4,12 @@ import { useFlashMessage } from "./useFlashMessage";
 export const useLogin = () => {
   const dispatch = useDispatch();
   const flashMessage = useFlashMessage();
+  const url = process.env.REACT_APP_API || "http://localhost:6060";
 
   const login = async (credentials) => {
     dispatch({ type: "SET_LOADER" });
     const response = await fetch(
-      `${process.env.REACT_APP_API}/api/users/login`,
+      `${url}/api/users/login`,
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },

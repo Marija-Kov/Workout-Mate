@@ -4,6 +4,7 @@ import { useFlashMessage } from "./useFlashMessage";
 export const useConfirmAccount = () => {
   const dispatch = useDispatch();
   const flashMessage = useFlashMessage();
+  const url = process.env.REACT_APP_API || "http://localhost:6060";
 
   const confirmAccount = async (token) => {
     dispatch({ type: "SET_LOADER" });
@@ -12,7 +13,7 @@ export const useConfirmAccount = () => {
       return flashMessage("ERROR", "Account confirmation token not found");
     }
     const response = await fetch(
-      `${process.env.REACT_APP_API}/api/users/confirmaccount/${token}`
+      `${url}/api/users/confirmaccount/${token}`
     );
     const json = await response.json();
     if (!response.ok) {
