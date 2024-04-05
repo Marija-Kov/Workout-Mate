@@ -167,7 +167,7 @@ PG_DB= <br>
 MONGO_URI= <br>
 SECRET= <br>
 SALT= <br>
-#--- Get fake email account here: https://ethereal.email/create
+#--- Get fake email account here: https://ethereal.email/create <br>
 EMAIL_HOST= <br>
 EMAIL_USERNAME= <br>
 EMAIL_PASSWORD= <br>
