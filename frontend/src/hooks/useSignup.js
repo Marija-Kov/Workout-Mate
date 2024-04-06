@@ -8,6 +8,23 @@ export const useSignup = () => {
 
   const signup = async (credentials) => {
     dispatch({ type: "SET_LOADER" });
+    if (!credentials.email || !credentials.password) {
+      return flashMessage("ERROR", "All fields must be filled");
+    }
+    if (
+      !credentials.email.match(
+        /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
+      )
+    ) {
+      return flashMessage("ERROR", "Please enter valid email address");
+    }
+    if (
+      !credentials.password.match(
+        /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()\-_=+{};:,<.>]).{8,}$/
+      )
+    ) {
+      return flashMessage("ERROR", "Password not strong enough");
+    }
     const response = await fetch(
       `${url}/api/users/signup`,
       {

@@ -8,15 +8,23 @@ export const useLogin = () => {
 
   const login = async (credentials) => {
     dispatch({ type: "SET_LOADER" });
-    const response = await fetch(
-      `${url}/api/users/login`,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify(credentials),
-      }
-    );
+    if (!credentials.email || !credentials.password) {
+      return flashMessage("ERROR", "All fields must be filled");
+    }
+    if (
+      credentials.email &&
+      !credentials.email.match(
+        /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
+      )
+    ) {
+      return flashMessage("ERROR", "Please enter valid email address");
+    }
+    const response = await fetch(`${url}/api/users/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify(credentials),
+    });
     const json = await response.json();
     if (!response.ok) {
       dispatch({ type: "UNSET_LOADER" });
@@ -28,6 +36,6 @@ export const useLogin = () => {
       return dispatch({ type: "LOGIN", payload: json });
     }
   };
-  
+
   return { login };
 };

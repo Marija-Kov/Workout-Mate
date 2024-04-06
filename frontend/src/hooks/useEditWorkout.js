@@ -15,19 +15,45 @@ export default function useEditWorkout() {
       dispatch({ type: "UNSET_LOADER" });
       return flashMessage("ERROR", "Not authorized");
     }
-    const response = await fetch(
-      `${url}/api/workouts/${id}`,
-      {
-        method: "PATCH",
-        body: JSON.stringify(payload),
-        headers: {
-          "Content-Type": "application/json", 
-        },
-        credentials: "include",
-      }
-      );
-      const json = await response.json();
-      if (!response.ok) {
+    if (payload.title && !payload.title.match(/^[a-zA-Z\s]*$/)) {
+      return flashMessage("ERROR", "Title may contain only letters");
+    }
+    if (payload.title && payload.title.length > 30) {
+      return flashMessage("ERROR", "Too long title - max 30 characters");
+    }
+    if (
+      payload.muscle_group &&
+      ![
+        "chest",
+        "shoulder",
+        "biceps",
+        "triceps",
+        "leg",
+        "back",
+        "glute",
+        "ab",
+        "calf",
+        "forearm and grip",
+      ].includes(payload.muscle_group)
+    ) {
+      return flashMessage("ERROR", "Invalid muscle group value");
+    }
+    if (payload.reps && payload.reps > 9999) {
+      return flashMessage("ERROR", "Reps value too large");
+    }
+    if (payload.load && payload.load > 9999) {
+      return flashMessage("ERROR", "Load value too large");
+    }
+    const response = await fetch(`${url}/api/workouts/${id}`, {
+      method: "PATCH",
+      body: JSON.stringify(payload),
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    });
+    const json = await response.json();
+    if (!response.ok) {
       dispatch({ type: "UNSET_LOADER" });
       return flashMessage("ERROR", json.error);
     }
@@ -43,6 +69,6 @@ export default function useEditWorkout() {
       return dispatch({ type: "TOGGLE_MOUNT_EDIT_WORKOUT_FORM" });
     }
   };
-  
+
   return { editWorkout };
 }
