@@ -125,10 +125,7 @@ describe("<EditWorkout/>", () => {
       rest.patch(
         `${process.env.REACT_APP_API}/api/workouts/*`,
         (req, res, ctx) => {
-          return res(
-            ctx.status(401),
-            ctx.json({ error: "Not authorized, token expired." })
-          );
+          return res(ctx.status(401), ctx.json({ error: "Not authorized" }));
         }
       )
     );
@@ -165,7 +162,7 @@ describe("<EditWorkout/>", () => {
           return res(
             ctx.status(400),
             ctx.json({
-              error: "Title too long - max 30 characters",
+              error: "Too long title - max 30 characters",
             })
           );
         }
@@ -280,12 +277,12 @@ describe("<EditWorkout/>", () => {
         <EditWorkout />
       </Provider>
     );
-    let loadInput = screen.getByTestId("reps");
+    let loadInput = screen.getByTestId("load");
     const submit = screen.getByText(/save/i);
     await user.clear(loadInput);
     await user.type(loadInput, "284738378");
     await user.click(submit);
-    loadInput = await screen.findByTestId("reps");
+    loadInput = await screen.findByTestId("load");
     expect(loadInput).toHaveAttribute("class", "error");
     const error = await screen.findByRole("alert");
     expect(error.textContent).toMatch(/load value too large/i);
@@ -322,7 +319,9 @@ describe("<EditWorkout/>", () => {
     await user.clear(loadInput);
     await user.type(loadInput, "15");
     await user.click(submit);
-    await act(() => dispatch({ type: "SUCCESS", payload: "Successfully updated workout"}))
+    await act(() =>
+      dispatch({ type: "SUCCESS", payload: "Successfully updated workout" })
+    );
     const success = await screen.findByRole("alert");
     expect(success).toBeInTheDocument();
     expect(success.textContent).toMatch(/successfully updated workout/i);
