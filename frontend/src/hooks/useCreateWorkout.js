@@ -12,7 +12,6 @@ export const useCreateWorkout = () => {
   const createWorkout = async (workout) => {
     dispatch({ type: "SET_LOADER" });
     if (!user) {
-      dispatch({ type: "UNSET_LOADER" });
       return flashMessage("ERROR", "Not authorized");
     }
     if (
@@ -45,11 +44,9 @@ export const useCreateWorkout = () => {
     });
     const json = await response.json();
     if (!response.ok) {
-      dispatch({ type: "UNSET_LOADER" });
       return flashMessage("ERROR", json.error);
     }
     if (response.ok) {
-      dispatch({ type: "UNSET_LOADER" });
       flashMessage("SUCCESS", "Successfully created workout");
       dispatch({ type: "CREATE_WORKOUT", payload: json });
       dispatch({ type: "GO_TO_PAGE_NUMBER", payload: 0 });

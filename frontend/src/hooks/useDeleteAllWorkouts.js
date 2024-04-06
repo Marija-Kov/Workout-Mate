@@ -10,7 +10,6 @@ export const useDeleteAllWorkouts = () => {
   const deleteAllWorkouts = async () => {
     dispatch({ type: "SET_LOADER" });
     if (!user) {
-      dispatch({ type: "UNSET_LOADER" });
       return flashMessage("ERROR", "Not authorized");
     }
     const response = await fetch(`${url}/api/workouts/`, {
@@ -18,12 +17,10 @@ export const useDeleteAllWorkouts = () => {
       credentials: "include",
     });
     if (response.ok) {
-      dispatch({ type: "UNSET_LOADER" });
       dispatch({ type: "RESET_WORKOUTS_STATE" });
       return flashMessage("SUCCESS", "Successfully deleted all workouts");
     }
     if (!response.ok) {
-      dispatch({ type: "UNSET_LOADER" });
       return flashMessage("ERROR", "Could not delete workouts");
     }
   };

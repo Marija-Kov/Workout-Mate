@@ -11,26 +11,20 @@ export function useDownloadData() {
   const downloadData = async () => {
     dispatch({ type: "SET_LOADER" });
     if (!user) {
-      dispatch({ type: "UNSET_LOADER" });
       return flashMessage("ERROR", "Not authorized");
     }
-    const response = await fetch(
-      `${url}/api/users/download`,
-      {
-        credentials: "include",
-      }
-      );
-      if (!response.ok) {
-      dispatch({ type: "UNSET_LOADER" });
+    const response = await fetch(`${url}/api/users/download`, {
+      credentials: "include",
+    });
+    if (!response.ok) {
       return flashMessage("ERROR", "Could not get data");
     }
     if (response.ok) {
-      dispatch({ type: "UNSET_LOADER" });
       const data = await response.json();
       downloadJsonFile(data);
       return flashMessage("SUCCESS", "Data download started");
     }
   };
-  
+
   return { downloadData };
 }

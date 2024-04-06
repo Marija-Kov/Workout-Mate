@@ -25,21 +25,16 @@ export const useSignup = () => {
     ) {
       return flashMessage("ERROR", "Password not strong enough");
     }
-    const response = await fetch(
-      `${url}/api/users/signup`,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(credentials),
-      }
-    );
+    const response = await fetch(`${url}/api/users/signup`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(credentials),
+    });
     const json = await response.json();
     if (!response.ok) {
-      dispatch({ type: "UNSET_LOADER" });
       return flashMessage("ERROR", json.error);
     }
     if (response.ok) {
-      dispatch({ type: "UNSET_LOADER" });
       return flashMessage("SUCCESS", json.success);
     }
   };

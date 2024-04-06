@@ -27,12 +27,10 @@ export const useLogin = () => {
     });
     const json = await response.json();
     if (!response.ok) {
-      dispatch({ type: "UNSET_LOADER" });
       return flashMessage("ERROR", json.error);
     }
     if (response.ok) {
       localStorage.setItem("user", JSON.stringify(json));
-      dispatch({ type: "UNSET_LOADER" });
       return dispatch({ type: "LOGIN", payload: json });
     }
   };
