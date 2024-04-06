@@ -31,26 +31,49 @@ describe("useResetPassword()", () => {
     expect(typeof result.current.resetPassword).toBe("function");
   });
 
-  it("should set error given that passwords are not matching or not strong enough", async () => {
+  it("should set error given that new password is not strong enough", async () => {
     server.use(
       rest.patch(
         `${url}/api/reset-password/*`,
         (req, res, ctx) => {
           return res(
-            ctx.status(400),
+            ctx.status(422),
             ctx.json({
-              error: "Passwords not matching or not strong enough",
+              error: "Password not strong enough",
             })
           );
         }
       )
     );
     const { result } = renderHook(useResetPassword, { wrapper });
-    await act(() => result.current.resetPassword("token", "abcABC123", null));
+    await act(() => result.current.resetPassword("token", "abcABC", "abcABC"));
     let state = store.getState();
     expect(state.flashMessages.error).toBeTruthy();
     expect(state.flashMessages.error).toMatch(
-      /passwords not matching or not strong enough/i
+      /password not strong enough/i
+    );
+  });
+
+  it("should set error given that passwords are not matching", async () => {
+    server.use(
+      rest.patch(
+        `${url}/api/reset-password/*`,
+        (req, res, ctx) => {
+          return res(
+            ctx.status(422),
+            ctx.json({
+              error: "Passwords must match",
+            })
+          );
+        }
+      )
+    );
+    const { result } = renderHook(useResetPassword, { wrapper });
+    await act(() => result.current.resetPassword("token", "abcABC123!", "abcABC123#"));
+    let state = store.getState();
+    expect(state.flashMessages.error).toBeTruthy();
+    expect(state.flashMessages.error).toMatch(
+      /passwords must match/i
     );
   });
 
