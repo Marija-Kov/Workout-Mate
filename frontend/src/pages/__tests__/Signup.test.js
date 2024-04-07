@@ -52,7 +52,7 @@ describe("<Signup />", () => {
     expect(password).toHaveValue("abc");
   });
 
-  it("should render error element once 'sign up' button is clicked given that server responds with error", async () => {
+  it("should render error element given that input value is missing", async () => {
     server.use(
       rest.post(
         `${process.env.REACT_APP_API}/api/users/signup`,
@@ -60,7 +60,7 @@ describe("<Signup />", () => {
           return res(
             ctx.status(422),
             ctx.json({
-              error: "Invalid input",
+              error: "All fields must be filled",
             })
           );
         }
@@ -77,11 +77,110 @@ describe("<Signup />", () => {
     await user.click(signupBtn);
     const error = await screen.findByRole("alert");
     expect(error).toBeInTheDocument();
-    expect(error.textContent).toMatch(/invalid input/i);
+    expect(error.textContent).toMatch(/all fields must be filled/i);
     expect(error).toHaveAttribute("class", "error flashMessage");
   });
 
-  it("should render success element once 'sign up' button is clicked given that server responds with success message", async () => {
+  it("should render error element given that email is invalid", async () => {
+    server.use(
+      rest.post(
+        `${process.env.REACT_APP_API}/api/users/signup`,
+        (req, res, ctx) => {
+          return res(
+            ctx.status(422),
+            ctx.json({
+              error: "Please enter valid email address",
+            })
+          );
+        }
+      )
+    );
+    user.setup();
+    render(
+      <Provider store={store}>
+        <App />
+        <Signup />
+      </Provider>
+    );
+    const email = screen.getByPlaceholderText("email address");
+    const password = screen.getByPlaceholderText("password");
+    const signupBtn = await screen.findByText("Sign up");
+    await user.type(email, "abc");
+    await user.type(password, "abcABC123!");
+    await user.click(signupBtn);
+    const error = await screen.findByRole("alert");
+    expect(error).toBeInTheDocument();
+    expect(error.textContent).toMatch(/please enter valid email address/i);
+    expect(error).toHaveAttribute("class", "error flashMessage");
+  });
+
+  it("should render error element given that password is weak", async () => {
+    server.use(
+      rest.post(
+        `${process.env.REACT_APP_API}/api/users/signup`,
+        (req, res, ctx) => {
+          return res(
+            ctx.status(422),
+            ctx.json({
+              error: "Password not strong enough",
+            })
+          );
+        }
+      )
+    );
+    user.setup();
+    render(
+      <Provider store={store}>
+        <App />
+        <Signup />
+      </Provider>
+    );
+    const email = screen.getByPlaceholderText("email address");
+    const password = screen.getByPlaceholderText("password");
+    const signupBtn = await screen.findByText("Sign up");
+    await user.type(email, "a@b.c");
+    await user.type(password, "abcABC");
+    await user.click(signupBtn);
+    const error = await screen.findByRole("alert");
+    expect(error).toBeInTheDocument();
+    expect(error.textContent).toMatch(/password not strong enough/i);
+    expect(error).toHaveAttribute("class", "error flashMessage");
+  });
+
+  it("should render error element given that email is already in use", async () => {
+    server.use(
+      rest.post(
+        `${process.env.REACT_APP_API}/api/users/signup`,
+        (req, res, ctx) => {
+          return res(
+            ctx.status(422),
+            ctx.json({
+              error: "Email already in use",
+            })
+          );
+        }
+      )
+    );
+    user.setup();
+    render(
+      <Provider store={store}>
+        <App />
+        <Signup />
+      </Provider>
+    );
+    const email = screen.getByPlaceholderText("email address");
+    const password = screen.getByPlaceholderText("password");
+    const signupBtn = await screen.findByText("Sign up");
+    await user.type(email, "a@b.c");
+    await user.type(password, "abcABC123!");
+    await user.click(signupBtn);
+    const error = await screen.findByRole("alert");
+    expect(error).toBeInTheDocument();
+    expect(error.textContent).toMatch(/email already in use/i);
+    expect(error).toHaveAttribute("class", "error flashMessage");
+  });
+
+  it("should render success element given that signup was successful", async () => {
     user.setup();
     render(
       <Provider store={store}>

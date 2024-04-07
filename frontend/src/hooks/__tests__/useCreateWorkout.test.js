@@ -124,7 +124,7 @@ describe("useCreateWorkout()", () => {
           return res(
             ctx.status(422),
             ctx.json({
-              error: "Title too long - max 30 characters",
+              error: "Too long title - max 30 characters",
             })
           );
         }
@@ -144,7 +144,7 @@ describe("useCreateWorkout()", () => {
     state = store.getState();
     expect(state.workouts.total).toBe(prevTotal);
     expect(state.flashMessages.error).toBeTruthy();
-    expect(state.flashMessages.error).toMatch(/title too long/i);
+    expect(state.flashMessages.error).toMatch(/too long title/i);
   });
 
   it("should set error given that title input contained non-alphabetic characters", async () => {

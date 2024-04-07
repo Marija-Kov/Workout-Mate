@@ -13,21 +13,16 @@ export default function useDeleteWorkout() {
   const deleteWorkout = async (id) => {
     dispatch({ type: "SET_LOADER" });
     if (!user) {
-      dispatch({ type: "UNSET_LOADER" });
       return flashMessage("ERROR", "Not authorized");
     }
-    const response = await fetch(
-      `${url}/api/workouts/${id}`,
-      {
-        method: "DELETE",
-        credentials: "include",
-      }
-      );
-      const json = await response.json();
-      if (response.ok) {
-      dispatch({ type: "UNSET_LOADER" });
+    const response = await fetch(`${url}/api/workouts/${id}`, {
+      method: "DELETE",
+      credentials: "include",
+    });
+    const json = await response.json();
+    if (response.ok) {
       flashMessage("SUCCESS", "Successfully deleted workout");
-      dispatch({ type: "DELETE_WORKOUT", payload: json.workout});
+      dispatch({ type: "DELETE_WORKOUT", payload: json.workout });
       if (workoutsChunk.length === 1 && page === 0) {
         if (total > 1) {
           dispatch({ type: "NEXT_PAGE" });
@@ -48,6 +43,6 @@ export default function useDeleteWorkout() {
       return flashMessage("ERROR", json.error);
     }
   };
-  
+
   return { deleteWorkout };
 }

@@ -77,9 +77,106 @@ describe("<Login />", () => {
     await user.click(forgotPasswordBtn);
     const forgotPasswordForm = await screen.findByText("Reset Password");
     expect(forgotPasswordForm).toBeInTheDocument();
+    const close = await screen.findByText("close");
+    await user.click(close);
   });
 
-  it("should render error element once 'log in' button is clicked given that server responds with error", async () => {
+  it("should render error element given that input value is missing", async () => {
+    server.use(
+      rest.post(
+        `${process.env.REACT_APP_API}/api/users/login`,
+        (req, res, ctx) => {
+          return res(
+            ctx.status(422),
+            ctx.json({
+              error: "All fields must be filled",
+            })
+          );
+        }
+      )
+    );
+    user.setup();
+    render(
+      <Provider store={store}>
+        <App />
+        <Login />
+      </Provider>
+    );
+    const loginBtn = await screen.findByText("Log in");
+    await user.click(loginBtn);
+    const error = await screen.findByRole("alert");
+    expect(error).toBeInTheDocument();
+    expect(error.textContent).toMatch(/all fields must be filled/i);
+    expect(error).toHaveAttribute("class", "error flashMessage");
+  });
+
+  it("should render error element given that email is invalid", async () => {
+    server.use(
+      rest.post(
+        `${process.env.REACT_APP_API}/api/users/login`,
+        (req, res, ctx) => {
+          return res(
+            ctx.status(422),
+            ctx.json({
+              error: "Please enter valid email address",
+            })
+          );
+        }
+      )
+    );
+    user.setup();
+    render(
+      <Provider store={store}>
+        <App />
+        <Login />
+      </Provider>
+    );
+    const email = screen.getByPlaceholderText("email address");
+    const password = screen.getByPlaceholderText("password");
+    const loginBtn = await screen.findByText("Log in");
+    await user.type(email, "abc");
+    await user.type(password, "abcABC123!");
+    await user.click(loginBtn);
+    const error = await screen.findByRole("alert");
+    expect(error).toBeInTheDocument();
+    expect(error.textContent).toMatch(/Please enter valid email address/i);
+    expect(error).toHaveAttribute("class", "error flashMessage");
+  });
+
+  it("should render error element given that email is not registered", async () => {
+    server.use(
+      rest.post(
+        `${process.env.REACT_APP_API}/api/users/login`,
+        (req, res, ctx) => {
+          return res(
+            ctx.status(422),
+            ctx.json({
+              error: "That email does not exist in our database",
+            })
+          );
+        }
+      )
+    );
+    user.setup();
+    render(
+      <Provider store={store}>
+        <App />
+        <Login />
+      </Provider>
+    );
+    const email = screen.getByPlaceholderText("email address");
+    const password = screen.getByPlaceholderText("password");
+    const loginBtn = await screen.findByText("Log in");
+    await user.type(email, "x@y.z");
+    await user.type(password, "abcABC123!");
+    await user.click(loginBtn);
+    const error = await screen.findByRole("alert");
+    expect(error).toBeInTheDocument();
+    expect(error.textContent).toMatch(/email does not exist/i);
+    expect(error).toHaveAttribute("class", "error flashMessage");
+  });
+
+  it("should render error element given that password is wrong", async () => {
     server.use(
       rest.post(
         `${process.env.REACT_APP_API}/api/users/login`,

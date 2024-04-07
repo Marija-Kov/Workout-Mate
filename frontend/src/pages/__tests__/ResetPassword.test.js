@@ -57,13 +57,13 @@ describe("<ResetPassword />", () => {
     expect(confirmPasswordInput).toHaveValue("def");
   });
 
-  it("should show error message given that passwords are not matching", async () => {
+  it("should render error element given that passwords are not matching", async () => {
     server.use(
       rest.patch(
         `${process.env.REACT_APP_API}/api/reset-password/*`,
         (req, res, ctx) => {
           return res(
-            ctx.status(400),
+            ctx.status(422),
             ctx.json({
               error: "Passwords must match",
             })
@@ -83,22 +83,22 @@ describe("<ResetPassword />", () => {
     const newPasswordInput = screen.getByPlaceholderText("new password");
     const confirmPasswordInput = screen.getByPlaceholderText(/confirm/i);
     const saveBtn = screen.getByText(/save/i);
-    await user.type(newPasswordInput, "abcAbacaeefwwd");
-    await user.type(confirmPasswordInput, "defGUGUOIhoih");
+    await user.type(newPasswordInput, "abcABC123!");
+    await user.type(confirmPasswordInput, "abcABC123@");
     await user.click(saveBtn);
     const error = await screen.findByRole("alert");
     await expect(error).toBeInTheDocument();
     expect(error).toHaveAttribute("class", "error flashMessage");
-    expect(error.textContent).toMatch(/must match/i);
+    expect(error.textContent).toMatch(/passwords must match/i);
   });
 
-  it("should set error message given that new password is not strong enough", async () => {
+  it("should render error element given that new password is not strong enough", async () => {
     server.use(
       rest.patch(
         `${process.env.REACT_APP_API}/api/reset-password/*`,
         (req, res, ctx) => {
           return res(
-            ctx.status(400),
+            ctx.status(422),
             ctx.json({
               error: "Password not strong enough",
             })
@@ -124,18 +124,18 @@ describe("<ResetPassword />", () => {
     const error = await screen.findByRole("alert");
     await expect(error).toBeInTheDocument();
     expect(error).toHaveAttribute("class", "error flashMessage");
-    expect(error.textContent).toMatch(/not strong enough/i);
+    expect(error.textContent).toMatch(/password not strong enough/i);
   });
 
-  it("should set error message given that password reset token has expired", async () => {
+  it("should render error element given that password reset token has expired", async () => {
     server.use(
       rest.patch(
         `${process.env.REACT_APP_API}/api/reset-password/*`,
         (req, res, ctx) => {
           return res(
-            ctx.status(400),
+            ctx.status(404),
             ctx.json({
-              error: "Invalid token",
+              error: "Reset password token not found",
             })
           );
         }
@@ -159,10 +159,10 @@ describe("<ResetPassword />", () => {
     const error = await screen.findByRole("alert");
     await expect(error).toBeInTheDocument();
     expect(error).toHaveAttribute("class", "error flashMessage");
-    expect(error.textContent).toMatch(/invalid/i);
+    expect(error.textContent).toMatch(/reset password token not found/i);
   });
 
-  it("should set success message and render 'log in' link if password was reset successfully", async () => {
+  it("should render success element and render 'log in' link if password was reset successfully", async () => {
     user.setup();
     render(
       <Provider store={store}>

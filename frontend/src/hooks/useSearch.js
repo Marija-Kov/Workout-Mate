@@ -10,7 +10,6 @@ export const useSearch = () => {
   const search = async (query, page) => {
     dispatch({ type: "SET_LOADER" });
     if (!user) {
-      dispatch({ type: "UNSET_LOADER" });
       return flashMessage("ERROR", "Not authorized");
     }
     const response = await fetch(
@@ -21,11 +20,9 @@ export const useSearch = () => {
     );
     const json = await response.json();
     if (response.ok) {
-      dispatch({ type: "UNSET_LOADER" });
       return dispatch({ type: "SET_WORKOUTS", payload: json });
     }
     if (!response.ok) {
-      dispatch({ type: "UNSET_LOADER" });
       return flashMessage("ERROR", json.error);
     }
   };

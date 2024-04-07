@@ -27,30 +27,91 @@ describe("useSignup()", () => {
     expect(typeof result.current.signup).toBe("function");
   });
 
-  it("should set error given that input was invalid", async () => {
+  it("should set error given that input value is missing", async () => {
     server.use(
-      rest.post(
-        `${url}/api/users/signup`,
-        (req, res, ctx) => {
-          return res(
-            ctx.status(422),
-            ctx.json({
-              error: "Invalid input",
-            })
-          );
-        }
-      )
+      rest.post(`${url}/api/users/signup`, (req, res, ctx) => {
+        return res(
+          ctx.status(422),
+          ctx.json({
+            error: "All fields must be filled",
+          })
+        );
+      })
     );
     const { result } = renderHook(useSignup, { wrapper });
-    await act(async () => result.current.signup());
+    await act(async () => result.current.signup({ email: "a@b.c" }));
     let state = store.getState();
     expect(state.flashMessages.error).toBeTruthy();
-    expect(state.flashMessages.error).toMatch(/invalid input/i);
+    expect(state.flashMessages.error).toMatch(/all fields must be filled/i);
+  });
+
+  it("should set error given that email address is invalid", async () => {
+    server.use(
+      rest.post(`${url}/api/users/signup`, (req, res, ctx) => {
+        return res(
+          ctx.status(422),
+          ctx.json({
+            error: "Please enter valid email address",
+          })
+        );
+      })
+    );
+    const { result } = renderHook(useSignup, { wrapper });
+    await act(async () =>
+      result.current.signup({ email: "abc", password: "abcABC123!" })
+    );
+    let state = store.getState();
+    expect(state.flashMessages.error).toBeTruthy();
+    expect(state.flashMessages.error).toMatch(
+      /please enter valid email address/i
+    );
+  });
+
+  it("should set error given that password is weak", async () => {
+    server.use(
+      rest.post(`${url}/api/users/signup`, (req, res, ctx) => {
+        return res(
+          ctx.status(422),
+          ctx.json({
+            error: "Password not strong enough",
+          })
+        );
+      })
+    );
+    const { result } = renderHook(useSignup, { wrapper });
+    await act(async () =>
+      result.current.signup({ email: "a@b.c", password: "abcABC" })
+    );
+    let state = store.getState();
+    expect(state.flashMessages.error).toBeTruthy();
+    expect(state.flashMessages.error).toMatch(/password not strong enough/i);
+  });
+
+  it("should set error given that email is already in use", async () => {
+    server.use(
+      rest.post(`${url}/api/users/signup`, (req, res, ctx) => {
+        return res(
+          ctx.status(422),
+          ctx.json({
+            error: "Email already in use",
+          })
+        );
+      })
+    );
+    const { result } = renderHook(useSignup, { wrapper });
+    await act(async () =>
+      result.current.signup({ email: "a@b.c", password: "abcABC123!" })
+    );
+    let state = store.getState();
+    expect(state.flashMessages.error).toBeTruthy();
+    expect(state.flashMessages.error).toMatch(/email already in use/i);
   });
 
   it("should set success message given that signup was successful", async () => {
     const { result } = renderHook(useSignup, { wrapper });
-    await act(async () => result.current.signup());
+    await act(async () =>
+      result.current.signup({ email: "a@b.c", password: "abcABC123!" })
+    );
     let state = store.getState();
     expect(state.flashMessages.error).toBeFalsy();
     expect(state.flashMessages.success).toBeTruthy();

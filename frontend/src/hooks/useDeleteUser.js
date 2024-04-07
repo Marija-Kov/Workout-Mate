@@ -10,26 +10,20 @@ export const useDeleteUser = () => {
   const deleteUser = async () => {
     dispatch({ type: "SET_LOADER" });
     if (!user) {
-      dispatch({ type: "UNSET_LOADER" });
       return flashMessage("ERROR", "Not authorized");
     }
-    const response = await fetch(
-      `${url}/api/users`,
-      {
-        method: "DELETE",
-        credentials: "include",
-      }
-      );
-      const json = await response.json();
-      if (response.ok) {
-      dispatch({ type: "UNSET_LOADER" });
+    const response = await fetch(`${url}/api/users`, {
+      method: "DELETE",
+      credentials: "include",
+    });
+    const json = await response.json();
+    if (response.ok) {
       return flashMessage("SUCCESS", json.success);
     }
     if (!response.ok) {
-      dispatch({ type: "UNSET_LOADER" });
       return flashMessage("ERROR", json.error);
     }
   };
-  
+
   return { deleteUser };
 };

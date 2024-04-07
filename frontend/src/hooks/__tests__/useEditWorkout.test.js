@@ -76,7 +76,7 @@ describe("useEditWorkout()", () => {
           return res(
             ctx.status(400),
             ctx.json({
-              error: "Title too long - max 30 characters",
+              error: "Too long title - max 30 characters",
             })
           );
         }
@@ -97,7 +97,7 @@ describe("useEditWorkout()", () => {
     );
     expect(state.flashMessages.error).toBeTruthy();
     expect(state.flashMessages.error).toMatch(
-      /title too long - max 30 characters/i
+      /too long title - max 30 characters/i
     );
   });
 
@@ -109,7 +109,7 @@ describe("useEditWorkout()", () => {
           return res(
             ctx.status(400),
             ctx.json({
-              error: "Title may contain letters only",
+              error: "Title may contain only letters",
             })
           );
         }
@@ -128,7 +128,7 @@ describe("useEditWorkout()", () => {
     );
     expect(state.flashMessages.error).toBeTruthy();
     expect(state.flashMessages.error).toMatch(
-      /title may contain letters only/i
+      /title may contain only letters/i
     );
   });
 
