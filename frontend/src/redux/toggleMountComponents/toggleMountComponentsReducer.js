@@ -9,6 +9,7 @@ const init = {
   isUserSettingsFormMounted: false,
   isDeleteAccountDialogueMounted: false,
   isSpunDownServerAlertMounted: false,
+  isCookieAlertMounted: false,
 };
 
 export const toggleMountComponentsReducer = (state = init, action) => {
@@ -58,6 +59,11 @@ export const toggleMountComponentsReducer = (state = init, action) => {
       return {
         ...state,
         isSpunDownServerAlertMounted: true,
+      };
+    case a.TOGGLE_MOUNT_COOKIE_ALERT:
+      return {
+        ...state,
+        isCookieAlertMounted: true,
       };
     case a.RESET_COMPONENTS_STATE:
       return init;

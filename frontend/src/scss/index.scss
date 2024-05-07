@@ -41,16 +41,20 @@ body {
   background: vars.$primary;
 }
 
-.spun--down--server--alert {
+.spun--down--server--alert,
+.cookie--alert {
   z-index: 5;
   text-align: center;
   position: fixed;
+  left: 0;
   bottom: 25px;
   max-width: 320px;
   padding: 5px 10px;
   background: rgba(255, 255, 255, 0.624);
   border: solid 1px rgb(13, 56, 91);
   border-left: none;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
   font-size: 12px;
   color: rgb(13, 56, 91);
 
@@ -69,6 +73,10 @@ body {
     cursor: pointer;
     transition: 0.2s;
   }
+}
+
+.spun--down--server--alert {
+  z-index: 6;
 }
 
 .hidden {
