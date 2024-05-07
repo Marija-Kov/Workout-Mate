@@ -13,7 +13,7 @@ const ConfirmedAccount = React.lazy(() => import("./pages/ConfirmedAccount"));
 
 function App() {
   const user = useSelector((state) => state.user);
-  const { isSpunDownServerAlertMounted } = useSelector(
+  const { isSpunDownServerAlertMounted, isCookieAlertMounted } = useSelector(
     (state) => state.toggleMountComponents
   );
   const { success, error } = useSelector((state) => state.flashMessages);
@@ -26,7 +26,7 @@ function App() {
     if (!url.includes(service)) {
       return;
     }
-    if (!localStorage.getItem("alerted")) {
+    if (!localStorage.getItem("spunDownServerAlert")) {
       dispatch({ type: "TOGGLE_MOUNT_SPUN_DOWN_SERVER_ALERT" });
     }
     return;
@@ -40,26 +40,53 @@ function App() {
           {isSpunDownServerAlertMounted && (
             <div className="spun--down--server--alert">
               <p>
-                NOTE: This app uses a free web service that spins the server
-                down after a period of inactivity. If you haven't been here in a
+                This app uses a free web service that spins down
+                after a period of inactivity. If you haven't been here in a
                 while, your initial request may take a minute. Thank you for
                 your patience!
               </p>
               <button
                 onClick={() => {
                   localStorage.setItem(
-                    "alerted",
+                    "spunDownServerAlert",
                     "The user has been alerted about web service limitations"
                   );
                   dispatch({ type: "RESET_COMPONENTS_STATE" });
+                  dispatch({ type: "TOGGLE_MOUNT_COOKIE_ALERT" });
                 }}
               >
                 Got it, close this
               </button>
             </div>
           )}
-          { error && <div role="alert" className="error flashMessage"><p>{error}</p></div> }
-          { success && <div role="alert" className="success flashMessage"><p>{success}</p></div> }
+          {isCookieAlertMounted && (
+            <div className="cookie--alert">
+              <p>
+                We use 1 cookie to keep you logged in for a while. That's all!
+              </p>
+              <button
+                onClick={() => {
+                  localStorage.setItem(
+                    "cookieAlert",
+                    "The user has been alerted about cookie usage"
+                  );
+                  dispatch({ type: "RESET_COMPONENTS_STATE" });
+                }}
+              >
+                Got it
+              </button>
+            </div>
+          )}
+          {error && (
+            <div role="alert" className="error flashMessage">
+              <p>{error}</p>
+            </div>
+          )}
+          {success && (
+            <div role="alert" className="success flashMessage">
+              <p>{success}</p>
+            </div>
+          )}
           <Routes>
             <Route
               path="/login"
