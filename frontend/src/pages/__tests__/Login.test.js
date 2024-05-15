@@ -184,7 +184,7 @@ describe("<Login />", () => {
           return res(
             ctx.status(422),
             ctx.json({
-              error: "Invalid input or user not confirmed",
+              error: "Wrong password",
             })
           );
         }
@@ -197,11 +197,15 @@ describe("<Login />", () => {
         <Login />
       </Provider>
     );
+    const email = screen.getByPlaceholderText("email address");
+    const password = screen.getByPlaceholderText("password");
     const loginBtn = await screen.findByText("Log in");
+    await user.type(email, "a@b.c");
+    await user.type(password, "wrongPassword");
     await user.click(loginBtn);
     const error = await screen.findByRole("alert");
     expect(error).toBeInTheDocument();
-    expect(error.textContent).toMatch(/invalid input or user not confirmed/i);
+    expect(error.textContent).toMatch(/wrong password/i);
     expect(error).toHaveAttribute("class", "error flashMessage");
   });
 
