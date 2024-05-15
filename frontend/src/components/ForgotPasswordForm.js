@@ -13,8 +13,8 @@ export default function ForgotPasswordForm() {
   };
 
   return (
-    <div className="form--container--reset--password--request">
-      <form className="reset--password--request" onSubmit={sendEmail}>
+    <div className="form--container--forgot--password--form">
+      <form className="forgot--password--form" onSubmit={sendEmail}>
         <button
           className="close material-symbols-outlined"
           onClick={() => {

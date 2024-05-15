@@ -13,13 +13,13 @@
 
 @keyframes placeholder--animation {
   0% {
-    background: vars.$chart--color-1;
+    background: vars.$placeholder--color-1;
   }
   50% {
-    background: vars.$chart--color-2;
+    background: vars.$placeholder--color-2;
   }
   100% {
-    background: vars.$chart--color-1;
+    background: vars.$placeholder--color-1;
   }
 }
 

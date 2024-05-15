@@ -77,13 +77,13 @@
 
 @keyframes loading--workouts {
   0% {
-    color: vars.$chart--color-1;
+    color: vars.$placeholder--color-1;
   }
   50% {
-    color: vars.$chart--color-2;
+    color: vars.$placeholder--color-2;
   }
   100% {
-    color: vars.$chart--color-1;
+    color: vars.$placeholder--color-1;
   }
 }
 
@@ -124,7 +124,7 @@
   padding: 15px;
   background: vars.$workout-details--bkg;
   border-radius: 20px;
-  box-shadow: vars.$workout-details--shadow;
+  box-shadow: vars.$shadow--1;
   &:nth-child(n + 4) {
     display: none;
   }
@@ -134,7 +134,7 @@
   margin: 0 0 8px 0;
   padding-bottom: 10px;
   padding-left: 20px;
-  border-bottom: vars.$workout-details--h4--border;
+  border-bottom: vars.$workout-details--title--underline;
   font-size: 1em;
   font-weight: 700;
   color: vars.$primary;
