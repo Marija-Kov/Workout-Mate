@@ -8,10 +8,10 @@
   top: 61px;
   right: 20px;
   padding: 20px;
-  background: vars.$user-menu--bkg;
+  background: rgba(255, 255, 255, 0.1);
   border-bottom-left-radius: 15px;
   border-bottom-right-radius: 15px;
-  box-shadow: vars.$user-menu--shadow;
+  box-shadow: vars.$shadow--1;
 }
 
 .user--menu--item {

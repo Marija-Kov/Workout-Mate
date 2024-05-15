@@ -1,61 +1,79 @@
-/* Text */
+/**** Text ****/
 
 $primary: #373737;
+$primary--inverse: #ddd;
+
+/* Alert text */
+
 $error: #e7195a;
 $success: #16644a;
+
+/* Workout details date and icons */
+
 $light-text: #a1a1a1;
 $light-text--hover: rgb(66, 104, 194);
-$header--link--text: #333;
+
+/* WorkoutMate Logo */
+
 $logo--link: white;
 $logo--link--logged--in: rgb(177, 159, 190);
-$all--form--btn--text: white;
+
+/* Form text */
+
 $login--signup--form--text: white;
+$all--form--btn--text: white;
+
 $forgot-password--btn--text: #8b47c3;
 $forgot-password--btn--text--hover: rgb(83, 38, 121);
-$reset-password-request--form--h4--border: solid 1px rgb(233, 160, 194);
 $user-menu-item--text--hover: rgb(121, 190, 190);
-$chart-legend--text: rgb(82, 82, 82);
+
+/* Chart text */
+
 $chart-title--color: rgb(112, 98, 109);
 
-/* Backgrounds */
+/**** Backgrounds ****/
+
+/* Pages backgrounds */
+
+$home--bkg: rgb(203, 253, 229);
+$about--bkg: rgb(231, 231, 231);
+
+/* Alert Backgrounds*/
 
 $success--bkg: #b6f8db;
 $error--bkg: #fcd7d7;
+
+/* Form Backgrounds */
+
 $login--form--bkg: #5fcfca;
 $signup--form--bkg: #b995e7;
-$home--bkg: rgb(203, 253, 229);
-$home--bkg--dark: rgb(33, 81, 100);
-$about--link--bkg--hover: rgb(249, 158, 200);
-$about--bkg: rgb(231, 231, 231);
-$all--form--btn--bkg--hover: #ddd;
-$login--signup--form--btn--bkg--hover: #ddd;
-$form--container--bkg: rgba(128, 128, 128, 0.508);
-$reset-password-request--form--bkg: rgb(255, 192, 251);
-$reset-password-request--form--btn--bkg--hover: #ddd;
+$forgot-password--form--bkg: rgb(255, 192, 251);
 $reset-password--form--bkg: rgb(192, 232, 255);
 $workout--form--bkg: #dad5e5;
-$edit--form--bkg: #E0E1DB;
-$user-menu--bkg: rgba(209, 255, 240, 0.514);
-$user-settings-form--bkg: palegoldenrod;
-$delete-account-dialogue--change-my-mind--btn--bkg: rgb(82, 82, 82);
+$edit--form--bkg: #e0e1db;
+$user-settings--form--bkg: palegoldenrod;
+
+/* Other backgrounds */
+
 $workout-details--bkg: white;
 
-/* Shadows */
+/**** Shadows and containers ****/
 
 $header--shadow: rgba(160, 160, 160, 0.616);
-$reset-password-request--form--shadow: 5px 5px 25px 5px rgba(22, 22, 22, 0.196);
-$reset-password--form--shadow: 6px 6px 20px 20px rgba(81, 121, 169, 0.225);
-$user-menu--shadow: 0px 5px 22px -2px rgba(142, 142, 142, 0.5);
-$user-settings-form--shadow: 5px 5px 25px 5px rgba(22, 22, 22, 0.307); 
-$workout-details--shadow: 0px 5px 22px -2px rgba(142, 142, 142, 0.5);
-$chart--shadow: 3px 5px 25px rgba(34, 74, 70, 0.362);
+$form--container--bkg: rgba(128, 128, 128, 0.508);
+$shadow--1: 0px 5px 22px -2px rgba(142, 142, 142, 0.5); // for forms and cards not wrapped in a container
+$shadow--2: 5px 5px 25px 5px rgba(22, 22, 22, 0.25); // for forms wrapped in a form container
 
-/* Other */
+/**** Borders and underlines ****/
 
-$delete-account-dialogue--accent: orangered;
 $user-menu-item--border: solid 1px rgb(121, 190, 190);
-$user-settings-form--h4--border: solid 1px rgb(214, 214, 214);
-$workout-details--h4--border: solid 1px #c6f2ee;
+$user-settings--form--title--underline: solid 1px rgb(214, 214, 214);
+$forgot-password--form--title--underline: solid 1px rgb(233, 160, 194);
+$workout-details--title--underline: solid 1px #c6f2ee;
+
+/**** Other ****/
+
+$about--link--bkg--hover: rgb(249, 158, 200);
+$placeholder--color-1: rgba(167, 79, 142, 0.7);
+$placeholder--color-2: rgba(70, 217, 224, 0.7);
 $pagination-dots--color: rgb(149, 149, 149);
-$chart--color-1: rgba(167, 79, 142, 0.7);
-$chart--color-2: rgba(70, 217, 224, 0.7);

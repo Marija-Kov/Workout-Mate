@@ -39,7 +39,7 @@ input {
 .form--container--login,
 .form--container--signup,
 .form--container--reset--password,
-.form--container--reset--password--request,
+.form--container--forgot--password--form,
 .form--container--workout--form,
 .form--container--edit--workout--form,
 .form--container--user--settings {
@@ -122,7 +122,7 @@ form.signup h4 {
 
 .log-in--form--btn:hover,
 .sign-up--form--btn:hover {
-  background: vars.$login--signup--form--btn--bkg--hover;
+  background: vars.$primary--inverse;
   color: vars.$primary;
 }
 
@@ -147,7 +147,7 @@ form.signup h4 {
 
 /* Forgot password form */
 
-.form--container--reset--password--request {
+.form--container--forgot--password--form {
   z-index: 5;
   display: flex;
   top: 0;
@@ -157,7 +157,7 @@ form.signup h4 {
   background: vars.$form--container--bkg;
 }
 
-.reset--password--request {
+.forgot--password--form {
   text-align: center;
   position: relative;
   top: 180px;
@@ -165,16 +165,16 @@ form.signup h4 {
   width: 300px;
   margin: 0 auto;
   padding: 20px;
-  background: vars.$reset-password-request--form--bkg;
+  background: vars.$forgot-password--form--bkg;
   border-radius: 20px;
-  box-shadow: vars.$reset-password-request--form--shadow;
+  box-shadow: vars.$shadow--2;
 }
 
-.reset--password--request > h4 {
-  border-bottom: vars.$reset-password-request--form--h4--border;
+.forgot--password--form > h4 {
+  border-bottom: vars.$forgot-password--form--title--underline;
 }
 
-.reset--password--request > .proceed {
+.forgot--password--form > .proceed {
   padding: 8px 28px;
   background: vars.$primary;
   border: solid 1px vars.$primary;
@@ -185,8 +185,8 @@ form.signup h4 {
   transition: 0.2s;
 }
 
-.reset--password--request > .proceed:hover {
-  background: vars.$reset-password-request--form--btn--bkg--hover;
+.forgot--password--form > .proceed:hover {
+  background: vars.$primary--inverse;
   color: vars.$primary;
 }
 
@@ -211,7 +211,7 @@ form.signup h4 {
   padding: 20px;
   background: vars.$reset-password--form--bkg;
   border-radius: 20px;
-  box-shadow: vars.$reset-password--form--shadow;
+  box-shadow: vars.$shadow--2;
 }
 
 .reset--password > button {
@@ -226,7 +226,7 @@ form.signup h4 {
 }
 
 .reset--password > button:hover {
-  background: vars.$all--form--btn--bkg--hover;
+  background: vars.$primary--inverse;
   color: vars.$primary;
 }
 
@@ -303,7 +303,7 @@ form.signup h4 {
 
 .workout--form--btn:hover,
 .edit--form--btn:hover {
-  background: vars.$all--form--btn--bkg--hover;
+  background: vars.$primary--inverse;
   color: vars.$primary;
 }
 
@@ -329,7 +329,7 @@ form.signup h4 {
 }
 
 .add--workout:hover {
-  background: vars.$all--form--btn--bkg--hover;
+  background: vars.$primary--inverse;
   color: vars.$primary;
 }
 
@@ -355,9 +355,9 @@ form.signup h4 {
   min-width: 300px;
   padding: 20px;
   padding-left: 50px;
-  background: vars.$user-settings-form--bkg;
+  background: vars.$user-settings--form--bkg;
   border-radius: 20px;
-  box-shadow: vars.$user-settings-form--shadow;
+  box-shadow: vars.$shadow--2;
 }
 
 .user--settings > input {
@@ -375,7 +375,7 @@ form.signup h4 {
 }
 
 .user--settings > h4 {
-  border-bottom: vars.$user-settings-form--h4--border;
+  border-bottom: vars.$user-settings--form--title--underline;
   color: vars.$primary;
 }
 
@@ -401,7 +401,7 @@ form.signup h4 {
 }
 
 .upload--btn:hover {
-  background: vars.$all--form--btn--bkg--hover;
+  background: vars.$primary--inverse;
   color: vars.$primary;
 }
 
@@ -455,8 +455,8 @@ form.signup h4 {
 
 .delete--account--btn:hover,
 .download--data--btn:hover {
-  border-bottom: 1px solid vars.$delete-account-dialogue--accent;
-  color: vars.$delete-account-dialogue--accent;
+  border-bottom: 1px solid orangered;
+  color: orangered;
 }
 
 @media screen and (max-width: 600px) {
