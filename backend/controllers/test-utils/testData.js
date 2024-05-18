@@ -1,3 +1,8 @@
+/**
+ * The mockUser function provides mock users at different phases 
+ * of the user lifecycle.
+ */
+
 async function mockUser(
   status,
   agent,
@@ -9,8 +14,9 @@ async function mockUser(
   const userPending = (await agent.post("/api/users/signup").send(user)).body;
   if (status === "pending") return userPending;
 
-  const userConfirmed = (await agent.get(`/api/users/confirmaccount/${userPending.token}`))
-    .body;
+  const userConfirmed = (
+    await agent.get(`/api/users/confirmaccount/${userPending.token}`)
+  ).body;
   if (status === "confirmed") return userConfirmed;
 
   const resLoggedIn = await agent.post("/api/users/login").send(user);
@@ -43,14 +49,11 @@ async function addWorkouts(userLoggedIn, agent) {
 }
 
 async function maxOutWorkouts(user, agent) {
-  /*
-      limit = process.env.MAX_WORKOUTS_PER_USER;
-      sampleWorkouts.length must be limit - 1
-      if the condition for deletion of the oldest entry is number of workouts being 
-      EQUAL TO limit and given that the test is asserting the existence of each of
-      the two previously posted workouts where more recent one is supposed to exist
-      and the less recent one not to exist.
-    */
+  /**
+   * Since we need to max the workouts out to test whether the oldest workout 
+   * will be deleted, we want the setup where the number of workouts is just below
+   * the maximum workouts per user limit.
+   */
   const limit = Number(process.env.MAX_WORKOUTS_PER_USER) || 5;
   const sampleWorkout = {
     title: "Bench Press",

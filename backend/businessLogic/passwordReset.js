@@ -18,21 +18,28 @@ const forgotPassword = async (email) => {
     ApiError.notFound("That email does not exist in our database");
   }
   if (user.account_status === "pending") {
-    ApiError.notAuthorized("The account with that email address has not yet been confirmed");
+    ApiError.notAuthorized(
+      "The account with that email address has not yet been confirmed"
+    );
   }
   const resetToken = crypto.randomBytes(32).toString("hex");
   const { _id } = user;
   await User.savePasswordResetToken(_id, resetToken);
   const clientUrl = process.env.CLIENT_URL || "localhost:3000";
   const resetLink = `${clientUrl}/reset-password?token=${resetToken}`;
-  sendEmail(
-    email,
-    "Password Reset Request",
-    {
-      link: resetLink,
-    },
-    "../templates/requestPasswordReset.handlebars"
-  );
+  /**
+   * When testing routes, we don't need to send emails:
+   */
+  if (process.env.NODE_ENV !== "test") {
+    sendEmail(
+      email,
+      "Password Reset Request",
+      {
+        link: resetLink,
+      },
+      "../templates/requestPasswordReset.handlebars"
+    );
+  }
 
   return {
     resetToken: resetToken,
