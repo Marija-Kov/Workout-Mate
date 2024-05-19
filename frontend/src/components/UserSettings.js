@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState } from "react";
 import { useUpdateUser } from "../hooks/useUpdateUser";
 import Cropper from "react-easy-crop";
 import { useCroppedImg } from "../hooks/useCroppedImg";
@@ -40,9 +40,9 @@ export default function UserSettings({ changeProfileImg }) {
     };
   };
 
-  const onCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
+  const onCropComplete = (croppedArea, croppedAreaPixels) => {
     setCroppedAreaPixels(croppedAreaPixels);
-  }, []);
+  };
 
   const handleUpdateProfile = async (e) => {
     e.preventDefault();

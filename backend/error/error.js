@@ -1,3 +1,7 @@
+/**
+ * This module provides custom error middleware.
+ */
+
 class ApiError extends Error {
   constructor(statusCode, message) {
     super();

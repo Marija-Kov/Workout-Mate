@@ -1,6 +1,12 @@
 const { Pool } = require("pg");
 require("dotenv").config();
 
+/**
+ * UserRepository starts a Postgres server and provides methods to access 
+ * and manipulate user data. It contains everything it needs to work 
+ * in both test and non-test environment.
+ */
+
 class UserRepository {
   constructor() {
     if (process.env.NODE_ENV === "test") {
@@ -179,6 +185,11 @@ class UserRepository {
             } else if (!row) {
               resolve(null);
             } else {
+              /**
+               * The next block basically renames a property
+               * to provide out-of-the-box style consistency with
+               * the business logic.
+               */
               if (row.profile_image) {
                 row.profileImg = row.profile_image;
                 delete row.profile_image;
@@ -191,6 +202,11 @@ class UserRepository {
         const client = await this.pool.connect();
         const result = await client.query(sql, [email]);
         client.release();
+        /**
+         * The next block basically renames a property
+         * to provide out-of-the-box style consistency with
+         * the business logic.
+         */
         if (result.rows[0] && result.rows[0].profile_image) {
           result.rows[0].profileImg = result.rows[0].profile_image;
           delete result.rows[0].profile_image;

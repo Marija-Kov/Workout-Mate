@@ -32,6 +32,11 @@ const signup = async (email, password) => {
   await User.saveConfirmationToken(id, confirmationToken);
   const registeredUsers = await User.findAll();
   const limit = Number(process.env.MAX_USERS) || 10;
+  /**
+   * The following block will trigger the deletion of the oldest registered user
+   * if the set limit is exceeded. This is done to avoid having to manually clear
+   * the database as the intention behind the app isn't to retain users at this time.
+   */
   if (registeredUsers.length >= limit) {
     const id = registeredUsers[0]._id;
     await User.delete(id);
@@ -39,6 +44,9 @@ const signup = async (email, password) => {
   }
   const clientUrl = process.env.CLIENT_URL || "localhost:3000";
   const accountVerificationLink = `${clientUrl}/users?accountConfirmationToken=${confirmationToken}`;
+  /**
+   * When testing routes, we don't need to send emails:
+   */
   if (process.env.NODE_ENV !== "test") {
     sendEmail(
       user.email,
