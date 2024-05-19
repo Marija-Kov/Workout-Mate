@@ -16,7 +16,7 @@ beforeAll(() => {
     username: undefined,
     profileImg: undefined,
   };
-  jest.mock("../../utils/downloadJsonFile", () => ({
+  jest.mock("../useGetJsonFile", () => ({
     downloadJsonFile: jest.fn(),
   }));
   window.URL.createObjectURL = jest.fn();
