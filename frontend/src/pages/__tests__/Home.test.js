@@ -4,7 +4,7 @@ import { jest } from "@jest/globals";
 import { genSampleWorkouts } from "../../utils/test/genSampleWorkouts";
 import Home from "../Home";
 import Search from "../../components/Search";
-import { Chart } from "../../components/Chart";
+import Chart from "../../components/Chart";
 import { ChartPlaceholder } from "../../components/ChartPlaceholder";
 import Pagination from "../../components/Pagination";
 import WorkoutDetails from "../../components/WorkoutDetails";
@@ -45,7 +45,7 @@ describe("<Home />", () => {
         <Home />
       </Provider>
     );
-    act(() => store.dispatch({ type: "SET_LOADER"}));
+    act(() => store.dispatch({ type: "SET_LOADER" }));
     const state = store.getState();
     expect(state.loader).toBeTruthy();
     expect(ChartPlaceholder).toHaveBeenCalled();
@@ -58,9 +58,7 @@ describe("<Home />", () => {
         <Home />
       </Provider>
     );
-    await act(() =>
-      store.dispatch({ type: "SET_WORKOUTS", payload: [] })
-    );
+    await act(() => store.dispatch({ type: "SET_WORKOUTS", payload: [] }));
     const addWorkoutBtn = await screen.findByText(/buff it up/i);
     expect(addWorkoutBtn).toBeInTheDocument();
     expect(addWorkoutBtn).toHaveClass("no--workouts--yet");
@@ -90,9 +88,7 @@ describe("<Home />", () => {
         <Home />
       </Provider>
     );
-    await act(() =>
-      store.dispatch({ type: "SET_WORKOUTS", payload: [] })
-    );
+    await act(() => store.dispatch({ type: "SET_WORKOUTS", payload: [] }));
     const addWorkoutBtn = await screen.findByText(/buff it up/i);
     await user.click(addWorkoutBtn);
     expect(WorkoutForm).toHaveBeenCalled();

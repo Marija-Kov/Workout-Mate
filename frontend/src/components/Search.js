@@ -1,7 +1,7 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useSearch } from "../hooks/useSearch";
 
-export default function Search() {
+const Search = () => {
   const loading = useSelector((state) => state.loader);
   const dispatch = useDispatch();
   const page = useSelector((state) => state.page);
@@ -39,4 +39,6 @@ export default function Search() {
       </button>
     </form>
   );
-}
+};
+
+export default Search;

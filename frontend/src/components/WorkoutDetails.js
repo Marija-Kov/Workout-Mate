@@ -2,7 +2,7 @@ import formatDistanceToNow from "date-fns/formatDistanceToNow";
 import useDeleteWorkout from "../hooks/useDeleteWorkout";
 import { useDispatch } from "react-redux";
 
-export default function WorkoutDetails({
+const WorkoutDetails = ({
   id,
   title,
   muscle_group,
@@ -10,7 +10,7 @@ export default function WorkoutDetails({
   load,
   createdAt,
   updatedAt,
-}) {
+}) => {
   const dispatch = useDispatch();
   const { deleteWorkout } = useDeleteWorkout();
   const date = formatDistanceToNow(new Date(createdAt), { addSuffix: true });
@@ -51,4 +51,6 @@ export default function WorkoutDetails({
       </button>
     </div>
   );
-}
+};
+
+export default WorkoutDetails;

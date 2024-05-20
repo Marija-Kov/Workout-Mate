@@ -1,13 +1,13 @@
 import { useMemo } from "react";
 import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Chart as ChartJS, ArcElement, Tooltip } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 import CustomLegend from "./CustomLegend.js";
-import { useDispatch, useSelector } from "react-redux";
 
 ChartJS.register(ArcElement, Tooltip);
 
-export const Chart = () => {
+const Chart = () => {
   const dispatch = useDispatch();
   const workouts = useSelector((state) => state.workouts);
   const { allUserWorkoutsMuscleGroups } = workouts;
@@ -122,3 +122,5 @@ export const Chart = () => {
     </div>
   );
 };
+
+export default Chart;

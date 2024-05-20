@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Navbar from "./components/Navbar";
@@ -10,6 +10,7 @@ const Signup = React.lazy(() => import("./pages/Signup"));
 const About = React.lazy(() => import("./pages/About"));
 const ResetPassword = React.lazy(() => import("./pages/ResetPassword"));
 const ConfirmedAccount = React.lazy(() => import("./pages/ConfirmedAccount"));
+const MemoNavbar = memo(Navbar);
 
 function App() {
   const user = useSelector((state) => state.user);
@@ -35,7 +36,7 @@ function App() {
   return (
     <div className="App">
       <BrowserRouter>
-        <Navbar />
+        <MemoNavbar />
         <div className="pages">
           {isSpunDownServerAlertMounted && (
             <div className="spun--down--server--alert">

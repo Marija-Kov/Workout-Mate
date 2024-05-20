@@ -312,6 +312,19 @@ describe("<EditWorkout/>", () => {
         <EditWorkout />
       </Provider>
     );
+    await act(() =>
+      dispatch({
+        type: "SET_WORKOUTS",
+        payload: {
+          workoutsChunk: [
+            { muscle_group: "leg" },
+            { muscle_group: "back" },
+            { muscle_group: "biceps" },
+          ],
+          allUserWorkoutsMuscleGroups: ["biceps", "back", "leg"],
+        },
+      })
+    );
     let loadInput = screen.getByTestId("reps");
     const submit = screen.getByText(/save/i);
     await user.clear(loadInput);

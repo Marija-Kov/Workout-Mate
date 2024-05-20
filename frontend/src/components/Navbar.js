@@ -5,7 +5,7 @@ import UserMenu from "./UserMenu";
 import UserSettings from "./UserSettings";
 import { useSelector, useDispatch } from "react-redux";
 
-export default function Navbar() {
+const Navbar = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
   const { isUserMenuMounted, isUserSettingsFormMounted } = useSelector(
@@ -28,7 +28,7 @@ export default function Navbar() {
       setUsername(username);
     } else {
       setUsername(user.username);
-    } 
+    }
     const newImg = localStorage.getItem("newImg");
     if (newImg) {
       setProfileImg(newImg);
@@ -40,9 +40,7 @@ export default function Navbar() {
   }, [user]);
 
   return (
-    <header
-      className={user ? "header--blur" : ""}
-    >
+    <header className={user ? "header--blur" : ""}>
       <div className="container">
         <h1 className={user ? "logged--in--logo" : "logo"}>
           <Link to="/">WorkoutMate</Link>
@@ -83,4 +81,6 @@ export default function Navbar() {
       </div>
     </header>
   );
-}
+};
+
+export default Navbar;

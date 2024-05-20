@@ -1,14 +1,18 @@
-import { useEffect, lazy, Suspense } from "react";
-import WorkoutDetails from "../components/WorkoutDetails";
-import WorkoutForm from "../components/WorkoutForm";
-import Pagination from "../components/Pagination";
+import { useEffect, lazy, Suspense, memo } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useSearch } from "../hooks/useSearch";
+import WorkoutForm from "../components/WorkoutForm";
+import WorkoutDetails from "../components/WorkoutDetails";
+import Pagination from "../components/Pagination";
 import Search from "../components/Search";
-import { Chart } from "../components/Chart";
+import Chart from "../components/Chart";
 import { ChartPlaceholder } from "../components/ChartPlaceholder";
 import { WorkoutsPlaceholder } from "../components/WorkoutsPlaceholder";
-import { useDispatch, useSelector } from "react-redux";
 const EditWorkout = lazy(() => import("../components/EditWorkout"));
+const MemoSearch = memo(Search);
+const MemoWorkoutDetails = memo(WorkoutDetails);
+const MemoChart = memo(Chart);
+const MemoPagination = memo(Pagination);
 
 export default function Home() {
   const dispatch = useDispatch();
@@ -34,7 +38,7 @@ export default function Home() {
 
   const renderWorkouts = () => {
     return workoutsChunk.map((workout) => (
-      <WorkoutDetails
+      <MemoWorkoutDetails
         key={workout._id}
         id={workout._id}
         title={workout.title}
@@ -77,7 +81,7 @@ export default function Home() {
   return (
     <div className="home--container">
       <div className="home">
-        {muscleGroups ? <Search /> : ""}
+        {muscleGroups ? <MemoSearch /> : ""}
 
         <div aria-label="workouts" className="workouts--container">
           {total && muscleGroups
@@ -85,7 +89,7 @@ export default function Home() {
             : renderPlaceholderOrNoWorkoutsMessage()}
         </div>
 
-        {muscleGroups ? <Chart /> : loading ? <ChartPlaceholder /> : ""}
+        {muscleGroups ? <MemoChart /> : loading ? <ChartPlaceholder /> : ""}
 
         {isCreateWorkoutFormMounted ? (
           <WorkoutForm />
@@ -107,7 +111,7 @@ export default function Home() {
           </Suspense>
         )}
 
-        {total ? <Pagination /> : ""}
+        {total ? <MemoPagination /> : ""}
 
         <div className="space"></div>
       </div>
