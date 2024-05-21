@@ -58,11 +58,15 @@ export default function useEditWorkout() {
     if (response.ok) {
       flashMessage("SUCCESS", "Successfully updated workout");
       dispatch({ type: "UPDATE_WORKOUT", payload: json });
-      if (payload.muscle_group)
+      /**
+       * Update routine balance only if muscle group has changed:
+       */
+      if (payload.muscle_group && payload.muscle_group !== json.muscle_group) {
         dispatch({
           type: "SET_ROUTINE_BALANCE",
           payload: allUserWorkoutsMuscleGroups,
         });
+      }
       return dispatch({ type: "TOGGLE_MOUNT_EDIT_WORKOUT_FORM" });
     }
   };

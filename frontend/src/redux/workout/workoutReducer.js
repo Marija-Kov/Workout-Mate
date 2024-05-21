@@ -24,24 +24,37 @@ export const workoutReducer = (state = init, action) => {
         pageSpread: pageSpreadHelper(state.total, state.limit),
       };
     case a.UPDATE_WORKOUT:
-      if (action.payload.muscle_group) {
+      /**
+       * By comparing workout's muscle group before and after update, we can
+       * see whether we need to overwrite allUserWorkoutsMuscleGroups array.
+       * Skipping overwriting when muscle group is the same before and after 
+       * update will prevent routine balance state update as well.
+       */
+      const prevMuscleGroupOfUpdatedWorkout = state.workoutsChunk.filter(
+        (e) => e._id === action.payload._id
+      )[0].muscle_group;
+      if (action.payload.muscle_group !== prevMuscleGroupOfUpdatedWorkout) {
         const prevMuscleGroupIndex = state.allUserWorkoutsMuscleGroups.indexOf(
-          state.workoutsChunk.filter((e) => e._id === action.payload._id)[0]
-            .muscle_group
+          prevMuscleGroupOfUpdatedWorkout
         );
         state.allUserWorkoutsMuscleGroups.splice(prevMuscleGroupIndex, 1);
       }
       state.workoutsChunk = state.workoutsChunk.filter(
         (e) => e._id !== action.payload._id
       );
-      const updateMuscleGroups = action.payload.muscle_group
-        ? [...state.allUserWorkoutsMuscleGroups, action.payload.muscle_group]
-        : state.allUserWorkoutsMuscleGroups;
-      return {
-        ...state,
-        allUserWorkoutsMuscleGroups: updateMuscleGroups,
-        workoutsChunk: [action.payload, ...state.workoutsChunk],
-      };
+      return action.payload.muscle_group !== prevMuscleGroupOfUpdatedWorkout
+        ? {
+            ...state,
+            allUserWorkoutsMuscleGroups: [
+              ...state.allUserWorkoutsMuscleGroups,
+              action.payload.muscle_group,
+            ],
+            workoutsChunk: [action.payload, ...state.workoutsChunk],
+          }
+        : {
+            ...state,
+            workoutsChunk: [action.payload, ...state.workoutsChunk],
+          };
     case a.DELETE_WORKOUT:
       --state.total;
       const newWorkoutsChunk = state.workoutsChunk.filter(
