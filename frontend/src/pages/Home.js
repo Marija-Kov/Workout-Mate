@@ -30,9 +30,9 @@ export default function Home() {
     allUserWorkoutsMuscleGroups && allUserWorkoutsMuscleGroups.length;
 
   useEffect(() => {
-    const runSearch = setTimeout(() => {
-      search(query, page);
-    }, 500);
+    const runSearch = setTimeout(async () => {
+      await search(query, page);
+    }, 300);
     return () => clearTimeout(runSearch);
   }, [query, page]);
 

@@ -37,16 +37,14 @@ describe("<Search />", () => {
     const searchForm = screen.getByTestId("search-form");
     const searchInputLabel = screen.getByText(/search:/i);
     const searchInput = screen.getByPlaceholderText(/type workout title/i);
-    const searchBtn = screen.getByRole("button");
     expect(searchForm).toHaveAttribute("class", "search--bar");
     expect(searchInputLabel).toBeInTheDocument();
     expect(searchInputLabel).toHaveAttribute("class", "hidden");
     expect(searchInput).toBeInTheDocument();
     expect(searchInput).toHaveValue("");
-    expect(searchBtn).toBeInTheDocument();
   });
 
-  it("should update input value as user types and go to the first page of search results", async () => {
+  it("should update input value as user types, go to the first page of search results and show 'clear' button", async () => {
     user.setup();
     render(
       <Provider store={store}>
@@ -60,21 +58,23 @@ describe("<Search />", () => {
     expect(state.page).toBe(2);
     await user.type(searchInput, "pu");
     expect(searchInput).toHaveValue("pu");
+    const clearBtn = await screen.findByRole("button");
+    expect(clearBtn).toBeInTheDocument();
     state = store.getState();
     expect(state.page).toBe(0);
   });
 
-  it("should disable clicking on search button while workouts are being loaded", async () => {
+  it("should clear the search bar when 'clear' button is clicked", async () => {
     user.setup();
     render(
       <Provider store={store}>
         <Search />
       </Provider>
     );
-    const searchForm = screen.getByTestId("search-form");
-    const searchBtn = screen.getByRole("button");
-    act(() => dispatch({ type: "SET_LOADER" }));
-    expect(searchForm).toHaveAttribute("class", "search--bar is--loading");
-    expect(searchBtn).toBeDisabled();
+    const searchInput = screen.getByPlaceholderText(/type workout title/i);
+    await user.type(searchInput, "pu");
+    const clearBtn = await screen.findByRole("button");
+    await user.click(clearBtn);
+    expect(searchInput).toHaveValue("");
   });
 });

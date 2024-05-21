@@ -58,7 +58,18 @@ describe("<Home />", () => {
         <Home />
       </Provider>
     );
-    await act(() => store.dispatch({ type: "SET_WORKOUTS", payload: [] }));
+    await act(() =>
+      store.dispatch({
+        type: "SET_WORKOUTS",
+        payload: {
+          total: 0,
+          limit: 3,
+          allUserWorkoutsMuscleGroups: [],
+          workoutsChunk: [],
+          pageSpread: [1],
+        },
+      })
+    );
     const addWorkoutBtn = await screen.findByText(/buff it up/i);
     expect(addWorkoutBtn).toBeInTheDocument();
     expect(addWorkoutBtn).toHaveClass("no--workouts--yet");
@@ -88,7 +99,18 @@ describe("<Home />", () => {
         <Home />
       </Provider>
     );
-    await act(() => store.dispatch({ type: "SET_WORKOUTS", payload: [] }));
+    await act(() =>
+      store.dispatch({
+        type: "SET_WORKOUTS",
+        payload: {
+          total: 0,
+          limit: 3,
+          allUserWorkoutsMuscleGroups: [],
+          workoutsChunk: [],
+          pageSpread: [1],
+        },
+      })
+    );
     const addWorkoutBtn = await screen.findByText(/buff it up/i);
     await user.click(addWorkoutBtn);
     expect(WorkoutForm).toHaveBeenCalled();
