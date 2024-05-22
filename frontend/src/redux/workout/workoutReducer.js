@@ -6,13 +6,33 @@ const init = {
   allUserWorkoutsMuscleGroups: [],
   workoutsChunk: [],
   pageSpread: [1],
-  noWorkoutsByQuery: false
+  noWorkoutsByQuery: false,
 };
 
 export const workoutReducer = (state = init, action) => {
   switch (action.type) {
     case a.SET_WORKOUTS:
-      return action.payload;
+      /**
+       * When pages are flipped and when search query is typed, routine balance stays the same
+       * which can be proven by comparing strings of joined muscle groups of prev and next state.
+       * We can use that to skip rewriting muscle groups so that we can avoid the routine balance
+       * state update. However, in order to completely prevent a component that uses the state 
+       * from rerendering, we would have to violate the immutability principle.
+       */
+
+      const nextMuscleGroupsString =
+        action.payload.allUserWorkoutsMuscleGroups.join("");
+      const prevMuscleGroupsString = state.allUserWorkoutsMuscleGroups.join("");
+
+      return nextMuscleGroupsString === prevMuscleGroupsString
+        ? {
+            ...state,
+            noWorkoutsByQuery: action.payload.noWorkoutsByQuery,
+            workoutsChunk: action.payload.workoutsChunk,
+            pageSpread: action.payload.pageSpread,
+            total: action.payload.total,
+          }
+        : action.payload;
     case a.CREATE_WORKOUT:
       ++state.total;
       return {
@@ -26,35 +46,48 @@ export const workoutReducer = (state = init, action) => {
       };
     case a.UPDATE_WORKOUT:
       /**
-       * By comparing workout's muscle group before and after update, we can
-       * see whether we need to overwrite allUserWorkoutsMuscleGroups array.
-       * Skipping overwriting when muscle group is the same before and after 
-       * update will prevent routine balance state update as well.
+       * By finding the index of the updated workout in the chunk,
+       * we can preserve the order of the workouts in the UI after update.
        */
-      const prevMuscleGroupOfUpdatedWorkout = state.workoutsChunk.filter(
+      const indexInChunkOfUpdatedWorkout = state.workoutsChunk
+        .map((w) => w._id)
+        .indexOf(action.payload._id);
+
+      /**
+       * By comparing workout's muscle group before and after update, we can
+       * see whether we need to rewrite muscle groups.
+       * Skipping this rewriting when muscle group is the same before and after
+       * workout update will prevent routine balance state update as well.
+       */
+      const prevMuscleGroupOfUpdatedWorkout = state.workoutsChunk.find(
         (e) => e._id === action.payload._id
-      )[0].muscle_group;
+      ).muscle_group;
+
+      let newMuscleGroups;
       if (action.payload.muscle_group !== prevMuscleGroupOfUpdatedWorkout) {
         const prevMuscleGroupIndex = state.allUserWorkoutsMuscleGroups.indexOf(
           prevMuscleGroupOfUpdatedWorkout
         );
-        state.allUserWorkoutsMuscleGroups.splice(prevMuscleGroupIndex, 1);
+        newMuscleGroups = state.allUserWorkoutsMuscleGroups.with(
+          prevMuscleGroupIndex,
+          action.payload.muscle_group
+        );
       }
-      state.workoutsChunk = state.workoutsChunk.filter(
-        (e) => e._id !== action.payload._id
-      );
       return action.payload.muscle_group !== prevMuscleGroupOfUpdatedWorkout
         ? {
             ...state,
-            allUserWorkoutsMuscleGroups: [
-              ...state.allUserWorkoutsMuscleGroups,
-              action.payload.muscle_group,
-            ],
-            workoutsChunk: [action.payload, ...state.workoutsChunk],
+            allUserWorkoutsMuscleGroups: newMuscleGroups,
+            workoutsChunk: state.workoutsChunk.with(
+              indexInChunkOfUpdatedWorkout,
+              action.payload
+            ),
           }
         : {
             ...state,
-            workoutsChunk: [action.payload, ...state.workoutsChunk],
+            workoutsChunk: state.workoutsChunk.with(
+              indexInChunkOfUpdatedWorkout,
+              action.payload
+            ),
           };
     case a.DELETE_WORKOUT:
       --state.total;
