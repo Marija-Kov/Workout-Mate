@@ -16,7 +16,7 @@ export const workoutReducer = (state = init, action) => {
        * When pages are flipped and when search query is typed, routine balance stays the same
        * which can be proven by comparing strings of joined muscle groups of prev and next state.
        * We can use that to skip rewriting muscle groups so that we can avoid the routine balance
-       * state update. However, in order to completely prevent a component that uses the state 
+       * state update. However, in order to completely prevent a component that uses the state
        * from rerendering, we would have to violate the immutability principle.
        */
 
@@ -34,7 +34,7 @@ export const workoutReducer = (state = init, action) => {
           }
         : action.payload;
     case a.CREATE_WORKOUT:
-      ++state.total;
+      const newTotalCreate = ++state.total;
       return {
         ...state,
         workoutsChunk: [action.payload, ...state.workoutsChunk],
@@ -42,7 +42,7 @@ export const workoutReducer = (state = init, action) => {
           action.payload.muscle_group,
           ...state.allUserWorkoutsMuscleGroups,
         ],
-        pageSpread: pageSpreadHelper(state.total, state.limit),
+        pageSpread: pageSpreadHelper(newTotalCreate, state.limit),
       };
     case a.UPDATE_WORKOUT:
       /**
@@ -90,19 +90,21 @@ export const workoutReducer = (state = init, action) => {
             ),
           };
     case a.DELETE_WORKOUT:
-      --state.total;
+      const newTotalDelete = --state.total;
       const newWorkoutsChunk = state.workoutsChunk.filter(
         (e) => e._id !== action.payload._id
       );
       const prevMuscleGroupIndex = state.allUserWorkoutsMuscleGroups.indexOf(
-        state.workoutsChunk.filter((e) => e._id === action.payload._id)[0]
+        state.workoutsChunk.find((e) => e._id === action.payload._id)
           .muscle_group
       );
-      state.allUserWorkoutsMuscleGroups.splice(prevMuscleGroupIndex, 1);
       return {
         ...state,
+        total: newTotalDelete,
+        allUserWorkoutsMuscleGroups:
+          state.allUserWorkoutsMuscleGroups.toSpliced(prevMuscleGroupIndex, 1),
         workoutsChunk: newWorkoutsChunk,
-        pageSpread: pageSpreadHelper(state.total, state.limit),
+        pageSpread: pageSpreadHelper(newTotalDelete, state.limit),
       };
     case a.RESET_WORKOUTS_STATE:
       return init;
