@@ -6,6 +6,7 @@ const init = {
   allUserWorkoutsMuscleGroups: [],
   workoutsChunk: [],
   pageSpread: [1],
+  noWorkoutsByQuery: false
 };
 
 export const workoutReducer = (state = init, action) => {

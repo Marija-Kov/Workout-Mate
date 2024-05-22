@@ -26,6 +26,9 @@ export default function Home() {
   const query = useSelector((state) => state.query);
   const { total, workoutsChunk } = workouts;
   const { search } = useSearch();
+  /**
+   * This variable is the ultimate indicator for any workouts existing in the DB.
+   */
   const muscleGroups =
     allUserWorkoutsMuscleGroups && allUserWorkoutsMuscleGroups.length;
 

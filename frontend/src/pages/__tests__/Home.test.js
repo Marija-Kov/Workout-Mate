@@ -67,6 +67,7 @@ describe("<Home />", () => {
           allUserWorkoutsMuscleGroups: [],
           workoutsChunk: [],
           pageSpread: [1],
+          noWorkoutsByQuery: false,
         },
       })
     );
@@ -92,6 +93,32 @@ describe("<Home />", () => {
     expect(workouts).toBeInTheDocument();
   });
 
+  it("should render 'no workouts found by query' given that no workouts were found by query", async () => {
+    render(
+      <Provider store={store}>
+        <Home />
+      </Provider>
+    );
+    await act(() =>
+      store.dispatch({
+        type: "SET_WORKOUTS",
+        payload: {
+          total: 0,
+          limit: 3,
+          allUserWorkoutsMuscleGroups: ["leg", "ab"],
+          workoutsChunk: [],
+          pageSpread: [1],
+          noWorkoutsByQuery: "no workouts found by query",
+        },
+      })
+    );
+    const noWorkoutsMessage = await screen.findByText(
+      /no workouts found by query/i
+    );
+    expect(noWorkoutsMessage).toBeInTheDocument();
+    expect(noWorkoutsMessage).toHaveClass("no--workouts--found");
+  });
+
   it("should render WorkoutForm component when user clicks on 'Buff it up' button", async () => {
     user.setup();
     render(
@@ -108,6 +135,7 @@ describe("<Home />", () => {
           allUserWorkoutsMuscleGroups: [],
           workoutsChunk: [],
           pageSpread: [1],
+          noWorkoutsByQuery: false,
         },
       })
     );
