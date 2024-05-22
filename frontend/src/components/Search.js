@@ -1,17 +1,9 @@
 import { useSelector, useDispatch } from "react-redux";
-import { useSearch } from "../hooks/useSearch";
 
-export default function Search() {
+const Search = () => {
   const loading = useSelector((state) => state.loader);
   const dispatch = useDispatch();
-  const page = useSelector((state) => state.page);
   const query = useSelector((state) => state.query);
-  const { search } = useSearch();
-
-  const handleSearch = async (e) => {
-    e.preventDefault();
-    await search(query, page);
-  };
 
   const handleChange = (e) => {
     dispatch({ type: "SET_QUERY", payload: e.target.value });
@@ -22,7 +14,7 @@ export default function Search() {
     <form
       data-testid="search-form"
       className={loading ? "search--bar is--loading" : "search--bar"}
-      onSubmit={handleSearch}
+      onSubmit={(e) => e.preventDefault()}
     >
       <label htmlFor="search" className="hidden">
         Search:
@@ -30,13 +22,22 @@ export default function Search() {
       <input
         type="search"
         id="search"
-        placeholder="type workout title"
+        placeholder="🔎 type workout title"
         value={query}
         onChange={handleChange}
       ></input>
-      <button disabled={loading}>
-        <span className="material-symbols-outlined">search</span>
-      </button>
+      {query ? (
+        <button
+          type="button"
+          onClick={() => dispatch({ type: "SET_QUERY", payload: "" })}
+        >
+          <span className="material-symbols-outlined">close</span>
+        </button>
+      ) : (
+        ""
+      )}
     </form>
   );
-}
+};
+
+export default Search;

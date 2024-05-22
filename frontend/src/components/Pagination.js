@@ -1,14 +1,13 @@
 import { useDispatch, useSelector } from "react-redux";
 import uuid from "react-uuid";
 
-export default function Pagination() {
+const Pagination = () => {
   const dispatch = useDispatch();
   const workouts = useSelector((state) => state.workouts);
   const page = useSelector((state) => state.page);
   const { total, limit, pageSpread } = workouts;
 
   const btnIsDisabled = () => (page + 1) * limit >= total;
-
   function pageBtnStyle(page, p) {
     if (page + 1 === p) {
       if (p - 3 > 1 && pageSpread.length - p > 1)
@@ -63,4 +62,6 @@ export default function Pagination() {
       </button>
     </div>
   );
-}
+};
+
+export default Pagination;

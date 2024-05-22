@@ -17,8 +17,8 @@
 }
 
 .search--bar > button {
-  position: relative;
-  left: -20px;
+  position: absolute;
+  left: 155px;
   height: 25px;
   width: 25px;
   margin: 6px 0;
@@ -26,7 +26,6 @@
   background: vars.$primary;
   border: solid 1px vars.$primary;
   border-radius: 50px;
-  border-bottom-right-radius: 20px;
   font-family: "Poppins";
   color: vars.$all--form--btn--text;
   cursor: pointer;
@@ -52,7 +51,7 @@
 @media screen and (max-width: 450px) {
 
   .search--bar {
-    left: 10px;
+    left: 0;
     margin: 10px auto 0 auto;
   }
   
