@@ -39,44 +39,38 @@ export default function Home() {
     return () => clearTimeout(runSearch);
   }, [query, page]);
 
-  const renderWorkouts = () => {
-    return workoutsChunk.map((workout) => (
-      <MemoWorkoutDetails
-        key={workout._id}
-        id={workout._id}
-        title={workout.title}
-        muscle_group={workout.muscle_group}
-        reps={workout.reps}
-        load={workout.load}
-        createdAt={workout.createdAt}
-        updatedAt={workout.updatedAt}
-      />
-    ));
-  };
-
-  const renderPlaceholderOrNoWorkoutsMessage = () => {
+  const renderWorkoutsOrNoWorkoutsMessageOrPlaceholder = () => {
     if (loading) {
       return <WorkoutsPlaceholder />;
     }
-    if (muscleGroups) {
-      if (noWorkoutsByQuery) {
-        return <div className="no--workouts--found">{noWorkoutsByQuery}</div>;
-      }
-      return <WorkoutsPlaceholder />;
+    if (!muscleGroups) return "";
+    if (total) {
+      return workoutsChunk.map((workout) => (
+        <MemoWorkoutDetails
+          key={workout._id}
+          id={workout._id}
+          title={workout.title}
+          muscle_group={workout.muscle_group}
+          reps={workout.reps}
+          load={workout.load}
+          createdAt={workout.createdAt}
+          updatedAt={workout.updatedAt}
+        />
+      ));
+    } else {
+      return <div className="no--workouts--found">{noWorkoutsByQuery}</div>;
     }
   };
 
+  const renderChartOrPlaceholder = () => {
+    return muscleGroups ? <MemoChart /> : loading ? <ChartPlaceholder /> : "";
+  };
+
   const buffItUpButtonClass = () => {
-    if (loading && !muscleGroups) {
+    if (muscleGroups) return "add--workout";
+    if (loading) {
       return "no--button";
-    }
-    if (loading && muscleGroups) {
-      return "add--workout is--loading";
-    }
-    if (!loading && muscleGroups) {
-      return "add--workout";
-    }
-    if (!loading && !muscleGroups) {
+    } else {
       return "add--workout no--workouts--yet";
     }
   };
@@ -87,26 +81,20 @@ export default function Home() {
         {muscleGroups ? <MemoSearch /> : ""}
 
         <div aria-label="workouts" className="workouts--container">
-          {total && muscleGroups
-            ? renderWorkouts()
-            : renderPlaceholderOrNoWorkoutsMessage()}
+          {renderWorkoutsOrNoWorkoutsMessageOrPlaceholder()}
         </div>
 
-        {muscleGroups ? <MemoChart /> : loading ? <ChartPlaceholder /> : ""}
+        {renderChartOrPlaceholder()}
 
-        {isCreateWorkoutFormMounted ? (
-          <WorkoutForm />
-        ) : (
-          <button
-            className={buffItUpButtonClass()}
-            onClick={() =>
-              dispatch({ type: "TOGGLE_MOUNT_CREATE_WORKOUT_FORM" })
-            }
-            disabled={loading}
-          >
-            Buff It Up
-          </button>
-        )}
+        {isCreateWorkoutFormMounted && <WorkoutForm />}
+
+        <button
+          className={buffItUpButtonClass()}
+          onClick={() => dispatch({ type: "TOGGLE_MOUNT_CREATE_WORKOUT_FORM" })}
+          disabled={loading}
+        >
+          Buff It Up
+        </button>
 
         {isEditWorkoutFormMounted && (
           <Suspense>
