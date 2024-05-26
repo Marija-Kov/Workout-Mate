@@ -203,7 +203,7 @@ REACT_APP_WEB_SERVICE=localhost <br>
 ## Todos <a name = "todos"></a>
  - Users should have an option to commit to using their account and posting workouts to avoid automated deletion.
 <br>
-
+- Update screenshots and screen recordings.
 
 ## Author <a name = "author"></a>
 
