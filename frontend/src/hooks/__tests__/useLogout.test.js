@@ -1,4 +1,5 @@
-import { renderHook, act } from "@testing-library/react";
+import { renderHook } from "@testing-library/react";
+import { act } from "react";
 import { useLogout } from "../useLogout";
 import { Provider } from "react-redux";
 import store from "../../redux/store";

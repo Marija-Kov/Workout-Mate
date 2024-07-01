@@ -1,7 +1,8 @@
 import WorkoutForm from "../WorkoutForm";
 import App from "../../mocks/App";
 import user from "@testing-library/user-event";
-import { render, screen, act } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
+import { act } from "react";
 import { rest } from "msw";
 import { server } from "../../mocks/server";
 import { Provider } from "react-redux";
