@@ -1,6 +1,6 @@
 import { renderHook } from "@testing-library/react";
 import { rest } from "msw";
-import { act } from "react-dom/test-utils";
+import { act } from "react";
 import { server } from "../../mocks/server";
 import { useSearch } from "../useSearch";
 import { Provider } from "react-redux";
