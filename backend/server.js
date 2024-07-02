@@ -8,7 +8,7 @@ const workoutRoutes = require("./routes/workouts");
 const userRoutes = require("./routes/users");
 const passwordResetRoutes = require("./routes/resetPassword");
 const { errorHandler } = require("./error/error");
-const cookieParser = require('cookie-parser');
+const cookieParser = require("cookie-parser");
 const { prototype } = require("nodemailer/lib/dkim");
 
 const app = express();
@@ -16,20 +16,17 @@ app.use(cookieParser());
 app.use(
   cors({
     origin: process.env.ORIGIN || "http://localhost:3000",
-    credentials: true
+    credentials: true,
   })
-  );
-  app.use(express.json({ limit: "50mb" }));
-  app.use(
-    express.urlencoded({ limit: "50mb", extended: true, parameterLimit: 50000 })
-    );
+);
+app.use(express.json({ limit: "50mb" }));
+app.use(
+  express.urlencoded({ limit: "50mb", extended: true, parameterLimit: 50000 })
+);
 
 if (process.env.NODE_ENV !== "test") {
   mongoose
-    .connect(process.env.MONGO_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    })
+    .connect(process.env.MONGO_URI)
     .then(() => {
       const port = Number(process.env.PORT) || 6060;
       app.listen(port, () => {
