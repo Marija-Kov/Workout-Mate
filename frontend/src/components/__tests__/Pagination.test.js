@@ -1,5 +1,5 @@
 import React from "react";
-import { render, screen, act } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import user from "@testing-library/user-event";
 import Pagination from "../Pagination";
 import { genSampleWorkouts } from "../../utils/test/genSampleWorkouts";

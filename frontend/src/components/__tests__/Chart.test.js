@@ -1,5 +1,6 @@
 import React from "react";
-import { render, screen, act } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
+import { act } from "react";
 import Chart from "../Chart";
 import { Provider } from "react-redux";
 import store from "../../redux/store";
