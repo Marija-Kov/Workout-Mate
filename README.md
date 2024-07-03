@@ -110,6 +110,11 @@ cd backend && npm install && npm run dev && cd ../frontend && npm install && npm
 ```npm run test``` 
 to run backend and frontend tests in corresponding directories.
 
+### Backend build command
+In the backend directory, run:
+```
+npm run build
+```
 <br>
 
 ## Tools and Dependencies <a name = "tools"></a>

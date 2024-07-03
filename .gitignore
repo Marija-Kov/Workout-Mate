@@ -6,6 +6,7 @@ node_modules
 package-lock.json
 frontend/build
 frontend/coverage
+backend/dist
 backend/coverage
 backend/globalConfig.json
 NOTES.md
