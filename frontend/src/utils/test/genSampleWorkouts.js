@@ -1,4 +1,3 @@
-import uuid from "react-uuid";
 import store from "../../redux/store";
 
 export function genSampleWorkouts(searchFor = "", page = 1, itemsPerPage = 3) {
@@ -25,9 +24,8 @@ export function genSampleWorkouts(searchFor = "", page = 1, itemsPerPage = 3) {
   ];
   const workouts = [];
   for (let i = 0; i < workoutTitles.length; ++i) {
-    const id = uuid();
     const workout = {
-      _id: id,
+      _id: Math.random() * 10e7,
       title: workoutTitles[i],
       muscle_group: allWorkoutsMuscleGroups[i],
       reps: Math.floor(Math.random() * 99) + 1,

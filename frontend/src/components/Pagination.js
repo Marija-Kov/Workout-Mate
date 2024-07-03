@@ -1,5 +1,4 @@
 import { useDispatch, useSelector } from "react-redux";
-import uuid from "react-uuid";
 
 const Pagination = () => {
   const dispatch = useDispatch();
@@ -41,7 +40,7 @@ const Pagination = () => {
         return (
           <button
             aria-label={`go to page ${p}`}
-            key={uuid()}
+            key={Math.random() * 10e7}
             className={pageBtnStyle(page, p)}
             onClick={() =>
               dispatch({ type: "GO_TO_PAGE_NUMBER", payload: p - 1 })
