@@ -23,7 +23,7 @@ export default function useDeleteWorkout() {
     if (response.ok) {
       flashMessage("SUCCESS", "Successfully deleted workout");
       dispatch({ type: "DELETE_WORKOUT", payload: json.workout });
-      if (workoutsChunk.length === 1 && page === 0) {
+      if (workoutsChunk.length === 1 && page === 1) {
         if (total > 1) {
           dispatch({ type: "NEXT_PAGE" });
           setTimeout(() => {
@@ -31,7 +31,7 @@ export default function useDeleteWorkout() {
           }, 50);
         }
       }
-      if (workoutsChunk.length === 1 && page > 0) {
+      if (workoutsChunk.length === 1 && page > 1) {
         dispatch({ type: "PREV_PAGE" });
       }
       return dispatch({

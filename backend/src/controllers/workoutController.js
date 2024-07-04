@@ -10,7 +10,7 @@ const jwt = require("jsonwebtoken");
 module.exports.get_all_user_workouts = async (req, res) => {
   const token = req.cookies.token;
   const { _id } = jwt.verify(token, process.env.SECRET);
-  const page = req.query.p || 0;
+  const page = req.query.p || 1;
   const searchQuery = req.query.search || null;
   const result = await getAllWorkouts(_id, page, searchQuery);
   res.status(200).json(result);

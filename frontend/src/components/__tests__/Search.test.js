@@ -62,7 +62,7 @@ describe("<Search />", () => {
     const clearBtn = await screen.findByRole("button");
     expect(clearBtn).toBeInTheDocument();
     state = store.getState();
-    expect(state.page).toBe(0);
+    expect(state.page).toBe(1);
   });
 
   it("should clear the search bar when 'clear' button is clicked", async () => {

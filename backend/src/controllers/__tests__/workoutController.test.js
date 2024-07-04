@@ -237,7 +237,7 @@ describe("workoutController", () => {
     it("should respond with workouts from a specified page query", async () => {
       const { userLoggedIn } = await mockUser("has-workouts", agent);
       const { token } = userLoggedIn;
-      const query = 1;
+      const query = 2;
       const res1 = await agent
         .get(`/api/workouts/`)
         .set("Cookie", `token=${token}`);

@@ -7,7 +7,7 @@ const Search = () => {
 
   const handleChange = (e) => {
     dispatch({ type: "SET_QUERY", payload: e.target.value });
-    dispatch({ type: "GO_TO_PAGE_NUMBER", payload: 0 });
+    dispatch({ type: "GO_TO_PAGE_NUMBER", payload: 1 });
   };
 
   return (

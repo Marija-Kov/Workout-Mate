@@ -31,7 +31,7 @@ class WorkoutRepository {
         : { user_id: userId }
     )
       .sort({ createdAt: -1 })
-      .skip(page * limit)
+      .skip((page - 1) * limit)
       .limit(limit);
   }
 

@@ -44,7 +44,7 @@ describe("useLogout()", () => {
     for (let key in state.routineBalance) {
       expect(state.routineBalance[key]).toBe(0);
     }
-    expect(state.page).toBe(0);
+    expect(state.page).toBe(1);
     expect(state.query).toBe("");
     expect(state.toggleMountComponents.isCreateWorkoutFormMounted).toBeFalsy();
     expect(state.toggleMountComponents.isEditWorkoutFormMounted).toBeFalsy();

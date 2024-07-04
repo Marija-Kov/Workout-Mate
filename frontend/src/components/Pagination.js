@@ -3,26 +3,26 @@ import { useDispatch, useSelector } from "react-redux";
 const Pagination = () => {
   const dispatch = useDispatch();
   const workouts = useSelector((state) => state.workouts);
-  const page = useSelector((state) => state.page);
+  const currentPage = useSelector((state) => state.page);
   const { total, limit, pageSpread } = workouts;
 
-  const btnIsDisabled = () => (page + 1) * limit >= total;
-  function pageBtnStyle(page, p) {
-    if (page + 1 === p) {
-      if (p - 3 > 1 && pageSpread.length - p > 1)
+  const btnIsDisabled = () => currentPage * limit >= total;
+  function pageBtnStyle(currentPage, aPage) {
+    if (currentPage === aPage) {
+      if (aPage - 3 > 1 && pageSpread.length - aPage > 1)
         return "num--page current dots-left dots-right";
-      if (pageSpread.length - p > 1 && p > 2)
+      if (pageSpread.length - aPage > 1 && aPage > 2)
         return "num--page current dots-right";
-      if (p - 3 > 1) return "num--page current dots-left";
+      if (aPage - 3 > 1) return "num--page current dots-left";
       return "num--page current";
     }
-    if (page + 1 !== p) {
-      if (p > 3 && p !== pageSpread.length) return "invisible";
-      if (p === pageSpread.length && p < pageSpread.length - 1)
+    if (currentPage !== aPage) {
+      if (aPage > 3 && aPage !== pageSpread.length) return "invisible";
+      if (aPage === pageSpread.length && aPage < pageSpread.length - 1)
         return "num--page dots-left";
-      if (p === 3 && pageSpread.length > 4 && page + 1 < 3)
+      if (aPage === 3 && pageSpread.length > 4 && currentPage < 3)
         return "num--page dots-right";
-      if (p <= 3 || p === pageSpread.length) return "num--page";
+      if (aPage <= 3 || aPage === pageSpread.length) return "num--page";
     }
   }
   return (
@@ -31,22 +31,22 @@ const Pagination = () => {
         aria-label="previous page"
         type="button"
         className="prev--page"
-        disabled={page <= 0}
+        disabled={currentPage <= 1}
         onClick={() => dispatch({ type: "PREV_PAGE" })}
       >
         <span className="material-symbols-outlined">chevron_left</span>
       </button>
-      {pageSpread.map((p) => {
+      {pageSpread.map((aPage) => {
         return (
           <button
-            aria-label={`go to page ${p}`}
+            aria-label={`go to page ${aPage}`}
             key={Math.random() * 10e7}
-            className={pageBtnStyle(page, p)}
+            className={pageBtnStyle(currentPage, aPage)}
             onClick={() =>
-              dispatch({ type: "GO_TO_PAGE_NUMBER", payload: p - 1 })
+              dispatch({ type: "GO_TO_PAGE_NUMBER", payload: aPage })
             }
           >
-            {p}
+            {aPage}
           </button>
         );
       })}

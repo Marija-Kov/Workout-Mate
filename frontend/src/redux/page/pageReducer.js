@@ -1,6 +1,6 @@
 import * as a from "./pageActionTypes";
 
-const init = 0;
+const init = 1;
 
 export const pageReducer = (state = init, action) => {
   switch (action.type) {
