@@ -12,13 +12,13 @@ const init = {
 export const workoutReducer = (state = init, action) => {
   switch (action.type) {
     case a.SET_WORKOUTS:
-      /**
-       * When pages are flipped and when search query is typed, routine balance stays the same
-       * which can be proven by comparing strings of joined muscle groups of prev and next state.
-       * We can use that to skip rewriting muscle groups so that we can avoid the routine balance
-       * state update. However, in order to completely prevent a component that uses the state
-       * from rerendering, we would have to violate the immutability principle.
-       */
+      /*
+       When pages are flipped and when search query is typed, routine balance stays the same
+       which can be proven by comparing strings of joined muscle groups of prev and next state.
+       We can use that to skip rewriting muscle groups so that we can avoid the routine balance
+       state update. However, in order to completely prevent a component that uses the state
+       from rerendering, we would have to violate the immutability principle.
+      */
 
       const nextMuscleGroupsString =
         action.payload.allUserWorkoutsMuscleGroups.join("");
@@ -45,20 +45,20 @@ export const workoutReducer = (state = init, action) => {
         pageSpread: pageSpreadHelper(newTotalCreate, state.limit),
       };
     case a.UPDATE_WORKOUT:
-      /**
-       * By finding the index of the updated workout in the chunk,
-       * we can preserve the order of the workouts in the UI after update.
-       */
+      /*
+       By finding the index of the updated workout in the chunk,
+       we can preserve the order of the workouts in the UI after update.
+      */
       const indexInChunkOfUpdatedWorkout = state.workoutsChunk
         .map((w) => w._id)
         .indexOf(action.payload._id);
 
-      /**
-       * By comparing workout's muscle group before and after update, we can
-       * see whether we need to rewrite muscle groups.
-       * Skipping this rewriting when muscle group is the same before and after
-       * workout update will prevent routine balance state update as well.
-       */
+      /*
+       By comparing workout's muscle group before and after update, we can
+       see whether we need to rewrite muscle groups.
+       Skipping this rewriting when muscle group is the same before and after
+       workout update will prevent routine balance state update as well.
+      */
       const prevMuscleGroupOfUpdatedWorkout = state.workoutsChunk.find(
         (e) => e._id === action.payload._id
       ).muscle_group;

@@ -1,8 +1,6 @@
 /**
- * The mockUser function provides mock users at different phases 
- * of the user lifecycle.
+ * Provides mock users at different phases of the user lifecycle.
  */
-
 async function mockUser(
   status,
   agent,
@@ -49,11 +47,11 @@ async function addWorkouts(userLoggedIn, agent) {
 }
 
 async function maxOutWorkouts(user, agent) {
-  /**
-   * Since we need to max the workouts out to test whether the oldest workout 
-   * will be deleted, we want the setup where the number of workouts is just below
-   * the maximum workouts per user limit.
-   */
+  /*
+   Since we need to max the workouts out to test whether the oldest workout 
+   will be deleted, we want the setup where the number of workouts is just below
+   the maximum workouts per user limit.
+  */
   const limit = Number(process.env.MAX_WORKOUTS_PER_USER) || 5;
   const sampleWorkout = {
     title: "Bench Press",

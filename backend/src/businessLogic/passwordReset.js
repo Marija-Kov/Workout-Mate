@@ -27,9 +27,9 @@ const forgotPassword = async (email) => {
   await User.savePasswordResetToken(_id, resetToken);
   const clientUrl = process.env.CLIENT_URL || "localhost:3000";
   const resetLink = `${clientUrl}/reset-password?token=${resetToken}`;
-  /**
-   * When testing routes, we don't need to send emails:
-   */
+  /*
+   When testing routes, we don't need to send emails:
+  */
   if (process.env.NODE_ENV !== "test") {
     sendEmail(
       email,

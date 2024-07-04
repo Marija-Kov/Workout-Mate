@@ -3,13 +3,11 @@ const { ApiError } = require("../error/error");
 
 const getAllWorkouts = async (user_id, page, searchQuery) => {
   /**
-   * The limit variable here represents the max number of workouts
-   * sent in one response.
+   * Max number of workouts sent in one response.
    */
   const limit = 3;
   /**
-   * The purpose of allUserWorkoutsMuscleGroups is to inform the client's
-   * data visualisation feature about the occurence of each muscle group
+   * Informs the client's data visualisation feature about the occurence of each muscle group
    * among all workouts.
    */
   const allUserWorkoutsMuscleGroups = (await Workout.getAll(user_id)).map(
@@ -24,14 +22,12 @@ const getAllWorkouts = async (user_id, page, searchQuery) => {
     limit
   );
   /**
-   * The purpose of pageSpread is to inform the client's page navigation
-   * about the pages occupied by the existing workouts. pageSpread is an 
-   * array of numbers which enables easy mapping on the client side.
+   * Informs the client's page navigation about the pages occupied by the existing workouts; 
+   * it's an array of numbers to enable easy mapping on the client side.
    */
   const pageSpread = pageSpreadHelper(allUserWorkoutsByQuery.length, limit);
   /**
-   * The purpose of noWorkoutsByQuery is to inform the client about 
-   * whether to show the "no workouts by query" message in the UI 
+   * Informs the client about whether to show the "no workouts by query" message in the UI 
    * or something else - which depends on whether there are any workouts at all.
    */
   const noWorkoutsByQuery = total
@@ -65,11 +61,11 @@ const addWorkout = async (title, muscleGroup, reps, load, user_id) => {
   }
   const allWorkoutsByUser = await Workout.getAll(user_id);
   const limit = Number(process.env.MAX_WORKOUTS_PER_USER) || 30;
-  /**
-   * The following block will trigger the deletion of the user's oldest workout
-   * if the set limit is exceeded. This is done to avoid having to manually clear
-   * the database as the intention behind the app isn't to retain users at this time.
-   */
+  /*
+   The following block will trigger the deletion of the user's oldest workout
+   if the set limit is exceeded. This is done to avoid having to manually clear
+   the database as the intention behind the app isn't to retain users at this time.
+  */
   if (allWorkoutsByUser.length === limit) {
     const id = allWorkoutsByUser[0]._id;
     await Workout.delete(id);
@@ -139,7 +135,7 @@ const deleteAllWorkouts = async (user_id) => {
   return workouts;
 };
 /**
- * The function below gets all the workout page numbers.
+ * Gets all the workout page numbers.
  */
 const pageSpreadHelper = (t, l) => {
   const pagesNum = Math.ceil(t / l);

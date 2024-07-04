@@ -58,9 +58,9 @@ export default function useEditWorkout() {
     if (response.ok) {
       flashMessage("SUCCESS", "Successfully updated workout");
       dispatch({ type: "UPDATE_WORKOUT", payload: json });
-      /**
-       * Update routine balance only if muscle group has changed:
-       */
+      /*
+       Update routine balance only if muscle group has changed:
+      */
       if (payload.muscle_group && payload.muscle_group !== json.muscle_group) {
         dispatch({
           type: "SET_ROUTINE_BALANCE",

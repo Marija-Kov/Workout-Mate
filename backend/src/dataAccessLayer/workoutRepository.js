@@ -2,9 +2,8 @@ const Workout = require("../models/workoutModel");
 const mongoose = require("mongoose");
 
 /**
- * WorkoutRepository provides methods to access and manipulate workout data.
+ * Provides methods to access and manipulate workout data.
  */
-
 class WorkoutRepository {
   async getAll(userId) {
     return Workout.find({ user_id: userId });

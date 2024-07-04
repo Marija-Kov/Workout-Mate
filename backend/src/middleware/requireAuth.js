@@ -2,9 +2,8 @@ const jwt = require("jsonwebtoken");
 const User = require("../dataAccessLayer/userRepository");
 
 /**
- * This middleware runs before all protected routes.
+ * Runs before all protected routes.
  */
-
 const requireAuth = async (req, res, next) => {
   let token;
   try {
