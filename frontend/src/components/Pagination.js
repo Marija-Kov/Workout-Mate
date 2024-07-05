@@ -6,7 +6,6 @@ const Pagination = () => {
   const currentPage = useSelector((state) => state.page);
   const { total, limit, pageSpread } = workouts;
 
-  const btnIsDisabled = () => currentPage * limit >= total;
   function pageBtnStyle(currentPage, aPage) {
     if (currentPage === aPage) {
       if (aPage - 3 > 1 && pageSpread.length - aPage > 1)
@@ -16,14 +15,10 @@ const Pagination = () => {
       if (aPage - 3 > 1) return "num--page current dots-left";
       return "num--page current";
     }
-    if (currentPage !== aPage) {
-      if (aPage > 3 && aPage !== pageSpread.length) return "invisible";
-      if (aPage === pageSpread.length && aPage < pageSpread.length - 1)
-        return "num--page dots-left";
-      if (aPage === 3 && pageSpread.length > 4 && currentPage < 3)
-        return "num--page dots-right";
-      if (aPage <= 3 || aPage === pageSpread.length) return "num--page";
-    }
+    if (aPage === 3 && pageSpread.length > 4 && currentPage < 3)
+      return "num--page dots-right";
+    if (aPage <= 3 || aPage === pageSpread.length) return "num--page";
+    return "invisible";
   }
   return (
     <div className="page--btn--container">
@@ -54,7 +49,7 @@ const Pagination = () => {
         aria-label="next page"
         type="button"
         className="next--page"
-        disabled={btnIsDisabled()}
+        disabled={currentPage * limit >= total}
         onClick={() => dispatch({ type: "NEXT_PAGE" })}
       >
         <span className="material-symbols-outlined">chevron_right</span>
