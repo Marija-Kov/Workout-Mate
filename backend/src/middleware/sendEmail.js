@@ -8,7 +8,7 @@ const sendEmail = async (email, subject, payload, template) => {
     const transporter = nodemailer.createTransport({
       service: process.env.EMAIL_HOST,
       host: process.env.EMAIL_HOST,
-      secure: process.env.NODE_ENV === "production" ? true : false,
+      secure: false,
       auth: {
         user: process.env.EMAIL_USERNAME,
         pass: process.env.EMAIL_PASSWORD,
