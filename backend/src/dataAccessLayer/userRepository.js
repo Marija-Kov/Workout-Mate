@@ -351,7 +351,7 @@ class UserRepository {
   }
 
   async delete(id) {
-    const sql = `DELETE FROM wm_users WHERE _id = $1;`;
+    const sql = `DELETE FROM wm_users WHERE _id = $1 AND email != 'guest@wm.app';`;
     try {
       if (process.env.NODE_ENV === "test") {
         return new Promise((resolve, reject) => {
