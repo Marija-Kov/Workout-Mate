@@ -12,7 +12,7 @@ export default function About() {
         </p>
         <p>
           You will be able to submit exercise whenever you want and without any
-          real-life relavance if that's what you prefer.
+          real-life relevance if that's what you prefer.
         </p>
         <p> Workout Mate doesn't judge.</p>
         <p>
