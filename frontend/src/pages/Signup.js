@@ -19,12 +19,18 @@ const Signup = () => {
 
   return (
     <div className="form--container--signup">
-      <h1>
-        <p></p>
+
+      <h1 className="temp" style={{zIndex: 10}}>
+        <p>Apologies, prospective User!</p>
+        <p>We can't sign you up at the moment.</p>
+        <p>If you want to see inside, you can log in with these:</p>
+        <p>email: <strong>guest@wm.app</strong></p>
+        <p>password: <strong>abcABC123!</strong></p>
       </h1>
+
       <form
         className="signup"
-        onSubmit={handleSubmit}
+        onSubmit={(e) => e.preventDefault()}
       >
         <h4>Create an account</h4>
         <label htmlFor="email">email address:</label>
