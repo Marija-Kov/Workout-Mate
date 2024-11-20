@@ -2,8 +2,6 @@ const express = require("express");
 require("dotenv").config();
 const cors = require("cors");
 const rateLimiters = require("./middleware/rateLimiters");
-const mongoose = require("mongoose");
-mongoose.set("strictQuery", false);
 const workoutRoutes = require("./routes/workouts");
 const userRoutes = require("./routes/users");
 const passwordResetRoutes = require("./routes/resetPassword");
@@ -24,20 +22,6 @@ app.use(
   express.urlencoded({ limit: "50mb", extended: true, parameterLimit: 50000 })
 );
 
-if (process.env.NODE_ENV !== "test") {
-  mongoose
-    .connect(process.env.MONGO_URI)
-    .then(() => {
-      const port = Number(process.env.PORT) || 6060;
-      app.listen(port, () => {
-        console.log(`connected to db & listening on port ${port}`);
-      });
-    })
-    .catch((err) => {
-      console.log(`ERROR: ${err}`);
-    });
-}
-
 app.use("/api/users", rateLimiters.api_users);
 app.use("/api/reset-password", rateLimiters.api_reset_password);
 app.use("/api/workouts", rateLimiters.api_workouts);
@@ -45,5 +29,16 @@ app.use("/api/workouts", workoutRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/reset-password", passwordResetRoutes);
 app.use(errorHandler);
+
+if (process.env.NODE_ENV !== "test") {
+  const port = Number(process.env.PORT) || 6060;
+  try {
+    app.listen(port, () => {
+      console.log(`listening on port ${port}`);
+    });
+  } catch (error) {
+    console.log(`ERROR: ${error}`)
+  }
+}
 
 module.exports = app;

@@ -1,10 +1,31 @@
 const Workout = require("../models/workoutModel");
 const mongoose = require("mongoose");
+mongoose.set("strictQuery", false);
 
 /**
- * Provides methods to access and manipulate workout data.
+ * Connects to MongoDB server and provides methods to access and manipulate workout data.
  */
 class WorkoutRepository {
+  constructor() {
+    if (process.env.NODE_ENV !== "test") {
+      this.connect();
+    }
+  }
+  
+  async connect(retryCount = Number(process.env.MAX_RETRIES) || 10) {
+    const retryDelayMs = 2000;
+    try {
+      await mongoose.connect(process.env.MONGO_URI);
+    } catch (error) {
+      if (retryCount > 0) {
+        console.error(`MongoDB connection failed. Retrying in ${Number(process.env.RETRY_DELAY_MS) || retryDelayMs / 1000} seconds...`);
+        setTimeout(() => connect(retryCount - 1), Number(process.env.RETRY_DELAY_MS) || retryDelayMs);
+      } else {
+        console.error("Could not connect to MongoDB:", error);
+      }
+    }
+  }
+
   async getAll(userId) {
     return Workout.find({ user_id: userId });
   }
@@ -13,9 +34,9 @@ class WorkoutRepository {
     return Workout.find(
       searchQuery
         ? {
-            user_id: userId,
-            title: new RegExp(`^${searchQuery.toLowerCase()}`),
-          }
+          user_id: userId,
+          title: new RegExp(`^${searchQuery.toLowerCase()}`),
+        }
         : { user_id: userId }
     );
   }
@@ -24,9 +45,9 @@ class WorkoutRepository {
     return Workout.find(
       searchQuery
         ? {
-            user_id: userId,
-            title: new RegExp(`^${searchQuery.toLowerCase()}`),
-          }
+          user_id: userId,
+          title: new RegExp(`^${searchQuery.toLowerCase()}`),
+        }
         : { user_id: userId }
     )
       .sort({ createdAt: -1 })

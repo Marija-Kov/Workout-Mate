@@ -198,6 +198,10 @@ API_WORKOUTS_WINDOW_MS= <br>
 API_USERS_WINDOW_MS= <br>
 API_RESET_PASSWORD_WINDOW_MS= <br>
 
+#--- RETRY CONNECTING TO DB: <br>
+MAX_RETRIES= <br>
+RETRY_DELAY_MS= <br>
+
 ### Frontend .env
 #--- Defaults provided ---#
 REACT_APP_API= <br>

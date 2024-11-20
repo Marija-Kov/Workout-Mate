@@ -17,8 +17,30 @@ class UserRepository {
         host: process.env.PG_HOST,
         database: process.env.PG_DB,
       });
+      this.hasPoolEnded = false;
+      this.connect();
+    }
+
+  }
+
+  async connect(retryCount = Number(process.env.MAX_RETRIES) || 10) {
+    const retryDelayMs = 2000;
+    try {
+      return await this.pool.connect();
+    } catch (error) {
+      if (retryCount > 0) {
+        console.error(`PostgreSQL database connection failed. Retrying in ${process.env.RETRY_DELAY_MS || retryDelayMs / 1000} seconds...`);
+        setTimeout(() => this.connect(retryCount - 1), Number(process.env.RETRY_DELAY_MS) || retryDelayMs);
+      } else {
+        console.error("Could not connect to the PostgreSQL database:", error);
+        if (this.pool && !this.hasPoolEnded) {
+          await this.pool.end();
+          this.hasPoolEnded = true;
+        }
+      }
     }
   }
+
   async create(email, password) {
     const defaultUsername = email.slice(0, email.indexOf("@"));
     const sql = ` 
@@ -38,7 +60,7 @@ class UserRepository {
           });
         });
       } else {
-        const client = await this.pool.connect();
+        const client = await this.connect();
         const result = await client.query(sql, [
           email,
           password,
@@ -70,7 +92,7 @@ class UserRepository {
           });
         });
       } else {
-        const client = await this.pool.connect();
+        const client = await this.connect();
         const result = await client.query(sql, [user_id, token]);
         client.release();
         return result.rows[0];
@@ -98,7 +120,7 @@ class UserRepository {
           });
         });
       } else {
-        const client = await this.pool.connect();
+        const client = await this.connect();
         const result = await client.query(sql, [token]);
         client.release();
         return result.rows[0];
@@ -130,7 +152,7 @@ class UserRepository {
           });
         });
       } else {
-        const client = await this.pool.connect();
+        const client = await this.connect();
         const result = await client.query(sql, [id]);
         await client.query(
           "DELETE FROM account_confirmation WHERE user_id = $1;",
@@ -161,7 +183,7 @@ class UserRepository {
           });
         });
       } else {
-        const client = await this.pool.connect();
+        const client = await this.connect();
         const result = await client.query(sql, []);
         client.release();
         return result.rows;
@@ -198,7 +220,7 @@ class UserRepository {
           });
         });
       } else {
-        const client = await this.pool.connect();
+        const client = await this.connect();
         const result = await client.query(sql, [email]);
         client.release();
         /*
@@ -235,7 +257,7 @@ class UserRepository {
           });
         });
       } else {
-        const client = await this.pool.connect();
+        const client = await this.connect();
         const result = await client.query(sql, [id]);
         client.release();
         return result.rows[0];
@@ -262,7 +284,7 @@ class UserRepository {
           });
         });
       } else {
-        const client = await this.pool.connect();
+        const client = await this.connect();
         await client.query(sql, [user_id, token]);
         return client.release();
       }
@@ -302,7 +324,7 @@ class UserRepository {
           });
         });
       } else {
-        const client = await this.pool.connect();
+        const client = await this.connect();
         const result = await client.query(sql, [token]);
         client.release();
         return result.rows[0];
@@ -337,7 +359,7 @@ class UserRepository {
           });
         });
       } else {
-        const client = await this.pool.connect();
+        const client = await this.connect();
         const result = await client.query(sql, [password, user_id]);
         await client.query(`DELETE FROM password_reset WHERE user_id = $1;`, [
           user_id,
@@ -370,7 +392,7 @@ class UserRepository {
           });
         });
       } else {
-        const client = await this.pool.connect();
+        const client = await this.connect();
         await client.query(sql, [id]);
         await client.query(
           `DELETE FROM account_confirmation WHERE user_id = $1;`,
@@ -406,7 +428,7 @@ class UserRepository {
           });
         });
       } else {
-        const client = await this.pool.connect();
+        const client = await this.connect();
         const result = await client.query(sql, [
           body.username,
           body.profileImg,
