@@ -10,28 +10,31 @@ const Signup = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const credentials = {
-      email: email.current.value,
-      password: password.current.value,
-    };
-    await signup(credentials);
+    if (process.env.NODE_ENV !== "production") {
+      const credentials = {
+        email: email.current.value,
+        password: password.current.value,
+      };
+      await signup(credentials);
+    }
   };
 
   return (
     <div className="form--container--signup">
-
-      <h1 className="temp" style={{zIndex: 10}}>
-        <p>Apologies, prospective User!</p>
-        <p>We can't sign you up at the moment.</p>
-        <p>If you want to see inside, you can log in with these:</p>
-        <p>email: <strong>guest@wm.app</strong></p>
-        <p>password: <strong>abcABC123!</strong></p>
-      </h1>
-
-      <form
-        className="signup"
-        onSubmit={(e) => e.preventDefault()}
-      >
+      {process.env.NODE_ENV === "production" && (
+        <h1 className="temp" style={{ zIndex: 10 }}>
+          <p>Apologies, prospective User!</p>
+          <p>We can't sign you up at the moment.</p>
+          <p>If you want to see inside, you can log in with these:</p>
+          <p>
+            email: <strong>guest@wm.app</strong>
+          </p>
+          <p>
+            password: <strong>abcABC123!</strong>
+          </p>
+        </h1>
+      )}
+      <form className="signup" onSubmit={handleSubmit}>
         <h4>Create an account</h4>
         <label htmlFor="email">email address:</label>
         <input
