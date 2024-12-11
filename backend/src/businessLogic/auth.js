@@ -43,7 +43,7 @@ const signup = async (email, password) => {
     await Workout.deleteAll(id);
   }
   const clientUrl = process.env.CLIENT_URL || "localhost:3000";
-  const accountVerificationLink = `${clientUrl}/users?accountConfirmationToken=${confirmationToken}`;
+  const accountVerificationLink = `${clientUrl}/confirmaccount/?accountConfirmationToken=${confirmationToken}`;
   /*
    When testing routes, we don't need to send emails:
   */

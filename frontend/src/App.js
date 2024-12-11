@@ -10,6 +10,7 @@ const Signup = React.lazy(() => import("./pages/Signup"));
 const About = React.lazy(() => import("./pages/About"));
 const ResetPassword = React.lazy(() => import("./pages/ResetPassword"));
 const ConfirmedAccount = React.lazy(() => import("./pages/ConfirmedAccount"));
+const NotFound = React.lazy(() => import("./pages/NotFound"));
 const MemoNavbar = memo(Navbar);
 
 function App() {
@@ -107,8 +108,12 @@ function App() {
             />
             <Route path="/reset-password" element={<ResetPassword />} />
             <Route
-              path="/:accountConfirmationToken"
-              element={<ConfirmedAccount />}
+              path="/confirmaccount/*"
+              element={<ConfirmedAccount />} 
+            />
+            <Route
+              path="*"
+              element={<NotFound />}
             />
           </Routes>
         </div>
