@@ -24,7 +24,7 @@ const Signup = () => {
       {process.env.NODE_ENV === "production" && (
         <h1 className="temp" style={{ zIndex: 10 }}>
           <p>Apologies, prospective User!</p>
-          <p>We can't sign you up at the moment.</p>
+          <p>{"We can't sign you up at the moment."}</p>
           <p>If you want to see inside, you can log in with these:</p>
           <p>
             email: <strong>guest@wm.app</strong>

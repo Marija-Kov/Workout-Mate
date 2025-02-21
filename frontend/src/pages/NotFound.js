@@ -8,9 +8,9 @@ export default function NotFound() {
     useEffect(() => {
         const delayRedirect = setTimeout(() => {
             setRedirect(true);
-        }, 3000)
+        }, 3000);
         return () => clearTimeout(delayRedirect); 
-    })
+    });
     return (
         <div style={{marginTop:100, marginLeft:100}}>
             <h1>Page Not Found</h1>

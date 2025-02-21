@@ -115,7 +115,7 @@ export default function UserSettings({ changeProfileImg }) {
         )}
         {newUsername.trim() && !newUsername.match(/^[a-zA-Z0-9._]+$/) && (
           <p className="max-chars-error" role="alert">
-            ⚠Letters, numbers, '_' and '.' allowed!
+            {"⚠Letters, numbers, '_' and '.' allowed!"}
           </p>
         )}
         <label htmlFor="profile-image">Change profile image:</label>
@@ -169,7 +169,7 @@ export default function UserSettings({ changeProfileImg }) {
       {isDeleteAccountDialogueMounted && (
         <div className="delete--account--dialogue">
           <h4>This is irreversible.</h4>
-          <p>We won't be able to recover any of your data.</p>
+          <p>{"We won't be able to recover any of your data."}</p>
           <p>Are you sure you want to proceed?</p>
           <div className="delete--account--dialogue--btns">
             <button type="button" onClick={deleteAccount}>

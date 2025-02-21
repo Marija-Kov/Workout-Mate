@@ -19,7 +19,7 @@ export default function ConfirmedAccount() {
     confirmAndLogout();
     const delayRedirect = setTimeout(() => {
       setRedirect(true);
-    }, 300)
+    }, 300);
 
     return () => clearTimeout(delayRedirect);
 

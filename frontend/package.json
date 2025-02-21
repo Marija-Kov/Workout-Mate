@@ -25,6 +25,8 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "lint": "npx eslint src/**/*.js",
+    "lint-fix": "npx eslint src/**/*.js --fix",
     "test": "react-scripts test --watchAll --detectOpenHandles --runInBand",
     "eject": "react-scripts eject",
     "coverage": "test --coverage"
@@ -50,10 +52,14 @@
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@babel/plugin-transform-private-property-in-object": "^7.23.4",
+    "@eslint/js": "^9.20.0",
     "@redux-devtools/extension": "^3.3.0",
     "@testing-library/jest-dom": "^6.1.3",
     "@testing-library/react": "^16.0.0",
     "@testing-library/user-event": "^14.5.1",
+    "eslint": "^8.57.1",
+    "eslint-plugin-react": "^7.37.4",
+    "globals": "^16.0.0",
     "jest": "^29.7.0",
     "msw": "^1.3.1"
   }
