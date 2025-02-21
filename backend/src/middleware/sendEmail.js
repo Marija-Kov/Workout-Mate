@@ -26,7 +26,7 @@ const sendEmail = async (email, subject, payload, template) => {
       };
     };
 
-    transporter.sendMail(options(), (error, info) => {
+    transporter.sendMail(options(), (error) => {
       if (error)
         console.log(
           `Error at sendEmail.js, transporter.sendMail() :  ${error}`

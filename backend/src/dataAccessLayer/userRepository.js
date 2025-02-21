@@ -346,7 +346,7 @@ class UserRepository {
         return new Promise((resolve, reject) => {
           this.db.run(sql, [password, user_id], (err, row) => {
             this.db.run(
-              `DELETE FROM password_reset WHERE user_id = ?;`,
+              "DELETE FROM password_reset WHERE user_id = ?;",
               user_id
             );
             if (err) {
@@ -361,7 +361,7 @@ class UserRepository {
       } else {
         const client = await this.connect();
         const result = await client.query(sql, [password, user_id]);
-        await client.query(`DELETE FROM password_reset WHERE user_id = $1;`, [
+        await client.query("DELETE FROM password_reset WHERE user_id = $1;", [
           user_id,
         ]);
         client.release();
@@ -373,13 +373,13 @@ class UserRepository {
   }
 
   async delete(id) {
-    const sql = `DELETE FROM wm_users WHERE _id = $1 AND email != 'guest@wm.app';`;
+    const sql = "DELETE FROM wm_users WHERE _id = $1 AND email != 'guest@wm.app';";
     try {
       if (process.env.NODE_ENV === "test") {
         return new Promise((resolve, reject) => {
           this.db.run(sql, [id], (err, row) => {
             this.db.run(
-              `DELETE FROM account_confirmation WHERE user_id = ?;`,
+              "DELETE FROM account_confirmation WHERE user_id = ?;",
               id
             );
             if (err) {
@@ -395,7 +395,7 @@ class UserRepository {
         const client = await this.connect();
         await client.query(sql, [id]);
         await client.query(
-          `DELETE FROM account_confirmation WHERE user_id = $1;`,
+          "DELETE FROM account_confirmation WHERE user_id = $1;",
           [id]
         );
         return client.release();

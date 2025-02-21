@@ -43,7 +43,7 @@ const forgotPassword = async (email) => {
 
   return {
     resetToken: resetToken,
-    success: `Reset link was sent to your inbox.`,
+    success: "Reset link was sent to your inbox.",
   };
 };
 
@@ -61,7 +61,7 @@ const resetPassword = async (token, password, confirmPassword) => {
     const salt = await bcrypt.genSalt(10);
     const hash = await bcrypt.hash(password, salt);
     await User.changePassword(hash, user._id);
-    return { success: `Password reset successfully` };
+    return { success: "Password reset successfully" };
   }
 };
 

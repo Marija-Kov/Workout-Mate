@@ -19,7 +19,7 @@ class WorkoutRepository {
     } catch (error) {
       if (retryCount > 0) {
         console.error(`MongoDB connection failed. Retrying in ${Number(process.env.RETRY_DELAY_MS) || retryDelayMs / 1000} seconds...`);
-        setTimeout(() => connect(retryCount - 1), Number(process.env.RETRY_DELAY_MS) || retryDelayMs);
+        setTimeout(() => this.connect(retryCount - 1), Number(process.env.RETRY_DELAY_MS) || retryDelayMs);
       } else {
         console.error("Could not connect to MongoDB:", error);
       }

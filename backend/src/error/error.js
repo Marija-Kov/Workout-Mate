@@ -24,6 +24,9 @@ class ApiError extends Error {
   }
 }
 
+/* eslint-disable no-unused-vars 
+   ----
+   4 parameters are essential for Express to recognize the function as error-handling middleware.*/
 function errorHandler(err, req, res, next) {
   if (err instanceof ApiError) {
     res.status(err.statusCode).json({ error: err.message });
@@ -31,6 +34,7 @@ function errorHandler(err, req, res, next) {
   }
   res.status(500).json({ error: "Something went wrong" });
 }
+/* eslint-enable no-unused-vars */
 
 module.exports = {
   ApiError,
