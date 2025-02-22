@@ -455,6 +455,14 @@ describe("workoutController", () => {
 
   describe("ANY /api/workouts/", () => {
     it("should respond with error if too many requests were sent in a short amount of time", async () => {
+      const express = require("express");
+      const app = express();
+      app.use(require("cookie-parser")());
+      app.use(express.json());
+      app.use(require("../../middleware/rateLimiters").api_workouts);
+      app.use("/api/workouts", require("../../routes/workouts"));
+      app.use("/api/users", require("../../routes/users"));
+      const agent = request.agent(app);
       const { token } = await mockUser("logged-in", agent);
       const maxReq = Number(process.env.MAX_API_WORKOUTS_REQS) || 20;
       let res;

@@ -22,9 +22,12 @@ app.use(
   express.urlencoded({ limit: "50mb", extended: true, parameterLimit: 50000 })
 );
 
-app.use("/api/users", rateLimiters.api_users);
-app.use("/api/reset-password", rateLimiters.api_reset_password);
-app.use("/api/workouts", rateLimiters.api_workouts);
+if (process.env.NODE_ENV !== "test") {
+  app.use("/api/users", rateLimiters.api_users);
+  app.use("/api/reset-password", rateLimiters.api_reset_password);
+  app.use("/api/workouts", rateLimiters.api_workouts);
+}
+ 
 app.use("/api/workouts", workoutRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/reset-password", passwordResetRoutes);

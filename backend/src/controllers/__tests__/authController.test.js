@@ -304,6 +304,10 @@ describe("authController", () => {
 
   describe("ANY /api/users", () => {
     it("should respond with error if too many requests were sent in a short amount of time", async () => {
+      const app = require("express")();
+      app.use(require("../../middleware/rateLimiters").api_users);
+      app.use("/api/users", require("../../routes/users"));
+      const agent = request.agent(app);
       const maxReq = Number(process.env.MAX_API_USERS_REQS) || 30;
       let res;
       for (let i = 0; i <= maxReq; ++i) {

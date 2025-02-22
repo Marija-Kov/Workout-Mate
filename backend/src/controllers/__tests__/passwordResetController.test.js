@@ -66,11 +66,16 @@ describe("passwordResetController", () => {
 
   describe("ANY /api/reset-password", () => {
     it("should respond with error if too many requests were sent in a short amount of time", async () => {
+      const app = require("express")();
+      app.use(require("../../middleware/rateLimiters").api_reset_password);
+      app.use("/api/reset-password", require("../../routes/resetPassword"));
+      app.use("/api/users", require("../../routes/users"));
+      const agent = request.agent(app);
       const max = Number(process.env.MAX_API_RESET_PASSWORD_REQS) || 20;
+      let res;
       for (let i = 0; i <= max; ++i) {
-        await mockPasswordResetResponse_POST("a@b.c", "registered");
+        res = await mockPasswordResetResponse_POST("registered", agent);
       }
-      const res = await mockPasswordResetResponse_POST("a@b.c", "registered");
       expect(res.status).toBe(429);
       expect(res.body.error).toBeTruthy();
       expect(res.body.error).toMatch(/too many requests/i);
@@ -78,22 +83,26 @@ describe("passwordResetController", () => {
   });
 });
 
-async function mockPasswordResetResponse_POST(status) {
+async function mockPasswordResetResponse_POST(status, a = agent) {
+  if (!a) {
+    console.error("Agent not found");
+    return;
+  }
   const email = "a@b.c";
   const password = "5tr0ng+P@ssw0rd";
   if (status === "registered") {
-    await agent.post("/api/users/signup").send({ email, password });
-    return await agent.post(`/api/reset-password`).send({ email });
+    await a.post("/api/users/signup").send({ email, password });
+    return await a.post(`/api/reset-password`).send({ email });
   }
   if (status === "confirmed") {
     const user = (
-      await agent.post("/api/users/signup").send({ email, password })
+      await a.post("/api/users/signup").send({ email, password })
       ).body;
-      await agent.get(`/api/users/confirmaccount/${user.token}`);
-      const res = await agent.post(`/api/reset-password`).send({ email });
+      await a.get(`/api/users/confirmaccount/${user.token}`);
+      const res = await a.post(`/api/reset-password`).send({ email });
       return res;
   }
-  return await agent.post(`/api/reset-password`).send({ email });
+  return await a.post(`/api/reset-password`).send({ email });
 }
 
 async function mockPasswordResetResponse_PATCH(test) {
