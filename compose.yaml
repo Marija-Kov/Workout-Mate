@@ -1,0 +1,24 @@
+version: '3.3'
+services:
+  backend:
+    build: ./backend
+    env_file:
+      - ./backend/.env
+    container_name: wm_backend
+    ports:
+      - '6060:6060'
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+  frontend:
+    build: ./frontend
+    env_file:
+      - ./frontend/.env
+    container_name: wm_frontend
+    ports:
+      - '3000:3000'
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    stdin_open: true
+    tty: true
