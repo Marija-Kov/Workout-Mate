@@ -18,8 +18,7 @@ Workout Mate lets you be the athlete you want to be.</i>
 2. [Local Usage](#localUsage)
 3. [Tools and Dependencies](#tools)
 4. [Environment variables](#environment-variables)
-5. [Todos](#todos)
-6. [Author](#author)
+5. [Author](#author)
 
 ---
 <br>
@@ -208,11 +207,6 @@ REACT_APP_API= <br>
 REACT_APP_WEB_SERVICE=localhost <br>
 
 <br>
-
-## Todos <a name = "todos"></a>
- - Users should have an option to commit to using their account and posting workouts to avoid automated deletion.
-<br>
-- Update screenshots and screen recordings.
 
 ## Author <a name = "author"></a>
 
