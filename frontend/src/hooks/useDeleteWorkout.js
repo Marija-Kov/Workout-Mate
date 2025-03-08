@@ -11,7 +11,6 @@ export default function useDeleteWorkout() {
   const url = process.env.REACT_APP_API || "http://localhost:6060";
 
   const deleteWorkout = async (id) => {
-    dispatch({ type: "SET_LOADER" });
     if (!user) {
       return flashMessage("ERROR", "Not authorized");
     }

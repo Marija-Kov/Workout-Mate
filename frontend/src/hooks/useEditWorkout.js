@@ -10,7 +10,6 @@ export default function useEditWorkout() {
   const url = process.env.REACT_APP_API || "http://localhost:6060";
 
   const editWorkout = async (id, payload) => {
-    dispatch({ type: "SET_LOADER" });
     if (!user) {
       return flashMessage("ERROR", "Not authorized");
     }

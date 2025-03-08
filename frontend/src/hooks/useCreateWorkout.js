@@ -10,9 +10,8 @@ export const useCreateWorkout = () => {
   const url = process.env.REACT_APP_API || "http://localhost:6060";
 
   const createWorkout = async (workout) => {
-    dispatch({ type: "SET_LOADER" });
     if (!user) {
-      return flashMessage("ERROR", "Not authorized");
+     return flashMessage("ERROR", "Not authorized");
     }
     if (
       !workout.title ||
