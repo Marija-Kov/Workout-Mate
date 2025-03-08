@@ -1,9 +1,11 @@
+import { forwardRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
-const Search = () => {
+const Search = forwardRef((props, ref) => {
   const loading = useSelector((state) => state.loader);
   const dispatch = useDispatch();
   const query = useSelector((state) => state.query);
+  const [isFocused, setIsFocused] = useState(false);
 
   const handleChange = (e) => {
     dispatch({ type: "SET_QUERY", payload: e.target.value });
@@ -22,9 +24,13 @@ const Search = () => {
       <input
         type="search"
         id="search"
+        className={ isFocused ? "focused" : null }
         placeholder="🔎 type workout title"
         value={query}
+        ref={ref}
         onChange={handleChange}
+        onFocus={() => setIsFocused(true)}
+        onBlur={() => setIsFocused(false)}
       ></input>
       {query ? (
         <button
@@ -38,6 +44,6 @@ const Search = () => {
       )}
     </form>
   );
-};
+});
 
 export default Search;

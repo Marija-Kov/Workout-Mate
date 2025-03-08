@@ -1,4 +1,4 @@
-import { useEffect, lazy, Suspense, memo } from "react";
+import { useEffect, lazy, Suspense, memo, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useSearch } from "../hooks/useSearch";
 import WorkoutForm from "../components/WorkoutForm";
@@ -26,6 +26,7 @@ export default function Home() {
   const query = useSelector((state) => state.query);
   const { total, workoutsChunk } = workouts;
   const { search } = useSearch();
+  const searchInputRef = useRef();
   /**
    * This variable is the ultimate indicator for any workouts existing in the DB.
    */
@@ -33,10 +34,14 @@ export default function Home() {
     allUserWorkoutsMuscleGroups && allUserWorkoutsMuscleGroups.length;
 
   useEffect(() => {
-    const runSearch = setTimeout(async () => {
-      await search(query, page);
-    }, 300);
-    return () => clearTimeout(runSearch);
+    if (searchInputRef.current && searchInputRef.current.className === "focused") {
+      const runSearchDebounce = setTimeout(async () => {
+        await search(query, page);
+      }, 500);
+      return () => clearTimeout(runSearchDebounce);
+    } else {
+      search(query, page);
+    }
   }, [query, page]);
 
   const renderWorkoutsOrNoWorkoutsMessageOrPlaceholder = () => {
@@ -78,7 +83,7 @@ export default function Home() {
   return (
     <div className="home--container">
       <div className="home">
-        {muscleGroups ? <MemoSearch /> : ""}
+        {muscleGroups ? <MemoSearch ref={searchInputRef} /> : ""}
 
         <div aria-label="workouts" className="workouts--container">
           {renderWorkoutsOrNoWorkoutsMessageOrPlaceholder()}

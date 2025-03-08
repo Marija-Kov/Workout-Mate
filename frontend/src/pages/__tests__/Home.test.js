@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import { act } from "react";
+import { act, forwardRef } from "react";
 import user from "@testing-library/user-event";
 import { jest } from "@jest/globals";
 import { genSampleWorkouts } from "../../utils/test/genSampleWorkouts";
@@ -22,7 +22,11 @@ jest.mock("../../components/WorkoutsPlaceholder");
 jest.mock("../../components/Pagination");
 jest.mock("../../components/WorkoutForm");
 jest.mock("../../components/EditWorkout");
-jest.mock("../../components/Search");
+jest.mock("../../components/Search", () => {
+  return {
+    default: forwardRef((props, ref) => <div ref={ref}></div>),
+  };
+});
 jest.mock("../../hooks/useSearch", () => ({
   useSearch: () => {
     return {
