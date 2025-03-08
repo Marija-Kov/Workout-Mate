@@ -16,6 +16,7 @@
 
 body {
   overflow-x: hidden;
+  overflow-y: hidden;
   background: vars.$home--bkg;
   margin: 0;
   padding: 0;
@@ -86,6 +87,10 @@ body {
 }
 
 @media screen and (max-width: 450px) {
+
+  body {
+    overflow-y: scroll;
+  }
 
   .spun--down--server--alert {
     width: 95%;
