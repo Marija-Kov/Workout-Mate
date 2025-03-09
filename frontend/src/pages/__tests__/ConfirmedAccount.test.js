@@ -28,7 +28,7 @@ jest.mock("../../hooks/useConfirmAccount", () => ({
 
 afterAll(() => {
   dispatch = null;
-  jest.restoreAllMocks();
+  jest.resetAllMocks();
 });
 
 describe("<ConfirmedAccount />", () => {

@@ -27,7 +27,7 @@ afterAll(() => {
   wrapper = null;
   dispatch = null;
   mockUser = null;
-  jest.restoreAllMocks();
+  jest.resetAllMocks();
   window.URL.createObjectURL.mockReset();
 });
 
