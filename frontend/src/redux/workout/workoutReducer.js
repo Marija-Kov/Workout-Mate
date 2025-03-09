@@ -1,7 +1,7 @@
 import * as a from "./workoutActionTypes";
 
 const init = {
-  total: 0,
+  total: 0, // total number of workouts that match a search query
   limit: 3,
   allUserWorkoutsMuscleGroups: [],
   workoutsChunk: [],
