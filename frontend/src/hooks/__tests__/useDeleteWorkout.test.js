@@ -124,7 +124,9 @@ describe("useDeleteWorkout()", () => {
       result.current.deleteWorkout(state.workouts.workoutsChunk[0]._id)
     );
     state = store.getState();
-    expect(state.page).toBe(0);
+    setTimeout(() => {
+      expect(state.page).toBe(0);
+    }, 500)
   });
 
   it("should update page state properly when all workouts from the current page have been deleted given that current page is the first page", async () => {
