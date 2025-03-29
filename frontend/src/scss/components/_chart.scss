@@ -114,6 +114,10 @@
     height: 200px;
     width: 200px;
   }
+  
+  .chart--placeholder--legend {
+    margin-bottom: 50px;
+  }
 
   .chart {
     height: 280px;
@@ -124,7 +128,7 @@
   .chart--container > h3 {
     font-size: 1em;
   }
-
+  
   .custom--legend {
     width: 100%;
   }

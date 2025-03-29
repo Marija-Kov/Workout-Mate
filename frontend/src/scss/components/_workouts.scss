@@ -62,16 +62,13 @@
 }
 
 .loading--workouts {
-  text-align: center;
-  font-weight: 600;
-  color: vars.$chart-title--color;
-}
-
-.loading--workouts {
   z-index: 5;
   position: absolute;
   top: 50px;
   left: 180px;
+  text-align: center;
+  font-weight: 600;
+  color: vars.$chart-title--color;
   animation: loading--workouts 1s ease-in-out infinite;
 }
 
@@ -210,7 +207,6 @@
   }
 
   .workouts--placeholder {
-    top: 50px;
     width: 280px;
   }
 }
