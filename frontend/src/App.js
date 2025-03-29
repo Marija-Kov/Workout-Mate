@@ -20,10 +20,9 @@ function App() {
   );
   const { success, error } = useSelector((state) => state.flashMessages);
   const dispatch = useDispatch();
-  const { getUrl } = useGetUrl();
+  const url = useGetUrl();
 
   React.useEffect(() => {
-    const url = getUrl();
     const service = process.env.REACT_APP_WEB_SERVICE || "localhost";
     if (!url.includes(service)) {
       return;

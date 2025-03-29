@@ -5,14 +5,14 @@ import { useLogout } from "../hooks/useLogout";
 import { Navigate } from "react-router-dom";
 
 export default function ConfirmedAccount() {
-  const { getAccountConfirmationToken } = useGetAccountConfirmationToken();
+  const accountConfirmationToken = useGetAccountConfirmationToken();
   const { confirmAccount } = useConfirmAccount();
   const { logout } = useLogout();
   const [redirect, setRedirect] = useState(false);
 
   useEffect(() => {
     const confirmAndLogout = async () => {
-      await confirmAccount(getAccountConfirmationToken());
+      await confirmAccount(accountConfirmationToken);
       await logout();
     };
 
