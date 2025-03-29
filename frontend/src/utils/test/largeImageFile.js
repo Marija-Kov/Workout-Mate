@@ -43,9 +43,7 @@ export function readLargeFile() {
 }
 
 export function deleteLargeFile() {
-  try {
-    fs.unlinkSync(location);
-  } catch (error) {
-    console.log(error);
-  }
+  fs.unlink(location, (error) => {
+    if (error) console.log(error);
+  });
 }
