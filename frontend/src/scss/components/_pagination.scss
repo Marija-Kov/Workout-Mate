@@ -22,12 +22,21 @@
   transition: 0.2s;
 }
 
+.dots-left, 
+.dots-right {
+  color: vars.$primary;
+}
+
 .dots-left::before,
 .dots-right::after {
   content: "...";
   display: inline-block;
   font-size: larger;
-  color: vars.$pagination-dots--color;
+}
+
+.dots-left:hover::before,
+.dots-right:hover::after {
+  color: vars.$primary--inverse;
 }
 
 .page--btn--container > button > span {
