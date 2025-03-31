@@ -15,7 +15,7 @@ const Search = forwardRef((props, ref) => {
   return (
     <form
       data-testid="search-form"
-      className={loading ? "search--bar is--loading" : "search--bar"}
+      className={loading.workouts ? "search--bar is--loading" : "search--bar"}
       onSubmit={(e) => e.preventDefault()}
     >
       <label htmlFor="search" className="hidden">

@@ -7,7 +7,7 @@ export const useSignup = () => {
   const url = process.env.REACT_APP_API || "http://localhost:6060";
 
   const signup = async (credentials) => {
-    dispatch({ type: "SET_LOADER" });
+    dispatch({ type: "SET_USER_LOADER" });
     if (!credentials.email || !credentials.password) {
       return flashMessage("ERROR", "All fields must be filled");
     }

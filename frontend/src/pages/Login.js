@@ -58,10 +58,10 @@ const Login = () => {
           >
             Forgot the password?
           </button>
-          <button className="log-in--form--btn" disabled={loading}>
+          <button className="log-in--form--btn" disabled={loading.user}>
             Log in
           </button>
-          {loading && (
+          {loading.user && (
             <div className="loader--container">
               <div className="lds-ellipsis">
                 <div></div>

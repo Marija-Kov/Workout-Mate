@@ -8,7 +8,8 @@ export const useDeleteAllWorkouts = () => {
   const url = process.env.REACT_APP_API || "http://localhost:6060";
 
   const deleteAllWorkouts = async () => {
-    dispatch({ type: "SET_LOADER" });
+    dispatch({ type: "SET_WORKOUTS_LOADER" });
+    dispatch({ type: "SET_CHART_LOADER" });
     if (!user) {
       return flashMessage("ERROR", "Not authorized");
     }

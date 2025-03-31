@@ -13,7 +13,7 @@ export const useFlashMessage = () => {
         if (message.match(/not authorized/i)) {
           hardStateResetAndClearLocalStorage();
         }
-        dispatch({ type: "UNSET_LOADER" });
+        dispatch({ type: "UNSET_ALL_LOADERS" });
         return dispatch({ type: "RESET_FLASH_MESSAGES" });
       } else if (action.includes("WORKOUT")) {
         return dispatch({ type: "RESET_WORKOUT_ERROR_MESSAGES" });

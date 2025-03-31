@@ -44,8 +44,12 @@ export default function Home() {
     }
   }, [query, page]);
 
+  useEffect(() => {
+    dispatch({ type: "SET_CHART_LOADER"});
+  }, [])
+
   const renderWorkoutsOrNoWorkoutsMessageOrPlaceholder = () => {
-    if (loading) {
+    if (loading.workouts) {
       return <WorkoutsPlaceholder />;
     }
     if (!muscleGroups) return "";
@@ -68,12 +72,12 @@ export default function Home() {
   };
 
   const renderChartOrPlaceholder = () => {
-    return muscleGroups ? <MemoChart /> : loading ? <ChartPlaceholder /> : "";
+    return loading.chart ? <ChartPlaceholder /> : muscleGroups ? <MemoChart /> : "";
   };
 
   const buffItUpButtonClass = () => {
     if (muscleGroups) return "add--workout";
-    if (loading) {
+    if (loading.workouts) {
       return "no--button";
     } else {
       return "add--workout no--workouts--yet";
@@ -96,7 +100,7 @@ export default function Home() {
         <button
           className={buffItUpButtonClass()}
           onClick={() => dispatch({ type: "TOGGLE_MOUNT_CREATE_WORKOUT_FORM" })}
-          disabled={loading}
+          disabled={loading.workouts}
         >
           Buff It Up
         </button>

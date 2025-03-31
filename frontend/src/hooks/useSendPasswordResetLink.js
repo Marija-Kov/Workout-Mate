@@ -7,7 +7,7 @@ export default function useSendPasswordResetLink() {
   const url = process.env.REACT_APP_API || "http://localhost:6060";
 
   const sendPasswordResetLink = async (email) => {
-    dispatch({ type: "SET_LOADER" });
+    dispatch({ type: "SET_USER_LOADER" });
     if (
       !email.match(
         /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/

@@ -56,7 +56,7 @@ export default function UserSettings({ changeProfileImg }) {
   };
 
   const toggleDisableUploadBtn = () => {
-    if (loading) return true;
+    if (loading.user) return true;
     if (newUsername && !newUsername.match(/^[a-zA-Z0-9._]+$/)) return true;
     if (!newUsername && !selectedFile) return true;
     if (newUsername && !newUsername.trim() && !selectedFile) return true;
@@ -65,7 +65,7 @@ export default function UserSettings({ changeProfileImg }) {
   };
 
   const uploadBtnStyle = () => {
-    if (loading) return "disabled--btn upload--btn";
+    if (loading.user) return "disabled--btn upload--btn";
     if (newUsername && !newUsername.match(/^[a-zA-Z0-9._]+$/))
       return "disabled--btn upload--btn";
     if (!newUsername && !selectedFile) return "disabled--btn upload--btn";
@@ -150,7 +150,7 @@ export default function UserSettings({ changeProfileImg }) {
         >
           Upload
         </button>
-        {loading && (
+        {loading.user && (
           <h4 style={{ position: "absolute", zIndex: "10" }}>Loading...</h4>
         )}
         <button className="download--data--btn" onClick={runDownloadData}>

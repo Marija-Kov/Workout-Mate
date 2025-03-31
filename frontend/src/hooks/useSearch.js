@@ -8,7 +8,7 @@ export const useSearch = () => {
   const url = process.env.REACT_APP_API || "http://localhost:6060";
 
   const search = async (query, page) => {
-    dispatch({ type: "SET_LOADER" });
+    dispatch({ type: "SET_WORKOUTS_LOADER" });
     if (!user) {
       return flashMessage("ERROR", "Not authorized");
     }

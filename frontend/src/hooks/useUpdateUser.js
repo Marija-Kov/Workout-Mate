@@ -9,7 +9,7 @@ export const useUpdateUser = () => {
   const url = process.env.REACT_APP_API || "http://localhost:6060";
 
   const updateUser = async (username, profileImg) => {
-    dispatch({ type: "SET_LOADER" });
+    dispatch({ type: "SET_USER_LOADER" });
     if (!user) {
       return flashMessage("ERROR", "Not authorized");
     }

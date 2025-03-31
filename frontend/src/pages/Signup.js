@@ -52,10 +52,10 @@ const Signup = () => {
           placeholder="password"
           ref={password}
         />
-        <button className="sign-up--form--btn" disabled={loading}>
+        <button className="sign-up--form--btn" disabled={loading.user}>
           Sign up
         </button>
-        {loading && (
+        {loading.user && (
           <div className="loader--container">
             <div className="lds-ellipsis">
               <div></div>

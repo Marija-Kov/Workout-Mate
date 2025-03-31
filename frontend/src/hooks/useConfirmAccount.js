@@ -7,7 +7,7 @@ export const useConfirmAccount = () => {
   const url = process.env.REACT_APP_API || "http://localhost:6060";
 
   const confirmAccount = async (token) => {
-    dispatch({ type: "SET_LOADER" });
+    dispatch({ type: "SET_USER_LOADER" });
     if (!token) {
       return flashMessage("ERROR", "Account confirmation token not found");
     }

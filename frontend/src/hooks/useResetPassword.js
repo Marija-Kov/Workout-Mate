@@ -7,7 +7,7 @@ export default function useResetPassword() {
   const url = process.env.REACT_APP_API || "http://localhost:6060";
 
   const resetPassword = async (token, password, confirmPassword) => {
-    dispatch({ type: "SET_LOADER" });
+    dispatch({ type: "SET_USER_LOADER" });
     if (!token) {
       return flashMessage("ERROR", "Reset password token not found");
     }

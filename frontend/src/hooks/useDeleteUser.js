@@ -8,7 +8,7 @@ export const useDeleteUser = () => {
   const url = process.env.REACT_APP_API || "http://localhost:6060";
 
   const deleteUser = async () => {
-    dispatch({ type: "SET_LOADER" });
+    dispatch({ type: "SET_USER_LOADER" });
     if (!user) {
       return flashMessage("ERROR", "Not authorized");
     }

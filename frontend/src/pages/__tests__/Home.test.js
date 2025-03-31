@@ -44,15 +44,17 @@ afterAll(() => {
 });
 
 describe("<Home />", () => {
-  it("should render placeholders while workouts are loading", async () => {
+  it("should render placeholders for workouts and chart", async () => {
     render(
       <Provider store={store}>
         <Home />
       </Provider>
     );
-    act(() => store.dispatch({ type: "SET_LOADER" }));
+    act(() => store.dispatch({ type: "SET_WORKOUTS_LOADER" }));
+    act(() => store.dispatch({ type: "SET_CHART_LOADER" }));
     const state = store.getState();
-    expect(state.loader).toBeTruthy();
+    expect(state.loader.workouts).toBeTruthy();
+    expect(state.loader.chart).toBeTruthy();
     expect(ChartPlaceholder).toHaveBeenCalled();
     expect(WorkoutsPlaceholder).toHaveBeenCalled();
   });

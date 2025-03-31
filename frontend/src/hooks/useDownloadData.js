@@ -10,7 +10,7 @@ export function useDownloadData() {
   const url = process.env.REACT_APP_API || "http://localhost:6060";
 
   const downloadData = async () => {
-    dispatch({ type: "SET_LOADER" });
+    dispatch({ type: "SET_USER_LOADER" });
     if (!user) {
       return flashMessage("ERROR", "Not authorized");
     }
