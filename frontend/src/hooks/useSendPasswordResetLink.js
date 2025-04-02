@@ -27,6 +27,7 @@ export default function useSendPasswordResetLink() {
       return flashMessage("ERROR", json.error);
     }
     if (response.ok) {
+      dispatch({ type: "TOGGLE_MOUNT_FORGOT_PASSWORD_FORM" });
       return flashMessage("SUCCESS", json.success);
     }
   };
