@@ -35,7 +35,12 @@ describe("<ConfirmedAccount />", () => {
   it("should render success message given that confirmation was successful", async () => {
     render(
       <Provider store={store}>
-        <BrowserRouter>
+        <BrowserRouter
+          future={{
+            v7_relativeSplatPath: true,
+            v7_startTransition: true,
+          }}
+        >
           <App />
           <ConfirmedAccount />
         </BrowserRouter>
@@ -56,7 +61,12 @@ describe("<ConfirmedAccount />", () => {
   it("should render error message given that confirmation token wasn't found or is expired", async () => {
     render(
       <Provider store={store}>
-        <BrowserRouter>
+        <BrowserRouter
+          future={{
+            v7_relativeSplatPath: true,
+            v7_startTransition: true,
+          }}
+        >
           <App />
           <ConfirmedAccount />
         </BrowserRouter>

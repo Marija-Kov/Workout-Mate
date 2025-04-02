@@ -35,7 +35,12 @@ function App() {
 
   return (
     <div className="App">
-      <BrowserRouter>
+      <BrowserRouter
+        future={{
+          v7_relativeSplatPath: true,
+          v7_startTransition: true,
+        }}
+      >
         <MemoNavbar />
         <div className="pages">
           {isSpunDownServerAlertMounted && (
@@ -90,30 +95,24 @@ function App() {
           )}
           <Routes>
             <Route
-              path="/login"
+              path="/"
+              element={!user ? <Navigate to="login" /> : <Home />}
+            />
+            <Route
+              path="login"
               element={user ? <Navigate to="/" /> : <Login />}
             />
             <Route
-              path="/signup"
+              path="signup"
               element={user ? <Navigate to="/" /> : <Signup />}
             />
             <Route
-              path="/about"
+              path="about"
               element={user ? <Navigate to="/" /> : <About />}
             />
-            <Route
-              path="/"
-              element={!user ? <Navigate to="/login" /> : <Home />}
-            />
-            <Route path="/reset-password" element={<ResetPassword />} />
-            <Route
-              path="/confirmaccount/*"
-              element={<ConfirmedAccount />} 
-            />
-            <Route
-              path="*"
-              element={<NotFound />}
-            />
+            <Route path="reset-password" element={<ResetPassword />} />
+            <Route path="confirmaccount" element={<ConfirmedAccount />} />
+            <Route path="*" element={<NotFound />}/>
           </Routes>
         </div>
       </BrowserRouter>

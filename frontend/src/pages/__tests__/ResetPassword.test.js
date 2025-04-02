@@ -74,7 +74,12 @@ describe("<ResetPassword />", () => {
     user.setup();
     render(
       <Provider store={store}>
-        <BrowserRouter>
+        <BrowserRouter
+          future={{
+            v7_relativeSplatPath: true,
+            v7_startTransition: true,
+          }}
+        >
           <App />
           <ResetPassword />
         </BrowserRouter>
@@ -109,7 +114,12 @@ describe("<ResetPassword />", () => {
     user.setup();
     render(
       <Provider store={store}>
-        <BrowserRouter>
+        <BrowserRouter
+          future={{
+            v7_relativeSplatPath: true,
+            v7_startTransition: true,
+          }}
+        >
           <App />
           <ResetPassword />
         </BrowserRouter>
@@ -144,7 +154,12 @@ describe("<ResetPassword />", () => {
     user.setup();
     render(
       <Provider store={store}>
-        <BrowserRouter>
+        <BrowserRouter
+          future={{
+            v7_relativeSplatPath: true,
+            v7_startTransition: true,
+          }}
+        >
           <App />
           <ResetPassword />
         </BrowserRouter>
@@ -166,7 +181,12 @@ describe("<ResetPassword />", () => {
     user.setup();
     render(
       <Provider store={store}>
-        <BrowserRouter>
+        <BrowserRouter
+          future={{
+            v7_relativeSplatPath: true,
+            v7_startTransition: true,
+          }}
+        >
           <App />
           <ResetPassword />
         </BrowserRouter>
