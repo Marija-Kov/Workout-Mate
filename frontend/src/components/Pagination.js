@@ -20,14 +20,30 @@ const Pagination = () => {
     if (aPage <= 3 || aPage === pageSpread.length) return "num--page";
     return "invisible";
   }
+
+  function handleChangePage(e) {
+    const prevPageBtnText = "chevron_left";
+    const nextPageBtnText = "chevron_right";
+    const aNumber = new RegExp(/^\d+$/);
+
+    if (e.target.textContent === nextPageBtnText) {
+      return dispatch({ type: "NEXT_PAGE" });
+    } 
+    if (e.target.textContent === prevPageBtnText) {
+      return dispatch({ type: "PREV_PAGE" });
+    } 
+    if (e.target.textContent.match(aNumber)) {
+      return dispatch({ type: "GO_TO_PAGE_NUMBER", payload: Number(e.target.textContent) })
+    } 
+  }
+
   return (
-    <div className="page--btn--container">
+    <div className="page--btn--container" onClick={handleChangePage}>
       <button
         aria-label="previous page"
         type="button"
         className="prev--page"
         disabled={currentPage <= 1}
-        onClick={() => dispatch({ type: "PREV_PAGE" })}
       >
         <span className="material-symbols-outlined">chevron_left</span>
       </button>
@@ -37,9 +53,6 @@ const Pagination = () => {
             aria-label={`go to page ${aPage}`}
             key={Math.random() * 10e7}
             className={pageBtnStyle(currentPage, aPage)}
-            onClick={() =>
-              dispatch({ type: "GO_TO_PAGE_NUMBER", payload: aPage })
-            }
           >
             {aPage}
           </button>
@@ -50,7 +63,6 @@ const Pagination = () => {
         type="button"
         className="next--page"
         disabled={currentPage * limit >= total}
-        onClick={() => dispatch({ type: "NEXT_PAGE" })}
       >
         <span className="material-symbols-outlined">chevron_right</span>
       </button>
