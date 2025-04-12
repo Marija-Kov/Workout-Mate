@@ -10,12 +10,8 @@ import store from "../../redux/store";
 
 let dispatch = store.dispatch;
 
-jest.mock("../../hooks/useGetAccountConfirmationToken", () => ({
-  useGetAccountConfirmationToken: () => {
-    return {
-      getAccountConfirmationToken: () => {},
-    };
-  },
+jest.mock("../../hooks/useGetTokenFromUrl", () => ({
+  useGetTokenFromUrl: () => {},
 }));
 
 jest.mock("../../hooks/useConfirmAccount", () => ({

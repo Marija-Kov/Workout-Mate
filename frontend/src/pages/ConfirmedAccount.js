@@ -1,18 +1,18 @@
 import { useEffect, useState } from "react";
-import { useGetAccountConfirmationToken } from "../hooks/useGetAccountConfirmationToken";
+import { useGetTokenFromUrl } from "../hooks/useGetTokenFromUrl";
 import { useConfirmAccount } from "../hooks/useConfirmAccount";
 import { useLogout } from "../hooks/useLogout";
 import { Navigate } from "react-router-dom";
 
 export default function ConfirmedAccount() {
-  const accountConfirmationToken = useGetAccountConfirmationToken();
+  const token = useGetTokenFromUrl();
   const { confirmAccount } = useConfirmAccount();
   const { logout } = useLogout();
   const [redirect, setRedirect] = useState(false);
 
   useEffect(() => {
     const confirmAndLogout = async () => {
-      await confirmAccount(accountConfirmationToken);
+      await confirmAccount(token);
       await logout();
     };
 

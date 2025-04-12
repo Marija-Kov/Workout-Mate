@@ -1,6 +1,7 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
 import useResetPassword from "../hooks/useResetPassword";
+import { useGetTokenFromUrl } from "../hooks/useGetTokenFromUrl";
 import { useSelector } from "react-redux";
 
 export default function ResetPassword() {
@@ -8,11 +9,10 @@ export default function ResetPassword() {
   const { resetPassword } = useResetPassword();
   const password = React.useRef();
   const confirmPassword = React.useRef();
+  const token = useGetTokenFromUrl();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const start = window.location.href.indexOf("=") + 1;
-    const token = window.location.href.slice(start);
     await resetPassword(
       token,
       password.current.value,
