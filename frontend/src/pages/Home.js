@@ -42,11 +42,11 @@ export default function Home() {
     } else {
       search(query, page);
     }
-  }, [query, page]);
+  }, [query, page, search]);
 
   useEffect(() => {
     dispatch({ type: "SET_CHART_LOADER"});
-  }, [])
+  }, [dispatch])
 
   const renderWorkoutsOrNoWorkoutsMessageOrPlaceholder = () => {
     if (loading.workouts) {

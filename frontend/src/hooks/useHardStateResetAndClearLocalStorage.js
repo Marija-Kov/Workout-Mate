@@ -1,8 +1,9 @@
+import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 
 export const useHardStateResetAndClearLocalStorage = () => {
   const dispatch = useDispatch();
-  const hardStateResetAndClearLocalStorage = () => {
+  const hardStateResetAndClearLocalStorage = useCallback(() => {
     if (localStorage.getItem("user")) {
       localStorage.removeItem("user");
     }
@@ -18,6 +19,6 @@ export const useHardStateResetAndClearLocalStorage = () => {
     dispatch({ type: "RESET_COMPONENTS_STATE" });
     dispatch({ type: "RESET_PAGE_STATE" });
     dispatch({ type: "RESET_QUERY_STATE" });
-  };
+  }, [dispatch]);
   return { hardStateResetAndClearLocalStorage };
 };

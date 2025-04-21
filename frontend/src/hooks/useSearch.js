@@ -1,3 +1,4 @@
+import { useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useFlashMessage } from "./useFlashMessage";
 
@@ -7,7 +8,7 @@ export const useSearch = () => {
   const flashMessage = useFlashMessage();
   const url = process.env.REACT_APP_API || "http://localhost:6060";
 
-  const search = async (query, page) => {
+  const search = useCallback(async (query, page) => {
     dispatch({ type: "SET_WORKOUTS_LOADER" });
     if (!user) {
       return flashMessage("ERROR", "Not authorized");
@@ -25,7 +26,7 @@ export const useSearch = () => {
     if (!response.ok) {
       return flashMessage("ERROR", json.error);
     }
-  };
+  }, [url, user, dispatch, flashMessage]);
 
   return { search };
 };

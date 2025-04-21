@@ -1,3 +1,4 @@
+import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { useHardStateResetAndClearLocalStorage } from "./useHardStateResetAndClearLocalStorage";
 
@@ -6,7 +7,7 @@ export const useFlashMessage = () => {
   const { hardStateResetAndClearLocalStorage } =
     useHardStateResetAndClearLocalStorage();
     
-  const flashMessage = (action, message) => {
+  const flashMessage = useCallback((action, message) => {
     dispatch({ type: action, payload: message });
     setTimeout(() => {
       if (["SUCCESS", "ERROR"].includes(action)) {
@@ -21,6 +22,7 @@ export const useFlashMessage = () => {
         return dispatch({ type: "RESET_USER_MESSAGE_STATE" });
       }
     }, 5000);
-  };
+  }, [dispatch, hardStateResetAndClearLocalStorage]);
+  
   return flashMessage;
 };
