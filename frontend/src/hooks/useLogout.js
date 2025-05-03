@@ -1,3 +1,4 @@
+import { useCallback } from "react";
 import { useFlashMessage } from "./useFlashMessage";
 import { useHardStateResetAndClearLocalStorage } from "./useHardStateResetAndClearLocalStorage";
 
@@ -7,7 +8,7 @@ export const useLogout = () => {
   useHardStateResetAndClearLocalStorage();
   const url = process.env.REACT_APP_API || "http://localhost:6060";
 
-  const logout = async () => {
+  const logout = useCallback(async () => {
     const response = await fetch(
       `${url}/api/users/logout`,
       {
@@ -21,6 +22,7 @@ export const useLogout = () => {
       return flashMessage("ERROR", "Could not log out");
     }
     return hardStateResetAndClearLocalStorage();
-  };
+  }, [url, flashMessage, hardStateResetAndClearLocalStorage]);
+
   return { logout };
 };

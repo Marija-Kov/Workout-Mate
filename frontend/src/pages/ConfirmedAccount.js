@@ -23,7 +23,7 @@ export default function ConfirmedAccount() {
 
     return () => clearTimeout(delayRedirect);
 
-  }, []);
+  }, [confirmAccount, logout, token]);
 
   return (
     <div className="confirmed--container">

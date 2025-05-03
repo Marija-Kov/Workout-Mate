@@ -1,3 +1,4 @@
+import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { useFlashMessage } from "./useFlashMessage";
 
@@ -6,7 +7,7 @@ export const useConfirmAccount = () => {
   const flashMessage = useFlashMessage();
   const url = process.env.REACT_APP_API || "http://localhost:6060";
 
-  const confirmAccount = async (token) => {
+  const confirmAccount = useCallback(async (token) => {
     dispatch({ type: "SET_USER_LOADER" });
     if (!token) {
       return flashMessage("ERROR", "Account confirmation token not found");
@@ -19,7 +20,7 @@ export const useConfirmAccount = () => {
     if (response.ok) {
       return flashMessage("SUCCESS", json.success);
     }
-  };
+  }, [url, dispatch, flashMessage]);
 
   return { confirmAccount };
 };

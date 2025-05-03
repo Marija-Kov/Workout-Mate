@@ -1,11 +1,11 @@
-import React from "react";
+import { useRef } from "react";
 import useSendPasswordResetLink from "../hooks/useSendPasswordResetLink";
 import { useDispatch } from "react-redux";
 
 export default function ForgotPasswordForm() {
   const dispatch = useDispatch();
   const { sendPasswordResetLink } = useSendPasswordResetLink();
-  const email = React.useRef();
+  const email = useRef();
 
   const sendEmail = async (e) => {
     e.preventDefault();

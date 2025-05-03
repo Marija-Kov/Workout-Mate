@@ -1,10 +1,10 @@
-import React from "react";
+import { useRef } from "react";
 import { useSignup } from "../hooks/useSignup";
 import { useSelector } from "react-redux";
 
 const Signup = () => {
-  const email = React.useRef();
-  const password = React.useRef();
+  const email = useRef();
+  const password = useRef();
   const { signup } = useSignup();
   const loading = useSelector((state) => state.loader);
 

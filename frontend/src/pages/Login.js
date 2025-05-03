@@ -1,8 +1,8 @@
-import React, { Suspense } from "react";
+import { Suspense, lazy, useRef } from "react";
 import { useLogin } from "../hooks/useLogin";
 import { useSelector, useDispatch } from "react-redux";
 
-const ForgotPasswordForm = React.lazy(() =>
+const ForgotPasswordForm = lazy(() =>
   import("../components/ForgotPasswordForm")
 );
 
@@ -12,8 +12,8 @@ const Login = () => {
   const { isForgotPasswordFormMounted } = useSelector(
     (state) => state.toggleMountComponents
   );
-  const email = React.useRef();
-  const password = React.useRef();
+  const email = useRef();
+  const password = useRef();
   const { login } = useLogin();
 
   const handleSubmit = async (e) => {

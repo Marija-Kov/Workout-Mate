@@ -1,4 +1,4 @@
-import React from "react";
+import { useRef } from "react";
 import { Navigate } from "react-router-dom";
 import useResetPassword from "../hooks/useResetPassword";
 import { useGetTokenFromUrl } from "../hooks/useGetTokenFromUrl";
@@ -7,8 +7,8 @@ import { useSelector } from "react-redux";
 export default function ResetPassword() {
   const { success } = useSelector((state) => state.flashMessages);
   const { resetPassword } = useResetPassword();
-  const password = React.useRef();
-  const confirmPassword = React.useRef();
+  const password = useRef();
+  const confirmPassword = useRef();
   const token = useGetTokenFromUrl();
 
   const handleSubmit = async (e) => {

@@ -1,16 +1,16 @@
-import React, { memo } from "react";
+import { memo, lazy, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Login from "./pages/Login";
 import { useGetUrl } from "./hooks/useGetUrl";
 
-const Home = React.lazy(() => import("./pages/Home"));
-const Signup = React.lazy(() => import("./pages/Signup"));
-const About = React.lazy(() => import("./pages/About"));
-const ResetPassword = React.lazy(() => import("./pages/ResetPassword"));
-const ConfirmedAccount = React.lazy(() => import("./pages/ConfirmedAccount"));
-const NotFound = React.lazy(() => import("./pages/NotFound"));
+const Home = lazy(() => import("./pages/Home"));
+const Signup = lazy(() => import("./pages/Signup"));
+const About = lazy(() => import("./pages/About"));
+const ResetPassword = lazy(() => import("./pages/ResetPassword"));
+const ConfirmedAccount = lazy(() => import("./pages/ConfirmedAccount"));
+const NotFound = lazy(() => import("./pages/NotFound"));
 const MemoNavbar = memo(Navbar);
 
 function App() {
@@ -22,7 +22,7 @@ function App() {
   const dispatch = useDispatch();
   const url = useGetUrl();
 
-  React.useEffect(() => {
+  useEffect(() => {
     const service = process.env.REACT_APP_WEB_SERVICE || "localhost";
     if (!url.includes(service)) {
       return;
@@ -31,7 +31,7 @@ function App() {
       dispatch({ type: "TOGGLE_MOUNT_SPUN_DOWN_SERVER_ALERT" });
     }
     return;
-  }, []);
+  }, [dispatch, url]);
 
   return (
     <div className="App">

@@ -25,7 +25,7 @@ const Chart = () => {
 
   useEffect(() => {
     dispatch({ type: "SET_ROUTINE_BALANCE", payload: allUserWorkoutsMuscleGroups });
-  }, [allUserWorkoutsMuscleGroups]);
+  }, [allUserWorkoutsMuscleGroups, dispatch]);
 
   const data = {
     labels: [
