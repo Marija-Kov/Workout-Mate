@@ -25,7 +25,7 @@ export function genSampleWorkouts(searchFor = "", page = 1, itemsPerPage = 3) {
   const workouts = [];
   for (let i = 0; i < workoutTitles.length; ++i) {
     const workout = {
-      _id: Math.random() * 10e7,
+      _id: `w${i}`,
       title: workoutTitles[i],
       muscle_group: allWorkoutsMuscleGroups[i],
       reps: Math.floor(Math.random() * 99) + 1,

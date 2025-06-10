@@ -19,6 +19,7 @@ Workout Mate lets you be the athlete you want to be.</i>
 3. [Tools and Dependencies](#tools)
 4. [Environment variables](#environment-variables)
 5. [Author](#author)
+6. [Note on CRA to Vite, Jest to Vitest and MSW1 TO MSW2 Migration](#migration)
 
 ---
 <br>
@@ -211,6 +212,14 @@ REACT_APP_WEB_SERVICE=localhost <br>
 ## Author <a name = "author"></a>
 
 [@marija-kov](https://github.com/Marija-Kov) 
+
+## Note on CRA to Vite, Jest to Vitest and MSW1 TO MSW2 Migration <a name = "migration"></a>
+
+Everything works as expected when tested manually.
+
+A number of tests fail because runtime request handlers fail at intercepting.
+
+See comments // TODO: runtime interception not working.
 
 
 
