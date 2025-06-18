@@ -1,4 +1,4 @@
-import { memo, lazy, useEffect } from "react";
+import { lazy, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Navbar from "./components/Navbar";
@@ -11,7 +11,6 @@ const About = lazy(() => import("./pages/About"));
 const ResetPassword = lazy(() => import("./pages/ResetPassword"));
 const ConfirmedAccount = lazy(() => import("./pages/ConfirmedAccount"));
 const NotFound = lazy(() => import("./pages/NotFound"));
-const MemoNavbar = memo(Navbar);
 
 function App() {
   const user = useSelector((state) => state.user);
@@ -41,7 +40,7 @@ function App() {
           v7_startTransition: true,
         }}
       >
-        <MemoNavbar />
+        <Navbar />
         <div className="pages">
           {isSpunDownServerAlertMounted && (
             <div className="spun--down--server--alert">

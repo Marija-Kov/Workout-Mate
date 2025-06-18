@@ -1,6 +1,7 @@
-import { useEffect } from "react";
+import { useEffect, memo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Chart as ChartJS, ArcElement, Tooltip } from "chart.js";
+import { ChartPlaceholder } from "./ChartPlaceholder";
 import { Doughnut } from "react-chartjs-2";
 import CustomLegend from "./CustomLegend";
 
@@ -8,6 +9,7 @@ ChartJS.register(ArcElement, Tooltip);
 
 const Chart = () => {
   const dispatch = useDispatch();
+  const loading = useSelector((state) => state.loader);
   const workouts = useSelector((state) => state.workouts);
   const { allUserWorkoutsMuscleGroups } = workouts;
   const {
@@ -22,6 +24,8 @@ const Chart = () => {
     calf,
     forearmAndGrip,
   } = useSelector((state) => state.routineBalance);
+  const muscleGroups =
+    allUserWorkoutsMuscleGroups && allUserWorkoutsMuscleGroups.length;
 
   useEffect(() => {
     dispatch({ type: "SET_ROUTINE_BALANCE", payload: allUserWorkoutsMuscleGroups });
@@ -105,18 +109,21 @@ const Chart = () => {
   };
 
   return (
-    <div className="chart--container">
-      <h3>Routine balance (%)</h3>
-      <div className="chart">
-        <Doughnut data={data} options={options} />
-        <CustomLegend
-          labels={data.labels}
-          colors={data.datasets[0].backgroundColor}
-          percentage={data.datasets[0].data}
-        />
-      </div>
-    </div>
+    loading.chart ? <ChartPlaceholder /> :
+      muscleGroups ?
+        <div className="chart--container">
+          <h3>Routine balance (%)</h3>
+          <div className="chart">
+            <Doughnut data={data} options={options} />
+            <CustomLegend
+              labels={data.labels}
+              colors={data.datasets[0].backgroundColor}
+              percentage={data.datasets[0].data}
+            />
+          </div>
+        </div> : ""
+
   );
 };
 
-export default Chart;
+export default memo(Chart);

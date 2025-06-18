@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 const Pagination = () => {
@@ -70,4 +71,4 @@ const Pagination = () => {
   );
 };
 
-export default Pagination;
+export default memo(Pagination);

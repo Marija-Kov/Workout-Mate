@@ -1,4 +1,4 @@
-import { forwardRef, useState } from "react";
+import { forwardRef, memo, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 const Search = forwardRef((props, ref) => {
@@ -46,4 +46,4 @@ const Search = forwardRef((props, ref) => {
   );
 });
 
-export default Search;
+export default memo(Search);

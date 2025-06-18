@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import { Buffer } from "buffer";
 import { Link } from "react-router-dom";
 import UserMenu from "./UserMenu";
@@ -82,4 +82,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default memo(Navbar);

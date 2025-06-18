@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { formatDistanceToNow } from "date-fns/formatDistanceToNow";
 import useDeleteWorkout from "../hooks/useDeleteWorkout";
 import { useDispatch } from "react-redux";
@@ -53,4 +54,4 @@ const WorkoutDetails = ({
   );
 };
 
-export default WorkoutDetails;
+export default memo(WorkoutDetails);
