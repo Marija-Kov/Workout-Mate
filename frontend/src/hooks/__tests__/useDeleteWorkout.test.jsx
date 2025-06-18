@@ -70,7 +70,7 @@ describe("useDeleteWorkout()", () => {
       type: "SET_WORKOUTS",
       payload: {
         total: sample.total,
-        allUserWorkoutsMuscleGroups: sample.allWorkoutsMuscleGroups,
+        allUserWorkoutsMuscleGroups: sample.allUserWorkoutsMuscleGroups,
         workoutsChunk: mockWorkouts.slice(3, 4),
         limit: 3,
         page: 1,
@@ -92,7 +92,7 @@ describe("useDeleteWorkout()", () => {
       type: "SET_WORKOUTS",
       payload: {
         total: sample.total,
-        allUserWorkoutsMuscleGroups: sample.allWorkoutsMuscleGroups,
+        allUserWorkoutsMuscleGroups: sample.allUserWorkoutsMuscleGroups,
         workoutsChunk: mockWorkouts.slice(0, 1),
         limit: 3,
         page: 0,

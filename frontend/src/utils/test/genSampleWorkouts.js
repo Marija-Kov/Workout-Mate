@@ -12,7 +12,7 @@ export function genSampleWorkouts(searchFor = "", page = 1, itemsPerPage = 3) {
     "situps",
     "lunges",
   ];
-  const allWorkoutsMuscleGroups = [
+  const allUserWorkoutsMuscleGroups = [
     "chest",
     "forearmAndGrip",
     "chest",
@@ -27,10 +27,12 @@ export function genSampleWorkouts(searchFor = "", page = 1, itemsPerPage = 3) {
     const workout = {
       _id: `w${i}`,
       title: workoutTitles[i],
-      muscle_group: allWorkoutsMuscleGroups[i],
+      muscle_group: allUserWorkoutsMuscleGroups[i],
       reps: Math.floor(Math.random() * 99) + 1,
       load: Math.floor(Math.random() * 50),
       user_id: "userid",
+      createdAt: "2023-04-10T13:01:15.208+00:00",
+      updatedAt: "2023-04-10T13:01:15.208+00:00",
     };
     workouts.unshift(workout);
     dispatch({ type: "CREATE_WORKOUT", payload: workout });
@@ -45,7 +47,8 @@ export function genSampleWorkouts(searchFor = "", page = 1, itemsPerPage = 3) {
     return {
       total: 0,
       searchResults,
-      allWorkoutsMuscleGroups,
+      limit: itemsPerPage,
+      allUserWorkoutsMuscleGroups,
       workoutsChunk: [],
       noWorkoutsByQuery,
     };
@@ -59,7 +62,8 @@ export function genSampleWorkouts(searchFor = "", page = 1, itemsPerPage = 3) {
   return {
     total: searchResults.length,
     searchResults,
-    allWorkoutsMuscleGroups,
+    limit: itemsPerPage,
+    allUserWorkoutsMuscleGroups,
     workoutsChunk,
     noWorkoutsByQuery,
   };
