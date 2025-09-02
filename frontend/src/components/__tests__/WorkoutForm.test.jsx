@@ -211,7 +211,7 @@ describe("<WorkoutForm/>", () => {
   it("should signal input error when load value is too large", async () => {
     server.use(
       http.post(
-        `${import.meta.env.REACT_APP_API}/api/workouts`,
+        `${import.meta.env.VITE_API}/api/workouts`,
         () => {
           return new HttpResponse.json({
             error: "Load value too large",
@@ -248,7 +248,7 @@ describe("<WorkoutForm/>", () => {
     // TODO: runtime interception not working
     server.use(
       http.post(
-        `${import.meta.env.REACT_APP_API}/api/workouts`,
+        `${import.meta.env.VITE_API}/api/workouts`,
         () => {
           return new HttpResponse.json({
             error: "Not authorized",

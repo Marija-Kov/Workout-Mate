@@ -118,7 +118,7 @@ describe("<UserSettings/>", () => {
     // TODO: runtime interception not working
     server.use(
       http.patch(
-        `${import.meta.env.REACT_APP_API}/api/users`,
+        `${import.meta.env.VITE_API}/api/users`,
         () => {
           return new HttpResponse.json({
             error: "Something went wrong",
@@ -147,7 +147,7 @@ describe("<UserSettings/>", () => {
     // TODO: runtime interception not working
     server.use(
       http.patch(
-        `${import.meta.env.REACT_APP_API}/api/users`,
+        `${import.meta.env.VITE_API}/api/users`,
         () => {
           return new HttpResponse.json({
             error: "Not authorized",

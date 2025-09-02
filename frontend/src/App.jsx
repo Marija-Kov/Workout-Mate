@@ -22,7 +22,7 @@ function App() {
   const url = useGetUrl();
 
   useEffect(() => {
-    const service = import.meta.env.REACT_APP_WEB_SERVICE || "localhost";
+    const service = import.meta.env.VITE_WEB_SERVICE || "localhost";
     if (!url.includes(service)) {
       return;
     }

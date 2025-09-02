@@ -7,7 +7,7 @@ export function useDownloadData() {
   const dispatch = useDispatch();
   const flashMessage = useFlashMessage();
   const { generateJsonFile, downloadJsonFile } = useGetJsonFile();
-  const url = import.meta.env.REACT_APP_API || "http://localhost:6060";
+  const url = import.meta.env.VITE_API || "http://localhost:6060";
 
   const downloadData = async () => {
     dispatch({ type: "SET_USER_LOADER" });

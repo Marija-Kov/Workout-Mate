@@ -6,7 +6,7 @@ export const useLogout = () => {
   const flashMessage = useFlashMessage();
   const { hardStateResetAndClearLocalStorage } =
   useHardStateResetAndClearLocalStorage();
-  const url = import.meta.env.REACT_APP_API || "http://localhost:6060";
+  const url = import.meta.env.VITE_API || "http://localhost:6060";
 
   const logout = useCallback(async () => {
     const response = await fetch(

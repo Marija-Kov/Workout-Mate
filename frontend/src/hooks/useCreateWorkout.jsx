@@ -7,7 +7,7 @@ export const useCreateWorkout = () => {
   const user = useSelector((state) => state.user);
   const workouts = useSelector((state) => state.workouts);
   const { allUserWorkoutsMuscleGroups } = workouts;
-  const url = import.meta.env.REACT_APP_API || "http://localhost:6060";
+  const url = import.meta.env.VITE_API || "http://localhost:6060";
 
   const createWorkout = async (workout) => {
     if (!user) {

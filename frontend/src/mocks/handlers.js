@@ -1,5 +1,5 @@
 import { http, HttpResponse } from "msw";
-const url = import.meta.env.REACT_APP_API || "http://localhost:6060";
+const url = import.meta.env.VITE_API || "http://localhost:6060";
 
 export const handlers = [
   /* User routes */

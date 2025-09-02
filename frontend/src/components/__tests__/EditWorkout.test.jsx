@@ -123,7 +123,7 @@ describe("<EditWorkout/>", () => {
   it("should respond with error message if authentication token expired and user attempts to submit", async () => {
     server.use(
       http.patch(
-        `${import.meta.env.REACT_APP_API}/api/workouts/*`,
+        `${import.meta.env.VITE_API}/api/workouts/*`,
         () => {
           return new HttpResponse.json({ error: "Not authorized" }, { status: 401 })
         }
@@ -157,7 +157,7 @@ describe("<EditWorkout/>", () => {
   it("should signal input error when user attempts to submit form with too long title", async () => {
     server.use(
       http.patch(
-        `${import.meta.env.REACT_APP_API}/api/workouts/*`,
+        `${import.meta.env.VITE_API}/api/workouts/*`,
         () => {
           return new HttpResponse.json({
             error: "Too long title - max 30 characters",
@@ -190,7 +190,7 @@ describe("<EditWorkout/>", () => {
   it("should signal input error when user attempts to submit form with title containing non-alphabetic characters", async () => {
     server.use(
       http.patch(
-        `${import.meta.env.REACT_APP_API}/api/workouts/*`,
+        `${import.meta.env.VITE_API}/api/workouts/*`,
         () => {
           return new HttpResponse.json({
             error: "Title may contain only letters",
@@ -220,7 +220,7 @@ describe("<EditWorkout/>", () => {
   it("should signal input error when user attempts to submit form with too large reps number", async () => {
     server.use(
       http.patch(
-        `${import.meta.env.REACT_APP_API}/api/workouts/*`,
+        `${import.meta.env.VITE_API}/api/workouts/*`,
         () => {
           return new HttpResponse.json({
             error: "Reps value too large",
@@ -250,7 +250,7 @@ describe("<EditWorkout/>", () => {
   it("should signal input error when user attempts to submit form with too large load number", async () => {
     server.use(
       http.patch(
-        `${import.meta.env.REACT_APP_API}/api/workouts/*`,
+        `${import.meta.env.VITE_API}/api/workouts/*`,
         () => {
           return new HttpResponse.json({
             error: "Load value too large",
@@ -281,7 +281,7 @@ describe("<EditWorkout/>", () => {
     // This is handled in handlers.js!
     // server.use(
     //   http.patch(
-    //     `${import.meta.env.REACT_APP_API}/api/workouts/*`,
+    //     `${import.meta.env.VITE_API}/api/workouts/*`,
     //     () => {
     //       return new HttpResponse(null, { status: 200 }).json({
     //         title: "deadlifts",

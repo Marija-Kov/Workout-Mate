@@ -4,7 +4,7 @@ import { useFlashMessage } from "./useFlashMessage";
 export default function useResetPassword() {
   const dispatch = useDispatch();
   const flashMessage = useFlashMessage();
-  const url = import.meta.env.REACT_APP_API || "http://localhost:6060";
+  const url = import.meta.env.VITE_API || "http://localhost:6060";
 
   const resetPassword = async (token, password, confirmPassword) => {
     dispatch({ type: "SET_USER_LOADER" });

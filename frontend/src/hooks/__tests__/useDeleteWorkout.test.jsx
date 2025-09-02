@@ -22,7 +22,7 @@ beforeAll(() => {
     username: undefined,
     profileImg: undefined,
   };
-  url = import.meta.env.REACT_APP_API || "http://localhost:6060";
+  url = import.meta.env.VITE_API || "http://localhost:6060";
 });
 
 beforeEach(() => {

@@ -113,7 +113,7 @@ describe("<Signup />", () => {
     // TODO: runtime interception not working
     server.use(
       http.post(
-        `${import.meta.env.REACT_APP_API}/api/users/signup`,
+        `${import.meta.env.VITE_API}/api/users/signup`,
         () => {
           return new HttpResponse.json({
             error: "Email already in use",

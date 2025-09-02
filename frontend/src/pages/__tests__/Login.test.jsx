@@ -84,7 +84,7 @@ describe("<Login />", () => {
   it("should render error element given that input value is missing", async () => {
     server.use(
       http.post(
-        `${import.meta.env.REACT_APP_API}/api/users/login`,
+        `${import.meta.env.VITE_API}/api/users/login`,
         () => {
           return new HttpResponse.json({
             error: "All fields must be filled",
@@ -110,7 +110,7 @@ describe("<Login />", () => {
   it("should render error element given that email is invalid", async () => {
     // server.use(
     //   http.post(
-    //     `${import.meta.env.REACT_APP_API}/api/users/login`,
+    //     `${import.meta.env.VITE_API}/api/users/login`,
     //     () => {
     //       return new HttpResponse.json({
     //         error: "Please enter valid email address",
@@ -140,7 +140,7 @@ describe("<Login />", () => {
   it("should render error element given that email is not registered", async () => {
     server.use(
       http.post(
-        `${import.meta.env.REACT_APP_API}/api/users/login`,
+        `${import.meta.env.VITE_API}/api/users/login`,
         () => {
           return new HttpResponse.json({
             error: "That email does not exist in our database",
@@ -170,7 +170,7 @@ describe("<Login />", () => {
   it("should render error element given that password is wrong", async () => {
     server.use(
       http.post(
-        `${import.meta.env.REACT_APP_API}/api/users/login`,
+        `${import.meta.env.VITE_API}/api/users/login`,
         () => {
           return HttpResponse.json({
             error: "Wrong password",

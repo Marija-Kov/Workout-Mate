@@ -4,7 +4,7 @@ import { useFlashMessage } from "./useFlashMessage";
 export const useSignup = () => {
   const dispatch = useDispatch();
   const flashMessage = useFlashMessage();
-  const url = import.meta.env.REACT_APP_API || "http://localhost:6060";
+  const url = import.meta.env.VITE_API || "http://localhost:6060";
 
   const signup = async (credentials) => {
     dispatch({ type: "SET_USER_LOADER" });

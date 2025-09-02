@@ -11,7 +11,7 @@ beforeAll(() => {
   wrapper = ({ children }) => {
     return <Provider store={store}>{children}</Provider>;
   };
-  url = import.meta.env.REACT_APP_API || "http://localhost:6060";
+  url = import.meta.env.VITE_API || "http://localhost:6060";
 });
 
 afterAll(() => {

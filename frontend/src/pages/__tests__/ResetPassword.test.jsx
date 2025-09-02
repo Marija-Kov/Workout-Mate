@@ -61,7 +61,7 @@ describe("<ResetPassword />", () => {
   it("should render error element given that passwords are not matching", async () => {
     server.use(
       http.patch(
-        `${import.meta.env.REACT_APP_API}/api/reset-password/*`,
+        `${import.meta.env.VITE_API}/api/reset-password/*`,
         () => {
           return new HttpResponse.json({
             error: "Passwords must match",
@@ -98,7 +98,7 @@ describe("<ResetPassword />", () => {
   it("should render error element given that new password is not strong enough", async () => {
     server.use(
       http.patch(
-        `${import.meta.env.REACT_APP_API}/api/reset-password/*`,
+        `${import.meta.env.VITE_API}/api/reset-password/*`,
         () => {
           return new HttpResponse.json({
             error: "Password not strong enough",
@@ -135,7 +135,7 @@ describe("<ResetPassword />", () => {
   it("should render error element given that password reset token has expired", async () => {
     server.use(
       http.patch(
-        `${import.meta.env.REACT_APP_API}/api/reset-password/*`,
+        `${import.meta.env.VITE_API}/api/reset-password/*`,
         () => {
           return new HttpResponse.json({
             error: "Reset password token not found",

@@ -8,7 +8,7 @@ export default function useDeleteWorkout() {
   const workouts = useSelector((state) => state.workouts);
   const page = useSelector((state) => state.page);
   const { workoutsChunk, allUserWorkoutsMuscleGroups, total } = workouts;
-  const url = import.meta.env.REACT_APP_API || "http://localhost:6060";
+  const url = import.meta.env.VITE_API || "http://localhost:6060";
 
   const deleteWorkout = async (id) => {
     if (!user) {

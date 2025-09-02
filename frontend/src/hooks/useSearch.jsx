@@ -6,7 +6,7 @@ export const useSearch = () => {
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const flashMessage = useFlashMessage();
-  const url = import.meta.env.REACT_APP_API || "http://localhost:6060";
+  const url = import.meta.env.VITE_API || "http://localhost:6060";
 
   const search = useCallback(async (query, page) => {
     dispatch({ type: "SET_WORKOUTS_LOADER" });
