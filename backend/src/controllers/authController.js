@@ -49,6 +49,9 @@ module.exports.logout = async (req, res) => {
   return res
     .status(200)
     .cookie("token", "logout", {
+      httpOnly: true,
+      sameSite: "none",
+      secure: true,
       maxAge: 0,
     })
     .json({ loggedOut: true });
