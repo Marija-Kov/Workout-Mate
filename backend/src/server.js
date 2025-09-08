@@ -10,7 +10,7 @@ const cookieParser = require("cookie-parser");
 const { prototype } = require("nodemailer/lib/dkim");
 
 const app = express();
-app.set("trust proxy", 1);
+app.set("trust proxy", 2);
 app.use(cookieParser());
 app.use(
   cors({
