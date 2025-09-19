@@ -10,14 +10,14 @@ export const handlers = [
       return HttpResponse.json({
         success:
           "Account created and pending confirmation. Please check your inbox.",
-      }, { status: 200 })
+      }, { status: 200 });
     }
   ),
 
   http.get(`${url}/api/users/confirmaccount/*`, () => {
     return HttpResponse.json({
       success: "Account confirmed, you may log in",
-    }, { status: 200 })
+    }, { status: 200 });
   }),
 
   http.post(
@@ -26,7 +26,7 @@ export const handlers = [
       return HttpResponse.json({
         username: undefined,
         profileImg: undefined,
-      }, { status: 200 })
+      }, { status: 200 });
     }
   ),
 
@@ -37,26 +37,26 @@ export const handlers = [
         profileImg: "profileImgString",
       },
       success: "Profile updated",
-    }, { status: 200 })
+    }, { status: 200 });
   }),
 
   http.get(`${url}/api/users/download`, () => {
     return HttpResponse.json({
       user: {},
       workouts: [],
-    }, { status: 200 })
+    }, { status: 200 });
   }),
 
   http.delete(`${url}/api/users/*`, () => {
     return HttpResponse.json({
       success: "Account deleted successfully",
-    }, { status: 200 })
+    }, { status: 200 });
   }),
 
   http.post(`${url}/api/users/logout`, () => {
     return HttpResponse.json({
       loggedOut: true,
-    }, { status: 200 })
+    }, { status: 200 });
   }),
 
   /* Workouts routes */
@@ -66,13 +66,13 @@ export const handlers = [
       title: "squats",
       reps: 30,
       load: 22,
-    })
+    });
   }),
 
   http.delete(`${url}/api/workouts`, () => {
     return HttpResponse.json({
       success: "all workouts deleted",
-    }, { status: 200 })
+    }, { status: 200 });
   }),
 
   http.delete(
@@ -80,14 +80,14 @@ export const handlers = [
     () => {
       return HttpResponse.json({
         workout: {
-          _id: 'w2',
-          title: 'situps',
-          muscle_group: 'ab',
+          _id: "w2",
+          title: "situps",
+          muscle_group: "ab",
           reps: 84,
           load: 42,
-          user_id: 'userid'
+          user_id: "userid"
         },
-      }, { status: 200 })
+      }, { status: 200 });
     }
   ),
 
@@ -97,7 +97,7 @@ export const handlers = [
       muscle_group: "leg",
       reps: 20,
       load: 15,
-    }, { status: 200 })
+    }, { status: 200 });
   }),
 
   http.get(`${url}/api/workouts/*`, () => {
@@ -123,7 +123,7 @@ export const handlers = [
       total: 2,
       limit: 3,
       noWorkoutsByQuery: false,
-    }, { status: 200 })
+    }, { status: 200 });
   }),
 
   /* Password reset routes */
@@ -133,7 +133,7 @@ export const handlers = [
     () => {
       return HttpResponse.json({
         success: "Reset link sent to inbox",
-      }, { status: 200 })
+      }, { status: 200 });
     }
   ),
 
@@ -142,7 +142,7 @@ export const handlers = [
     () => {
       return HttpResponse.json({
         success: "Password reset successfully",
-      }, { status: 200 })
+      }, { status: 200 });
     }
   ),
 ];
