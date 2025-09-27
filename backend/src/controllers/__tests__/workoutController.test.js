@@ -85,6 +85,23 @@ describe("workoutController", () => {
       expect(res.body.error).toMatch(/title may contain only letters/i);
     });
 
+    it("should respond with error if reps is not a number/numerical string", async () => {
+      const { token } = await mockUser("logged-in", agent);
+      const workout = {
+        title: "Pullups",
+        muscle_group: "forearm and grip",
+        reps: "abc",
+        load: 20,
+      };
+      const res = await agent
+        .post("/api/workouts/")
+        .send(workout)
+        .set("Cookie", `token=${token}`);
+      expect(res.status).toBe(422);
+      expect(res.body.error).toBeTruthy();
+      expect(res.body.error).toMatch(/reps must be a number/i);
+    });
+
     it("should respond with error if reps input value is too large", async () => {
       const { token } = await mockUser("logged-in", agent);
       const workout = {
@@ -100,6 +117,23 @@ describe("workoutController", () => {
       expect(res.status).toBe(422);
       expect(res.body.error).toBeTruthy();
       expect(res.body.error).toMatch(/reps value too large/i);
+    });
+
+    it("should respond with error if load is not a number/numerical string", async () => {
+      const { token } = await mockUser("logged-in", agent);
+      const workout = {
+        title: "Pullups",
+        muscle_group: "forearm and grip",
+        reps: 20,
+        load: "abc",
+      };
+      const res = await agent
+        .post("/api/workouts/")
+        .send(workout)
+        .set("Cookie", `token=${token}`);
+      expect(res.status).toBe(422);
+      expect(res.body.error).toBeTruthy();
+      expect(res.body.error).toMatch(/load must be a number/i);
     });
 
     it("should respond with error if load input value is too large", async () => {
@@ -307,6 +341,20 @@ describe("workoutController", () => {
       expect(res.body.error).toMatch(/title may contain only letters/i);
     });
 
+    it("should respond with error if there was an attempt to update with reps value that is not a number/numerical string", async () => {
+      const { token } = await mockUser("logged-in", agent);
+      const workout = {
+        reps: "abc",
+      };
+      const res = await agent
+        .post("/api/workouts/")
+        .send(workout)
+        .set("Cookie", `token=${token}`);
+      expect(res.status).toBe(422);
+      expect(res.body.error).toBeTruthy();
+      expect(res.body.error).toMatch(/reps must be a number/i);
+    });
+
     it("should respond with error if there was an attempt to update with reps value that is too large", async () => {
       const { userLoggedIn, workouts } = await mockUser("has-workouts", agent);
       const { token } = userLoggedIn;
@@ -323,6 +371,20 @@ describe("workoutController", () => {
       expect(res.status).toBe(422);
       expect(res.body.error).toBeTruthy();
       expect(res.body.error).toMatch(/reps value too large/i);
+    });
+
+    it("should respond with error if there was an attempt to update with load value that is not a number/numerical string", async () => {
+      const { token } = await mockUser("logged-in", agent);
+      const workout = {
+        load: "abc",
+      };
+      const res = await agent
+        .post("/api/workouts/")
+        .send(workout)
+        .set("Cookie", `token=${token}`);
+      expect(res.status).toBe(422);
+      expect(res.body.error).toBeTruthy();
+      expect(res.body.error).toMatch(/load must be a number/i);
     });
 
     it("should respond with error if there was an attempt to update with load value that is too large", async () => {

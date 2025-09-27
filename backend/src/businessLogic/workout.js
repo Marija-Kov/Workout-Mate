@@ -53,10 +53,16 @@ const addWorkout = async (title, muscleGroup, reps, load, user_id) => {
   if (title && title.length > 30) {
     ApiError.badInput("Too long title - max 30 characters");
   }
-  if (reps && reps > 9999) {
+  if (reps && Number(reps) != reps) {
+    ApiError.badInput("Reps must be a number");
+  }
+  if (reps > 9999) {
     ApiError.badInput("Reps value too large");
   }
-  if (load && load > 9999) {
+  if (load && Number(load) != load) {
+    ApiError.badInput("Load must be a number");
+  }
+  if (load > 9999) {
     ApiError.badInput("Load value too large");
   }
   const allWorkoutsByUser = await Workout.getAll(user_id);
@@ -108,10 +114,16 @@ const updateWorkout = async (id, body) => {
   if (title && title.length > 30) {
     ApiError.badInput("Too long title - max 30 characters");
   }
-  if (reps && reps > 9999) {
+  if (reps && Number(reps) != reps) {
+    ApiError.badInput("Reps must be a number");
+  }
+  if (reps > 9999) {
     ApiError.badInput("Reps value too large");
   }
-  if (load && load > 9999) {
+  if (load && Number(load) != load) {
+    ApiError.badInput("Load must be a number");
+  }
+  if (load > 9999) {
     ApiError.badInput("Load value too large");
   }
   const workout = await Workout.update(id, body);
