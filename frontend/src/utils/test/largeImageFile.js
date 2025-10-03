@@ -32,13 +32,13 @@ export function readLargeFile() {
     const buffer = Buffer.alloc(bufferSize);
     fs.readSync(fileHandle, buffer, 0, bufferSize, 0);
     fileContents = buffer.toString();
+    return fileContents;
   } catch (error) {
     console.log(error);
   } finally {
     if (fileHandle) {
       fs.closeSync(fileHandle);
     }
-    return fileContents;
   }
 }
 

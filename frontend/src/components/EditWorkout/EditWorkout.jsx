@@ -8,13 +8,8 @@ const EditWorkout = () => {
   const { prepopulateEditWorkoutForm } = useSelector(
     (state) => state.toggleMountComponents
   );
-  const {
-    id,
-    prevTitle,
-    prevMuscleGroup,
-    prevReps,
-    prevLoad,
-  } = prepopulateEditWorkoutForm;
+  const { id, prevTitle, prevMuscleGroup, prevReps, prevLoad } =
+    prepopulateEditWorkoutForm;
   const title = useRef();
   const muscle_group = useRef();
   const reps = useRef();
@@ -116,6 +111,6 @@ const EditWorkout = () => {
       </form>
     </div>
   );
-}
+};
 
-export default EditWorkout
+export default EditWorkout;

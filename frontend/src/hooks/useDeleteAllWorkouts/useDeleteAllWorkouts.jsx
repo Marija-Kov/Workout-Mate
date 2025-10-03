@@ -29,4 +29,4 @@ const useDeleteAllWorkouts = () => {
   return { deleteAllWorkouts };
 };
 
-export default useDeleteAllWorkouts
+export default useDeleteAllWorkouts;

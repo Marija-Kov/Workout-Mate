@@ -53,6 +53,6 @@ const useDeleteWorkout = () => {
   };
 
   return { deleteWorkout };
-}
+};
 
-export default useDeleteWorkout
+export default useDeleteWorkout;

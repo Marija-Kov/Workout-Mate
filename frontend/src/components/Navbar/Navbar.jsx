@@ -3,7 +3,7 @@ import { Buffer } from "buffer";
 import { Link } from "react-router-dom";
 import { UserMenu, UserSettings } from "../";
 import { useSelector, useDispatch } from "react-redux";
-import defaultAvatar from '../../assets/default-avatar.png';
+import defaultAvatar from "../../assets/default-avatar.png";
 
 const Navbar = () => {
   const dispatch = useDispatch();

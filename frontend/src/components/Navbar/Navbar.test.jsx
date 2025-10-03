@@ -30,10 +30,10 @@ describe("<Navbar />", () => {
     render(
       <Provider store={store}>
         <BrowserRouter
-           future={{
+          future={{
             v7_relativeSplatPath: true,
             v7_startTransition: true,
-           }}
+          }}
         >
           <Navbar />
         </BrowserRouter>
@@ -113,9 +113,7 @@ describe("<Navbar />", () => {
     );
     const helloUser = screen.getByLabelText("open user menu");
     await user.click(helloUser);
-    const openUserSettings = await screen.findByText(
-      /settings/i
-    );
+    const openUserSettings = await screen.findByText(/settings/i);
     const logOut = await screen.findByText(/log out/i);
     expect(openUserSettings).toBeInTheDocument();
     expect(logOut).toBeInTheDocument();
@@ -138,9 +136,7 @@ describe("<Navbar />", () => {
       </Provider>
     );
     await dispatch({ type: "TOGGLE_MOUNT_USER_SETTINGS_FORM" });
-    const userSettings = await screen.findByText(
-      /profile settings/i
-    );
+    const userSettings = await screen.findByText(/profile settings/i);
     expect(userSettings).toBeInTheDocument();
     dispatch({ type: "LOGOUT" });
   });

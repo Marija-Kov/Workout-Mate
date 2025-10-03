@@ -46,16 +46,16 @@ describe("useSearch()", () => {
   });
 
   it("should set error if something goes wrong on the server side", async () => {
-   // TODO: runtime interception not working
+    // TODO: runtime interception not working
     server.use(
-      http.get(
-        `${url}/api/workouts/*`,
-        () => {
-          return HttpResponse.json({
+      http.get(`${url}/api/workouts/*`, () => {
+        return HttpResponse.json(
+          {
             error: "Something went wrong",
-          }, { status: 500 })
-        }
-      )
+          },
+          { status: 500 }
+        );
+      })
     );
     const mockWorkout = {
       id: "mockId",
@@ -107,8 +107,6 @@ describe("useSearch()", () => {
     const { result } = renderHook(useSearch, { wrapper });
     await result.current.search(mockWorkouts[1].title.slice(0, 1), 0);
     state = store.getState();
-    expect(state.workouts.workoutsChunk[0].title).toBe(
-      mockWorkouts[0].title
-    );
+    expect(state.workouts.workoutsChunk[0].title).toBe(mockWorkouts[0].title);
   });
 });

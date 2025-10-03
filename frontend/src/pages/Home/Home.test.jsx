@@ -1,10 +1,18 @@
-import { describe, it, expect, vi } from 'vitest';
-import { render, screen, act } from "@testing-library/react";
-import { forwardRef } from "react";
+import { describe, it, expect, vi } from "vitest";
+import { render, screen } from "@testing-library/react";
 import user from "@testing-library/user-event";
 import { genSampleWorkouts } from "../../utils/test/genSampleWorkouts";
 import Home from "../pages";
-import { Search, Chart, ChartPlaceholder, Pagination, WorkoutDetails, WorkoutForm, EditWorkout, WorkoutsPlaceholder } from "../../components";
+import {
+  Search,
+  Chart,
+  ChartPlaceholder,
+  Pagination,
+  WorkoutDetails,
+  WorkoutForm,
+  EditWorkout,
+  WorkoutsPlaceholder,
+} from "../../components";
 import { Provider } from "react-redux";
 import store from "../../redux/store";
 
@@ -29,7 +37,7 @@ vi.mock("../../hooks/useSearch", () => ({
 }));
 
 afterEach(() => {
-  dispatch({ type: "RESET_WORKOUTS_STATE" });
+  store.dispatch({ type: "RESET_WORKOUTS_STATE" });
 });
 
 afterAll(() => {
@@ -59,16 +67,16 @@ describe("<Home />", () => {
       </Provider>
     );
     store.dispatch({
-        type: "SET_WORKOUTS",
-        payload: {
-          total: 0,
-          limit: 3,
-          allUserWorkoutsMuscleGroups: [],
-          workoutsChunk: [],
-          pageSpread: [1],
-          noWorkoutsByQuery: false,
-        },
-      });
+      type: "SET_WORKOUTS",
+      payload: {
+        total: 0,
+        limit: 3,
+        allUserWorkoutsMuscleGroups: [],
+        workoutsChunk: [],
+        pageSpread: [1],
+        noWorkoutsByQuery: false,
+      },
+    });
     const addWorkoutBtn = await screen.findByText(/buff it up/i);
     expect(addWorkoutBtn).toBeInTheDocument();
     expect(addWorkoutBtn).toHaveClass("no--workouts--yet");
@@ -98,16 +106,16 @@ describe("<Home />", () => {
       </Provider>
     );
     store.dispatch({
-        type: "SET_WORKOUTS",
-        payload: {
-          total: 0,
-          limit: 3,
-          allUserWorkoutsMuscleGroups: ["leg", "ab"],
-          workoutsChunk: [],
-          pageSpread: [1],
-          noWorkoutsByQuery: "no workouts found by query",
-        },
-      });
+      type: "SET_WORKOUTS",
+      payload: {
+        total: 0,
+        limit: 3,
+        allUserWorkoutsMuscleGroups: ["leg", "ab"],
+        workoutsChunk: [],
+        pageSpread: [1],
+        noWorkoutsByQuery: "no workouts found by query",
+      },
+    });
     const noWorkoutsMessage = await screen.findByText(
       /no workouts found by query/i
     );
@@ -123,16 +131,16 @@ describe("<Home />", () => {
       </Provider>
     );
     store.dispatch({
-        type: "SET_WORKOUTS",
-        payload: {
-          total: 0,
-          limit: 3,
-          allUserWorkoutsMuscleGroups: [],
-          workoutsChunk: [],
-          pageSpread: [1],
-          noWorkoutsByQuery: false,
-        },
-      });
+      type: "SET_WORKOUTS",
+      payload: {
+        total: 0,
+        limit: 3,
+        allUserWorkoutsMuscleGroups: [],
+        workoutsChunk: [],
+        pageSpread: [1],
+        noWorkoutsByQuery: false,
+      },
+    });
     const addWorkoutBtn = await screen.findByText(/buff it up/i);
     await user.click(addWorkoutBtn);
     expect(WorkoutForm).toHaveBeenCalled();

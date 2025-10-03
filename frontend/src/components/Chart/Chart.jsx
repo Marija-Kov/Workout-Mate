@@ -27,7 +27,10 @@ const Chart = () => {
     allUserWorkoutsMuscleGroups && allUserWorkoutsMuscleGroups.length;
 
   useEffect(() => {
-    dispatch({ type: "SET_ROUTINE_BALANCE", payload: allUserWorkoutsMuscleGroups });
+    dispatch({
+      type: "SET_ROUTINE_BALANCE",
+      payload: allUserWorkoutsMuscleGroups,
+    });
   }, [allUserWorkoutsMuscleGroups, dispatch]);
 
   const data = {
@@ -107,21 +110,22 @@ const Chart = () => {
     },
   };
 
-  return (
-    loading.chart ? <ChartPlaceholder /> :
-      muscleGroups ?
-        <div className="chart--container">
-          <h3>Routine balance (%)</h3>
-          <div className="chart">
-            <Doughnut data={data} options={options} />
-            <CustomLegend
-              labels={data.labels}
-              colors={data.datasets[0].backgroundColor}
-              percentage={data.datasets[0].data}
-            />
-          </div>
-        </div> : ""
-
+  return loading.chart ? (
+    <ChartPlaceholder />
+  ) : muscleGroups ? (
+    <div className="chart--container">
+      <h3>Routine balance (%)</h3>
+      <div className="chart">
+        <Doughnut data={data} options={options} />
+        <CustomLegend
+          labels={data.labels}
+          colors={data.datasets[0].backgroundColor}
+          percentage={data.datasets[0].data}
+        />
+      </div>
+    </div>
+  ) : (
+    ""
   );
 };
 

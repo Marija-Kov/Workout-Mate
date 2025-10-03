@@ -1,3 +1,4 @@
+import { describe, it, expect, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import user from "@testing-library/user-event";
 import "@testing-library/jest-dom";
@@ -83,14 +84,14 @@ describe("<Login />", () => {
 
   it("should render error element given that input value is missing", async () => {
     server.use(
-      http.post(
-        `${import.meta.env.VITE_API}/api/users/login`,
-        () => {
-          return new HttpResponse.json({
+      http.post(`${import.meta.env.VITE_API}/api/users/login`, () => {
+        return new HttpResponse.json(
+          {
             error: "All fields must be filled",
-          }, { status: 422 })
-        }
-      )
+          },
+          { status: 422 }
+        );
+      })
     );
     user.setup();
     render(
@@ -139,14 +140,14 @@ describe("<Login />", () => {
 
   it("should render error element given that email is not registered", async () => {
     server.use(
-      http.post(
-        `${import.meta.env.VITE_API}/api/users/login`,
-        () => {
-          return new HttpResponse.json({
+      http.post(`${import.meta.env.VITE_API}/api/users/login`, () => {
+        return new HttpResponse.json(
+          {
             error: "That email does not exist in our database",
-          }, { status: 422 })
-        }
-      )
+          },
+          { status: 422 }
+        );
+      })
     );
     user.setup();
     render(
@@ -169,14 +170,14 @@ describe("<Login />", () => {
 
   it("should render error element given that password is wrong", async () => {
     server.use(
-      http.post(
-        `${import.meta.env.VITE_API}/api/users/login`,
-        () => {
-          return HttpResponse.json({
+      http.post(`${import.meta.env.VITE_API}/api/users/login`, () => {
+        return HttpResponse.json(
+          {
             error: "Wrong password",
-          }, { status: 422 })
-        }
-      )
+          },
+          { status: 422 }
+        );
+      })
     );
     user.setup();
     render(

@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi } from "vitest";
 import { http, HttpResponse } from "msw";
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
@@ -55,12 +55,15 @@ describe("<ConfirmedAccount />", () => {
 
   it("should render error message given that confirmation token wasn't found or is expired", async () => {
     server.use(
-      http.get(`${url}/api/users/confirmaccount/*`, () => {
-        return HttpResponse.json({
-          error: "Confirmation token not found",
-        }, { status: 404 })
-      }),
-    )
+      http.get("http://localhost:6060/api/users/confirmaccount/*", () => {
+        return HttpResponse.json(
+          {
+            error: "Confirmation token not found",
+          },
+          { status: 404 }
+        );
+      })
+    );
     render(
       <Provider store={store}>
         <BrowserRouter

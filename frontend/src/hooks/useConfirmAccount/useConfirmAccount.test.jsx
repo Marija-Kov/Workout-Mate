@@ -32,9 +32,12 @@ describe("useConfirmAccount()", () => {
       http.get(
         `${url}/api/users/confirmaccount/:accountConfirmationToken`,
         () => {
-          return HttpResponse.json({
-            error: "Invalid account confirmation token",
-          }, { status: 404 })
+          return HttpResponse.json(
+            {
+              error: "Invalid account confirmation token",
+            },
+            { status: 404 }
+          );
         }
       )
     );
@@ -65,8 +68,6 @@ describe("useConfirmAccount()", () => {
     await result.current.confirmAccount(validToken);
     let state = store.getState();
     expect(state.flashMessages.success).toBeTruthy();
-    expect(state.flashMessages.success).toMatch(
-      /account confirmed/i
-    );
+    expect(state.flashMessages.success).toMatch(/account confirmed/i);
   });
 });

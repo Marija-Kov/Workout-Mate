@@ -71,6 +71,6 @@ const useEditWorkout = () => {
   };
 
   return { editWorkout };
-}
+};
 
-export default useEditWorkout
+export default useEditWorkout;

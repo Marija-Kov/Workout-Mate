@@ -33,6 +33,6 @@ const useSendPasswordResetLink = () => {
   };
 
   return { sendPasswordResetLink };
-}
+};
 
-export default useSendPasswordResetLink
+export default useSendPasswordResetLink;

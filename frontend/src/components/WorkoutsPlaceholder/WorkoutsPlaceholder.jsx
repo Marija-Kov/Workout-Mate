@@ -10,4 +10,4 @@ const WorkoutsPlaceholder = () => {
   );
 };
 
-export default WorkoutsPlaceholder
+export default WorkoutsPlaceholder;

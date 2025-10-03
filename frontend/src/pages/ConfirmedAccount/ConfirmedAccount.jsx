@@ -20,7 +20,6 @@ const ConfirmedAccount = () => {
     }, 300);
 
     return () => clearTimeout(delayRedirect);
-
   }, [confirmAccount, logout, token]);
 
   return (
@@ -28,6 +27,6 @@ const ConfirmedAccount = () => {
       {redirect && <Navigate to="/login" />}
     </div>
   );
-}
+};
 
-export default ConfirmedAccount
+export default ConfirmedAccount;

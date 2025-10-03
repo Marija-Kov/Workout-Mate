@@ -11,7 +11,7 @@ const init = {
 
 export const workoutReducer = (state = init, action) => {
   switch (action.type) {
-    case a.SET_WORKOUTS:
+    case a.SET_WORKOUTS: {
       /*
        When pages are flipped and when search query is typed, routine balance stays the same
        which can be proven by comparing strings of joined muscle groups of prev and next state.
@@ -33,7 +33,8 @@ export const workoutReducer = (state = init, action) => {
             total: action.payload.total,
           }
         : action.payload;
-    case a.CREATE_WORKOUT:
+    }
+    case a.CREATE_WORKOUT: {
       const newTotalCreate = ++state.total;
       return {
         ...state,
@@ -44,7 +45,8 @@ export const workoutReducer = (state = init, action) => {
         ],
         pageSpread: pageSpreadHelper(newTotalCreate, state.limit),
       };
-    case a.UPDATE_WORKOUT:
+    }
+    case a.UPDATE_WORKOUT: {
       /*
        By finding the index of the updated workout in the chunk,
        we can preserve the order of the workouts in the UI after update.
@@ -89,7 +91,8 @@ export const workoutReducer = (state = init, action) => {
               action.payload
             ),
           };
-    case a.DELETE_WORKOUT:
+    }
+    case a.DELETE_WORKOUT: {
       const newTotalDelete = --state.total;
       const newWorkoutsChunk = state.workoutsChunk.filter(
         (e) => e._id !== action.payload._id
@@ -106,6 +109,7 @@ export const workoutReducer = (state = init, action) => {
         workoutsChunk: newWorkoutsChunk,
         pageSpread: pageSpreadHelper(newTotalDelete, state.limit),
       };
+    }
     case a.RESET_WORKOUTS_STATE:
       return init;
     default:

@@ -1,0 +1,14 @@
+#!/bin/bash
+
+get_stash_index() {
+    local stash_name="$1"
+    git stash list | grep "$stash_name" | awk '{print $1}' | sed 's/stash@{//;s/}//;s/:$//'
+}
+
+unstaged_stash_index=$(get_stash_index "unstaged changes only")
+
+if [ "$unstaged_stash_index" = "0" ]; then
+    git stash pop
+else
+    echo "Skip popping stash as no unstaged changes were stashed pre-commit."
+fi

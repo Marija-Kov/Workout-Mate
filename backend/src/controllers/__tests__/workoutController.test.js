@@ -273,7 +273,7 @@ describe("workoutController", () => {
       const { token } = userLoggedIn;
       const query = 2;
       const res1 = await agent
-        .get(`/api/workouts/`)
+        .get("/api/workouts/")
         .set("Cookie", `token=${token}`);
       const res2 = await agent
         .get(`/api/workouts/?p=${query}`)
@@ -342,13 +342,17 @@ describe("workoutController", () => {
     });
 
     it("should respond with error if there was an attempt to update with reps value that is not a number/numerical string", async () => {
-      const { token } = await mockUser("logged-in", agent);
-      const workout = {
-        reps: "abc",
+      const { userLoggedIn, workouts } = await mockUser("has-workouts", agent);
+      const { token } = userLoggedIn;
+      const updateWorkout = {
+        id: workouts[1]._id,
+        body: {
+          reps: "abc",
+        },
       };
       const res = await agent
-        .post("/api/workouts/")
-        .send(workout)
+        .patch(`/api/workouts/${updateWorkout.id}`)
+        .send(updateWorkout.body)
         .set("Cookie", `token=${token}`);
       expect(res.status).toBe(422);
       expect(res.body.error).toBeTruthy();
@@ -374,13 +378,17 @@ describe("workoutController", () => {
     });
 
     it("should respond with error if there was an attempt to update with load value that is not a number/numerical string", async () => {
-      const { token } = await mockUser("logged-in", agent);
-      const workout = {
-        load: "abc",
+      const { userLoggedIn, workouts } = await mockUser("has-workouts", agent);
+      const { token } = userLoggedIn;
+      const updateWorkout = {
+        id: workouts[1]._id,
+        body: {
+          load: "abc",
+        },
       };
       const res = await agent
-        .post("/api/workouts/")
-        .send(workout)
+        .patch(`/api/workouts/${updateWorkout.id}`)
+        .send(updateWorkout.body)
         .set("Cookie", `token=${token}`);
       expect(res.status).toBe(422);
       expect(res.body.error).toBeTruthy();
@@ -456,7 +464,7 @@ describe("workoutController", () => {
       const { userLoggedIn } = await mockUser("has-workouts", agent);
       const { token } = userLoggedIn;
       const res = await agent
-        .delete(`/api/workouts/invalidWorkoutId`)
+        .delete("/api/workouts/invalidWorkoutId")
         .set("Cookie", `token=${token}`);
       expect(res.status).toBe(404);
       expect(res.body.error).toBeTruthy();
@@ -495,7 +503,7 @@ describe("workoutController", () => {
   describe("DELETE /api/workouts/", () => {
     it("should respond with error given that the user is not authorized", async () => {
       await mockUser("has-workouts", agent);
-      const res = await agent.delete(`/api/workouts/`);
+      const res = await agent.delete("/api/workouts/");
       expect(res.status).toBe(401);
       expect(res.body.deletedCount).toBeFalsy();
       expect(res.body.error).toBeTruthy();
@@ -506,7 +514,7 @@ describe("workoutController", () => {
       const { userLoggedIn, workouts } = await mockUser("has-workouts", agent);
       const { token } = userLoggedIn;
       const res = await agent
-        .delete(`/api/workouts/`)
+        .delete("/api/workouts/")
         .set("Cookie", `token=${token}`);
       expect(res.status).toBe(200);
       expect(res.body.error).toBeFalsy();

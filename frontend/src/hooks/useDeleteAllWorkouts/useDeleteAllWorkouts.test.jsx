@@ -39,7 +39,8 @@ describe("useDeleteAllWorkouts()", () => {
   it("should delete all workouts given that user is authorized", async () => {
     dispatch({ type: "LOGIN", payload: mockUser });
     dispatch({
-      type: "SET_WORKOUTS", payload: {
+      type: "SET_WORKOUTS",
+      payload: {
         total: 2,
         limit: 3,
         allUserWorkoutsMuscleGroups: [],
@@ -54,13 +55,16 @@ describe("useDeleteAllWorkouts()", () => {
     state = store.getState();
     expect(state.workouts.total).toBe(0);
     expect(state.flashMessages.success).toBeTruthy();
-    expect(state.flashMessages.success).toMatch(/successfully deleted all workouts/i);
+    expect(state.flashMessages.success).toMatch(
+      /successfully deleted all workouts/i
+    );
   });
 
   it("should set error given that user isn't authorized", async () => {
     dispatch({ type: "LOGIN", payload: mockUser });
     dispatch({
-      type: "SET_WORKOUTS", payload: {
+      type: "SET_WORKOUTS",
+      payload: {
         total: 2,
         limit: 3,
         allUserWorkoutsMuscleGroups: [],
@@ -82,16 +86,17 @@ describe("useDeleteAllWorkouts()", () => {
   it("should set error if deletion was not successful", async () => {
     // TODO: runtime interception not working
     server.use(
-      http.delete(
-        `${url}/api/workouts/`,
-        () => {
-          return HttpResponse.json({ error: "Could not delete workouts" }, { status: 500 })
-        }
-      )
+      http.delete(`${url}/api/workouts/`, () => {
+        return HttpResponse.json(
+          { error: "Could not delete workouts" },
+          { status: 500 }
+        );
+      })
     );
     dispatch({ type: "LOGIN", payload: mockUser });
     dispatch({
-      type: "SET_WORKOUTS", payload: {
+      type: "SET_WORKOUTS",
+      payload: {
         total: 2,
         limit: 3,
         allUserWorkoutsMuscleGroups: [],

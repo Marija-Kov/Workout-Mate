@@ -1,0 +1,29 @@
+{
+  "name": "workout-mate",
+  "scripts": {
+    "lint": "npx eslint **/src/**/*.{js,mjs,cjs,jsx}",
+    "lint-fix": "npx eslint **/src/**/*.{js,mjs,cjs,jsx} --fix",
+    "format": "npx prettier . --write",
+    "prepare": "husky"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Marija-Kov/Workout-Mate.git"
+  },
+  "author": "Marija Kovacevic",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Marija-Kov/Workout-Mate/issues"
+  },
+  "homepage": "https://github.com/Marija-Kov/Workout-Mate#readme",
+  "devDependencies": {
+    "@eslint/js": "^9.20.0",
+    "eslint": "^8.57.1",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-jest": "^29.0.1",
+    "eslint-plugin-react": "^7.37.4",
+    "globals": "^16.0.0",
+    "husky": "^9.1.7",
+    "prettier": "3.6.2"
+  }
+}

@@ -28,4 +28,4 @@ const useDeleteUser = () => {
   return { deleteUser };
 };
 
-export default useDeleteUser
+export default useDeleteUser;

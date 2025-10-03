@@ -1,4 +1,3 @@
-;
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import user from "@testing-library/user-event";
@@ -112,14 +111,14 @@ describe("<Signup />", () => {
   it("should render error element given that email is already in use", async () => {
     // TODO: runtime interception not working
     server.use(
-      http.post(
-        `${import.meta.env.VITE_API}/api/users/signup`,
-        () => {
-          return new HttpResponse.json({
+      http.post(`${import.meta.env.VITE_API}/api/users/signup`, () => {
+        return new HttpResponse.json(
+          {
             error: "Email already in use",
-          }, { status: 422 })
-        }
-      )
+          },
+          { status: 422 }
+        );
+      })
     );
     // This logs the runtime handler:
     // console.log(server.handlersController.rootContext.handlers[0].resolver.toString())

@@ -2,7 +2,11 @@ import { Suspense, lazy, useRef } from "react";
 import { useLogin } from "../../hooks";
 import { useSelector, useDispatch } from "react-redux";
 
-const ForgotPasswordForm = lazy(() => import("../../components").then(module => ({ default: module.ForgotPasswordForm })));
+const ForgotPasswordForm = lazy(() =>
+  import("../../components").then((module) => ({
+    default: module.ForgotPasswordForm,
+  }))
+);
 
 const Login = () => {
   const dispatch = useDispatch();

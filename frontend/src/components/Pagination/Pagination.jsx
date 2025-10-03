@@ -29,13 +29,16 @@ const Pagination = () => {
 
     if (e.target.textContent === nextPageBtnText) {
       return dispatch({ type: "NEXT_PAGE" });
-    } 
+    }
     if (e.target.textContent === prevPageBtnText) {
       return dispatch({ type: "PREV_PAGE" });
-    } 
+    }
     if (e.target.textContent.match(aNumber)) {
-      return dispatch({ type: "GO_TO_PAGE_NUMBER", payload: Number(e.target.textContent) })
-    } 
+      return dispatch({
+        type: "GO_TO_PAGE_NUMBER",
+        payload: Number(e.target.textContent),
+      });
+    }
   }
 
   return (

@@ -1,0 +1,23 @@
+#!/bin/bash
+
+get_stash_index() {
+    local stash_name="$1"
+    git stash list | grep "$stash_name" | awk '{print $1}' | sed 's/stash@{//;s/}//;s/:$//'
+}
+
+staged="staged changes only"
+
+git stash push --staged -m "$staged"
+git stash push -u -m "unstaged changes only"
+
+staged_stash_index=$(get_stash_index "$staged")
+
+if [ -n "$staged_stash_index" ]; then
+    git stash pop stash@{$staged_stash_index}
+else
+    echo "Stash named '$staged' was not found."
+fi
+
+npm run lint-fix
+npm run format
+git add .

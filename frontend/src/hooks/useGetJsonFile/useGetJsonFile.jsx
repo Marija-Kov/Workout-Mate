@@ -16,6 +16,6 @@ const useGetJsonFile = () => {
   };
 
   return { generateJsonFile, downloadJsonFile };
-}
+};
 
-export default useGetJsonFile
+export default useGetJsonFile;

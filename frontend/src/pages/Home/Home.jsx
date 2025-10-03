@@ -1,8 +1,16 @@
 import { useEffect, lazy, Suspense, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useSearch } from "../../hooks";
-import { WorkoutForm, Pagination, Search, Chart, Workouts } from "../../components";
-const EditWorkout = lazy(() => import("../../components").then(module => ({ default: module.EditWorkout })));
+import {
+  WorkoutForm,
+  Pagination,
+  Search,
+  Chart,
+  Workouts,
+} from "../../components";
+const EditWorkout = lazy(() =>
+  import("../../components").then((module) => ({ default: module.EditWorkout }))
+);
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -23,7 +31,10 @@ const Home = () => {
     allUserWorkoutsMuscleGroups && allUserWorkoutsMuscleGroups.length;
 
   useEffect(() => {
-    if (searchInputRef.current && searchInputRef.current.className === "focused") {
+    if (
+      searchInputRef.current &&
+      searchInputRef.current.className === "focused"
+    ) {
       const runSearchDebounce = setTimeout(async () => {
         await search(query, page);
       }, 500);
@@ -34,8 +45,8 @@ const Home = () => {
   }, [query, page, search]);
 
   useEffect(() => {
-    dispatch({ type: "SET_CHART_LOADER"});
-  }, [dispatch])
+    dispatch({ type: "SET_CHART_LOADER" });
+  }, [dispatch]);
 
   const buffItUpButtonClass = () => {
     if (muscleGroups) return "add--workout";
@@ -77,6 +88,6 @@ const Home = () => {
       </div>
     </div>
   );
-}
+};
 
-export default Home
+export default Home;

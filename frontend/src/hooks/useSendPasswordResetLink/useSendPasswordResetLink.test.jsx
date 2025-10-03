@@ -29,14 +29,14 @@ describe("useSendPasswordResetLink()", () => {
 
   it("should set error given that the input is invalid", async () => {
     server.use(
-      http.post(
-        `${url}/api/reset-password`,
-        () => {
-          return new HttpResponse.json({
+      http.post(`${url}/api/reset-password`, () => {
+        return new HttpResponse.json(
+          {
             error: "Please enter valid email address",
-          }, { status: 400 })
-        }
-      )
+          },
+          { status: 400 }
+        );
+      })
     );
     const { result } = renderHook(useSendPasswordResetLink, { wrapper });
     await result.current.sendPasswordResetLink("gibberish");

@@ -24,7 +24,7 @@ const Search = forwardRef((props, ref) => {
       <input
         type="search"
         id="search"
-        className={ isFocused ? "focused" : null }
+        className={isFocused ? "focused" : null}
         placeholder="🔎 type workout title"
         value={query}
         ref={ref}
@@ -45,5 +45,7 @@ const Search = forwardRef((props, ref) => {
     </form>
   );
 });
+
+Search.displayName = "Search";
 
 export default memo(Search);

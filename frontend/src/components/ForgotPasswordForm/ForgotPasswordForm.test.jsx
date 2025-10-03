@@ -55,9 +55,12 @@ describe("<ForgotPasswordForm />", () => {
   it("should render error message if user attempts to submit invalid input", async () => {
     server.use(
       http.post("/api/reset-password", () => {
-        return new HttpResponse.json({
-          error: "Please enter valid email address",
-        }, { status: 400 })
+        return new HttpResponse.json(
+          {
+            error: "Please enter valid email address",
+          },
+          { status: 400 }
+        );
       })
     );
     user.setup();

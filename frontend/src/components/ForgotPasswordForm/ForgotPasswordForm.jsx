@@ -36,6 +36,6 @@ const ForgotPasswordForm = () => {
       </form>
     </div>
   );
-}
+};
 
-export default ForgotPasswordForm
+export default ForgotPasswordForm;

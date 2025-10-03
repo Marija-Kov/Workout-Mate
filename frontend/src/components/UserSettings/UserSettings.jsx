@@ -1,6 +1,13 @@
 import { useState } from "react";
 import Cropper from "react-easy-crop";
-import { useCroppedImg, useDeleteUser, useDownloadData, useDeleteAllWorkouts, useLogout, useUpdateUser } from "../../hooks";
+import {
+  useCroppedImg,
+  useDeleteUser,
+  useDownloadData,
+  useDeleteAllWorkouts,
+  useLogout,
+  useUpdateUser,
+} from "../../hooks";
 import { useDispatch, useSelector } from "react-redux";
 
 const UserSettings = ({ changeProfileImg }) => {
@@ -183,6 +190,6 @@ const UserSettings = ({ changeProfileImg }) => {
       )}
     </div>
   );
-}
+};
 
-export default UserSettings
+export default UserSettings;

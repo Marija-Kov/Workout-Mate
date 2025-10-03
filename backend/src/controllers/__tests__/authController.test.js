@@ -91,7 +91,9 @@ describe("authController", () => {
 
   describe("GET /api/users/confirmaccount/:accountConfirmationToken", () => {
     it("should respond with error if the confirmation token was invalid", async () => {
-      const res = await agent.get(`/api/users/confirmaccount/forgedOrExpiredToken`);
+      const res = await agent.get(
+        "/api/users/confirmaccount/forgedOrExpiredToken"
+      );
       expect(res.status).toBe(404);
       expect(res.body).toHaveProperty(
         "error",
@@ -115,7 +117,7 @@ describe("authController", () => {
     it("should respond with error if login was attempted without email and/or password", async () => {
       await mockUser("confirmed", agent);
       const user = { email: "a@b.c", password: "" };
-      const res = await agent.post(`/api/users/login`).send(user);
+      const res = await agent.post("/api/users/login").send(user);
       expect(res.status).toBe(422);
       expect(res.body).toHaveProperty("error", "All fields must be filled");
     });
@@ -126,7 +128,7 @@ describe("authController", () => {
         email: "a@b.c",
         password: "wrongPassword",
       };
-      const res = await agent.post(`/api/users/login`).send(user);
+      const res = await agent.post("/api/users/login").send(user);
       expect(res.status).toBe(422);
       expect(res.body).toHaveProperty("error", "Wrong password");
     });
@@ -136,7 +138,7 @@ describe("authController", () => {
         email: "a@b.c",
         password: "somePassword",
       };
-      const res = await agent.post(`/api/users/login`).send(user);
+      const res = await agent.post("/api/users/login").send(user);
       expect(res.status).toBe(422);
       expect(res.body).toHaveProperty(
         "error",
@@ -151,7 +153,7 @@ describe("authController", () => {
         password: "abcABC123!",
       };
       await agent.post("/api/users/signup").send(user);
-      const res = await agent.post(`/api/users/login`).send(user);
+      const res = await agent.post("/api/users/login").send(user);
       expect(res.status).toBe(422);
       expect(res.body).toHaveProperty(
         "error",
@@ -173,10 +175,10 @@ describe("authController", () => {
 
   describe("PATCH /api/users", () => {
     it("should respond with error in case of unauthorized update attempt", async () => {
-      const { id } = await mockUser("confirmed", agent);
+      await mockUser("confirmed", agent);
       const newUsername = "theDawg76";
       const res = await agent
-        .patch(`/api/users`)
+        .patch("/api/users")
         .send({ username: newUsername });
       expect(res.status).toBe(401);
       expect(res.body.error).toBeTruthy();
@@ -184,10 +186,10 @@ describe("authController", () => {
     });
 
     it("should respond with user details updated with the new username given that the user is authorized and a new username is submitted", async () => {
-      const { id, token } = await mockUser("logged-in", agent);
+      const { token } = await mockUser("logged-in", agent);
       const newUsername = "the_Dawg.78";
       const res = await agent
-        .patch(`/api/users`)
+        .patch("/api/users")
         .set("Cookie", `token=${token}`)
         .send({ username: newUsername });
       expect(res.status).toBe(200);
@@ -195,11 +197,11 @@ describe("authController", () => {
     });
 
     it("should respond with user details updated with the new profile image given that the user is authorized and a new image is submitted", async () => {
-      const { id, token } = await mockUser("logged-in", agent);
+      const { token } = await mockUser("logged-in", agent);
       const newProfileImg =
         "data:image/jpeg;base64,/9j/4QEKRXhpZgAATU0AKgAAAAgACAEbAAUAAAABA";
       const res = await agent
-        .patch(`/api/users`)
+        .patch("/api/users")
         .set("Cookie", `token=${token}`)
         .send({ profileImg: newProfileImg });
       expect(res.status).toBe(200);
@@ -207,10 +209,10 @@ describe("authController", () => {
     });
 
     it("should respond with error if file type is wrong", async () => {
-      const { id, token } = await mockUser("logged-in", agent);
+      const { token } = await mockUser("logged-in", agent);
       const newProfileImg = "data:image/psd;4QEKRXhpZgAATU0AKgAAAAgACAEbAAU";
       const res = await agent
-        .patch(`/api/users`)
+        .patch("/api/users")
         .set("Cookie", `token=${token}`)
         .send({ profileImg: newProfileImg });
       expect(res.status).toBe(415);
@@ -219,7 +221,7 @@ describe("authController", () => {
     });
 
     it("should respond with error if file is too large", async () => {
-      const { id, token } = await mockUser("logged-in", agent);
+      const { token } = await mockUser("logged-in", agent);
       const tooLarge = (() => {
         let str = "data:image/jpeg";
         for (let i = 0; i < 1049000; ++i) {
@@ -228,7 +230,7 @@ describe("authController", () => {
         return str;
       })();
       const res = await agent
-        .patch(`/api/users`)
+        .patch("/api/users")
         .set("Cookie", `token=${token}`)
         .send({ profileImg: tooLarge });
       expect(res.status).toBe(413);
@@ -237,10 +239,10 @@ describe("authController", () => {
     });
 
     it("should respond with error if username is too long", async () => {
-      const { id, token } = await mockUser("logged-in", agent);
+      const { token } = await mockUser("logged-in", agent);
       const newUsername = "abcabcabcabcabcabcacb";
       const res = await agent
-        .patch(`/api/users`)
+        .patch("/api/users")
         .set("Cookie", `token=${token}`)
         .send({ username: newUsername });
       expect(res.status).toBe(422);
@@ -249,10 +251,10 @@ describe("authController", () => {
     });
 
     it("should respond with error if username contains invalid characters", async () => {
-      const { id, token } = await mockUser("logged-in", agent);
+      const { token } = await mockUser("logged-in", agent);
       const newUsername = "the,d@^^g!";
       const res = await agent
-        .patch(`/api/users`)
+        .patch("/api/users")
         .set("Cookie", `token=${token}`)
         .send({ username: newUsername });
       expect(res.status).toBe(422);
@@ -265,15 +267,15 @@ describe("authController", () => {
 
   describe("DELETE /api/users", () => {
     it("should respond with error if no authorization token was found", async () => {
-      const res = await agent.delete(`/api/users`);
+      const res = await agent.delete("/api/users");
       expect(res.status).toBe(401);
       expect(res.body.error).toBeTruthy();
       expect(res.body.error).toMatch(/not authorized/i);
     });
 
     it("should sign up successfully with the email of a user that had prevously been deleted", async () => {
-      const { id, token } = await mockUser("logged-in", agent);
-      await agent.delete(`/api/users`).set("Cookie", `token=${token}`);
+      const { token } = await mockUser("logged-in", agent);
+      await agent.delete("/api/users").set("Cookie", `token=${token}`);
       const user = await mockUser("pending", agent);
       expect(user).toHaveProperty(
         "success",
@@ -285,7 +287,7 @@ describe("authController", () => {
   describe("GET /api/users/download", () => {
     it("should respond with error if the user isn't authorized", async () => {
       await mockUser("logged-in", agent);
-      const res = await agent.get(`/api/users/download`);
+      const res = await agent.get("/api/users/download");
       expect(res.status).toBe(401);
       expect(res.body.error).toBeTruthy();
       expect(res.body.error).toMatch(/not authorized/i);
@@ -294,7 +296,7 @@ describe("authController", () => {
     it("should return no error when the download started", async () => {
       const { token } = await mockUser("logged-in", agent);
       const res = await agent
-        .get(`/api/users/download`)
+        .get("/api/users/download")
         .set("Cookie", `token=${token}`);
       expect(res.status).toBe(200);
       expect(res.body.user).toBeTruthy();

@@ -39,14 +39,14 @@ describe("useDeleteUser()", () => {
   it("should set error given that user isn't authorized", async () => {
     // TODO: runtime interception not working
     server.use(
-      http.delete(
-        `${url}/api/users/*`,
-        () => {
-          return HttpResponse.json({
+      http.delete(`${url}/api/users/*`, () => {
+        return HttpResponse.json(
+          {
             error: "Not authorized",
-          }, { status: 401 })
-        }
-      )
+          },
+          { status: 401 }
+        );
+      })
     );
     const { result } = renderHook(useDeleteUser, { wrapper });
     await result.current.deleteUser(mockUser.id);
@@ -61,6 +61,8 @@ describe("useDeleteUser()", () => {
     await result.current.deleteUser(mockUser.id);
     let state = store.getState();
     expect(state.flashMessages.success).toBeTruthy();
-    expect(state.flashMessages.success).toMatch(/account deleted successfully/i);
+    expect(state.flashMessages.success).toMatch(
+      /account deleted successfully/i
+    );
   });
 });

@@ -5,12 +5,24 @@ import { Navbar } from "../components";
 import { Login } from "../pages";
 import { useGetUrl } from "../hooks";
 
-const Home = lazy(() => import('../pages').then(module => ({ default: module.Home })));
-const Signup = lazy(() => import('../pages').then(module => ({ default: module.Signup })));
-const About = lazy(() => import('../pages').then(module => ({ default: module.About })));
-const ResetPassword = lazy(() => import('../pages').then(module => ({ default: module.ResetPassword })));
-const ConfirmedAccount = lazy(() => import('../pages').then(module => ({ default: module.ConfirmedAccount })));
-const NotFound = lazy(() => import('../pages').then(module => ({ default: module.NotFound })));
+const Home = lazy(() =>
+  import("../pages").then((module) => ({ default: module.Home }))
+);
+const Signup = lazy(() =>
+  import("../pages").then((module) => ({ default: module.Signup }))
+);
+const About = lazy(() =>
+  import("../pages").then((module) => ({ default: module.About }))
+);
+const ResetPassword = lazy(() =>
+  import("../pages").then((module) => ({ default: module.ResetPassword }))
+);
+const ConfirmedAccount = lazy(() =>
+  import("../pages").then((module) => ({ default: module.ConfirmedAccount }))
+);
+const NotFound = lazy(() =>
+  import("../pages").then((module) => ({ default: module.NotFound }))
+);
 
 const App = () => {
   const user = useSelector((state) => state.user);
@@ -45,10 +57,9 @@ const App = () => {
           {isSpunDownServerAlertMounted && (
             <div className="spun--down--server--alert">
               <p>
-                This app uses a free web service that spins down
-                after a period of inactivity. If you haven't been here in a
-                while, your initial request may take a minute. Thank you for
-                your patience!
+                This app uses a free web service that spins down after a period
+                of inactivity. If you have not been here in a while, your
+                initial request may take a minute. Thank you for your patience!
               </p>
               <button
                 onClick={() => {
@@ -67,7 +78,8 @@ const App = () => {
           {isCookieAlertMounted && (
             <div className="cookie--alert">
               <p>
-                We use 1 cookie to keep you logged in for a while. That's all!
+                We use 1 cookie to keep you logged in for a while. That&apos;s
+                all!
               </p>
               <button
                 onClick={() => {
@@ -111,12 +123,12 @@ const App = () => {
             />
             <Route path="reset-password" element={<ResetPassword />} />
             <Route path="confirmaccount" element={<ConfirmedAccount />} />
-            <Route path="*" element={<NotFound />}/>
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </div>
       </BrowserRouter>
     </div>
   );
-}
+};
 
 export default App;

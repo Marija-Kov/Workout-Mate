@@ -59,14 +59,14 @@ describe("<ResetPassword />", () => {
 
   it("should render error element given that passwords are not matching", async () => {
     server.use(
-      http.patch(
-        `${import.meta.env.VITE_API}/api/reset-password/*`,
-        () => {
-          return new HttpResponse.json({
+      http.patch(`${import.meta.env.VITE_API}/api/reset-password/*`, () => {
+        return new HttpResponse.json(
+          {
             error: "Passwords must match",
-          }, { status: 422 })
-        }
-      )
+          },
+          { status: 422 }
+        );
+      })
     );
     user.setup();
     render(
@@ -96,14 +96,14 @@ describe("<ResetPassword />", () => {
 
   it("should render error element given that new password is not strong enough", async () => {
     server.use(
-      http.patch(
-        `${import.meta.env.VITE_API}/api/reset-password/*`,
-        () => {
-          return new HttpResponse.json({
+      http.patch(`${import.meta.env.VITE_API}/api/reset-password/*`, () => {
+        return new HttpResponse.json(
+          {
             error: "Password not strong enough",
-          }, { status: 422 })
-        }
-      )
+          },
+          { status: 422 }
+        );
+      })
     );
     user.setup();
     render(
@@ -133,14 +133,14 @@ describe("<ResetPassword />", () => {
 
   it("should render error element given that password reset token has expired", async () => {
     server.use(
-      http.patch(
-        `${import.meta.env.VITE_API}/api/reset-password/*`,
-        () => {
-          return new HttpResponse.json({
+      http.patch(`${import.meta.env.VITE_API}/api/reset-password/*`, () => {
+        return new HttpResponse.json(
+          {
             error: "Reset password token not found",
-          }, { status: 404 })
-        }
-      )
+          },
+          { status: 404 }
+        );
+      })
     );
     user.setup();
     render(

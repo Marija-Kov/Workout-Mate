@@ -42,4 +42,4 @@ const useSignup = () => {
   return { signup };
 };
 
-export default useSignup
+export default useSignup;

@@ -20,7 +20,7 @@ const useCroppedImg = () => {
 
     canvas.width = safeArea;
     canvas.height = safeArea;
-    
+
     ctx.drawImage(
       image,
       (safeArea - image.width) / 2,
@@ -45,4 +45,4 @@ const useCroppedImg = () => {
   return { croppedImg };
 };
 
-export default useCroppedImg
+export default useCroppedImg;

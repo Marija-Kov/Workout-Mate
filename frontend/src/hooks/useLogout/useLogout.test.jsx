@@ -51,7 +51,11 @@ describe("useLogout()", () => {
     expect(state.toggleMountComponents.isForgotPasswordFormMounted).toBeFalsy();
     expect(state.toggleMountComponents.isUserMenuMounted).toBeFalsy();
     expect(state.toggleMountComponents.isUserSettingsFormMounted).toBeFalsy();
-    expect(state.toggleMountComponents.isDeleteAccountDialogueMounted).toBeFalsy();
-    expect(state.toggleMountComponents.isSpunDownServerAlertMounted).toBeFalsy();
+    expect(
+      state.toggleMountComponents.isDeleteAccountDialogueMounted
+    ).toBeFalsy();
+    expect(
+      state.toggleMountComponents.isSpunDownServerAlertMounted
+    ).toBeFalsy();
   });
 });

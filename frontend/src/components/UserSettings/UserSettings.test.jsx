@@ -117,14 +117,14 @@ describe("<UserSettings/>", () => {
   it("should render error message if server responded with an error", async () => {
     // TODO: runtime interception not working
     server.use(
-      http.patch(
-        `${import.meta.env.VITE_API}/api/users`,
-        () => {
-          return new HttpResponse.json({
+      http.patch(`${import.meta.env.VITE_API}/api/users`, () => {
+        return new HttpResponse.json(
+          {
             error: "Something went wrong",
-          }, { status: 500 })
-        }
-      )
+          },
+          { status: 500 }
+        );
+      })
     );
     user.setup();
     render(
@@ -146,14 +146,14 @@ describe("<UserSettings/>", () => {
   it("should render error message if the user is not authorized", async () => {
     // TODO: runtime interception not working
     server.use(
-      http.patch(
-        `${import.meta.env.VITE_API}/api/users`,
-        () => {
-          return new HttpResponse.json({
+      http.patch(`${import.meta.env.VITE_API}/api/users`, () => {
+        return new HttpResponse.json(
+          {
             error: "Not authorized",
-          }, { status: 401 })
-        }
-      )
+          },
+          { status: 401 }
+        );
+      })
     );
     user.setup();
     render(
@@ -199,9 +199,8 @@ describe("<UserSettings/>", () => {
     );
     const deleteAccount = screen.getByText(/delete account/i);
     await user.click(deleteAccount);
-    const deleteAccountDialogue = await screen.findByText(
-      /this is irreversible/i
-    );
+    const deleteAccountDialogue =
+      await screen.findByText(/this is irreversible/i);
     expect(deleteAccountDialogue).toBeInTheDocument();
   });
 });

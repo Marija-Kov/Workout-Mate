@@ -55,18 +55,21 @@ describe("useSignup()", () => {
 
   it("should set error given that email is already in use", async () => {
     // TODO: runtime interception not working!
-    // This actually reaches the point where interception should happen 
+    // This actually reaches the point where interception should happen
     // and fails at intercepting;
-    // -- Below is the case with every test failing at runtime server request interception -- 
+    // -- Below is the case with every test failing at runtime server request interception --
     // It complains when server.use() receives an array as an argument,
     // when http.post() is given wrong argument type,
     // it registers the handler (console.log(server.listHandlers()[0]) after server.use()),
     // but it does not _use_ the handler. It uses the initial handler instead.
     server.use(
       http.post(`${url}/api/users/signup`, () => {
-        return HttpResponse.json({
-          error: "Email already in use",
-        }, { status: 422 })
+        return HttpResponse.json(
+          {
+            error: "Email already in use",
+          },
+          { status: 422 }
+        );
       })
     );
     // This logs the runtime handler as registered:

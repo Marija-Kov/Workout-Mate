@@ -23,4 +23,4 @@ const useHardStateResetAndClearLocalStorage = () => {
   return { hardStateResetAndClearLocalStorage };
 };
 
-export default useHardStateResetAndClearLocalStorage
+export default useHardStateResetAndClearLocalStorage;

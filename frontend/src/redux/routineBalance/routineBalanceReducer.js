@@ -19,7 +19,7 @@ const len = allMuscleGroups.length;
 
 export const routineBalanceReducer = (state = init, action) => {
   switch (action.type) {
-    case SET_ROUTINE_BALANCE:
+    case SET_ROUTINE_BALANCE: {
       if (action.payload.length === 0) return init;
       const muscleGroups = action.payload;
       const total = muscleGroups.length;
@@ -35,6 +35,7 @@ export const routineBalanceReducer = (state = init, action) => {
         balance[group] = percent.toFixed(1);
       }
       return balance;
+    }
     case RESET_ROUTINE_BALANCE_STATE:
       return init;
     default:

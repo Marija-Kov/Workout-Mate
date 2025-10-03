@@ -11,15 +11,20 @@ class WorkoutRepository {
       this.connect();
     }
   }
-  
+
   async connect(retryCount = Number(process.env.MAX_RETRIES) || 10) {
     const retryDelayMs = 2000;
     try {
       await mongoose.connect(process.env.MONGO_URI);
     } catch (error) {
       if (retryCount > 0) {
-        console.error(`MongoDB connection failed. Retrying in ${Number(process.env.RETRY_DELAY_MS) || retryDelayMs / 1000} seconds...`);
-        setTimeout(() => this.connect(retryCount - 1), Number(process.env.RETRY_DELAY_MS) || retryDelayMs);
+        console.error(
+          `MongoDB connection failed. Retrying in ${Number(process.env.RETRY_DELAY_MS) || retryDelayMs / 1000} seconds...`
+        );
+        setTimeout(
+          () => this.connect(retryCount - 1),
+          Number(process.env.RETRY_DELAY_MS) || retryDelayMs
+        );
       } else {
         console.error("Could not connect to MongoDB:", error);
       }
@@ -34,9 +39,9 @@ class WorkoutRepository {
     return Workout.find(
       searchQuery
         ? {
-          user_id: userId,
-          title: new RegExp(`^${searchQuery.toLowerCase()}`),
-        }
+            user_id: userId,
+            title: new RegExp(`^${searchQuery.toLowerCase()}`),
+          }
         : { user_id: userId }
     );
   }
@@ -45,9 +50,9 @@ class WorkoutRepository {
     return Workout.find(
       searchQuery
         ? {
-          user_id: userId,
-          title: new RegExp(`^${searchQuery.toLowerCase()}`),
-        }
+            user_id: userId,
+            title: new RegExp(`^${searchQuery.toLowerCase()}`),
+          }
         : { user_id: userId }
     )
       .sort({ createdAt: -1 })

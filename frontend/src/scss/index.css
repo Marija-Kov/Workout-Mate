@@ -670,7 +670,7 @@ header {
   background: rgba(255, 255, 255, 0);
   box-shadow: 1px 1px 5px rgba(160, 160, 160, 0.616);
   -webkit-backdrop-filter: blur(4px);
-          backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
 }
 
 header > .container {
@@ -1006,7 +1006,21 @@ header a {
   top: 27vh;
   width: 150px;
   left: -30px;
-  background-image: linear-gradient(0deg, rgb(219, 162, 215), rgb(212, 122, 147), rgb(162, 122, 212), rgb(122, 131, 212), rgb(99, 148, 255), rgb(99, 224, 255), rgb(99, 255, 239), rgb(99, 255, 140), rgb(255, 206, 99), rgb(255, 127, 99), rgb(219, 162, 215), rgb(212, 122, 147));
+  background-image: linear-gradient(
+    0deg,
+    rgb(219, 162, 215),
+    rgb(212, 122, 147),
+    rgb(162, 122, 212),
+    rgb(122, 131, 212),
+    rgb(99, 148, 255),
+    rgb(99, 224, 255),
+    rgb(99, 255, 239),
+    rgb(99, 255, 140),
+    rgb(255, 206, 99),
+    rgb(255, 127, 99),
+    rgb(219, 162, 215),
+    rgb(212, 122, 147)
+  );
   background-size: 100% 1100%;
   animation: no--workouts--yet 20s linear infinite;
 }
@@ -1091,7 +1105,7 @@ header a {
   border-radius: 20px;
   box-shadow: 0px 5px 22px -2px rgba(142, 142, 142, 0.5);
 }
-.workout-details:nth-child(n+4) {
+.workout-details:nth-child(n + 4) {
   display: none;
 }
 
@@ -1369,7 +1383,11 @@ select.error {
 }
 
 .material-symbols-outlined {
-  font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 48;
+  font-variation-settings:
+    "FILL" 0,
+    "wght" 400,
+    "GRAD" 0,
+    "opsz" 48;
 }
 
 .lds-ellipsis {
@@ -1509,4 +1527,4 @@ body {
     width: 95%;
     max-width: none;
   }
-}/*# sourceMappingURL=index.css.map */
+} /*# sourceMappingURL=index.css.map */

@@ -11,7 +11,7 @@ const useCreateWorkout = () => {
 
   const createWorkout = async (workout) => {
     if (!user) {
-     return flashMessage("ERROR", "Not authorized");
+      return flashMessage("ERROR", "Not authorized");
     }
     if (
       !workout.title ||
@@ -60,4 +60,4 @@ const useCreateWorkout = () => {
   return { createWorkout };
 };
 
-export default useCreateWorkout
+export default useCreateWorkout;

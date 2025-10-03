@@ -38,4 +38,4 @@ const useLogin = () => {
   return { login };
 };
 
-export default useLogin
+export default useLogin;

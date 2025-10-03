@@ -5,7 +5,6 @@ import { genSampleWorkouts } from "../../utils/test/genSampleWorkouts";
 import store from "../../redux/store";
 import { Provider } from "react-redux";
 
-let mockWorkouts;
 let dispatch;
 let mockUser;
 
@@ -18,7 +17,7 @@ beforeAll(() => {
     profileImg: undefined,
   };
   dispatch({ type: "LOGIN", payload: mockUser });
-  mockWorkouts = genSampleWorkouts();
+  genSampleWorkouts();
 });
 afterEach(() => dispatch({ type: "RESET_PAGE_STATE" }));
 afterAll(() => {
@@ -27,7 +26,6 @@ afterAll(() => {
     payload: "All workouts deleted successfully",
   });
   dispatch({ type: "LOGOUT" });
-  mockWorkouts = null;
   dispatch = null;
   mockUser = null;
 });

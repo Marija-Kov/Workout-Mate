@@ -22,12 +22,12 @@ const getAllWorkouts = async (user_id, page, searchQuery) => {
     limit
   );
   /**
-   * Informs the client's page navigation about the pages occupied by the existing workouts; 
+   * Informs the client's page navigation about the pages occupied by the existing workouts;
    * it's an array of numbers to enable easy mapping on the client side.
    */
   const pageSpread = pageSpreadHelper(allUserWorkoutsByQuery.length, limit);
   /**
-   * Informs the client about whether to show the "no workouts by query" message in the UI 
+   * Informs the client about whether to show the "no workouts by query" message in the UI
    * or something else - which depends on whether there are any workouts at all.
    */
   const noWorkoutsByQuery = total

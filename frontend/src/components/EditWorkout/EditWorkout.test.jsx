@@ -122,12 +122,12 @@ describe("<EditWorkout/>", () => {
 
   it("should respond with error message if authentication token expired and user attempts to submit", async () => {
     server.use(
-      http.patch(
-        `${import.meta.env.VITE_API}/api/workouts/*`,
-        () => {
-          return new HttpResponse.json({ error: "Not authorized" }, { status: 401 })
-        }
-      )
+      http.patch(`${import.meta.env.VITE_API}/api/workouts/*`, () => {
+        return new HttpResponse.json(
+          { error: "Not authorized" },
+          { status: 401 }
+        );
+      })
     );
     user.setup();
     render(
@@ -156,14 +156,14 @@ describe("<EditWorkout/>", () => {
 
   it("should signal input error when user attempts to submit form with too long title", async () => {
     server.use(
-      http.patch(
-        `${import.meta.env.VITE_API}/api/workouts/*`,
-        () => {
-          return new HttpResponse.json({
+      http.patch(`${import.meta.env.VITE_API}/api/workouts/*`, () => {
+        return new HttpResponse.json(
+          {
             error: "Too long title - max 30 characters",
-          }, { status: 400 })
-        }
-      )
+          },
+          { status: 400 }
+        );
+      })
     );
     user.setup();
     render(
@@ -189,14 +189,14 @@ describe("<EditWorkout/>", () => {
 
   it("should signal input error when user attempts to submit form with title containing non-alphabetic characters", async () => {
     server.use(
-      http.patch(
-        `${import.meta.env.VITE_API}/api/workouts/*`,
-        () => {
-          return new HttpResponse.json({
+      http.patch(`${import.meta.env.VITE_API}/api/workouts/*`, () => {
+        return new HttpResponse.json(
+          {
             error: "Title may contain only letters",
-          }, { status: 400 })
-        }
-      )
+          },
+          { status: 400 }
+        );
+      })
     );
     user.setup();
     render(
@@ -219,14 +219,14 @@ describe("<EditWorkout/>", () => {
 
   it("should signal input error when user attempts to submit form with too large reps number", async () => {
     server.use(
-      http.patch(
-        `${import.meta.env.VITE_API}/api/workouts/*`,
-        () => {
-          return new HttpResponse.json({
+      http.patch(`${import.meta.env.VITE_API}/api/workouts/*`, () => {
+        return new HttpResponse.json(
+          {
             error: "Reps value too large",
-          }, { status: 400 })
-        }
-      )
+          },
+          { status: 400 }
+        );
+      })
     );
     user.setup();
     render(
@@ -249,14 +249,14 @@ describe("<EditWorkout/>", () => {
 
   it("should signal input error when user attempts to submit form with too large load number", async () => {
     server.use(
-      http.patch(
-        `${import.meta.env.VITE_API}/api/workouts/*`,
-        () => {
-          return new HttpResponse.json({
+      http.patch(`${import.meta.env.VITE_API}/api/workouts/*`, () => {
+        return new HttpResponse.json(
+          {
             error: "Load value too large",
-          }, { status: 400 })
-        }
-      )
+          },
+          { status: 400 }
+        );
+      })
     );
     user.setup();
     render(
@@ -299,16 +299,16 @@ describe("<EditWorkout/>", () => {
       </Provider>
     );
     await dispatch({
-        type: "SET_WORKOUTS",
-        payload: {
-          workoutsChunk: [
-            { muscle_group: "leg" },
-            { muscle_group: "back" },
-            { muscle_group: "biceps" },
-          ],
-          allUserWorkoutsMuscleGroups: ["biceps", "back", "leg"],
-        },
-      });
+      type: "SET_WORKOUTS",
+      payload: {
+        workoutsChunk: [
+          { muscle_group: "leg" },
+          { muscle_group: "back" },
+          { muscle_group: "biceps" },
+        ],
+        allUserWorkoutsMuscleGroups: ["biceps", "back", "leg"],
+      },
+    });
     let loadInput = screen.getByTestId("reps");
     const submit = screen.getByText(/save/i);
     await user.clear(loadInput);
@@ -316,7 +316,10 @@ describe("<EditWorkout/>", () => {
     await user.clear(loadInput);
     await user.type(loadInput, "15");
     await user.click(submit);
-    await dispatch({ type: "SUCCESS", payload: "Successfully updated workout" });
+    await dispatch({
+      type: "SUCCESS",
+      payload: "Successfully updated workout",
+    });
     const success = await screen.findByRole("alert");
     expect(success).toBeInTheDocument();
     expect(success.textContent).toMatch(/successfully updated workout/i);

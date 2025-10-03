@@ -1,3 +1,3 @@
 const useGetUrl = () => window.location.href;
 
-export default useGetUrl
+export default useGetUrl;

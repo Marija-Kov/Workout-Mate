@@ -50,9 +50,7 @@ describe("useCreateWorkout()", () => {
     await result.current.createWorkout(mockWorkout);
     state = store.getState();
     expect(state.workouts.total).toBe(prevTotal + 1);
-    expect(state.workouts.workoutsChunk[0].title).toMatch(
-      mockWorkout.title
-    );
+    expect(state.workouts.workoutsChunk[0].title).toMatch(mockWorkout.title);
     expect(state.flashMessages.success).toBeTruthy();
     expect(state.flashMessages.success).toMatch(
       /successfully created workout/i
@@ -76,14 +74,14 @@ describe("useCreateWorkout()", () => {
 
   it("should set error given that at least one input field was empty", async () => {
     server.use(
-      http.post(
-        `${url}/api/workouts`,
-        () => {
-          return new HttpResponse.json({
+      http.post(`${url}/api/workouts`, () => {
+        return new HttpResponse.json(
+          {
             error: "Please fill out the empty fields",
-          }, { status: 422 })
-        }
-      )
+          },
+          { status: 422 }
+        );
+      })
     );
     const mockWorkout = { title: "squats", reps: 20 };
     dispatch({ type: "LOGIN", payload: mockUser });
@@ -99,14 +97,14 @@ describe("useCreateWorkout()", () => {
 
   it("should set error given that title input was too long", async () => {
     server.use(
-      http.post(
-        `${url}/api/workouts`,
-        () => {
-          return new HttpResponse.json({
+      http.post(`${url}/api/workouts`, () => {
+        return new HttpResponse.json(
+          {
             error: "Too long title - max 30 characters",
-          }, { status: 422 })
-        }
-      )
+          },
+          { status: 422 }
+        );
+      })
     );
     const mockWorkout = {
       title: "squatssssssssssssssssssssssssssssssss",
@@ -127,14 +125,14 @@ describe("useCreateWorkout()", () => {
 
   it("should set error given that title input contained non-alphabetic characters", async () => {
     server.use(
-      http.post(
-        `${url}/api/workouts`,
-        () => {
-          return new HttpResponse.json({
+      http.post(`${url}/api/workouts`, () => {
+        return new HttpResponse.json(
+          {
             error: "Title may contain only letters",
-          }, { status: 422 })
-        }
-      )
+          },
+          { status: 422 }
+        );
+      })
     );
     const mockWorkout = {
       title: "<squats>",
@@ -157,14 +155,14 @@ describe("useCreateWorkout()", () => {
 
   it("should set error given that load input value was too large", async () => {
     server.use(
-      http.post(
-        `${url}/api/workouts`,
-        () => {
-          return new HttpResponse.json({
+      http.post(`${url}/api/workouts`, () => {
+        return new HttpResponse.json(
+          {
             error: "load value too large",
-          }, { status: 422 })
-        }
-      )
+          },
+          { status: 422 }
+        );
+      })
     );
     const mockWorkout = {
       title: "squats",
@@ -185,14 +183,14 @@ describe("useCreateWorkout()", () => {
 
   it("should set error given that reps input value was too large", async () => {
     server.use(
-      http.post(
-        `${url}/api/workouts`,
-        () => {
-          return new HttpResponse.json({
+      http.post(`${url}/api/workouts`, () => {
+        return new HttpResponse.json(
+          {
             error: "reps value too large",
-          }, { status: 422 })
-        }
-      )
+          },
+          { status: 422 }
+        );
+      })
     );
     const mockWorkout = {
       title: "squats",

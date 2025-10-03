@@ -28,6 +28,6 @@ const useDownloadData = () => {
   };
 
   return { downloadData };
-}
+};
 
-export default useDownloadData
+export default useDownloadData;

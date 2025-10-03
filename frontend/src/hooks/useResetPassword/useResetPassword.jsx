@@ -41,6 +41,6 @@ const useResetPassword = () => {
   };
 
   return { resetPassword };
-}
+};
 
-export default useResetPassword
+export default useResetPassword;

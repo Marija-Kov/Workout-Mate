@@ -62,4 +62,4 @@ const useUpdateUser = () => {
   return { updateUser };
 };
 
-export default useUpdateUser
+export default useUpdateUser;

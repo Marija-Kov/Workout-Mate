@@ -103,6 +103,6 @@ const WorkoutForm = () => {
       </form>
     </div>
   );
-}
+};
 
-export default WorkoutForm
+export default WorkoutForm;

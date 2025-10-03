@@ -151,7 +151,7 @@ describe("<WorkoutForm/>", () => {
     titleInput = await screen.findByTestId("title");
     expect(titleInput).toHaveAttribute("class", "error");
     const error = await screen.findByRole("alert");
-    expect(error).toBeInTheDocument()
+    expect(error).toBeInTheDocument();
     expect(error.textContent).toMatch(/max 30 characters/i);
     expect(error).toHaveAttribute("class", "error flashMessage");
   });
@@ -210,14 +210,14 @@ describe("<WorkoutForm/>", () => {
 
   it("should signal input error when load value is too large", async () => {
     server.use(
-      http.post(
-        `${import.meta.env.VITE_API}/api/workouts`,
-        () => {
-          return new HttpResponse.json({
+      http.post(`${import.meta.env.VITE_API}/api/workouts`, () => {
+        return new HttpResponse.json(
+          {
             error: "Load value too large",
-          }, { status: 400 })
-        }
-      )
+          },
+          { status: 400 }
+        );
+      })
     );
     user.setup();
     render(
@@ -247,14 +247,14 @@ describe("<WorkoutForm/>", () => {
   it("should respond with error if user is not authorized", async () => {
     // TODO: runtime interception not working
     server.use(
-      http.post(
-        `${import.meta.env.VITE_API}/api/workouts`,
-        () => {
-          return new HttpResponse.json({
+      http.post(`${import.meta.env.VITE_API}/api/workouts`, () => {
+        return new HttpResponse.json(
+          {
             error: "Not authorized",
-          }, { status: 401 })
-        }
-      )
+          },
+          { status: 401 }
+        );
+      })
     );
     user.setup();
     render(
