@@ -85,6 +85,23 @@ describe("workoutController", () => {
       expect(res.body.error).toMatch(/title may contain only letters/i);
     });
 
+    it("should respond with error if muscle group input value is invalid", async () => {
+      const { token } = await mockUser("logged-in", agent);
+      const workout = {
+        title: "Pullups",
+        muscle_group: "keech",
+        reps: 20,
+        load: 20,
+      };
+      const res = await agent
+        .post("/api/workouts/")
+        .send(workout)
+        .set("Cookie", `token=${token}`);
+      expect(res.status).toBe(422);
+      expect(res.body.error).toBeTruthy();
+      expect(res.body.error).toMatch(/invalid muscle group value/i);
+    });
+
     it("should respond with error if reps is not a number/numerical string", async () => {
       const { token } = await mockUser("logged-in", agent);
       const workout = {

@@ -53,6 +53,23 @@ const addWorkout = async (title, muscleGroup, reps, load, user_id) => {
   if (title && title.length > 30) {
     ApiError.badInput("Too long title - max 30 characters");
   }
+  if (
+    muscleGroup &&
+    ![
+      "chest",
+      "shoulder",
+      "biceps",
+      "triceps",
+      "leg",
+      "back",
+      "glute",
+      "ab",
+      "calf",
+      "forearm and grip",
+    ].includes(muscleGroup)
+  ) {
+    ApiError.badInput("Invalid muscle group value");
+  }
   if (reps && Number(reps) != reps) {
     ApiError.badInput("Reps must be a number");
   }
