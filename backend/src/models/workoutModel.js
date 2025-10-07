@@ -10,6 +10,18 @@ const workoutSchema = new Schema(
     muscle_group: {
       type: String,
       required: true,
+      enum: [
+        "chest",
+        "shoulder",
+        "biceps",
+        "triceps",
+        "leg",
+        "back",
+        "glute",
+        "ab",
+        "calf",
+        "forearm and grip",
+      ],
     },
     reps: {
       type: Number,
