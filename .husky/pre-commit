@@ -13,7 +13,7 @@ git stash push -u -m "unstaged changes only"
 staged_stash_index=$(get_stash_index "$staged")
 
 if [ -n "$staged_stash_index" ]; then
-    git stash pop stash@{$staged_stash_index}
+    git stash pop "stash@{$staged_stash_index}"
 else
     echo "Stash named '$staged' was not found."
 fi
