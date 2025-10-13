@@ -143,7 +143,7 @@ const deleteUser = async (id) => {
 
 const downloadUserData = async (id) => {
   const user = await User.findById(id);
-  const workouts = await Workout.getAll(id);
+  const workouts = await Workout.get(id);
   return { user, workouts };
 };
 

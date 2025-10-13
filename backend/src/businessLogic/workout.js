@@ -6,37 +6,25 @@ const getAllWorkouts = async (user_id, page, searchQuery) => {
    * Max number of workouts sent in one response.
    */
   const limit = 3;
-  /**
-   * Informs the client's data visualisation feature about the occurence of each muscle group
-   * among all workouts.
-   */
-  const allUserWorkoutsMuscleGroups = (await Workout.getAll(user_id)).map(
-    (workout) => workout.muscle_group
-  );
-  const allUserWorkoutsByQuery = await Workout.getByQuery(user_id, searchQuery);
-  const total = allUserWorkoutsByQuery.length;
-  const workoutsChunk = await Workout.getChunkByQuery(
-    user_id,
-    searchQuery,
-    page,
-    limit
-  );
+
+  const result = await Workout.get(user_id, searchQuery, page, limit);
+  const { foundCount, onPage, allMuscleGroups } = result;
   /**
    * Informs the client's page navigation about the pages occupied by the existing workouts;
    * it's an array of numbers to enable easy mapping on the client side.
    */
-  const pageSpread = pageSpreadHelper(allUserWorkoutsByQuery.length, limit);
+  const pageSpread = pageSpreadHelper(foundCount, limit);
   /**
    * Informs the client about whether to show the "no workouts by query" message in the UI
    * or something else - which depends on whether there are any workouts at all.
    */
-  const noWorkoutsByQuery = total
+  const noWorkoutsByQuery = foundCount
     ? false
     : `No workouts found by query '${searchQuery}'`;
   return {
-    total,
-    allUserWorkoutsMuscleGroups,
-    workoutsChunk,
+    total: foundCount,
+    allUserWorkoutsMuscleGroups: allMuscleGroups,
+    workoutsChunk: onPage,
     limit,
     pageSpread,
     noWorkoutsByQuery,
@@ -82,15 +70,15 @@ const addWorkout = async (title, muscleGroup, reps, load, user_id) => {
   if (load > 9999) {
     ApiError.badInput("Load value too large");
   }
-  const allWorkoutsByUser = await Workout.getAll(user_id);
+  const workoutsCount = await Workout.getCount(user_id);
   const limit = Number(process.env.MAX_WORKOUTS_PER_USER) || 30;
   /*
    The following block will trigger the deletion of the user's oldest workout
    if the set limit is exceeded. This is done to avoid having to manually clear
    the database as the intention behind the app isn't to retain users at this time.
   */
-  if (allWorkoutsByUser.length === limit) {
-    const id = allWorkoutsByUser[0]._id;
+  if (workoutsCount === limit) {
+    const id = await Workout.getOldestEntryId(user_id);
     await Workout.delete(id);
   }
   const workout = await Workout.add(
@@ -155,8 +143,8 @@ const deleteWorkout = async (id) => {
   if (!workout) {
     ApiError.notFound(`Workout id (${id}) does not exist`);
   }
-  const workouts = await Workout.getAll(workout.user_id);
-  return { workout: workout, remaining: workouts.length };
+  const remaining = await Workout.getCount(workout.user_id);
+  return process.env.NODE_ENV === "test" ? { workout, remaining } : { workout };
 };
 
 const deleteAllWorkouts = async (user_id) => {
