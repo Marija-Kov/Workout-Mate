@@ -5,7 +5,7 @@ get_stash_index() {
     git stash list | grep "$stash_name" | awk '{print $1}' | sed 's/stash@{//;s/}//;s/:$//'
 }
 
-unstaged_stash_index=$(get_stash_index "unstaged changes only")
+unstaged_stash_index=$(get_stash_index "unstaged")
 
 if [ "$unstaged_stash_index" = "0" ]; then
     git stash pop
