@@ -256,7 +256,7 @@ describe("workoutController", () => {
         .get("/api/workouts/")
         .set("Cookie", `token=${token}`);
       expect(res.status).toBe(200);
-      expect(res.body.total).toEqual(workouts.length);
+      expect(res.body.foundCount).toEqual(workouts.length);
     });
 
     it("should respond with workouts by search query provided that they exist", async () => {
@@ -267,10 +267,10 @@ describe("workoutController", () => {
         .get(`/api/workouts/?search=${query}`)
         .set("Cookie", `token=${token}`);
       expect(res.status).toBe(200);
-      expect(res.body.workoutsChunk.length).toBeTruthy();
-      expect(res.body.workoutsChunk[0].title).toMatch(/^pu/i);
-      expect(res.body.total).toBeTruthy();
-      expect(res.body.total).toBeLessThan(workouts.length);
+      expect(res.body.chunk.length).toBeTruthy();
+      expect(res.body.chunk[0].title).toMatch(/^pu/i);
+      expect(res.body.foundCount).toBeTruthy();
+      expect(res.body.foundCount).toBeLessThan(workouts.length);
     });
 
     it("should respond with no workouts if the workouts by search query don't exist", async () => {
@@ -281,7 +281,7 @@ describe("workoutController", () => {
         .get(`/api/workouts/?search=${query}`)
         .set("Cookie", `token=${token}`);
       expect(res.status).toBe(200);
-      expect(res.body.total).toEqual(0);
+      expect(res.body.foundCount).toEqual(0);
       expect(res.body.noWorkoutsByQuery).toMatch(/no workouts found/i);
     });
 
@@ -295,8 +295,8 @@ describe("workoutController", () => {
       const res2 = await agent
         .get(`/api/workouts/?p=${query}`)
         .set("Cookie", `token=${token}`);
-      const firstDateOnTheQueriedPage = res2.body.workoutsChunk[0].createdAt;
-      const lastDateOnTheFirstPage = res1.body.workoutsChunk[2].createdAt;
+      const firstDateOnTheQueriedPage = res2.body.chunk[0].createdAt;
+      const lastDateOnTheFirstPage = res1.body.chunk[2].createdAt;
       expect(res1.status).toBe(200);
       expect(res2.status).toBe(200);
       expect(ISO8601ToMilliseconds(firstDateOnTheQueriedPage)).toBeLessThan(
@@ -506,14 +506,14 @@ describe("workoutController", () => {
     it("should respond with the deleted workout details and the number of remaining workouts", async () => {
       const { userLoggedIn, workouts } = await mockUser("has-workouts", agent);
       const { token } = userLoggedIn;
-      const totalWorkouts = workouts.length;
+      const foundCountWorkouts = workouts.length;
       const deleteWorkoutId = workouts[1]._id;
       const res = await agent
         .delete(`/api/workouts/${deleteWorkoutId}`)
         .set("Cookie", `token=${token}`);
       expect(res.status).toBe(200);
       expect(res.body.workout._id).toMatch(deleteWorkoutId);
-      expect(res.body.remaining).toEqual(totalWorkouts - 1);
+      expect(res.body.remaining).toEqual(foundCountWorkouts - 1);
     });
   });
 

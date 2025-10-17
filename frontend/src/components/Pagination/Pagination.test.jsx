@@ -50,9 +50,9 @@ describe("<Pagination />", () => {
     expect(page2).toHaveAttribute("class", "num--page");
     expect(page3).toHaveAttribute("class", "num--page");
     let state = store.getState();
-    let total = state.workouts.total;
+    let foundCount = state.workouts.foundCount;
     let limit = state.workouts.limit;
-    expect(numButtons.length).toBe(Math.ceil(total / limit));
+    expect(numButtons.length).toBe(Math.ceil(foundCount / limit));
   });
 
   it("should focus elements in the correct order", async () => {

@@ -10,7 +10,7 @@ const Chart = () => {
   const dispatch = useDispatch();
   const loading = useSelector((state) => state.loader);
   const workouts = useSelector((state) => state.workouts);
-  const { allUserWorkoutsMuscleGroups } = workouts;
+  const { allMuscleGroups } = workouts;
   const {
     chest,
     shoulder,
@@ -23,15 +23,14 @@ const Chart = () => {
     calf,
     forearmAndGrip,
   } = useSelector((state) => state.routineBalance);
-  const muscleGroups =
-    allUserWorkoutsMuscleGroups && allUserWorkoutsMuscleGroups.length;
+  const muscleGroups = allMuscleGroups && allMuscleGroups.length;
 
   useEffect(() => {
     dispatch({
       type: "SET_ROUTINE_BALANCE",
-      payload: allUserWorkoutsMuscleGroups,
+      payload: allMuscleGroups,
     });
-  }, [allUserWorkoutsMuscleGroups, dispatch]);
+  }, [allMuscleGroups, dispatch]);
 
   const data = {
     labels: [

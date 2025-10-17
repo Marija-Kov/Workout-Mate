@@ -45,13 +45,13 @@ class WorkoutRepository {
           title: new RegExp(`^${searchQuery.toLowerCase()}`),
         })
       : all;
-    const onPage = byQuery
+    const chunk = byQuery
       .sort((a, b) => b.createdAt - a.createdAt)
       .slice((page - 1) * itemsPerPage, page * itemsPerPage);
 
     return {
       foundCount: byQuery.length,
-      onPage,
+      chunk,
       allMuscleGroups,
     };
   }

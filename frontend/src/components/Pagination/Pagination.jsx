@@ -5,20 +5,20 @@ const Pagination = () => {
   const dispatch = useDispatch();
   const workouts = useSelector((state) => state.workouts);
   const currentPage = useSelector((state) => state.page);
-  const { total, limit, pageSpread } = workouts;
+  const { foundCount, limit, pageNumbers } = workouts;
 
   function pageBtnStyle(currentPage, aPage) {
     if (currentPage === aPage) {
-      if (aPage - 3 > 1 && pageSpread.length - aPage > 1)
+      if (aPage - 3 > 1 && pageNumbers.length - aPage > 1)
         return "num--page current dots-left dots-right";
-      if (pageSpread.length - aPage > 1 && aPage > 2)
+      if (pageNumbers.length - aPage > 1 && aPage > 2)
         return "num--page current dots-right";
       if (aPage - 3 > 1) return "num--page current dots-left";
       return "num--page current";
     }
-    if (aPage === 3 && pageSpread.length > 4 && currentPage < 3)
+    if (aPage === 3 && pageNumbers.length > 4 && currentPage < 3)
       return "num--page dots-right";
-    if (aPage <= 3 || aPage === pageSpread.length) return "num--page";
+    if (aPage <= 3 || aPage === pageNumbers.length) return "num--page";
     return "invisible";
   }
 
@@ -51,7 +51,7 @@ const Pagination = () => {
       >
         <span className="material-symbols-outlined">chevron_left</span>
       </button>
-      {pageSpread.map((aPage) => {
+      {pageNumbers.map((aPage) => {
         return (
           <button
             aria-label={`go to page ${aPage}`}
@@ -66,7 +66,7 @@ const Pagination = () => {
         aria-label="next page"
         type="button"
         className="next--page"
-        disabled={currentPage * limit >= total}
+        disabled={currentPage * limit >= foundCount}
       >
         <span className="material-symbols-outlined">chevron_right</span>
       </button>

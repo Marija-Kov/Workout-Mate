@@ -22,7 +22,7 @@ export const routineBalanceReducer = (state = init, action) => {
     case SET_ROUTINE_BALANCE: {
       if (action.payload.length === 0) return init;
       const muscleGroups = action.payload;
-      const total = muscleGroups.length;
+      const foundCount = muscleGroups.length;
       const balance = {};
       for (let i = 0; i < len; ++i) {
         const group = allMuscleGroups[i];
@@ -31,7 +31,7 @@ export const routineBalanceReducer = (state = init, action) => {
             (e) => e.split(" ").join("") === group.toLowerCase()
           ).length *
             100) /
-          total;
+          foundCount;
         balance[group] = percent.toFixed(1);
       }
       return balance;

@@ -98,15 +98,11 @@ describe("useSearch()", () => {
     dispatch({ type: "CREATE_WORKOUT", payload: mockWorkouts[0] });
     dispatch({ type: "CREATE_WORKOUT", payload: mockWorkouts[1] });
     let state = store.getState();
-    expect(state.workouts.workoutsChunk[0].title).toMatch(
-      mockWorkouts[1].title
-    );
-    expect(state.workouts.workoutsChunk[1].title).toMatch(
-      mockWorkouts[0].title
-    );
+    expect(state.workouts.chunk[0].title).toMatch(mockWorkouts[1].title);
+    expect(state.workouts.chunk[1].title).toMatch(mockWorkouts[0].title);
     const { result } = renderHook(useSearch, { wrapper });
     await result.current.search(mockWorkouts[1].title.slice(0, 1), 0);
     state = store.getState();
-    expect(state.workouts.workoutsChunk[0].title).toBe(mockWorkouts[0].title);
+    expect(state.workouts.chunk[0].title).toBe(mockWorkouts[0].title);
   });
 });

@@ -56,11 +56,11 @@ describe("useDeleteWorkout()", () => {
 
   it("should delete workout given that user was authorized and workout id valid", async () => {
     let state = store.getState();
-    const prevTotal = state.workouts.total;
+    const prevCount = state.workouts.foundCount;
     const { result } = renderHook(useDeleteWorkout, { wrapper });
     await result.current.deleteWorkout("w2");
     state = store.getState();
-    expect(state.workouts.total).toBe(prevTotal - 1);
+    expect(state.workouts.foundCount).toBe(prevCount - 1);
     expect(state.flashMessages.success).toBeTruthy();
     expect(state.flashMessages.success).toMatch(
       /successfully deleted workout/i
@@ -71,12 +71,12 @@ describe("useDeleteWorkout()", () => {
     dispatch({
       type: "SET_WORKOUTS",
       payload: {
-        total: sample.total,
-        allUserWorkoutsMuscleGroups: sample.allUserWorkoutsMuscleGroups,
-        workoutsChunk: mockWorkouts.slice(3, 4),
+        foundCount: sample.foundCount,
+        allMuscleGroups: sample.allMuscleGroups,
+        chunk: mockWorkouts.slice(3, 4),
         limit: 3,
         page: 1,
-        pageSpread: [1, 2, 3],
+        pageNumbers: [1, 2, 3],
         noWorkoutsByQuery: false,
       },
     });
@@ -84,7 +84,7 @@ describe("useDeleteWorkout()", () => {
     const { result } = renderHook(useDeleteWorkout, { wrapper });
     // TODO: Fails here because action.payload is always the
     // json.workout from the initial happy path handler
-    await result.current.deleteWorkout(state.workouts.workoutsChunk[0]._id);
+    await result.current.deleteWorkout(state.workouts.chunk[0]._id);
     state = store.getState();
     expect(state.page).toBe(0);
   });
@@ -93,12 +93,12 @@ describe("useDeleteWorkout()", () => {
     dispatch({
       type: "SET_WORKOUTS",
       payload: {
-        total: sample.total,
-        allUserWorkoutsMuscleGroups: sample.allUserWorkoutsMuscleGroups,
-        workoutsChunk: mockWorkouts.slice(0, 1),
+        foundCount: sample.foundCount,
+        allMuscleGroups: sample.allMuscleGroups,
+        chunk: mockWorkouts.slice(0, 1),
         limit: 3,
         page: 0,
-        pageSpread: [1, 2, 3],
+        pageNumbers: [1, 2, 3],
         noWorkoutsByQuery: false,
       },
     });
@@ -106,22 +106,22 @@ describe("useDeleteWorkout()", () => {
     const { result } = renderHook(useDeleteWorkout, { wrapper });
     // TODO: Fails here because action.payload is always the
     // json.workout from the initial happy path handler
-    await result.current.deleteWorkout(state.workouts.workoutsChunk[0]._id);
+    await result.current.deleteWorkout(state.workouts.chunk[0]._id);
     state = store.getState();
-    expect(state.workouts.workoutsChunk.length).toBe(3);
+    expect(state.workouts.chunk.length).toBe(3);
     expect(state.page).toBe(1);
   });
 
   it("should set error given that user wasn't authorized", async () => {
     let state = store.getState();
-    const prevTotal = state.workouts.total;
-    expect(state.workouts.workoutsChunk[1]._id).toBe(mockWorkouts[1]._id);
+    const prevCount = state.workouts.foundCount;
+    expect(state.workouts.chunk[1]._id).toBe(mockWorkouts[1]._id);
     dispatch({ type: "LOGIN", payload: null });
     const { result } = renderHook(useDeleteWorkout, { wrapper });
     await result.current.deleteWorkout("w0");
     state = store.getState();
-    expect(state.workouts.total).toBe(prevTotal);
-    expect(state.workouts.workoutsChunk[1]._id).toBe(mockWorkouts[1]._id);
+    expect(state.workouts.foundCount).toBe(prevCount);
+    expect(state.workouts.chunk[1]._id).toBe(mockWorkouts[1]._id);
     expect(state.flashMessages.error).toBeTruthy();
     expect(state.flashMessages.error).toMatch(/not authorized/i);
   });
@@ -138,11 +138,11 @@ describe("useDeleteWorkout()", () => {
       })
     );
     let state = store.getState();
-    const prevTotal = state.workouts.total;
+    const prevCount = state.workouts.foundCount;
     const { result } = renderHook(useDeleteWorkout, { wrapper });
     await result.current.deleteWorkout("invalidWorkoutId");
     state = store.getState();
-    expect(state.workouts.total).toBe(prevTotal);
+    expect(state.workouts.foundCount).toBe(prevCount);
     expect(state.flashMessages.error).toBeTruthy();
     expect(state.flashMessages.error).toMatch(/invalid workout id/i);
   });

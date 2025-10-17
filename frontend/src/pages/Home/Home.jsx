@@ -19,7 +19,7 @@ const Home = () => {
   );
   const workouts = useSelector((state) => state.workouts);
   const loading = useSelector((state) => state.loader);
-  const { allUserWorkoutsMuscleGroups } = workouts;
+  const { allMuscleGroups } = workouts;
   const page = useSelector((state) => state.page);
   const query = useSelector((state) => state.query);
   const { search } = useSearch();
@@ -27,8 +27,7 @@ const Home = () => {
   /**
    * This variable is the ultimate indicator for any workouts existing in the DB.
    */
-  const muscleGroups =
-    allUserWorkoutsMuscleGroups && allUserWorkoutsMuscleGroups.length;
+  const muscleGroups = allMuscleGroups && allMuscleGroups.length;
 
   useEffect(() => {
     if (

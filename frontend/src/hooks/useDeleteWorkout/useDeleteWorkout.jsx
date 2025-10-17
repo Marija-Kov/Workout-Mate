@@ -7,7 +7,7 @@ const useDeleteWorkout = () => {
   const user = useSelector((state) => state.user);
   const workouts = useSelector((state) => state.workouts);
   const page = useSelector((state) => state.page);
-  const { workoutsChunk, allUserWorkoutsMuscleGroups, total } = workouts;
+  const { chunk, allMuscleGroups, foundCount } = workouts;
   const url = import.meta.env.VITE_API || "http://localhost:6060";
 
   const deleteWorkout = async (id) => {
@@ -25,7 +25,7 @@ const useDeleteWorkout = () => {
       /* 
         After deleting the last workout from a page, it flips to the previous page.
       */
-      if (workoutsChunk.length === 1 && page > 1) {
+      if (chunk.length === 1 && page > 1) {
         dispatch({ type: "PREV_PAGE" });
       }
       /* 
@@ -34,8 +34,8 @@ const useDeleteWorkout = () => {
         first page with the new chunk (all chunks are effectively shifted 
         to the left by 1 page after the deletion).
       */
-      if (workoutsChunk.length === 1 && page === 1) {
-        if (total > 1) {
+      if (chunk.length === 1 && page === 1) {
+        if (foundCount > 1) {
           dispatch({ type: "NEXT_PAGE" });
           setTimeout(() => {
             dispatch({ type: "PREV_PAGE" });
@@ -44,7 +44,7 @@ const useDeleteWorkout = () => {
       }
       return dispatch({
         type: "SET_ROUTINE_BALANCE",
-        payload: allUserWorkoutsMuscleGroups,
+        payload: allMuscleGroups,
       });
     }
     if (!response.ok) {

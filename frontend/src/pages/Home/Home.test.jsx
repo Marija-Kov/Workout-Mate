@@ -69,11 +69,11 @@ describe("<Home />", () => {
     store.dispatch({
       type: "SET_WORKOUTS",
       payload: {
-        total: 0,
+        foundCount: 0,
         limit: 3,
-        allUserWorkoutsMuscleGroups: [],
-        workoutsChunk: [],
-        pageSpread: [1],
+        allMuscleGroups: [],
+        chunk: [],
+        pageNumbers: [1],
         noWorkoutsByQuery: false,
       },
     });
@@ -108,11 +108,11 @@ describe("<Home />", () => {
     store.dispatch({
       type: "SET_WORKOUTS",
       payload: {
-        total: 0,
+        foundCount: 0,
         limit: 3,
-        allUserWorkoutsMuscleGroups: ["leg", "ab"],
-        workoutsChunk: [],
-        pageSpread: [1],
+        allMuscleGroups: ["leg", "ab"],
+        chunk: [],
+        pageNumbers: [1],
         noWorkoutsByQuery: "no workouts found by query",
       },
     });
@@ -133,11 +133,11 @@ describe("<Home />", () => {
     store.dispatch({
       type: "SET_WORKOUTS",
       payload: {
-        total: 0,
+        foundCount: 0,
         limit: 3,
-        allUserWorkoutsMuscleGroups: [],
-        workoutsChunk: [],
-        pageSpread: [1],
+        allMuscleGroups: [],
+        chunk: [],
+        pageNumbers: [1],
         noWorkoutsByQuery: false,
       },
     });

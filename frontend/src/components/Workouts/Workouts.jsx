@@ -5,21 +5,15 @@ import { WorkoutDetails, WorkoutsPlaceholder } from "../";
 const Workouts = () => {
   const loading = useSelector((state) => state.loader);
   const workouts = useSelector((state) => state.workouts);
-  const {
-    total,
-    workoutsChunk,
-    allUserWorkoutsMuscleGroups,
-    noWorkoutsByQuery,
-  } = workouts;
+  const { foundCount, chunk, allMuscleGroups, noWorkoutsByQuery } = workouts;
 
   const showContent = () => {
     if (loading.workouts) {
       return <WorkoutsPlaceholder />;
     }
-    if (!(allUserWorkoutsMuscleGroups && allUserWorkoutsMuscleGroups.length))
-      return "";
-    if (total) {
-      return workoutsChunk.map((workout) => (
+    if (!(allMuscleGroups && allMuscleGroups.length)) return "";
+    if (foundCount) {
+      return chunk.map((workout) => (
         <WorkoutDetails
           key={workout._id}
           id={workout._id}

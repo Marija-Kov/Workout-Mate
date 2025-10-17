@@ -41,19 +41,19 @@ describe("useDeleteAllWorkouts()", () => {
     dispatch({
       type: "SET_WORKOUTS",
       payload: {
-        total: 2,
+        foundCount: 2,
         limit: 3,
-        allUserWorkoutsMuscleGroups: [],
-        workoutsChunk: [],
-        pageSpread: [1],
+        allMuscleGroups: [],
+        chunk: [],
+        pageNumbers: [1],
       },
     });
     let state = store.getState();
-    expect(state.workouts.total).not.toBe(0);
+    expect(state.workouts.foundCount).not.toBe(0);
     const { result } = renderHook(useDeleteAllWorkouts, { wrapper });
     await result.current.deleteAllWorkouts();
     state = store.getState();
-    expect(state.workouts.total).toBe(0);
+    expect(state.workouts.foundCount).toBe(0);
     expect(state.flashMessages.success).toBeTruthy();
     expect(state.flashMessages.success).toMatch(
       /successfully deleted all workouts/i
@@ -65,22 +65,22 @@ describe("useDeleteAllWorkouts()", () => {
     dispatch({
       type: "SET_WORKOUTS",
       payload: {
-        total: 2,
+        foundCount: 2,
         limit: 3,
-        allUserWorkoutsMuscleGroups: [],
-        workoutsChunk: [],
-        pageSpread: [1],
+        allMuscleGroups: [],
+        chunk: [],
+        pageNumbers: [1],
       },
     });
     let state = store.getState();
-    expect(state.workouts.total).not.toBe(0);
+    expect(state.workouts.foundCount).not.toBe(0);
     dispatch({ type: "LOGIN", payload: null });
     const { result } = renderHook(useDeleteAllWorkouts, { wrapper });
     await result.current.deleteAllWorkouts();
     state = store.getState();
     expect(state.flashMessages.error).toBeTruthy();
     expect(state.flashMessages.error).toMatch(/not authorized/i);
-    expect(state.workouts.total).not.toBe(0);
+    expect(state.workouts.foundCount).not.toBe(0);
   });
 
   it("should set error if deletion was not successful", async () => {
@@ -97,21 +97,21 @@ describe("useDeleteAllWorkouts()", () => {
     dispatch({
       type: "SET_WORKOUTS",
       payload: {
-        total: 2,
+        foundCount: 2,
         limit: 3,
-        allUserWorkoutsMuscleGroups: [],
-        workoutsChunk: [],
-        pageSpread: [1],
+        allMuscleGroups: [],
+        chunk: [],
+        pageNumbers: [1],
       },
     });
     let state = store.getState();
-    expect(state.workouts.total).not.toBe(0);
+    expect(state.workouts.foundCount).not.toBe(0);
     const { result } = renderHook(useDeleteAllWorkouts, { wrapper });
     await result.current.deleteAllWorkouts();
     state = store.getState();
     expect(state.flashMessages.success).toBeFalsy();
     expect(state.flashMessages.error).toBeTruthy();
     expect(state.flashMessages.error).toMatch(/could not delete workouts/i);
-    expect(state.workouts.total).not.toBe(0);
+    expect(state.workouts.foundCount).not.toBe(0);
   });
 });

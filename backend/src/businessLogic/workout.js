@@ -8,12 +8,12 @@ const getAllWorkouts = async (user_id, page, searchQuery) => {
   const limit = 3;
 
   const result = await Workout.get(user_id, searchQuery, page, limit);
-  const { foundCount, onPage, allMuscleGroups } = result;
+  const { foundCount, chunk, allMuscleGroups } = result;
   /**
    * Informs the client's page navigation about the pages occupied by the existing workouts;
    * it's an array of numbers to enable easy mapping on the client side.
    */
-  const pageSpread = pageSpreadHelper(foundCount, limit);
+  const pageNumbers = pageNumbersGenerator(foundCount, limit);
   /**
    * Informs the client about whether to show the "no workouts by query" message in the UI
    * or something else - which depends on whether there are any workouts at all.
@@ -22,11 +22,11 @@ const getAllWorkouts = async (user_id, page, searchQuery) => {
     ? false
     : `No workouts found by query '${searchQuery}'`;
   return {
-    total: foundCount,
-    allUserWorkoutsMuscleGroups: allMuscleGroups,
-    workoutsChunk: onPage,
+    foundCount,
+    allMuscleGroups,
+    chunk,
     limit,
-    pageSpread,
+    pageNumbers,
     noWorkoutsByQuery,
   };
 };
@@ -154,7 +154,7 @@ const deleteAllWorkouts = async (user_id) => {
 /**
  * Gets all the workout page numbers.
  */
-const pageSpreadHelper = (t, l) => {
+const pageNumbersGenerator = (t, l) => {
   const pagesNum = Math.ceil(t / l);
   let spread = [];
   for (let i = 1; i <= pagesNum; ++i) {

@@ -12,7 +12,7 @@ export function genSampleWorkouts(searchFor = "", page = 1, itemsPerPage = 3) {
     "situps",
     "lunges",
   ];
-  const allUserWorkoutsMuscleGroups = [
+  const allMuscleGroups = [
     "chest",
     "forearmAndGrip",
     "chest",
@@ -27,7 +27,7 @@ export function genSampleWorkouts(searchFor = "", page = 1, itemsPerPage = 3) {
     const workout = {
       _id: `w${i}`,
       title: workoutTitles[i],
-      muscle_group: allUserWorkoutsMuscleGroups[i],
+      muscle_group: allMuscleGroups[i],
       reps: Math.floor(Math.random() * 99) + 1,
       load: Math.floor(Math.random() * 50),
       user_id: "userid",
@@ -45,26 +45,26 @@ export function genSampleWorkouts(searchFor = "", page = 1, itemsPerPage = 3) {
   if (!searchResults.length) {
     noWorkoutsByQuery = true;
     return {
-      total: 0,
+      foundCount: 0,
       searchResults,
       limit: itemsPerPage,
-      allUserWorkoutsMuscleGroups,
-      workoutsChunk: [],
+      allMuscleGroups,
+      chunk: [],
       noWorkoutsByQuery,
     };
   }
   const firstResultOnPage_Index =
     Math.floor(workouts.length / itemsPerPage) * (page - 1);
-  const workoutsChunk = searchResults.slice(
+  const chunk = searchResults.slice(
     firstResultOnPage_Index,
     firstResultOnPage_Index + itemsPerPage
   );
   return {
-    total: searchResults.length,
+    foundCount: searchResults.length,
     searchResults,
     limit: itemsPerPage,
-    allUserWorkoutsMuscleGroups,
-    workoutsChunk,
+    allMuscleGroups,
+    chunk,
     noWorkoutsByQuery,
   };
 }

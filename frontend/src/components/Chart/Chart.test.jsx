@@ -30,7 +30,7 @@ describe("<Chart />", () => {
     );
     dispatch({
       type: "SET_ROUTINE_BALANCE",
-      payload: sampleWorkouts.allUserWorkoutsMuscleGroups,
+      payload: sampleWorkouts.allMuscleGroups,
     });
     dispatch({ type: "SET_WORKOUTS", payload: sampleWorkouts });
     const doughnut = await screen.findByText(/routine balance/i);
