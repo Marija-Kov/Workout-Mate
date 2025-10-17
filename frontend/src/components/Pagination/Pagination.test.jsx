@@ -65,8 +65,9 @@ describe("<Pagination />", () => {
     const prev = screen.getByLabelText(/previous page/i);
     const next = screen.getByLabelText(/next page/i);
     let page2 = screen.getByLabelText(/page 2/i);
-    await user.click(page2);
-    await user.tab();
+    await user.click(page2); // going to page2 to enable prev button
+    await user.tab({ shift: true });
+    await user.tab({ shift: true });
     expect(prev).toHaveFocus();
     await user.tab();
     const page1 = await screen.findByLabelText(/page 1/i);

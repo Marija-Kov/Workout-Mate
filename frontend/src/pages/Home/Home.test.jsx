@@ -73,8 +73,7 @@ describe("<Home />", () => {
         limit: 3,
         allMuscleGroups: [],
         chunk: [],
-        pageNumbers: [1],
-        noWorkoutsByQuery: false,
+        noneFound: false,
       },
     });
     const addWorkoutBtn = await screen.findByText(/buff it up/i);
@@ -112,8 +111,7 @@ describe("<Home />", () => {
         limit: 3,
         allMuscleGroups: ["leg", "ab"],
         chunk: [],
-        pageNumbers: [1],
-        noWorkoutsByQuery: "no workouts found by query",
+        noneFound: "no workouts found by query",
       },
     });
     const noWorkoutsMessage = await screen.findByText(
@@ -137,8 +135,7 @@ describe("<Home />", () => {
         limit: 3,
         allMuscleGroups: [],
         chunk: [],
-        pageNumbers: [1],
-        noWorkoutsByQuery: false,
+        noneFound: false,
       },
     });
     const addWorkoutBtn = await screen.findByText(/buff it up/i);

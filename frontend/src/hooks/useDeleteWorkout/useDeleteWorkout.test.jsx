@@ -75,9 +75,7 @@ describe("useDeleteWorkout()", () => {
         allMuscleGroups: sample.allMuscleGroups,
         chunk: mockWorkouts.slice(3, 4),
         limit: 3,
-        page: 1,
-        pageNumbers: [1, 2, 3],
-        noWorkoutsByQuery: false,
+        noneFound: false,
       },
     });
     let state = store.getState();
@@ -97,9 +95,7 @@ describe("useDeleteWorkout()", () => {
         allMuscleGroups: sample.allMuscleGroups,
         chunk: mockWorkouts.slice(0, 1),
         limit: 3,
-        page: 0,
-        pageNumbers: [1, 2, 3],
-        noWorkoutsByQuery: false,
+        noneFound: false,
       },
     });
     let state = store.getState();

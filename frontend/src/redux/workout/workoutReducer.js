@@ -5,8 +5,7 @@ const init = {
   limit: 3, // this is a placeholder, the value is received from the server
   allMuscleGroups: [],
   chunk: [],
-  pageNumbers: [1],
-  noWorkoutsByQuery: false,
+  noneFound: false,
 };
 
 export const workoutReducer = (state = init, action) => {
@@ -26,23 +25,21 @@ export const workoutReducer = (state = init, action) => {
       return nextMuscleGroupsString === prevMuscleGroupsString
         ? {
             ...state,
-            noWorkoutsByQuery: action.payload.noWorkoutsByQuery,
+            noneFound: action.payload.noneFound,
             chunk: action.payload.chunk,
-            pageNumbers: action.payload.pageNumbers,
             foundCount: action.payload.foundCount,
           }
         : action.payload;
     }
     case a.CREATE_WORKOUT: {
-      const newCount = ++state.foundCount;
       return {
         ...state,
+        foundCount: ++state.foundCount,
         chunk: [action.payload, ...state.chunk],
         allMuscleGroups: [
           action.payload.muscle_group,
           ...state.allMuscleGroups,
         ],
-        pageNumbers: pageNumbersGenerator(newCount, state.limit),
       };
     }
     case a.UPDATE_WORKOUT: {
@@ -92,20 +89,18 @@ export const workoutReducer = (state = init, action) => {
           };
     }
     case a.DELETE_WORKOUT: {
-      const newCount = --state.foundCount;
       const newChunk = state.chunk.filter((e) => e._id !== action.payload._id);
       const prevMuscleGroupIndex = state.allMuscleGroups.indexOf(
         state.chunk.find((e) => e._id === action.payload._id).muscle_group
       );
       return {
         ...state,
-        foundCount: newCount,
+        foundCount: --state.foundCount,
         allMuscleGroups: state.allMuscleGroups.toSpliced(
           prevMuscleGroupIndex,
           1
         ),
         chunk: newChunk,
-        pageNumbers: pageNumbersGenerator(newCount, state.limit),
       };
     }
     case a.RESET_WORKOUTS_STATE:
@@ -113,13 +108,4 @@ export const workoutReducer = (state = init, action) => {
     default:
       return state;
   }
-};
-
-const pageNumbersGenerator = (t, l) => {
-  const pagesNum = Math.ceil(t / l);
-  let spread = [];
-  for (let i = 1; i <= pagesNum; ++i) {
-    spread.push(i);
-  }
-  return spread;
 };

@@ -5,7 +5,7 @@ import { WorkoutDetails, WorkoutsPlaceholder } from "../";
 const Workouts = () => {
   const loading = useSelector((state) => state.loader);
   const workouts = useSelector((state) => state.workouts);
-  const { foundCount, chunk, allMuscleGroups, noWorkoutsByQuery } = workouts;
+  const { foundCount, chunk, allMuscleGroups, noneFound } = workouts;
 
   const showContent = () => {
     if (loading.workouts) {
@@ -28,7 +28,7 @@ const Workouts = () => {
     } else {
       return (
         <div data-testid="no-workouts" className="no--workouts--found">
-          {noWorkoutsByQuery}
+          {noneFound}
         </div>
       );
     }

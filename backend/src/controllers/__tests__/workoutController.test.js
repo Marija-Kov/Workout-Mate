@@ -282,7 +282,7 @@ describe("workoutController", () => {
         .set("Cookie", `token=${token}`);
       expect(res.status).toBe(200);
       expect(res.body.foundCount).toEqual(0);
-      expect(res.body.noWorkoutsByQuery).toMatch(/no workouts found/i);
+      expect(res.body.noneFound).toMatch(/no workouts found/i);
     });
 
     it("should respond with workouts from a specified page query", async () => {

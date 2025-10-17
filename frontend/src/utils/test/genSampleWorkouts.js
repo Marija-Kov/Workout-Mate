@@ -37,20 +37,30 @@ export function genSampleWorkouts(searchFor = "", page = 1, itemsPerPage = 3) {
     workouts.unshift(workout);
     dispatch({ type: "CREATE_WORKOUT", payload: workout });
   }
-  let noWorkoutsByQuery = false;
+  let noneFound = false;
   const searchResults = workouts.filter((e) => {
     const regExp = `^${searchFor}`;
     return e.title.match(regExp);
   });
   if (!searchResults.length) {
-    noWorkoutsByQuery = true;
+    noneFound = true;
+    dispatch({
+      type: "SET_WORKOUTS",
+      payload: {
+        foundCount: 0,
+        limit: itemsPerPage,
+        allMuscleGroups,
+        chunk: [],
+        noneFound,
+      },
+    });
     return {
       foundCount: 0,
       searchResults,
       limit: itemsPerPage,
       allMuscleGroups,
       chunk: [],
-      noWorkoutsByQuery,
+      noneFound,
     };
   }
   const firstResultOnPage_Index =
@@ -59,12 +69,22 @@ export function genSampleWorkouts(searchFor = "", page = 1, itemsPerPage = 3) {
     firstResultOnPage_Index,
     firstResultOnPage_Index + itemsPerPage
   );
+  dispatch({
+    type: "SET_WORKOUTS",
+    payload: {
+      foundCount: searchResults.length,
+      limit: itemsPerPage,
+      allMuscleGroups,
+      chunk,
+      noneFound,
+    },
+  });
   return {
     foundCount: searchResults.length,
     searchResults,
     limit: itemsPerPage,
     allMuscleGroups,
     chunk,
-    noWorkoutsByQuery,
+    noneFound,
   };
 }

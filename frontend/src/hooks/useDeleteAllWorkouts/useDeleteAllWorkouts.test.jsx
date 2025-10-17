@@ -45,7 +45,6 @@ describe("useDeleteAllWorkouts()", () => {
         limit: 3,
         allMuscleGroups: [],
         chunk: [],
-        pageNumbers: [1],
       },
     });
     let state = store.getState();
@@ -69,7 +68,6 @@ describe("useDeleteAllWorkouts()", () => {
         limit: 3,
         allMuscleGroups: [],
         chunk: [],
-        pageNumbers: [1],
       },
     });
     let state = store.getState();
@@ -101,7 +99,6 @@ describe("useDeleteAllWorkouts()", () => {
         limit: 3,
         allMuscleGroups: [],
         chunk: [],
-        pageNumbers: [1],
       },
     });
     let state = store.getState();

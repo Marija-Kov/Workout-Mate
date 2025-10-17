@@ -1,24 +1,14 @@
 const Workout = require("../dataAccessLayer/workoutRepository");
 const { ApiError } = require("../error/error");
 
-const getAllWorkouts = async (user_id, page, searchQuery) => {
-  /**
-   * Max number of workouts sent in one response.
-   */
-  const limit = 3;
-
-  const result = await Workout.get(user_id, searchQuery, page, limit);
+const getAllWorkouts = async (user_id, page, searchQuery, limit = 3) => {
+  const result = await Workout.get(user_id, searchQuery, page);
   const { foundCount, chunk, allMuscleGroups } = result;
-  /**
-   * Informs the client's page navigation about the pages occupied by the existing workouts;
-   * it's an array of numbers to enable easy mapping on the client side.
-   */
-  const pageNumbers = pageNumbersGenerator(foundCount, limit);
   /**
    * Informs the client about whether to show the "no workouts by query" message in the UI
    * or something else - which depends on whether there are any workouts at all.
    */
-  const noWorkoutsByQuery = foundCount
+  const noneFound = foundCount
     ? false
     : `No workouts found by query '${searchQuery}'`;
   return {
@@ -26,8 +16,7 @@ const getAllWorkouts = async (user_id, page, searchQuery) => {
     allMuscleGroups,
     chunk,
     limit,
-    pageNumbers,
-    noWorkoutsByQuery,
+    noneFound,
   };
 };
 
@@ -150,17 +139,6 @@ const deleteWorkout = async (id) => {
 const deleteAllWorkouts = async (user_id) => {
   const workouts = await Workout.deleteAll(user_id);
   return workouts;
-};
-/**
- * Gets all the workout page numbers.
- */
-const pageNumbersGenerator = (t, l) => {
-  const pagesNum = Math.ceil(t / l);
-  let spread = [];
-  for (let i = 1; i <= pagesNum; ++i) {
-    spread.push(i);
-  }
-  return spread;
 };
 
 module.exports = {

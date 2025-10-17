@@ -146,7 +146,7 @@ export const handlers = [
         allMuscleGroups: ["leg", "chest"],
         foundCount: 2,
         limit: 3,
-        noWorkoutsByQuery: false,
+        noneFound: false,
       },
       { status: 200 }
     );
