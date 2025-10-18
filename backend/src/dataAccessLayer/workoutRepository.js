@@ -65,7 +65,7 @@ class WorkoutRepository {
       ._id;
   }
 
-  isValidId(id) {
+  _isValidId(id) {
     return mongoose.Types.ObjectId.isValid(id);
   }
 
@@ -80,10 +80,16 @@ class WorkoutRepository {
   }
 
   async delete(id) {
+    if (!this._isValidId(id)) {
+      return null;
+    }
     return Workout.findOneAndDelete({ _id: id });
   }
 
   async update(id, body) {
+    if (!this._isValidId(id)) {
+      return null;
+    }
     return Workout.findOneAndUpdate({ _id: id }, body, {
       new: true,
       runValidators: true,

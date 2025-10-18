@@ -205,7 +205,7 @@ describe("workoutController", () => {
       expect(res2ndOldestWorkout.status).toBe(200);
       expect(resOldestWorkout.body).toHaveProperty(
         "error",
-        `Workout id (${oldestWorkoutId}) does not exist`
+        `Could not find workout id: ${oldestWorkoutId}`
       );
       expect(res2ndOldestWorkout.body.workout).toBeTruthy();
       expect(res2ndOldestWorkout.body.workout).toHaveProperty(
@@ -485,22 +485,7 @@ describe("workoutController", () => {
         .set("Cookie", `token=${token}`);
       expect(res.status).toBe(404);
       expect(res.body.error).toBeTruthy();
-      expect(res.body.error).toMatch(/invalid workout id/i);
-    });
-
-    it("should respond with error if the workout with the provided id doesn't exist", async () => {
-      const { userLoggedIn, workouts } = await mockUser("has-workouts", agent);
-      const { token } = userLoggedIn;
-      const deleteWorkoutId = workouts[1]._id;
-      await agent
-        .delete(`/api/workouts/${deleteWorkoutId}`)
-        .set("Cookie", `token=${token}`);
-      const res = await agent
-        .delete(`/api/workouts/${deleteWorkoutId}`)
-        .set("Cookie", `token=${token}`);
-      expect(res.status).toBe(404);
-      expect(res.body.error).toBeTruthy();
-      expect(res.body.error).toMatch(/does not exist/i);
+      expect(res.body.error).toMatch(/could not find workout id/i);
     });
 
     it("should respond with the deleted workout details and the number of remaining workouts", async () => {

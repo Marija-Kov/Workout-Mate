@@ -82,9 +82,6 @@ const addWorkout = async (title, muscleGroup, reps, load, user_id) => {
 
 const updateWorkout = async (id, body) => {
   const { title, muscle_group, reps, load } = body;
-  if (!Workout.isValidId(id)) {
-    ApiError.notFound("Invalid workout id");
-  }
   if (title && !title.match(/^[a-zA-Z\s]*$/)) {
     ApiError.badInput("Title may contain only letters");
   }
@@ -121,19 +118,22 @@ const updateWorkout = async (id, body) => {
     ApiError.badInput("Load value too large");
   }
   const workout = await Workout.update(id, body);
+  if (!workout) {
+    ApiError.notFound(`Could not find workout id: ${id}`);
+  }
   return workout;
 };
 
 const deleteWorkout = async (id) => {
-  if (!Workout.isValidId(id)) {
-    ApiError.notFound("Invalid workout id");
-  }
   const workout = await Workout.delete(id);
   if (!workout) {
-    ApiError.notFound(`Workout id (${id}) does not exist`);
+    ApiError.notFound(`Could not find workout id: ${id}`);
   }
-  const remaining = await Workout.getCount(workout.user_id);
-  return process.env.NODE_ENV === "test" ? { workout, remaining } : { workout };
+  if (process.env.NODE_ENV === "test") {
+    const remaining = await Workout.getCount(workout.user_id);
+    return { workout, remaining };
+  }
+  return { workout };
 };
 
 const deleteAllWorkouts = async (user_id) => {
