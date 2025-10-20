@@ -2,8 +2,6 @@ import WorkoutForm from "./WorkoutForm";
 import App from "../../mocks/App";
 import user from "@testing-library/user-event";
 import { render, screen } from "@testing-library/react";
-import { http, HttpResponse } from "msw";
-import { server } from "../../mocks/server";
 import { Provider } from "react-redux";
 import store from "../../redux/store";
 
@@ -209,16 +207,6 @@ describe("<WorkoutForm/>", () => {
   });
 
   it("should signal input error when load value is too large", async () => {
-    server.use(
-      http.post(`${import.meta.env.VITE_API}/api/workouts`, () => {
-        return new HttpResponse.json(
-          {
-            error: "Load value too large",
-          },
-          { status: 400 }
-        );
-      })
-    );
     user.setup();
     render(
       <Provider store={store}>
@@ -245,17 +233,6 @@ describe("<WorkoutForm/>", () => {
   });
 
   it("should respond with error if user is not authorized", async () => {
-    // TODO: runtime interception not working
-    server.use(
-      http.post(`${import.meta.env.VITE_API}/api/workouts`, () => {
-        return new HttpResponse.json(
-          {
-            error: "Not authorized",
-          },
-          { status: 401 }
-        );
-      })
-    );
     user.setup();
     render(
       <Provider store={store}>
@@ -272,6 +249,7 @@ describe("<WorkoutForm/>", () => {
     await user.selectOptions(muscleGroupSelect, "biceps");
     await user.type(repsInput, "33");
     await user.type(loadInput, "20");
+    await dispatch({ type: "LOGOUT" });
     await user.click(submit);
     const error = await screen.findByRole("alert");
     expect(error).toBeInTheDocument();

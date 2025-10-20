@@ -144,17 +144,6 @@ describe("<UserSettings/>", () => {
   });
 
   it("should render error message if the user is not authorized", async () => {
-    // TODO: runtime interception not working
-    server.use(
-      http.patch(`${import.meta.env.VITE_API}/api/users`, () => {
-        return new HttpResponse.json(
-          {
-            error: "Not authorized",
-          },
-          { status: 401 }
-        );
-      })
-    );
     user.setup();
     render(
       <Provider store={store}>
@@ -165,6 +154,7 @@ describe("<UserSettings/>", () => {
     const newUsername = screen.getByTestId("username");
     await user.type(newUsername, "daredev");
     const upload = screen.getByText("Upload");
+    await dispatch({ type: "LOGOUT" });
     await user.click(upload);
     const error = await screen.findByRole("alert");
     expect(error).toBeInTheDocument();

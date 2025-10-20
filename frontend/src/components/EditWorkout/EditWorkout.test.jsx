@@ -1,10 +1,7 @@
-import React from "react";
 import EditWorkout from "./EditWorkout";
 import App from "../../mocks/App";
 import user from "@testing-library/user-event";
 import { render, screen } from "@testing-library/react";
-import { http, HttpResponse } from "msw";
-import { server } from "../../mocks/server";
 import { Provider } from "react-redux";
 import store from "../../redux/store";
 
@@ -121,14 +118,6 @@ describe("<EditWorkout/>", () => {
   });
 
   it("should respond with error message if authentication token expired and user attempts to submit", async () => {
-    server.use(
-      http.patch(`${import.meta.env.VITE_API}/api/workouts/*`, () => {
-        return new HttpResponse.json(
-          { error: "Not authorized" },
-          { status: 401 }
-        );
-      })
-    );
     user.setup();
     render(
       <Provider store={store}>
@@ -155,16 +144,6 @@ describe("<EditWorkout/>", () => {
   });
 
   it("should signal input error when user attempts to submit form with too long title", async () => {
-    server.use(
-      http.patch(`${import.meta.env.VITE_API}/api/workouts/*`, () => {
-        return new HttpResponse.json(
-          {
-            error: "Too long title - max 30 characters",
-          },
-          { status: 400 }
-        );
-      })
-    );
     user.setup();
     render(
       <Provider store={store}>
@@ -188,16 +167,6 @@ describe("<EditWorkout/>", () => {
   });
 
   it("should signal input error when user attempts to submit form with title containing non-alphabetic characters", async () => {
-    server.use(
-      http.patch(`${import.meta.env.VITE_API}/api/workouts/*`, () => {
-        return new HttpResponse.json(
-          {
-            error: "Title may contain only letters",
-          },
-          { status: 400 }
-        );
-      })
-    );
     user.setup();
     render(
       <Provider store={store}>
@@ -218,16 +187,6 @@ describe("<EditWorkout/>", () => {
   });
 
   it("should signal input error when user attempts to submit form with too large reps number", async () => {
-    server.use(
-      http.patch(`${import.meta.env.VITE_API}/api/workouts/*`, () => {
-        return new HttpResponse.json(
-          {
-            error: "Reps value too large",
-          },
-          { status: 400 }
-        );
-      })
-    );
     user.setup();
     render(
       <Provider store={store}>
@@ -248,16 +207,6 @@ describe("<EditWorkout/>", () => {
   });
 
   it("should signal input error when user attempts to submit form with too large load number", async () => {
-    server.use(
-      http.patch(`${import.meta.env.VITE_API}/api/workouts/*`, () => {
-        return new HttpResponse.json(
-          {
-            error: "Load value too large",
-          },
-          { status: 400 }
-        );
-      })
-    );
     user.setup();
     render(
       <Provider store={store}>
@@ -278,19 +227,6 @@ describe("<EditWorkout/>", () => {
   });
 
   it("should submit updated input fields given that input is valid", async () => {
-    // This is handled in handlers.js!
-    // server.use(
-    //   http.patch(
-    //     `${import.meta.env.VITE_API}/api/workouts/*`,
-    //     () => {
-    //       return new HttpResponse(null, { status: 200 }).json({
-    //         title: "deadlifts",
-    //         reps: 30,
-    //         load: 15,
-    //       })
-    //     }
-    //   )
-    // );
     user.setup();
     render(
       <Provider store={store}>
@@ -316,10 +252,6 @@ describe("<EditWorkout/>", () => {
     await user.clear(loadInput);
     await user.type(loadInput, "15");
     await user.click(submit);
-    await dispatch({
-      type: "SUCCESS",
-      payload: "Successfully updated workout",
-    });
     const success = await screen.findByRole("alert");
     expect(success).toBeInTheDocument();
     expect(success.textContent).toMatch(/successfully updated workout/i);

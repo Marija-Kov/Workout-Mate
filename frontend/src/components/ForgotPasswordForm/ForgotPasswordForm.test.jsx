@@ -2,8 +2,6 @@ import ForgotPasswordForm from "./ForgotPasswordForm";
 import App from "../../mocks/App";
 import user from "@testing-library/user-event";
 import { render, screen } from "@testing-library/react";
-import { http, HttpResponse } from "msw";
-import { server } from "../../mocks/server";
 import { Provider } from "react-redux";
 import store from "../../redux/store";
 
@@ -53,16 +51,6 @@ describe("<ForgotPasswordForm />", () => {
   });
 
   it("should render error message if user attempts to submit invalid input", async () => {
-    server.use(
-      http.post("/api/reset-password", () => {
-        return new HttpResponse.json(
-          {
-            error: "Please enter valid email address",
-          },
-          { status: 400 }
-        );
-      })
-    );
     user.setup();
     render(
       <Provider store={store}>
