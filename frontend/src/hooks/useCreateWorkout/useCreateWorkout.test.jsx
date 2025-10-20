@@ -45,12 +45,12 @@ describe("useCreateWorkout()", () => {
     };
     dispatch({ type: "LOGIN", payload: mockUser });
     let state = store.getState();
-    const prevTotal = state.workouts.total;
+    const prevCount = state.workouts.foundCount;
     const { result } = renderHook(useCreateWorkout, { wrapper });
     await result.current.createWorkout(mockWorkout);
     state = store.getState();
-    expect(state.workouts.total).toBe(prevTotal + 1);
-    expect(state.workouts.workoutsChunk[0].title).toMatch(mockWorkout.title);
+    expect(state.workouts.foundCount).toBe(prevCount + 1);
+    expect(state.workouts.chunk[0].title).toMatch(mockWorkout.title);
     expect(state.flashMessages.success).toBeTruthy();
     expect(state.flashMessages.success).toMatch(
       /successfully created workout/i
@@ -86,11 +86,11 @@ describe("useCreateWorkout()", () => {
     const mockWorkout = { title: "squats", reps: 20 };
     dispatch({ type: "LOGIN", payload: mockUser });
     let state = store.getState();
-    const prevTotal = state.workouts.total;
+    const prevCount = state.workouts.foundCount;
     const { result } = renderHook(useCreateWorkout, { wrapper });
     await result.current.createWorkout(mockWorkout);
     state = store.getState();
-    expect(state.workouts.total).toBe(prevTotal);
+    expect(state.workouts.foundCount).toBe(prevCount);
     expect(state.flashMessages.error).toBeTruthy();
     expect(state.flashMessages.error).toMatch(/empty fields/i);
   });
@@ -114,11 +114,11 @@ describe("useCreateWorkout()", () => {
     };
     dispatch({ type: "LOGIN", payload: mockUser });
     let state = store.getState();
-    const prevTotal = state.workouts.total;
+    const prevCount = state.workouts.foundCount;
     const { result } = renderHook(useCreateWorkout, { wrapper });
     await result.current.createWorkout(mockWorkout);
     state = store.getState();
-    expect(state.workouts.total).toBe(prevTotal);
+    expect(state.workouts.foundCount).toBe(prevCount);
     expect(state.flashMessages.error).toBeTruthy();
     expect(state.flashMessages.error).toMatch(/too long title/i);
   });
@@ -142,11 +142,11 @@ describe("useCreateWorkout()", () => {
     };
     dispatch({ type: "LOGIN", payload: mockUser });
     let state = store.getState();
-    const prevTotal = state.workouts.total;
+    const prevCount = state.workouts.foundCount;
     const { result } = renderHook(useCreateWorkout, { wrapper });
     await result.current.createWorkout(mockWorkout);
     state = store.getState();
-    expect(state.workouts.total).toBe(prevTotal);
+    expect(state.workouts.foundCount).toBe(prevCount);
     expect(state.flashMessages.error).toBeTruthy();
     expect(state.flashMessages.error).toMatch(
       /title may contain only letters/i
@@ -172,11 +172,11 @@ describe("useCreateWorkout()", () => {
     };
     dispatch({ type: "LOGIN", payload: mockUser });
     let state = store.getState();
-    const prevTotal = state.workouts.total;
+    const prevCount = state.workouts.foundCount;
     const { result } = renderHook(useCreateWorkout, { wrapper });
     await result.current.createWorkout(mockWorkout);
     state = store.getState();
-    expect(state.workouts.total).toBe(prevTotal);
+    expect(state.workouts.foundCount).toBe(prevCount);
     expect(state.flashMessages.error).toBeTruthy();
     expect(state.flashMessages.error).toMatch(/load value too large/i);
   });
@@ -200,11 +200,11 @@ describe("useCreateWorkout()", () => {
     };
     dispatch({ type: "LOGIN", payload: mockUser });
     let state = store.getState();
-    const prevTotal = state.workouts.total;
+    const prevCount = state.workouts.foundCount;
     const { result } = renderHook(useCreateWorkout, { wrapper });
     await result.current.createWorkout(mockWorkout);
     state = store.getState();
-    expect(state.workouts.total).toBe(prevTotal);
+    expect(state.workouts.foundCount).toBe(prevCount);
     expect(state.flashMessages.error).toBeTruthy();
     expect(state.flashMessages.error).toMatch(/reps value too large/i);
   });

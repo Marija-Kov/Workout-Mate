@@ -6,7 +6,7 @@ const useEditWorkout = () => {
   const flashMessage = useFlashMessage();
   const user = useSelector((state) => state.user);
   const workouts = useSelector((state) => state.workouts);
-  const { allUserWorkoutsMuscleGroups } = workouts;
+  const { allMuscleGroups } = workouts;
   const url = import.meta.env.VITE_API || "http://localhost:6060";
 
   const editWorkout = async (id, payload) => {
@@ -63,7 +63,7 @@ const useEditWorkout = () => {
       if (payload.muscle_group && payload.muscle_group !== json.muscle_group) {
         dispatch({
           type: "SET_ROUTINE_BALANCE",
-          payload: allUserWorkoutsMuscleGroups,
+          payload: allMuscleGroups,
         });
       }
       return dispatch({ type: "TOGGLE_MOUNT_EDIT_WORKOUT_FORM" });

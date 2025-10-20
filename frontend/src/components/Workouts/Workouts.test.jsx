@@ -26,7 +26,7 @@ describe("<Workouts/>", () => {
       </Provider>
     );
     dispatch({ type: "SET_WORKOUTS", payload: sampleWorkouts });
-    const workouts = sampleWorkouts.workoutsChunk.map((w) => w.title);
+    const workouts = sampleWorkouts.chunk.map((w) => w.title);
     const workoutDetails1 = await screen.findByText(
       new RegExp(`${workouts[0]}`)
     );

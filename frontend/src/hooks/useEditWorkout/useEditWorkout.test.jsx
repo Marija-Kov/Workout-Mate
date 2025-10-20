@@ -49,12 +49,12 @@ describe("useEditWorkout()", () => {
   it("should set error given that user isn't authorized", async () => {
     const mockUpdate = { title: "squats" };
     let state = store.getState();
-    expect(state.workouts.workoutsChunk[0].title).toMatch(mockWorkout.title);
+    expect(state.workouts.chunk[0].title).toMatch(mockWorkout.title);
     dispatch({ type: "LOGOUT" });
     const { result } = renderHook(useEditWorkout, { wrapper });
     await result.current.editWorkout(mockWorkout.id, mockUpdate);
     state = store.getState();
-    expect(state.workouts.workoutsChunk[0].title).toMatch(mockWorkout.title);
+    expect(state.workouts.chunk[0].title).toMatch(mockWorkout.title);
     expect(state.flashMessages.error).toBeTruthy();
     expect(state.flashMessages.error).toMatch(/not authorized/i);
   });
@@ -64,11 +64,11 @@ describe("useEditWorkout()", () => {
       title: "squatszzszsszszzzsszzszszszszszzszszszszszszszszzszszszsz",
     };
     let state = store.getState();
-    expect(state.workouts.workoutsChunk[0].title).toMatch(mockWorkout.title);
+    expect(state.workouts.chunk[0].title).toMatch(mockWorkout.title);
     const { result } = renderHook(useEditWorkout, { wrapper });
     await result.current.editWorkout(mockWorkout.id, mockUpdate);
     state = store.getState();
-    expect(state.workouts.workoutsChunk[0].title).toMatch(mockWorkout.title);
+    expect(state.workouts.chunk[0].title).toMatch(mockWorkout.title);
     expect(state.flashMessages.error).toBeTruthy();
     expect(state.flashMessages.error).toMatch(
       /too long title - max 30 characters/i
@@ -78,11 +78,11 @@ describe("useEditWorkout()", () => {
   it("should set error given that title contains non-alphabetic characters", async () => {
     const mockUpdate = { title: "<squats>" };
     let state = store.getState();
-    expect(state.workouts.workoutsChunk[0].title).toMatch(mockWorkout.title);
+    expect(state.workouts.chunk[0].title).toMatch(mockWorkout.title);
     const { result } = renderHook(useEditWorkout, { wrapper });
     await result.current.editWorkout(mockWorkout.id, mockUpdate);
     state = store.getState();
-    expect(state.workouts.workoutsChunk[0].title).toMatch(mockWorkout.title);
+    expect(state.workouts.chunk[0].title).toMatch(mockWorkout.title);
     expect(state.flashMessages.error).toBeTruthy();
     expect(state.flashMessages.error).toMatch(
       /title may contain only letters/i
@@ -92,11 +92,11 @@ describe("useEditWorkout()", () => {
   it("should set error given that reps value is too large", async () => {
     const mockUpdate = { reps: "20000" };
     let state = store.getState();
-    expect(state.workouts.workoutsChunk[0].reps).toMatch(mockWorkout.reps);
+    expect(state.workouts.chunk[0].reps).toMatch(mockWorkout.reps);
     const { result } = renderHook(useEditWorkout, { wrapper });
     await result.current.editWorkout(mockWorkout.id, mockUpdate);
     state = store.getState();
-    expect(state.workouts.workoutsChunk[0].reps).toMatch(mockWorkout.reps);
+    expect(state.workouts.chunk[0].reps).toMatch(mockWorkout.reps);
     expect(state.flashMessages.error).toBeTruthy();
     expect(state.flashMessages.error).toMatch(/reps value too large/i);
   });
@@ -104,11 +104,11 @@ describe("useEditWorkout()", () => {
   it("should set error given that load value is too large", async () => {
     const mockUpdate = { load: "20000" };
     let state = store.getState();
-    expect(state.workouts.workoutsChunk[0].load).toMatch(mockWorkout.load);
+    expect(state.workouts.chunk[0].load).toMatch(mockWorkout.load);
     const { result } = renderHook(useEditWorkout, { wrapper });
     await result.current.editWorkout(mockWorkout.id, mockUpdate);
     state = store.getState();
-    expect(state.workouts.workoutsChunk[0].load).toMatch(mockWorkout.load);
+    expect(state.workouts.chunk[0].load).toMatch(mockWorkout.load);
     expect(state.flashMessages.error).toBeTruthy();
     expect(state.flashMessages.error).toMatch(/load value too large/i);
   });
@@ -117,7 +117,7 @@ describe("useEditWorkout()", () => {
   it("should update workout given that user is authorized and input valid", async () => {
     const mockUpdate = { title: "squats" };
     let state = store.getState();
-    expect(state.workouts.workoutsChunk[0].title).toMatch(/lunges/i);
+    expect(state.workouts.chunk[0].title).toMatch(/lunges/i);
     const { result } = renderHook(useEditWorkout, { wrapper });
     await result.current.editWorkout(mockWorkout.id, mockUpdate);
     state = store.getState(); // at this point state of error is changed, but not success
@@ -126,6 +126,6 @@ describe("useEditWorkout()", () => {
     expect(state.flashMessages.success).toMatch(
       /successfully updated workout/i
     );
-    expect(state.workouts.workoutsChunk[0].title).toMatch(mockUpdate.title);
+    expect(state.workouts.chunk[0].title).toMatch(mockUpdate.title);
   });
 });

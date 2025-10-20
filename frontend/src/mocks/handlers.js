@@ -125,7 +125,7 @@ export const handlers = [
     // TODO: all mock items used in one test should come from one source
     return HttpResponse.json(
       {
-        workoutsChunk: [
+        chunk: [
           {
             id: "mockId1",
             title: "lunges",
@@ -143,10 +143,10 @@ export const handlers = [
             user_id: "userid",
           },
         ],
-        allUserWorkoutsMuscleGroups: ["leg", "chest"],
-        total: 2,
+        allMuscleGroups: ["leg", "chest"],
+        foundCount: 2,
         limit: 3,
-        noWorkoutsByQuery: false,
+        noneFound: false,
       },
       { status: 200 }
     );

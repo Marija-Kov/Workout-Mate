@@ -39,7 +39,7 @@ describe("useLogout()", () => {
     await result.current.logout();
     state = store.getState();
     expect(state.user).toBeFalsy();
-    expect(state.workouts.total).toBeFalsy();
+    expect(state.workouts.foundCount).toBeFalsy();
     for (let key in state.routineBalance) {
       expect(state.routineBalance[key]).toBe(0);
     }

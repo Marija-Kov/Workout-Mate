@@ -301,12 +301,12 @@ describe("<EditWorkout/>", () => {
     await dispatch({
       type: "SET_WORKOUTS",
       payload: {
-        workoutsChunk: [
+        chunk: [
           { muscle_group: "leg" },
           { muscle_group: "back" },
           { muscle_group: "biceps" },
         ],
-        allUserWorkoutsMuscleGroups: ["biceps", "back", "leg"],
+        allMuscleGroups: ["biceps", "back", "leg"],
       },
     });
     let loadInput = screen.getByTestId("reps");

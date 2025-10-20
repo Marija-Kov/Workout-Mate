@@ -1,6 +1,6 @@
 import { useEffect, lazy, Suspense, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useSearch } from "../../hooks";
+import { useGetWorkouts } from "../../hooks";
 import {
   WorkoutForm,
   Pagination,
@@ -19,16 +19,15 @@ const Home = () => {
   );
   const workouts = useSelector((state) => state.workouts);
   const loading = useSelector((state) => state.loader);
-  const { allUserWorkoutsMuscleGroups } = workouts;
+  const { allMuscleGroups } = workouts;
   const page = useSelector((state) => state.page);
   const query = useSelector((state) => state.query);
-  const { search } = useSearch();
+  const { getWorkouts } = useGetWorkouts();
   const searchInputRef = useRef();
   /**
    * This variable is the ultimate indicator for any workouts existing in the DB.
    */
-  const muscleGroups =
-    allUserWorkoutsMuscleGroups && allUserWorkoutsMuscleGroups.length;
+  const muscleGroups = allMuscleGroups && allMuscleGroups.length;
 
   useEffect(() => {
     if (
@@ -36,13 +35,13 @@ const Home = () => {
       searchInputRef.current.className === "focused"
     ) {
       const runSearchDebounce = setTimeout(async () => {
-        await search(query, page);
+        await getWorkouts(query, page);
       }, 500);
       return () => clearTimeout(runSearchDebounce);
     } else {
-      search(query, page);
+      getWorkouts(query, page);
     }
-  }, [query, page, search]);
+  }, [query, page, getWorkouts]);
 
   useEffect(() => {
     dispatch({ type: "SET_CHART_LOADER" });

@@ -1,14 +1,14 @@
 import { useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useFlashMessage } from "../";
+import { useFlashMessage } from "..";
 
-const useSearch = () => {
+const useGetWorkouts = () => {
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const flashMessage = useFlashMessage();
   const url = import.meta.env.VITE_API || "http://localhost:6060";
 
-  const search = useCallback(
+  const getWorkouts = useCallback(
     async (query, page) => {
       dispatch({ type: "SET_WORKOUTS_LOADER" });
       if (!user) {
@@ -31,7 +31,7 @@ const useSearch = () => {
     [url, user, dispatch, flashMessage]
   );
 
-  return { search };
+  return { getWorkouts };
 };
 
-export default useSearch;
+export default useGetWorkouts;

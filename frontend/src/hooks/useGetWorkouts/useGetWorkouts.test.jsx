@@ -1,7 +1,7 @@
 import { renderHook } from "@testing-library/react";
 import { http, HttpResponse } from "msw";
 import { server } from "../../mocks/server";
-import useSearch from "./useSearch";
+import useGetWorkouts from "./useGetWorkouts";
 import { Provider } from "react-redux";
 import store from "../../redux/store";
 
@@ -29,17 +29,17 @@ afterAll(() => {
   url = null;
 });
 
-describe("useSearch()", () => {
-  it("should return search function", () => {
-    const { result } = renderHook(useSearch, { wrapper });
-    expect(result.current.search).toBeTruthy();
-    expect(typeof result.current.search).toBe("function");
+describe("useGetWorkouts()", () => {
+  it("should return getWorkouts function", () => {
+    const { result } = renderHook(useGetWorkouts, { wrapper });
+    expect(result.current.getWorkouts).toBeTruthy();
+    expect(typeof result.current.getWorkouts).toBe("function");
   });
 
   it("should set error if user is not authorized", async () => {
     dispatch({ type: "LOGOUT" });
-    const { result } = renderHook(useSearch, { wrapper });
-    await result.current.search("pu", 0);
+    const { result } = renderHook(useGetWorkouts, { wrapper });
+    await result.current.getWorkouts("pu", 0);
     let state = store.getState();
     expect(state.flashMessages.error).toBeTruthy();
     expect(state.flashMessages.error).toMatch(/not authorized/i);
@@ -67,8 +67,8 @@ describe("useSearch()", () => {
     };
     dispatch({ type: "LOGIN", payload: mockUser });
     dispatch({ type: "CREATE_WORKOUT", payload: mockWorkout });
-    const { result } = renderHook(useSearch, { wrapper });
-    await result.current.search("lu", 0);
+    const { result } = renderHook(useGetWorkouts, { wrapper });
+    await result.current.getWorkouts("lu", 0);
     let state = store.getState();
     expect(state.flashMessages.error).toBeTruthy();
     expect(state.flashMessages.error).toMatch(/something went wrong/i);
@@ -98,15 +98,11 @@ describe("useSearch()", () => {
     dispatch({ type: "CREATE_WORKOUT", payload: mockWorkouts[0] });
     dispatch({ type: "CREATE_WORKOUT", payload: mockWorkouts[1] });
     let state = store.getState();
-    expect(state.workouts.workoutsChunk[0].title).toMatch(
-      mockWorkouts[1].title
-    );
-    expect(state.workouts.workoutsChunk[1].title).toMatch(
-      mockWorkouts[0].title
-    );
-    const { result } = renderHook(useSearch, { wrapper });
-    await result.current.search(mockWorkouts[1].title.slice(0, 1), 0);
+    expect(state.workouts.chunk[0].title).toMatch(mockWorkouts[1].title);
+    expect(state.workouts.chunk[1].title).toMatch(mockWorkouts[0].title);
+    const { result } = renderHook(useGetWorkouts, { wrapper });
+    await result.current.getWorkouts(mockWorkouts[1].title.slice(0, 1), 0);
     state = store.getState();
-    expect(state.workouts.workoutsChunk[0].title).toBe(mockWorkouts[0].title);
+    expect(state.workouts.chunk[0].title).toBe(mockWorkouts[0].title);
   });
 });

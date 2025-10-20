@@ -31,36 +31,41 @@ class WorkoutRepository {
     }
   }
 
-  async getAll(userId) {
-    return Workout.find({ user_id: userId });
+  async get(userId, searchQuery = null, page = 1, itemsPerPage = 3) {
+    if (!userId) {
+      const errorMessage = "workoutRepository.js > get: Must specify user id.";
+      console.error(errorMessage);
+      return errorMessage;
+    }
+    const all = await Workout.find({ user_id: userId });
+    const allMuscleGroups = all.map((workout) => workout.muscle_group);
+    const byQuery = searchQuery
+      ? await Workout.find({
+          user_id: userId,
+          title: new RegExp(`^${searchQuery.toLowerCase()}`),
+        })
+      : all;
+    const chunk = byQuery
+      .sort((a, b) => b.createdAt - a.createdAt)
+      .slice((page - 1) * itemsPerPage, page * itemsPerPage);
+
+    return {
+      foundCount: byQuery.length,
+      chunk,
+      allMuscleGroups,
+    };
   }
 
-  async getByQuery(userId, searchQuery) {
-    return Workout.find(
-      searchQuery
-        ? {
-            user_id: userId,
-            title: new RegExp(`^${searchQuery.toLowerCase()}`),
-          }
-        : { user_id: userId }
-    );
+  async getCount(userId) {
+    return await Workout.countDocuments({ user_id: userId });
   }
 
-  async getChunkByQuery(userId, searchQuery, page, limit) {
-    return Workout.find(
-      searchQuery
-        ? {
-            user_id: userId,
-            title: new RegExp(`^${searchQuery.toLowerCase()}`),
-          }
-        : { user_id: userId }
-    )
-      .sort({ createdAt: -1 })
-      .skip((page - 1) * limit)
-      .limit(limit);
+  async getOldestEntryId(userId) {
+    return (await Workout.findOne({ user_id: userId }).sort({ createdAt: 1 }))
+      ._id;
   }
 
-  isValidId(id) {
+  _isValidId(id) {
     return mongoose.Types.ObjectId.isValid(id);
   }
 
@@ -75,10 +80,16 @@ class WorkoutRepository {
   }
 
   async delete(id) {
+    if (!this._isValidId(id)) {
+      return null;
+    }
     return Workout.findOneAndDelete({ _id: id });
   }
 
   async update(id, body) {
+    if (!this._isValidId(id)) {
+      return null;
+    }
     return Workout.findOneAndUpdate({ _id: id }, body, {
       new: true,
       runValidators: true,

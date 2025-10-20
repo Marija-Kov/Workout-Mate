@@ -28,10 +28,10 @@ vi.mock("../../components/Search", () => {
     default: vi.mock(),
   };
 });
-vi.mock("../../hooks/useSearch", () => ({
-  useSearch: () => {
+vi.mock("../../hooks/useGetWorkouts", () => ({
+  useGetWorkouts: () => {
     return {
-      search: vi.mock(),
+      getWorkouts: vi.mock(),
     };
   },
 }));
@@ -69,12 +69,11 @@ describe("<Home />", () => {
     store.dispatch({
       type: "SET_WORKOUTS",
       payload: {
-        total: 0,
+        foundCount: 0,
         limit: 3,
-        allUserWorkoutsMuscleGroups: [],
-        workoutsChunk: [],
-        pageSpread: [1],
-        noWorkoutsByQuery: false,
+        allMuscleGroups: [],
+        chunk: [],
+        noneFound: false,
       },
     });
     const addWorkoutBtn = await screen.findByText(/buff it up/i);
@@ -108,12 +107,11 @@ describe("<Home />", () => {
     store.dispatch({
       type: "SET_WORKOUTS",
       payload: {
-        total: 0,
+        foundCount: 0,
         limit: 3,
-        allUserWorkoutsMuscleGroups: ["leg", "ab"],
-        workoutsChunk: [],
-        pageSpread: [1],
-        noWorkoutsByQuery: "no workouts found by query",
+        allMuscleGroups: ["leg", "ab"],
+        chunk: [],
+        noneFound: "no workouts found by query",
       },
     });
     const noWorkoutsMessage = await screen.findByText(
@@ -133,12 +131,11 @@ describe("<Home />", () => {
     store.dispatch({
       type: "SET_WORKOUTS",
       payload: {
-        total: 0,
+        foundCount: 0,
         limit: 3,
-        allUserWorkoutsMuscleGroups: [],
-        workoutsChunk: [],
-        pageSpread: [1],
-        noWorkoutsByQuery: false,
+        allMuscleGroups: [],
+        chunk: [],
+        noneFound: false,
       },
     });
     const addWorkoutBtn = await screen.findByText(/buff it up/i);
