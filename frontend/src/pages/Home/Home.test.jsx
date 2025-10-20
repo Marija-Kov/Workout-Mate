@@ -28,10 +28,10 @@ vi.mock("../../components/Search", () => {
     default: vi.mock(),
   };
 });
-vi.mock("../../hooks/useSearch", () => ({
-  useSearch: () => {
+vi.mock("../../hooks/useGetWorkouts", () => ({
+  useGetWorkouts: () => {
     return {
-      search: vi.mock(),
+      getWorkouts: vi.mock(),
     };
   },
 }));

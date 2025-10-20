@@ -14,7 +14,7 @@ export { default as useHardStateResetAndClearLocalStorage } from "./useHardState
 export { default as useLogin } from "./useLogin/useLogin";
 export { default as useLogout } from "./useLogout/useLogout";
 export { default as useResetPassword } from "./useResetPassword/useResetPassword";
-export { default as useSearch } from "./useSearch/useSearch";
+export { default as useGetWorkouts } from "./useGetWorkouts/useGetWorkouts";
 export { default as useSendPasswordResetLink } from "./useSendPasswordResetLink/useSendPasswordResetLink";
 export { default as useSignup } from "./useSignup/useSignup";
 export { default as useUpdateUser } from "./useUpdateUser/useUpdateUser";
