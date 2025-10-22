@@ -5,8 +5,6 @@ const useCreateWorkout = () => {
   const dispatch = useDispatch();
   const flashMessage = useFlashMessage();
   const user = useSelector((state) => state.user);
-  const workouts = useSelector((state) => state.workouts);
-  const { allMuscleGroups } = workouts;
   const url = import.meta.env.VITE_API || "http://localhost:6060";
 
   const createWorkout = async (workout) => {
@@ -49,10 +47,6 @@ const useCreateWorkout = () => {
       flashMessage("SUCCESS", "Successfully created workout");
       dispatch({ type: "CREATE_WORKOUT", payload: json });
       dispatch({ type: "GO_TO_PAGE_NUMBER", payload: 1 });
-      dispatch({
-        type: "SET_ROUTINE_BALANCE",
-        payload: [workout.muscle_group, ...allMuscleGroups],
-      });
       return dispatch({ type: "TOGGLE_MOUNT_CREATE_WORKOUT_FORM" });
     }
   };
