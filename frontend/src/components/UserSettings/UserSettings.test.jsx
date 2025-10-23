@@ -1,5 +1,6 @@
 import UserSettings from "./UserSettings";
 import App from "../../mocks/App";
+import { vi } from "vitest";
 import user from "@testing-library/user-event";
 import { http, HttpResponse } from "msw";
 import { server } from "../../mocks/server";
@@ -43,7 +44,7 @@ describe("<UserSettings/>", () => {
     expect(deleteAccount).toBeInTheDocument();
   });
 
-  it("should focus elements in correct order", async () => {
+  it("should focus elements in the correct order", async () => {
     user.setup();
     render(
       <Provider store={store}>
@@ -72,7 +73,7 @@ describe("<UserSettings/>", () => {
     expect(deleteAccount).toHaveFocus();
   });
 
-  it("should update new username input value when user types", async () => {
+  it("should update new username input value when the user types", async () => {
     user.setup();
     render(
       <Provider store={store}>
@@ -114,18 +115,7 @@ describe("<UserSettings/>", () => {
     expect(upload).toHaveAttribute("disabled");
   });
 
-  it("should render error message if server responded with an error", async () => {
-    // TODO: runtime interception not working
-    server.use(
-      http.patch(`${import.meta.env.VITE_API}/api/users`, () => {
-        return new HttpResponse.json(
-          {
-            error: "Something went wrong",
-          },
-          { status: 500 }
-        );
-      })
-    );
+  it("should render error message if the user is not authorized to update the username", async () => {
     user.setup();
     render(
       <Provider store={store}>
@@ -136,25 +126,7 @@ describe("<UserSettings/>", () => {
     const newUsername = screen.getByTestId("username");
     await user.type(newUsername, "daredev");
     const upload = screen.getByText("Upload");
-    await user.click(upload);
-    const error = await screen.findByRole("alert");
-    expect(error).toBeInTheDocument();
-    expect(error.textContent).toMatch(/something went wrong/i);
-    expect(error).toHaveAttribute("class", "error flashMessage");
-  });
-
-  it("should render error message if the user is not authorized", async () => {
-    user.setup();
-    render(
-      <Provider store={store}>
-        <App />
-        <UserSettings />
-      </Provider>
-    );
-    const newUsername = screen.getByTestId("username");
-    await user.type(newUsername, "daredev");
-    const upload = screen.getByText("Upload");
-    await dispatch({ type: "LOGOUT" });
+    await dispatch({ type: "LOGIN", payload: null });
     await user.click(upload);
     const error = await screen.findByRole("alert");
     expect(error).toBeInTheDocument();
@@ -180,6 +152,46 @@ describe("<UserSettings/>", () => {
     expect(success).toHaveAttribute("class", "success flashMessage");
   });
 
+  it("should render an error message if the user is not authorized to download the data", async () => {
+    window.URL.createObjectURL = vi.fn();
+    user.setup();
+    render(
+      <Provider store={store}>
+        <App />
+        <UserSettings />
+      </Provider>
+    );
+    const downloadData = screen.getByText(/download data/i);
+    expect(downloadData).toBeInTheDocument();
+    await dispatch({ type: "LOGIN", payload: null });
+    await user.click(downloadData);
+    const error = await screen.findByRole("alert");
+    expect(error).toBeInTheDocument();
+    expect(error.textContent).toMatch(/not authorized/i);
+    expect(error).toHaveAttribute("class", "error flashMessage");
+    vi.resetAllMocks();
+  });
+
+  it("should render a success message saying that data download has started", async () => {
+    window.URL.createObjectURL = vi.fn();
+    user.setup();
+    render(
+      <Provider store={store}>
+        <App />
+        <UserSettings />
+      </Provider>
+    );
+    const downloadData = screen.getByText(/download data/i);
+    expect(downloadData).toBeInTheDocument();
+
+    await user.click(downloadData);
+    const success = await screen.findByRole("alert");
+    expect(success).toBeInTheDocument();
+    expect(success.textContent).toMatch(/data download started/i);
+    expect(success).toHaveAttribute("class", "success flashMessage");
+    vi.resetAllMocks();
+  });
+
   it("should render delete account dialogue component when 'delete account' button is clicked", async () => {
     user.setup();
     render(
@@ -192,5 +204,34 @@ describe("<UserSettings/>", () => {
     const deleteAccountDialogue =
       await screen.findByText(/this is irreversible/i);
     expect(deleteAccountDialogue).toBeInTheDocument();
+  });
+
+  it("should render server error message", async () => {
+    // TODO: runtime interception not working
+    server.use(
+      http.patch(`${import.meta.env.VITE_API}/api/users`, () => {
+        return new HttpResponse.json(
+          {
+            error: "Something went wrong",
+          },
+          { status: 500 }
+        );
+      })
+    );
+    user.setup();
+    render(
+      <Provider store={store}>
+        <App />
+        <UserSettings />
+      </Provider>
+    );
+    // const newUsername = screen.getByTestId("username");
+    // await user.type(newUsername, "daredev");
+    // const upload = screen.getByText("Upload");
+    // await user.click(upload);
+    const error = await screen.findByRole("alert");
+    expect(error).toBeInTheDocument();
+    expect(error.textContent).toMatch(/something went wrong/i);
+    expect(error).toHaveAttribute("class", "error flashMessage");
   });
 });
