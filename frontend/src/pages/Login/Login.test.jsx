@@ -15,6 +15,7 @@ afterAll(() => {
 });
 
 describe("<Login />", () => {
+  const url = import.meta.env.VITE_API || "localhost:6060";
   it("should render login form", () => {
     render(
       <Provider store={store}>
@@ -77,22 +78,12 @@ describe("<Login />", () => {
     const forgotPasswordBtn = screen.getByRole("button", { name: /forgot/i });
     await user.click(forgotPasswordBtn);
     const forgotPasswordForm = await screen.findByText("Reset Password");
-    await expect(forgotPasswordForm).toBeInTheDocument();
+    expect(forgotPasswordForm).toBeInTheDocument();
     const close = await screen.findByText("close");
     await user.click(close);
   });
 
-  it("should render error element given that input value is missing", async () => {
-    server.use(
-      http.post(`${import.meta.env.VITE_API}/api/users/login`, () => {
-        return new HttpResponse.json(
-          {
-            error: "All fields must be filled",
-          },
-          { status: 422 }
-        );
-      })
-    );
+  it("should render error message given that an input value is missing", async () => {
     user.setup();
     render(
       <Provider store={store}>
@@ -108,17 +99,7 @@ describe("<Login />", () => {
     expect(error).toHaveAttribute("class", "error flashMessage");
   });
 
-  it("should render error element given that email is invalid", async () => {
-    // server.use(
-    //   http.post(
-    //     `${import.meta.env.VITE_API}/api/users/login`,
-    //     () => {
-    //       return new HttpResponse.json({
-    //         error: "Please enter valid email address",
-    //       }, { status: 422 })
-    //     }
-    //   )
-    // );
+  it("should render error message given that email is invalid", async () => {
     user.setup();
     render(
       <Provider store={store}>
@@ -139,6 +120,7 @@ describe("<Login />", () => {
   });
 
   it("should render error element given that email is not registered", async () => {
+    // TODO: runtime interception not working
     server.use(
       http.post(`${import.meta.env.VITE_API}/api/users/login`, () => {
         return new HttpResponse.json(
@@ -168,9 +150,10 @@ describe("<Login />", () => {
     expect(error).toHaveAttribute("class", "error flashMessage");
   });
 
-  it("should render error element given that password is wrong", async () => {
+  it("should render error message given that password is wrong", async () => {
+    // TODO: runtime interception not working
     server.use(
-      http.post(`${import.meta.env.VITE_API}/api/users/login`, () => {
+      http.post(`${url}/api/users/login`, () => {
         return HttpResponse.json(
           {
             error: "Wrong password",
@@ -198,7 +181,7 @@ describe("<Login />", () => {
     expect(error).toHaveAttribute("class", "error flashMessage");
   });
 
-  it("should render Home page once 'log in' button is clicked given that server responds with success", async () => {
+  it("should render Home page on a successful login", async () => {
     user.setup();
     const mockLocalStorage = {};
     const storageUser = {
