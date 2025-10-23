@@ -37,8 +37,7 @@ export const handlers = [
     return HttpResponse.json(
       {
         user: {
-          username: "keech.rr_",
-          profileImg: "profileImgString",
+          profileImg: "newMockProfileImage",
         },
         success: "Profile updated",
       },
