@@ -16,7 +16,6 @@ let mockUser = {
 
 beforeAll(() => (dispatch = store.dispatch));
 beforeEach(() => dispatch({ type: "LOGIN", payload: mockUser }));
-afterEach(() => dispatch({ type: "LOGOUT" }));
 afterAll(() => {
   dispatch = null;
   mockUser = null;
@@ -31,13 +30,13 @@ describe("<UserSettings/>", () => {
     );
     const closeForm = screen.getByText("close");
     const newUsername = screen.getByTestId("username");
-    const newProfileImage = screen.getByTestId("profile-image");
+    const fileInput = screen.getByTestId("profile-image");
     const upload = screen.getByText("Upload");
     const downloadData = screen.getByText(/download data/i);
     const deleteAccount = screen.getByText(/delete account/i);
     expect(closeForm).toBeInTheDocument();
     expect(newUsername).toBeInTheDocument();
-    expect(newProfileImage).toBeInTheDocument();
+    expect(fileInput).toBeInTheDocument();
     expect(upload).toBeInTheDocument();
     expect(upload).toHaveAttribute("disabled");
     expect(downloadData).toBeInTheDocument();
@@ -53,7 +52,7 @@ describe("<UserSettings/>", () => {
     );
     const closeForm = screen.getByText("close");
     const newUsername = screen.getByTestId("username");
-    const newProfileImage = screen.getByTestId("profile-image");
+    const fileInput = screen.getByTestId("profile-image");
     const upload = screen.getByText("Upload");
     const downloadData = screen.getByText(/download data/i);
     const deleteAccount = screen.getByText(/delete account/i);
@@ -64,7 +63,7 @@ describe("<UserSettings/>", () => {
     await user.type(newUsername, "d");
     expect(upload).not.toHaveAttribute("disabled");
     await user.tab();
-    expect(newProfileImage).toHaveFocus();
+    expect(fileInput).toHaveFocus();
     await user.tab();
     expect(upload).toHaveFocus();
     await user.tab();
@@ -115,6 +114,23 @@ describe("<UserSettings/>", () => {
     expect(upload).toHaveAttribute("disabled");
   });
 
+  it("should render error message and disable upload button if username contains invalid characters", async () => {
+    user.setup();
+    render(
+      <Provider store={store}>
+        <UserSettings />
+      </Provider>
+    );
+    const newUsername = screen.getByTestId("username");
+    await user.type(newUsername, "d@red*v");
+    const error = await screen.findByRole("alert");
+    const upload = screen.getByText("Upload");
+    expect(error).toBeInTheDocument();
+    expect(error).toHaveAttribute("class", "max-chars-error");
+    expect(error.textContent).toMatch(/letters, numbers, '_' and '.' allowed/i);
+    expect(upload).toHaveAttribute("disabled");
+  });
+
   it("should render error message if the user is not authorized to update the username", async () => {
     user.setup();
     render(
@@ -152,7 +168,7 @@ describe("<UserSettings/>", () => {
     expect(success).toHaveAttribute("class", "success flashMessage");
   });
 
-  it("should render an error message if the user is not authorized to download the data", async () => {
+  it("should render error message if the user is not authorized to download the data", async () => {
     window.URL.createObjectURL = vi.fn();
     user.setup();
     render(
@@ -172,7 +188,7 @@ describe("<UserSettings/>", () => {
     vi.resetAllMocks();
   });
 
-  it("should render a success message saying that data download has started", async () => {
+  it("should render success message saying that data download has started", async () => {
     window.URL.createObjectURL = vi.fn();
     user.setup();
     render(
