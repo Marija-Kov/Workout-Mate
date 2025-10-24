@@ -10,6 +10,7 @@ import { Provider } from "react-redux";
 import store from "../../redux/store";
 
 describe("<ResetPassword />", () => {
+  const url = import.meta.env.VITE_API || "localhost:6060";
   it("should render reset password form", () => {
     render(
       <Provider store={store}>
@@ -57,17 +58,7 @@ describe("<ResetPassword />", () => {
     expect(confirmPasswordInput).toHaveValue("def");
   });
 
-  it("should render error element given that passwords are not matching", async () => {
-    server.use(
-      http.patch(`${import.meta.env.VITE_API}/api/reset-password/*`, () => {
-        return new HttpResponse.json(
-          {
-            error: "Passwords must match",
-          },
-          { status: 422 }
-        );
-      })
-    );
+  it("should render error message if passwords are not matching", async () => {
     user.setup();
     render(
       <Provider store={store}>
@@ -94,17 +85,7 @@ describe("<ResetPassword />", () => {
     expect(error.textContent).toMatch(/passwords must match/i);
   });
 
-  it("should render error element given that new password is not strong enough", async () => {
-    server.use(
-      http.patch(`${import.meta.env.VITE_API}/api/reset-password/*`, () => {
-        return new HttpResponse.json(
-          {
-            error: "Password not strong enough",
-          },
-          { status: 422 }
-        );
-      })
-    );
+  it("should render error message if the new password is not strong enough", async () => {
     user.setup();
     render(
       <Provider store={store}>
@@ -131,12 +112,12 @@ describe("<ResetPassword />", () => {
     expect(error.textContent).toMatch(/password not strong enough/i);
   });
 
-  it("should render error element given that password reset token has expired", async () => {
+  it("should render error message if password reset token is not valid", async () => {
     server.use(
-      http.patch(`${import.meta.env.VITE_API}/api/reset-password/*`, () => {
+      http.patch(`${url}/api/reset-password/*`, () => {
         return new HttpResponse.json(
           {
-            error: "Reset password token not found",
+            error: "Invalid token",
           },
           { status: 404 }
         );
@@ -165,10 +146,10 @@ describe("<ResetPassword />", () => {
     const error = await screen.findByRole("alert");
     await expect(error).toBeInTheDocument();
     expect(error).toHaveAttribute("class", "error flashMessage");
-    expect(error.textContent).toMatch(/reset password token not found/i);
+    expect(error.textContent).toMatch(/invalid token/i);
   });
 
-  it("should render success element and render 'log in' link if password was reset successfully", async () => {
+  it("should render success message and 'log in' link if password was reset successfully", async () => {
     user.setup();
     render(
       <Provider store={store}>
