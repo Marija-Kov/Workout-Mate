@@ -29,6 +29,8 @@ afterAll(() => {
 });
 
 describe("<ConfirmedAccount />", () => {
+  const url = import.meta.env.VITE_API || "http://localhost:6060";
+
   it("should render success message given that confirmation was successful", async () => {
     render(
       <Provider store={store}>
@@ -53,12 +55,12 @@ describe("<ConfirmedAccount />", () => {
     expect(success.textContent).toMatch(/account confirmed/i);
   });
 
-  it("should render error message given that confirmation token wasn't found or is expired", async () => {
+  it("should render error message if the confirmation token is invalid", async () => {
     server.use(
-      http.get("http://localhost:6060/api/users/confirmaccount/*", () => {
+      http.get(`${url}/api/users/confirmaccount/*`, () => {
         return HttpResponse.json(
           {
-            error: "Confirmation token not found",
+            error: "Invalid token",
           },
           { status: 404 }
         );
@@ -81,6 +83,6 @@ describe("<ConfirmedAccount />", () => {
     const error = await screen.findByRole("alert");
     expect(error).toBeInTheDocument();
     expect(error).toHaveAttribute("class", "error flashMessage");
-    expect(error.textContent).toMatch(/not found/i);
+    expect(error.textContent).toMatch(/invalid token/i);
   });
 });
