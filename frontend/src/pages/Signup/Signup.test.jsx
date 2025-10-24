@@ -9,6 +9,8 @@ import { Provider } from "react-redux";
 import store from "../../redux/store";
 
 describe("<Signup />", () => {
+  const url = import.meta.env.VITE_API || "localhost:6060";
+
   it("should render signup form", () => {
     render(
       <Provider store={store}>
@@ -52,7 +54,7 @@ describe("<Signup />", () => {
     expect(password).toHaveValue("abc");
   });
 
-  it("should render error element given that input value is missing", async () => {
+  it("should render error message given that an input value is missing", async () => {
     user.setup();
     render(
       <Provider store={store}>
@@ -68,7 +70,7 @@ describe("<Signup />", () => {
     expect(error).toHaveAttribute("class", "error flashMessage");
   });
 
-  it("should render error element given that email is invalid", async () => {
+  it("should render error message given that email is invalid", async () => {
     user.setup();
     render(
       <Provider store={store}>
@@ -88,7 +90,7 @@ describe("<Signup />", () => {
     expect(error).toHaveAttribute("class", "error flashMessage");
   });
 
-  it("should render error element given that password is weak", async () => {
+  it("should render error message given that password is weak", async () => {
     user.setup();
     render(
       <Provider store={store}>
@@ -108,10 +110,10 @@ describe("<Signup />", () => {
     expect(error).toHaveAttribute("class", "error flashMessage");
   });
 
-  it("should render error element given that email is already in use", async () => {
+  it("should render error message given that email is already in use", async () => {
     // TODO: runtime interception not working
     server.use(
-      http.post(`${import.meta.env.VITE_API}/api/users/signup`, () => {
+      http.post(`${url}/api/users/signup`, () => {
         return new HttpResponse.json(
           {
             error: "Email already in use",
@@ -120,8 +122,6 @@ describe("<Signup />", () => {
         );
       })
     );
-    // This logs the runtime handler:
-    // console.log(server.handlersController.rootContext.handlers[0].resolver.toString())
     user.setup();
     render(
       <Provider store={store}>
@@ -141,7 +141,7 @@ describe("<Signup />", () => {
     expect(error).toHaveAttribute("class", "error flashMessage");
   });
 
-  it("should render success element given that signup was successful", async () => {
+  it("should render success message given that signup was successful", async () => {
     user.setup();
     render(
       <Provider store={store}>
