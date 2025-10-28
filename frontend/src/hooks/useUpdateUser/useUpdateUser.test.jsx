@@ -8,32 +8,26 @@ import useUpdateUser from "./useUpdateUser";
 import { Provider } from "react-redux";
 import store from "../../redux/store";
 
-let wrapper;
-let dispatch;
-let mockUser;
-
-beforeAll(async () => {
-  wrapper = ({ children }) => {
+describe("useUpdateUser()", () => {
+  const wrapper = ({ children }) => {
     return <Provider store={store}>{children}</Provider>;
   };
-  dispatch = store.dispatch;
-  mockUser = {
+
+  const mockUser = {
     username: undefined,
     profileImg: undefined,
   };
-  writeLargeFile();
-});
 
-beforeEach(() => dispatch({ type: "LOGIN", payload: mockUser }));
+  beforeAll(() => {
+    writeLargeFile();
+  });
 
-afterAll(async () => {
-  wrapper = null;
-  dispatch = null;
-  mockUser = null;
-  deleteLargeFile();
-});
+  beforeEach(() => store.dispatch({ type: "LOGIN", payload: mockUser }));
 
-describe("useUpdateUser()", () => {
+  afterAll(() => {
+    deleteLargeFile();
+  });
+
   it("should return updateUser function", () => {
     const { result } = renderHook(useUpdateUser, { wrapper });
     expect(result.current.updateUser).toBeTruthy();

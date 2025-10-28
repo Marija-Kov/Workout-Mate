@@ -6,50 +6,30 @@ import { Provider } from "react-redux";
 import store from "../../redux/store";
 import { genSampleWorkouts } from "../../utils/test/genSampleWorkouts";
 
-let wrapper;
-let dispatch;
-let mockUser;
-let sample;
-let mockWorkouts;
-let url;
-
-beforeAll(() => {
-  wrapper = ({ children }) => {
+describe("useDeleteWorkout()", () => {
+  const wrapper = ({ children }) => {
     return <Provider store={store}>{children}</Provider>;
   };
-  dispatch = store.dispatch;
-  mockUser = {
+
+  const mockUser = {
     username: undefined,
     profileImg: undefined,
   };
-  url = import.meta.env.VITE_API || "http://localhost:6060";
-});
 
-beforeAll(() => {
-  sample = genSampleWorkouts();
-  mockWorkouts = sample.searchResults;
-});
+  const url = import.meta.env.VITE_API || "http://localhost:6060";
 
-beforeEach(() => {
-  dispatch({ type: "LOGIN", payload: mockUser });
-});
+  const sample = genSampleWorkouts();
 
-afterEach(() => {
-  dispatch({ type: "GO_TO_PAGE_NUMBER", payload: 0 });
-  dispatch({ type: "RESET_WORKOUTS_STATE" });
-  dispatch({ type: "LOGOUT" });
-});
+  beforeEach(() => {
+    store.dispatch({ type: "LOGIN", payload: mockUser });
+  });
 
-afterAll(() => {
-  wrapper = null;
-  dispatch = null;
-  mockUser = null;
-  sample = null;
-  mockWorkouts = null;
-  url = null;
-});
+  afterEach(() => {
+    store.dispatch({ type: "GO_TO_PAGE_NUMBER", payload: 0 });
+    store.dispatch({ type: "RESET_WORKOUTS_STATE" });
+    store.dispatch({ type: "LOGOUT" });
+  });
 
-describe("useDeleteWorkout()", () => {
   it("should return deleteWorkout function", () => {
     const { result } = renderHook(useDeleteWorkout, { wrapper });
     expect(result.current.deleteWorkout).toBeTruthy();
@@ -57,12 +37,12 @@ describe("useDeleteWorkout()", () => {
   });
 
   it("should delete workout given that user was authorized and workout id valid", async () => {
-    dispatch({
+    store.dispatch({
       type: "SET_WORKOUTS",
       payload: {
         foundCount: sample.foundCount,
         allMuscleGroups: sample.allMuscleGroups,
-        chunk: mockWorkouts.slice(0, 3),
+        chunk: sample.searchResults.slice(0, 3),
         limit: 3,
         noneFound: false,
       },
@@ -80,19 +60,19 @@ describe("useDeleteWorkout()", () => {
   });
 
   it("should set error given that user wasn't authorized", async () => {
-    dispatch({
+    store.dispatch({
       type: "SET_WORKOUTS",
       payload: {
         foundCount: sample.foundCount,
         allMuscleGroups: sample.allMuscleGroups,
-        chunk: mockWorkouts.slice(0, 3),
+        chunk: sample.searchResults.slice(0, 3),
         limit: 3,
         noneFound: false,
       },
     });
     let state = store.getState();
     const prevCount = state.workouts.foundCount;
-    dispatch({ type: "LOGIN", payload: null });
+    store.dispatch({ type: "LOGIN", payload: null });
     const { result } = renderHook(useDeleteWorkout, { wrapper });
     await result.current.deleteWorkout(state.workouts.chunk[0]._id);
     state = store.getState();
@@ -124,17 +104,17 @@ describe("useDeleteWorkout()", () => {
   });
 
   it("should trigger page state update to the previous page once the last workout from the current page is deleted given that the current page is not the first page", async () => {
-    dispatch({
+    store.dispatch({
       type: "SET_WORKOUTS",
       payload: {
         foundCount: sample.foundCount,
         allMuscleGroups: sample.allMuscleGroups,
-        chunk: mockWorkouts.slice(0, 1), // make sure that it has the same workout _id as the mock response used for this test
+        chunk: sample.searchResults.slice(0, 1), // make sure that it has the same workout _id as the mock response used for this test
         limit: 3,
         noneFound: false,
       },
     });
-    dispatch({ type: "GO_TO_PAGE_NUMBER", payload: 2 });
+    store.dispatch({ type: "GO_TO_PAGE_NUMBER", payload: 2 });
     let state = store.getState();
     expect(state.page).toBe(2); // confirm that it's not on the first page
     const { result } = renderHook(useDeleteWorkout, { wrapper });
@@ -145,17 +125,17 @@ describe("useDeleteWorkout()", () => {
 
   it("should trigger page state update to page 2 then back to page 1 when the last workout on page 1 has been deleted", async () => {
     vi.useFakeTimers();
-    dispatch({
+    store.dispatch({
       type: "SET_WORKOUTS",
       payload: {
         foundCount: sample.foundCount,
         allMuscleGroups: sample.allMuscleGroups,
-        chunk: mockWorkouts.slice(0, 1),
+        chunk: sample.searchResults.slice(0, 1),
         limit: 3,
         noneFound: false,
       },
     });
-    dispatch({ type: "GO_TO_PAGE_NUMBER", payload: 1 });
+    store.dispatch({ type: "GO_TO_PAGE_NUMBER", payload: 1 });
     let state = store.getState();
     expect(state.page).toBe(1);
     const { result } = renderHook(useDeleteWorkout, { wrapper });
@@ -168,24 +148,27 @@ describe("useDeleteWorkout()", () => {
   });
 
   it("should trigger routine balance state update upon workout deletion", async () => {
-    dispatch({
+    store.dispatch({
       type: "SET_WORKOUTS",
       payload: {
         foundCount: sample.foundCount,
         allMuscleGroups: sample.allMuscleGroups,
-        chunk: mockWorkouts.slice(0, 3),
+        chunk: sample.searchResults.slice(0, 3),
         limit: 3,
         noneFound: false,
       },
     });
-    dispatch({ type: "SET_ROUTINE_BALANCE", payload: sample.allMuscleGroups });
+    store.dispatch({
+      type: "SET_ROUTINE_BALANCE",
+      payload: sample.allMuscleGroups,
+    });
     let state = store.getState();
     const observedMuscleGroup = state.workouts.chunk[0].muscle_group; // the muscle group of the workout that we're going to delete
     const prevPercentage = state.routineBalance[observedMuscleGroup];
     const { result } = renderHook(useDeleteWorkout, { wrapper });
     await result.current.deleteWorkout(state.workouts.chunk[0]._id);
     state = store.getState(); // request state to get updated value of state.workouts.allMuscleGroups
-    dispatch({
+    store.dispatch({
       type: "SET_ROUTINE_BALANCE",
       payload: state.workouts.allMuscleGroups,
     }); // Chart.jsx runs this

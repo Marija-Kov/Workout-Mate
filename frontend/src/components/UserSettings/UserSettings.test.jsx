@@ -7,20 +7,14 @@ import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import store from "../../redux/store";
 
-let dispatch;
-let mockUser = {
-  username: undefined,
-  profileImg: undefined,
-};
-
-beforeAll(() => (dispatch = store.dispatch));
-beforeEach(() => dispatch({ type: "LOGIN", payload: mockUser }));
-afterAll(() => {
-  dispatch = null;
-  mockUser = null;
-});
-
 describe("<UserSettings/>", () => {
+  const mockUser = {
+    username: undefined,
+    profileImg: undefined,
+  };
+
+  beforeEach(() => store.dispatch({ type: "LOGIN", payload: mockUser }));
+
   it("should render UserSettings component correctly", () => {
     render(
       <Provider store={store}>
@@ -141,7 +135,7 @@ describe("<UserSettings/>", () => {
     const newUsername = screen.getByTestId("username");
     await user.type(newUsername, "daredev");
     const upload = screen.getByText("Upload");
-    await dispatch({ type: "LOGIN", payload: null });
+    store.dispatch({ type: "LOGIN", payload: null });
     await user.click(upload);
     const error = await screen.findByRole("alert");
     expect(error).toBeInTheDocument();
@@ -178,7 +172,7 @@ describe("<UserSettings/>", () => {
     );
     const downloadData = screen.getByText(/download data/i);
     expect(downloadData).toBeInTheDocument();
-    await dispatch({ type: "LOGIN", payload: null });
+    await store.dispatch({ type: "LOGIN", payload: null });
     await user.click(downloadData);
     const error = await screen.findByRole("alert");
     expect(error).toBeInTheDocument();

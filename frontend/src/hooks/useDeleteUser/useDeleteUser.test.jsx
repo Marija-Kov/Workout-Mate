@@ -5,31 +5,18 @@ import useDeleteUser from "./useDeleteUser";
 import { Provider } from "react-redux";
 import store from "../../redux/store";
 
-let wrapper;
-let mockUser;
-let dispatch;
-let url;
-
-beforeAll(() => {
-  wrapper = ({ children }) => {
+describe("useDeleteUser()", () => {
+  const wrapper = ({ children }) => {
     return <Provider store={store}>{children}</Provider>;
   };
-  dispatch = store.dispatch;
-  mockUser = {
+
+  const mockUser = {
     username: undefined,
     profileImg: undefined,
   };
-  url = import.meta.env.VITE_API || "http://localhost:6060";
-});
 
-afterAll(() => {
-  wrapper = null;
-  mockUser = null;
-  dispatch = null;
-  url = null;
-});
+  const url = import.meta.env.VITE_API || "http://localhost:6060";
 
-describe("useDeleteUser()", () => {
   it("should return deleteUser function", () => {
     const { result } = renderHook(useDeleteUser, { wrapper });
     expect(result.current.deleteUser).toBeTruthy();
@@ -57,7 +44,7 @@ describe("useDeleteUser()", () => {
 
   it("should delete user successfully given that the user is authorized", async () => {
     const { result } = renderHook(useDeleteUser, { wrapper });
-    dispatch({ type: "LOGIN", payload: mockUser });
+    store.dispatch({ type: "LOGIN", payload: mockUser });
     await result.current.deleteUser(mockUser.id);
     let state = store.getState();
     expect(state.flashMessages.success).toBeTruthy();

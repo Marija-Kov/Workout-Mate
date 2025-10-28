@@ -6,26 +6,18 @@ import { BrowserRouter } from "react-router-dom";
 import store from "../../redux/store";
 import { Provider } from "react-redux";
 
-let mockUser;
-let dispatch;
-
-beforeAll(() => {
-  dispatch = store.dispatch;
-  mockUser = {
+describe("<Navbar />", () => {
+  const mockUser = {
     id: "userid",
     email: "keech@mail.yu",
     username: undefined,
     profileImg: undefined,
   };
-});
 
-afterAll(() => {
-  dispatch({ type: "RESET_COMPONENTS_STATE" });
-  mockUser = null;
-  dispatch = null;
-});
+  afterAll(() => {
+    store.dispatch({ type: "RESET_COMPONENTS_STATE" });
+  });
 
-describe("<Navbar />", () => {
   it("should render the navbar correctly when the user is not logged in", () => {
     render(
       <Provider store={store}>
@@ -75,7 +67,7 @@ describe("<Navbar />", () => {
 
   it("should render the navbar correctly when the user is logged in as well as focus the elements in the right order", async () => {
     user.setup();
-    dispatch({ type: "LOGIN", payload: mockUser });
+    store.dispatch({ type: "LOGIN", payload: mockUser });
     render(
       <Provider store={store}>
         <BrowserRouter
@@ -93,12 +85,12 @@ describe("<Navbar />", () => {
     await user.tab();
     expect(helloUser).toBeInTheDocument();
     expect(helloUser).toHaveFocus();
-    dispatch({ type: "LOGOUT" });
+    store.dispatch({ type: "LOGOUT" });
   });
 
   it("should render User menu once user clicks on avatar", async () => {
     user.setup();
-    dispatch({ type: "LOGIN", payload: mockUser });
+    store.dispatch({ type: "LOGIN", payload: mockUser });
     render(
       <Provider store={store}>
         <BrowserRouter
@@ -117,12 +109,12 @@ describe("<Navbar />", () => {
     const logOut = await screen.findByText(/log out/i);
     expect(openUserSettings).toBeInTheDocument();
     expect(logOut).toBeInTheDocument();
-    dispatch({ type: "LOGOUT" });
+    store.dispatch({ type: "LOGOUT" });
   });
 
   it("should render User Settings once isUserSettingsFormMounted state is set to true", async () => {
     user.setup();
-    dispatch({ type: "LOGIN", payload: mockUser });
+    store.dispatch({ type: "LOGIN", payload: mockUser });
     render(
       <Provider store={store}>
         <BrowserRouter
@@ -135,9 +127,9 @@ describe("<Navbar />", () => {
         </BrowserRouter>
       </Provider>
     );
-    await dispatch({ type: "TOGGLE_MOUNT_USER_SETTINGS_FORM" });
+    await store.dispatch({ type: "TOGGLE_MOUNT_USER_SETTINGS_FORM" });
     const userSettings = await screen.findByText(/profile settings/i);
     expect(userSettings).toBeInTheDocument();
-    dispatch({ type: "LOGOUT" });
+    store.dispatch({ type: "LOGOUT" });
   });
 });

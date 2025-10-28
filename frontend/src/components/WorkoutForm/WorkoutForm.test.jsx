@@ -5,26 +5,21 @@ import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import store from "../../redux/store";
 
-let dispatch;
-let mockUser = {
-  id: "userid",
-  email: "keech@mail.yu",
-  username: undefined,
-  profileImg: undefined,
-};
-
-beforeAll(() => (dispatch = store.dispatch));
-beforeEach(() => dispatch({ type: "LOGIN", payload: mockUser }));
-afterEach(() => {
-  dispatch({ type: "RESET_WORKOUTS_STATE" });
-  dispatch({ type: "LOGOUT" });
-});
-afterAll(() => {
-  dispatch = null;
-  mockUser = null;
-});
-
 describe("<WorkoutForm/>", () => {
+  const mockUser = {
+    id: "userid",
+    email: "keech@mail.yu",
+    username: undefined,
+    profileImg: undefined,
+  };
+
+  beforeEach(() => store.dispatch({ type: "LOGIN", payload: mockUser }));
+
+  afterEach(() => {
+    store.dispatch({ type: "RESET_WORKOUTS_STATE" });
+    store.dispatch({ type: "LOGOUT" });
+  });
+
   it("should render Workout form given that user is authenticated", async () => {
     render(
       <Provider store={store}>
@@ -249,7 +244,7 @@ describe("<WorkoutForm/>", () => {
     await user.selectOptions(muscleGroupSelect, "biceps");
     await user.type(repsInput, "33");
     await user.type(loadInput, "20");
-    await dispatch({ type: "LOGOUT" });
+    store.dispatch({ type: "LOGOUT" });
     await user.click(submit);
     const error = await screen.findByRole("alert");
     expect(error).toBeInTheDocument();

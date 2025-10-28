@@ -1,34 +1,35 @@
-import { http, HttpResponse } from "msw";
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import ConfirmedAccount from "./ConfirmedAccount";
 import { BrowserRouter } from "react-router-dom";
 import App from "../../mocks/App";
-import { server } from "../../mocks/server";
 import { Provider } from "react-redux";
 import store from "../../redux/store";
 
-let dispatch = store.dispatch;
-
-vi.mock("../../hooks/useGetTokenFromUrl", () => ({
-  useGetTokenFromUrl: () => {},
-}));
-
-vi.mock("../../hooks/useConfirmAccount", () => ({
-  useConfirmAccount: () => {
-    return {
-      confirmAccount: () => {},
-    };
-  },
-}));
-
-afterAll(() => {
-  dispatch = null;
-  vi.resetAllMocks();
-});
-
 describe("<ConfirmedAccount />", () => {
-  const url = import.meta.env.VITE_API || "http://localhost:6060";
+  vi.mock("../../hooks/useGetTokenFromUrl", () => ({
+    defaultl: () => {},
+  }));
+
+  vi.mock("../../hooks/useConfirmAccount", () => ({
+    default: () => {
+      return {
+        confirmAccount: () => {},
+      };
+    },
+  }));
+
+  vi.mock("../../hooks/useLogout", () => ({
+    default: () => {
+      return {
+        logout: () => {},
+      };
+    },
+  }));
+
+  afterAll(() => {
+    vi.resetAllMocks();
+  });
 
   it("should render success message given that confirmation was successful", async () => {
     render(
@@ -44,7 +45,7 @@ describe("<ConfirmedAccount />", () => {
         </BrowserRouter>
       </Provider>
     );
-    dispatch({
+    store.dispatch({
       type: "SUCCESS",
       payload: "Account confirmed",
     });
@@ -55,16 +56,6 @@ describe("<ConfirmedAccount />", () => {
   });
 
   it("should render error message if the confirmation token is invalid", async () => {
-    server.use(
-      http.get(`${url}/api/users/confirmaccount/*`, () => {
-        return HttpResponse.json(
-          {
-            error: "Invalid token",
-          },
-          { status: 404 }
-        );
-      })
-    );
     render(
       <Provider store={store}>
         <BrowserRouter
@@ -78,7 +69,7 @@ describe("<ConfirmedAccount />", () => {
         </BrowserRouter>
       </Provider>
     );
-    dispatch({ type: "ERROR", payload: "Not found" });
+    store.dispatch({ type: "ERROR", payload: "Invalid token" });
     const error = await screen.findByRole("alert");
     expect(error).toBeInTheDocument();
     expect(error).toHaveAttribute("class", "error flashMessage");

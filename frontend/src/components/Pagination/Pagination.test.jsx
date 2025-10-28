@@ -5,32 +5,28 @@ import { genSampleWorkouts } from "../../utils/test/genSampleWorkouts";
 import store from "../../redux/store";
 import { Provider } from "react-redux";
 
-let dispatch;
-let mockUser;
-
-beforeAll(() => {
-  dispatch = store.dispatch;
-  mockUser = {
+describe("<Pagination />", () => {
+  const mockUser = {
     id: "userid",
     email: "keech@mail.yu",
     username: undefined,
     profileImg: undefined,
   };
-  dispatch({ type: "LOGIN", payload: mockUser });
-  genSampleWorkouts();
-});
-afterEach(() => dispatch({ type: "RESET_PAGE_STATE" }));
-afterAll(() => {
-  dispatch({
-    type: "RESET_WORKOUTS_STATE",
-    payload: "All workouts deleted successfully",
-  });
-  dispatch({ type: "LOGOUT" });
-  dispatch = null;
-  mockUser = null;
-});
 
-describe("<Pagination />", () => {
+  beforeAll(() => {
+    store.dispatch({ type: "LOGIN", payload: mockUser });
+    genSampleWorkouts();
+  });
+
+  afterEach(() => store.dispatch({ type: "RESET_PAGE_STATE" }));
+
+  afterAll(() => {
+    store.dispatch({
+      type: "RESET_WORKOUTS_STATE",
+      payload: "All workouts deleted successfully",
+    });
+    store.dispatch({ type: "LOGOUT" });
+  });
   it("should render Pagination component correctly in its initial state given that 6+ workouts exist in the database", () => {
     render(
       <Provider store={store}>

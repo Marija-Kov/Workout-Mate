@@ -5,39 +5,28 @@ import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import store from "../../redux/store";
 
-let dispatch;
-let mockPrepopulatedForm;
-
-beforeAll(() => {
-  dispatch = store.dispatch;
-  mockPrepopulatedForm = {
+describe("<EditWorkout/>", () => {
+  const mockPrepopulatedForm = {
     id: "mockId",
     prevTitle: "deadlifts",
     prevMuscleGroup: "glute",
     prevLoad: 40,
     prevReps: 10,
   };
-});
 
-beforeEach(() => {
-  dispatch({ type: "LOGIN", payload: {} });
-  dispatch({
-    type: "TOGGLE_MOUNT_EDIT_WORKOUT_FORM",
-    payload: mockPrepopulatedForm,
+  beforeEach(() => {
+    store.dispatch({ type: "LOGIN", payload: {} });
+    store.dispatch({
+      type: "TOGGLE_MOUNT_EDIT_WORKOUT_FORM",
+      payload: mockPrepopulatedForm,
+    });
   });
-});
 
-afterEach(() => {
-  dispatch({ type: "RESET_COMPONENTS_STATE" });
-  dispatch({ type: "LOGOUT" });
-});
+  afterEach(() => {
+    store.dispatch({ type: "RESET_COMPONENTS_STATE" });
+    store.dispatch({ type: "LOGOUT" });
+  });
 
-afterAll(() => {
-  dispatch = null;
-  mockPrepopulatedForm = null;
-});
-
-describe("<EditWorkout/>", () => {
   it("should render prepopulated Edit workout form given that user is authenticated", () => {
     render(
       <Provider store={store}>
@@ -135,7 +124,7 @@ describe("<EditWorkout/>", () => {
     await user.type(repsInput, "30");
     await user.clear(loadInput);
     await user.type(loadInput, "15");
-    await dispatch({ type: "LOGOUT" });
+    await store.dispatch({ type: "LOGOUT" });
     await user.click(submit);
     const error = await screen.findByRole("alert");
     expect(error).toBeInTheDocument();
@@ -234,7 +223,7 @@ describe("<EditWorkout/>", () => {
         <EditWorkout />
       </Provider>
     );
-    await dispatch({
+    await store.dispatch({
       type: "SET_WORKOUTS",
       payload: {
         chunk: [

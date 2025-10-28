@@ -3,18 +3,7 @@ import "@testing-library/jest-dom";
 import { Provider } from "react-redux";
 import store from "../../redux/store";
 import Workouts from "./Workouts";
-
 import { genSampleWorkouts } from "../../utils/test/genSampleWorkouts";
-
-let dispatch;
-
-beforeAll(() => {
-  dispatch = store.dispatch;
-});
-
-afterAll(() => {
-  dispatch = null;
-});
 
 describe("<Workouts/>", () => {
   it("should render workouts given that user is authorized", async () => {
@@ -24,7 +13,7 @@ describe("<Workouts/>", () => {
         <Workouts />
       </Provider>
     );
-    dispatch({ type: "SET_WORKOUTS", payload: sampleWorkouts });
+    store.dispatch({ type: "SET_WORKOUTS", payload: sampleWorkouts });
     const workouts = sampleWorkouts.chunk.map((w) => w.title);
     const workoutDetails1 = await screen.findByText(
       new RegExp(`${workouts[0]}`)
@@ -43,7 +32,7 @@ describe("<Workouts/>", () => {
         <Workouts />
       </Provider>
     );
-    dispatch({ type: "SET_WORKOUTS", payload: sampleWorkouts });
+    store.dispatch({ type: "SET_WORKOUTS", payload: sampleWorkouts });
     const noWorkouts = await screen.findByTestId(/no-workouts/i);
     expect(noWorkouts).toBeInTheDocument();
   });
@@ -54,8 +43,8 @@ describe("<Workouts/>", () => {
         <Workouts />
       </Provider>
     );
-    dispatch({ type: "RESET_WORKOUTS_STATE" });
-    dispatch({ type: "SET_WORKOUTS_LOADER" });
+    store.dispatch({ type: "RESET_WORKOUTS_STATE" });
+    store.dispatch({ type: "SET_WORKOUTS_LOADER" });
     const placeholder = await screen.findByLabelText(/loading workouts/i);
     expect(placeholder).toBeInTheDocument();
   });

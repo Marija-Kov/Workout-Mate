@@ -5,31 +5,18 @@ import useGetWorkouts from "./useGetWorkouts";
 import { Provider } from "react-redux";
 import store from "../../redux/store";
 
-let wrapper;
-let dispatch;
-let mockUser;
-let url;
-
-beforeAll(() => {
-  wrapper = ({ children }) => {
+describe("useGetWorkouts()", () => {
+  const wrapper = ({ children }) => {
     return <Provider store={store}>{children}</Provider>;
   };
-  dispatch = store.dispatch;
-  mockUser = {
+
+  const mockUser = {
     username: undefined,
     profileImg: undefined,
   };
-  url = import.meta.env.VITE_API || "http://localhost:6060";
-});
 
-afterAll(() => {
-  wrapper = null;
-  dispatch = null;
-  mockUser = null;
-  url = null;
-});
+  const url = import.meta.env.VITE_API || "http://localhost:6060";
 
-describe("useGetWorkouts()", () => {
   it("should return getWorkouts function", () => {
     const { result } = renderHook(useGetWorkouts, { wrapper });
     expect(result.current.getWorkouts).toBeTruthy();
@@ -37,7 +24,7 @@ describe("useGetWorkouts()", () => {
   });
 
   it("should set error if user is not authorized", async () => {
-    dispatch({ type: "LOGOUT" });
+    store.dispatch({ type: "LOGOUT" });
     const { result } = renderHook(useGetWorkouts, { wrapper });
     await result.current.getWorkouts("pu", 0);
     let state = store.getState();
@@ -65,8 +52,8 @@ describe("useGetWorkouts()", () => {
       load: "21",
       user_id: "userid",
     };
-    dispatch({ type: "LOGIN", payload: mockUser });
-    dispatch({ type: "CREATE_WORKOUT", payload: mockWorkout });
+    store.dispatch({ type: "LOGIN", payload: mockUser });
+    store.dispatch({ type: "CREATE_WORKOUT", payload: mockWorkout });
     const { result } = renderHook(useGetWorkouts, { wrapper });
     await result.current.getWorkouts("lu", 0);
     let state = store.getState();
@@ -94,9 +81,9 @@ describe("useGetWorkouts()", () => {
         user_id: "userid",
       },
     ];
-    dispatch({ type: "LOGIN", payload: mockUser });
-    dispatch({ type: "CREATE_WORKOUT", payload: mockWorkouts[0] });
-    dispatch({ type: "CREATE_WORKOUT", payload: mockWorkouts[1] });
+    store.dispatch({ type: "LOGIN", payload: mockUser });
+    store.dispatch({ type: "CREATE_WORKOUT", payload: mockWorkouts[0] });
+    store.dispatch({ type: "CREATE_WORKOUT", payload: mockWorkouts[1] });
     let state = store.getState();
     expect(state.workouts.chunk[0].title).toMatch(mockWorkouts[1].title);
     expect(state.workouts.chunk[1].title).toMatch(mockWorkouts[0].title);

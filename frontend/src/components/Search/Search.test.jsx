@@ -5,29 +5,27 @@ import Search from "./Search";
 import store from "../../redux/store";
 import { Provider } from "react-redux";
 
-let dispatch;
-let mockUser = {
-  id: "userid",
-  email: "keech@mail.yu",
-  username: undefined,
-  profileImg: undefined,
-};
-
-beforeAll(() => {
-  dispatch = store.dispatch;
-  dispatch({ type: "LOGIN", payload: mockUser });
-});
-afterEach(() => {
-  dispatch({ type: "RESET_QUERY_STATE" });
-  dispatch({ type: "RESET_PAGE_STATE" });
-});
-afterAll(() => {
-  dispatch({ type: "LOGOUT" });
-  dispatch = null;
-  mockUser = null;
-});
-
 describe("<Search />", () => {
+  const mockUser = {
+    id: "userid",
+    email: "keech@mail.yu",
+    username: undefined,
+    profileImg: undefined,
+  };
+
+  beforeAll(() => {
+    store.dispatch({ type: "LOGIN", payload: mockUser });
+  });
+
+  afterEach(() => {
+    store.dispatch({ type: "RESET_QUERY_STATE" });
+    store.dispatch({ type: "RESET_PAGE_STATE" });
+  });
+
+  afterAll(() => {
+    store.dispatch({ type: "LOGOUT" });
+  });
+
   it("should render search form properly", () => {
     render(
       <Provider store={store}>
@@ -53,7 +51,7 @@ describe("<Search />", () => {
     );
     const searchInput = screen.getByPlaceholderText(/type workout title/i);
     expect(searchInput).toHaveValue("");
-    dispatch({ type: "GO_TO_PAGE_NUMBER", payload: 2 });
+    store.dispatch({ type: "GO_TO_PAGE_NUMBER", payload: 2 });
     let state = store.getState();
     expect(state.page).toBe(2);
     await user.type(searchInput, "pu");

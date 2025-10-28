@@ -3,28 +3,16 @@ import useLogout from "./useLogout";
 import { Provider } from "react-redux";
 import store from "../../redux/store";
 
-let wrapper;
-let dispatch;
-let mockUser;
-
-beforeAll(() => {
-  wrapper = ({ children }) => {
+describe("useLogout()", () => {
+  const wrapper = ({ children }) => {
     return <Provider store={store}>{children}</Provider>;
   };
-  dispatch = store.dispatch;
-  mockUser = {
+
+  const mockUser = {
     username: undefined,
     profileImg: undefined,
   };
-});
 
-afterAll(() => {
-  wrapper = null;
-  dispatch = null;
-  mockUser = null;
-});
-
-describe("useLogout()", () => {
   it("should return logout function", () => {
     const { result } = renderHook(useLogout, { wrapper });
     expect(result.current.logout).toBeTruthy();
@@ -32,7 +20,7 @@ describe("useLogout()", () => {
   });
 
   it("should log the user out properly", async () => {
-    dispatch({ type: "LOGIN", payload: mockUser });
+    store.dispatch({ type: "LOGIN", payload: mockUser });
     let state = store.getState();
     expect(state.user).toBeTruthy();
     const { result } = renderHook(useLogout, { wrapper });

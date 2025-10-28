@@ -5,22 +5,13 @@ import useSendPasswordResetLink from "./useSendPasswordResetLink";
 import { Provider } from "react-redux";
 import store from "../../redux/store";
 
-let wrapper;
-let url;
-
-beforeAll(() => {
-  wrapper = ({ children }) => {
+describe("useSendPasswordResetLink()", () => {
+  const wrapper = ({ children }) => {
     return <Provider store={store}>{children}</Provider>;
   };
-  url = import.meta.env.VITE_API || "http://localhost:6060";
-});
 
-afterAll(() => {
-  wrapper = null;
-  url = null;
-});
+  const url = import.meta.env.VITE_API || "http://localhost:6060";
 
-describe("useSendPasswordResetLink()", () => {
   it("should return sendPasswordResetLink function", () => {
     const { result } = renderHook(useSendPasswordResetLink, { wrapper });
     expect(result.current.sendPasswordResetLink).toBeTruthy();
