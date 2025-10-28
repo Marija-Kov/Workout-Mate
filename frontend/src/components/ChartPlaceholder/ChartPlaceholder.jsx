@@ -1,5 +1,3 @@
-import React from "react";
-
 const ChartPlaceholder = () => {
   return (
     <div aria-label="chart placeholder" className="chart--placeholder">

@@ -1,4 +1,3 @@
-import React from "react";
 import github from "../../assets/github.png";
 import patternBkg from "../../assets/gym-pattern.png";
 

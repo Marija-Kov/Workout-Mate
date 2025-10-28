@@ -1,6 +1,5 @@
 import UserSettings from "./UserSettings";
 import App from "../../mocks/App";
-import { vi } from "vitest";
 import user from "@testing-library/user-event";
 import { http, HttpResponse } from "msw";
 import { server } from "../../mocks/server";

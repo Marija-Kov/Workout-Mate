@@ -1,4 +1,3 @@
-import { describe, it, expect, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import user from "@testing-library/user-event";
 import { genSampleWorkouts } from "../../utils/test/genSampleWorkouts";
