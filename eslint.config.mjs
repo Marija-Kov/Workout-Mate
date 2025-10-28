@@ -11,6 +11,7 @@ export default [
         ...globals.browser,
         ...globals.node,
         ...globals.jest,
+        ...globals.vitest,
       },
     },
   },
@@ -27,6 +28,9 @@ export default [
       quotes: ["error", "double"],
       semi: ["warn", "always"],
     },
+  },
+  {
+    ignores: ["node_modules"],
   },
   {
     settings: {

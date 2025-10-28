@@ -17,8 +17,8 @@
   },
   "homepage": "https://github.com/Marija-Kov/Workout-Mate#readme",
   "devDependencies": {
-    "@eslint/js": "^9.20.0",
-    "eslint": "^8.57.1",
+    "@eslint/js": "^9.38.0",
+    "eslint": "^9.38.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-jest": "^29.0.1",
     "eslint-plugin-react": "^7.37.4",
