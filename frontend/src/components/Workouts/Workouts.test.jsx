@@ -6,7 +6,7 @@ import Workouts from "./Workouts";
 import { genSampleWorkouts } from "../../utils/test/genSampleWorkouts";
 
 describe("<Workouts/>", () => {
-  it("should render workouts given that user is authorized", async () => {
+  it("should render workouts if the user is authorized", async () => {
     const sampleWorkouts = genSampleWorkouts();
     render(
       <Provider store={store}>

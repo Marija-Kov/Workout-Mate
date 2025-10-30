@@ -36,7 +36,7 @@ describe("useDeleteWorkout()", () => {
     expect(typeof result.current.deleteWorkout).toBe("function");
   });
 
-  it("should delete workout given that user was authorized and workout id valid", async () => {
+  it("should delete workout if the user was authorized and workout id valid", async () => {
     store.dispatch({
       type: "SET_WORKOUTS",
       payload: {
@@ -59,7 +59,7 @@ describe("useDeleteWorkout()", () => {
     );
   });
 
-  it("should set error given that user wasn't authorized", async () => {
+  it("should set error if the user isn't authorized to delete a workout", async () => {
     store.dispatch({
       type: "SET_WORKOUTS",
       payload: {
@@ -81,7 +81,7 @@ describe("useDeleteWorkout()", () => {
     expect(state.flashMessages.error).toMatch(/not authorized/i);
   });
 
-  it("should set error given that workout id was invalid", async () => {
+  it("should set error if the workout id is invalid", async () => {
     // TODO: runtime interception not working
     server.use(
       http.delete(`${url}/api/workouts/*"`, () => {
@@ -103,7 +103,7 @@ describe("useDeleteWorkout()", () => {
     expect(state.flashMessages.error).toMatch(/invalid workout id/i);
   });
 
-  it("should trigger page state update to the previous page once the last workout from the current page is deleted given that the current page is not the first page", async () => {
+  it("should trigger page state update to the previous page once the last workout from the current page is deleted if the current page is not the first page", async () => {
     store.dispatch({
       type: "SET_WORKOUTS",
       payload: {

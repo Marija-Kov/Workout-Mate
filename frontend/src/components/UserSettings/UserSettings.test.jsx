@@ -15,7 +15,7 @@ describe("<UserSettings/>", () => {
 
   beforeEach(() => store.dispatch({ type: "LOGIN", payload: mockUser }));
 
-  it("should render UserSettings component correctly", () => {
+  it("should render the UserSettings component properly", () => {
     render(
       <Provider store={store}>
         <UserSettings />
@@ -36,7 +36,7 @@ describe("<UserSettings/>", () => {
     expect(deleteAccount).toBeInTheDocument();
   });
 
-  it("should focus elements in the correct order", async () => {
+  it("should focus the elements in the correct order", async () => {
     user.setup();
     render(
       <Provider store={store}>
@@ -77,7 +77,7 @@ describe("<UserSettings/>", () => {
     expect(newUsername).toHaveValue("daredev");
   });
 
-  it("should trim new username input value", async () => {
+  it("should trim the username input value", async () => {
     user.setup();
     render(
       <Provider store={store}>
@@ -90,7 +90,7 @@ describe("<UserSettings/>", () => {
     expect(newUsername).toHaveValue(input.trim());
   });
 
-  it("should render input error message and disable upload button if username input value is too long", async () => {
+  it("should render an input error message and disable the upload button if the username input value is too long", async () => {
     user.setup();
     render(
       <Provider store={store}>
@@ -107,7 +107,7 @@ describe("<UserSettings/>", () => {
     expect(upload).toHaveAttribute("disabled");
   });
 
-  it("should render error message and disable upload button if username contains invalid characters", async () => {
+  it("should render an input error message and disable the upload button if the username input value contains invalid characters", async () => {
     user.setup();
     render(
       <Provider store={store}>
@@ -124,7 +124,7 @@ describe("<UserSettings/>", () => {
     expect(upload).toHaveAttribute("disabled");
   });
 
-  it("should render error message if the user is not authorized to update the username", async () => {
+  it("should render an error message if the user is not authorized to update the username", async () => {
     user.setup();
     render(
       <Provider store={store}>
@@ -143,7 +143,7 @@ describe("<UserSettings/>", () => {
     expect(error).toHaveAttribute("class", "error flashMessage");
   });
 
-  it("should render success message if profile was updated successfully", async () => {
+  it("should render a success message if the profile was updated successfully", async () => {
     user.setup();
     render(
       <Provider store={store}>
@@ -161,7 +161,7 @@ describe("<UserSettings/>", () => {
     expect(success).toHaveAttribute("class", "success flashMessage");
   });
 
-  it("should render error message if the user is not authorized to download the data", async () => {
+  it("should render an error message if the user is not authorized to download the data", async () => {
     window.URL.createObjectURL = vi.fn();
     user.setup();
     render(
@@ -181,7 +181,7 @@ describe("<UserSettings/>", () => {
     vi.resetAllMocks();
   });
 
-  it("should render success message saying that data download has started", async () => {
+  it("should render a success message if the data download has started", async () => {
     window.URL.createObjectURL = vi.fn();
     user.setup();
     render(
@@ -201,7 +201,7 @@ describe("<UserSettings/>", () => {
     vi.resetAllMocks();
   });
 
-  it("should render delete account dialogue component when 'delete account' button is clicked", async () => {
+  it("should render delete account dialogue component when the 'delete account' button is clicked", async () => {
     user.setup();
     render(
       <Provider store={store}>

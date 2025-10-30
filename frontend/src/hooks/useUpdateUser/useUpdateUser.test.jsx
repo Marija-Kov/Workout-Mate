@@ -44,7 +44,7 @@ describe("useUpdateUser()", () => {
     expect(state.flashMessages.success).toMatch(/profile updated/i);
   });
 
-  it("should set error given that image is too large", async () => {
+  it("should set error if image is too large", async () => {
     const tooLargeImgUrl = readLargeFile();
     const { result } = renderHook(useUpdateUser, { wrapper });
     await result.current.updateUser("abc", tooLargeImgUrl);

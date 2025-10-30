@@ -39,7 +39,7 @@ describe("<Navbar />", () => {
     expect(loginLink).toBeInTheDocument();
   });
 
-  it("should focus navbar elements in the right order", async () => {
+  it("should focus navbar elements in the correct order", async () => {
     user.setup();
     render(
       <Provider store={store}>
@@ -65,7 +65,7 @@ describe("<Navbar />", () => {
     expect(signupLink).toHaveFocus();
   });
 
-  it("should render the navbar correctly when the user is logged in as well as focus the elements in the right order", async () => {
+  it("should render the navbar correctly when the user is logged in as well as focus the elements in the correct order", async () => {
     user.setup();
     store.dispatch({ type: "LOGIN", payload: mockUser });
     render(

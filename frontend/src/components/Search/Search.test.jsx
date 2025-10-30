@@ -26,7 +26,7 @@ describe("<Search />", () => {
     store.dispatch({ type: "LOGOUT" });
   });
 
-  it("should render search form properly", () => {
+  it("should render the Search component properly", () => {
     render(
       <Provider store={store}>
         <Search />
@@ -42,7 +42,7 @@ describe("<Search />", () => {
     expect(searchInput).toHaveValue("");
   });
 
-  it("should update input value as user types, go to the first page of search results and show 'clear' button", async () => {
+  it("should update the input value as the user types, go to the first page of search results and show 'clear' button", async () => {
     user.setup();
     render(
       <Provider store={store}>

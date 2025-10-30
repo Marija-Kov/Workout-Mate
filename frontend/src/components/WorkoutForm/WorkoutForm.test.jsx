@@ -20,7 +20,7 @@ describe("<WorkoutForm/>", () => {
     store.dispatch({ type: "LOGOUT" });
   });
 
-  it("should render Workout form given that user is authenticated", async () => {
+  it("should render the WorkoutForm component properly", async () => {
     render(
       <Provider store={store}>
         <WorkoutForm />
@@ -40,7 +40,7 @@ describe("<WorkoutForm/>", () => {
     expect(closeForm).toBeInTheDocument();
   });
 
-  it("should focus input fields in the right order", async () => {
+  it("should focus input fields in the correct order", async () => {
     user.setup();
     render(
       <Provider store={store}>
@@ -67,7 +67,7 @@ describe("<WorkoutForm/>", () => {
     expect(submit).toHaveFocus();
   });
 
-  it("should update input/select value when user types/selects", async () => {
+  it("should update input/select values as the user types/selects", async () => {
     user.setup();
     render(
       <Provider store={store}>
@@ -88,7 +88,7 @@ describe("<WorkoutForm/>", () => {
     expect(loadInput).toHaveValue(22);
   });
 
-  it("should signal input error when input value(s) are missing", async () => {
+  it("should render an input error if at least one input value is missing", async () => {
     user.setup();
     render(
       <Provider store={store}>
@@ -120,7 +120,7 @@ describe("<WorkoutForm/>", () => {
     expect(error).toHaveAttribute("class", "error flashMessage");
   });
 
-  it("should signal input error when title is too long", async () => {
+  it("should render an input error if the title input value is too long", async () => {
     user.setup();
     render(
       <Provider store={store}>
@@ -149,7 +149,7 @@ describe("<WorkoutForm/>", () => {
     expect(error).toHaveAttribute("class", "error flashMessage");
   });
 
-  it("should signal input error if title contains non-alphabetic characters", async () => {
+  it("should render an input error if the title input value contains non-alphabetic characters", async () => {
     user.setup();
     render(
       <Provider store={store}>
@@ -175,7 +175,7 @@ describe("<WorkoutForm/>", () => {
     expect(error).toHaveAttribute("class", "error flashMessage");
   });
 
-  it("should signal input error if reps value is too large", async () => {
+  it("should render an input error if the reps input value is too large", async () => {
     user.setup();
     render(
       <Provider store={store}>
@@ -201,7 +201,7 @@ describe("<WorkoutForm/>", () => {
     expect(error).toHaveAttribute("class", "error flashMessage");
   });
 
-  it("should signal input error when load value is too large", async () => {
+  it("should render an input error if the load input value is too large", async () => {
     user.setup();
     render(
       <Provider store={store}>
@@ -227,7 +227,7 @@ describe("<WorkoutForm/>", () => {
     expect(error).toHaveAttribute("class", "error flashMessage");
   });
 
-  it("should respond with error if user is not authorized", async () => {
+  it("should render an error message if the user is not authorized to post workouts", async () => {
     user.setup();
     render(
       <Provider store={store}>
@@ -252,7 +252,7 @@ describe("<WorkoutForm/>", () => {
     expect(error).toHaveAttribute("class", "error flashMessage");
   });
 
-  it("should respond with success if input is valid and user authorized", async () => {
+  it("should render a success message if a workout was added successfully", async () => {
     user.setup();
     render(
       <Provider store={store}>

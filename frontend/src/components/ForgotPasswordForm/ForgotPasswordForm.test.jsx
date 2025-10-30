@@ -6,7 +6,7 @@ import { Provider } from "react-redux";
 import store from "../../redux/store";
 
 describe("<ForgotPasswordForm />", () => {
-  it("should render ForgotPasswordForm component properly", () => {
+  it("should render the ForgotPasswordForm component properly", () => {
     render(
       <Provider store={store}>
         <ForgotPasswordForm />
@@ -20,7 +20,7 @@ describe("<ForgotPasswordForm />", () => {
     expect(closeBtn).toBeInTheDocument();
   });
 
-  it("should focus form elements in the right order", async () => {
+  it("should focus the form elements in the correct order", async () => {
     user.setup();
     render(
       <Provider store={store}>
@@ -38,7 +38,7 @@ describe("<ForgotPasswordForm />", () => {
     expect(submitBtn).toHaveFocus();
   });
 
-  it("should update input value when user types", async () => {
+  it("should update the input value as the user types", async () => {
     user.setup();
     render(
       <Provider store={store}>
@@ -50,7 +50,7 @@ describe("<ForgotPasswordForm />", () => {
     expect(inputField).toHaveValue("keech");
   });
 
-  it("should render error message if user attempts to submit invalid input", async () => {
+  it("should render an error message if the user attempts to submit invalid input", async () => {
     user.setup();
     render(
       <Provider store={store}>
@@ -68,7 +68,7 @@ describe("<ForgotPasswordForm />", () => {
     expect(error.textContent).toMatch(/please enter valid email address/i);
   });
 
-  it("should render success message if user submits valid email", async () => {
+  it("should render a success message if the user submits a valid email address", async () => {
     user.setup();
     render(
       <Provider store={store}>

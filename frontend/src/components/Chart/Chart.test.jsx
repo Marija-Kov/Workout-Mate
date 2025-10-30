@@ -8,7 +8,7 @@ describe("<Chart />", () => {
   vi.mock("react-chartjs-2");
   let sampleWorkouts = genSampleWorkouts();
 
-  it("should render Chart component properly", async () => {
+  it("should render the Chart component properly", async () => {
     render(
       <Provider store={store}>
         <Chart />

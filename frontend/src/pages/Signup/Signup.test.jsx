@@ -21,7 +21,7 @@ describe("<Signup />", () => {
     expect(signupForm).toBeInTheDocument();
   });
 
-  it("should focus form elements in right order", async () => {
+  it("should focus the form elements in the correct order", async () => {
     user.setup();
     render(
       <Provider store={store}>
@@ -39,7 +39,7 @@ describe("<Signup />", () => {
     expect(signupBtn).toHaveFocus();
   });
 
-  it("should render input value as user types", async () => {
+  it("should update the input value as the user types", async () => {
     user.setup();
     render(
       <Provider store={store}>
@@ -54,7 +54,7 @@ describe("<Signup />", () => {
     expect(password).toHaveValue("abc");
   });
 
-  it("should render error message given that an input value is missing", async () => {
+  it("should render an error message if an input value is missing", async () => {
     user.setup();
     render(
       <Provider store={store}>
@@ -70,7 +70,7 @@ describe("<Signup />", () => {
     expect(error).toHaveAttribute("class", "error flashMessage");
   });
 
-  it("should render error message given that email is invalid", async () => {
+  it("should render an error message if email is invalid", async () => {
     user.setup();
     render(
       <Provider store={store}>
@@ -90,7 +90,7 @@ describe("<Signup />", () => {
     expect(error).toHaveAttribute("class", "error flashMessage");
   });
 
-  it("should render error message given that password is weak", async () => {
+  it("should render an error message if password is weak", async () => {
     user.setup();
     render(
       <Provider store={store}>
@@ -110,7 +110,7 @@ describe("<Signup />", () => {
     expect(error).toHaveAttribute("class", "error flashMessage");
   });
 
-  it("should render error message given that email is already in use", async () => {
+  it("should render an error message if email is already in use", async () => {
     // TODO: runtime interception not working
     server.use(
       http.post(`${url}/api/users/signup`, () => {
@@ -141,7 +141,7 @@ describe("<Signup />", () => {
     expect(error).toHaveAttribute("class", "error flashMessage");
   });
 
-  it("should render success message given that signup was successful", async () => {
+  it("should render a success message if the signup was successful", async () => {
     user.setup();
     render(
       <Provider store={store}>

@@ -23,7 +23,7 @@ describe("useDeleteAllWorkouts()", () => {
     expect(typeof result.current.deleteAllWorkouts).toBe("function");
   });
 
-  it("should delete all workouts given that user is authorized", async () => {
+  it("should delete all workouts if the user is authorized", async () => {
     store.dispatch({ type: "LOGIN", payload: mockUser });
     store.dispatch({
       type: "SET_WORKOUTS",
@@ -46,7 +46,7 @@ describe("useDeleteAllWorkouts()", () => {
     );
   });
 
-  it("should set error given that user isn't authorized", async () => {
+  it("should set error if the user isn't authorized to delete all workouts", async () => {
     store.dispatch({ type: "LOGIN", payload: mockUser });
     store.dispatch({
       type: "SET_WORKOUTS",

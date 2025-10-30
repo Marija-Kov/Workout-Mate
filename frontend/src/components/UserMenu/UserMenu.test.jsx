@@ -19,7 +19,7 @@ describe("<UserMenu />", () => {
     expect(logoutBtn).toBeInTheDocument();
   });
 
-  it("should focus UserMenu elements in correct order", async () => {
+  it("should focus UserMenu elements in the correct order", async () => {
     user.setup();
     render(
       <Provider store={store}>

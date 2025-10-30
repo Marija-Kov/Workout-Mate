@@ -27,7 +27,7 @@ describe("<Pagination />", () => {
     });
     store.dispatch({ type: "LOGOUT" });
   });
-  it("should render Pagination component correctly in its initial state given that 6+ workouts exist in the database", () => {
+  it("should render the Pagination component properly in its initial state if 6+ workouts exist in the database", () => {
     render(
       <Provider store={store}>
         <Pagination />
@@ -51,7 +51,7 @@ describe("<Pagination />", () => {
     expect(numButtons.length).toBe(Math.ceil(foundCount / limit));
   });
 
-  it("should focus elements in the correct order", async () => {
+  it("should focus the elements in the correct order", async () => {
     user.setup();
     render(
       <Provider store={store}>

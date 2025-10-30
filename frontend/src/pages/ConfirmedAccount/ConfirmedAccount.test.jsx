@@ -31,7 +31,7 @@ describe("<ConfirmedAccount />", () => {
     vi.resetAllMocks();
   });
 
-  it("should render success message given that confirmation was successful", async () => {
+  it("should render a success message if the account confirmation was successful", async () => {
     render(
       <Provider store={store}>
         <BrowserRouter
@@ -55,7 +55,7 @@ describe("<ConfirmedAccount />", () => {
     expect(success.textContent).toMatch(/account confirmed/i);
   });
 
-  it("should render error message if the confirmation token is invalid", async () => {
+  it("should render an error message if the confirmation token is invalid", async () => {
     render(
       <Provider store={store}>
         <BrowserRouter

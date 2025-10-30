@@ -27,7 +27,7 @@ describe("<EditWorkout/>", () => {
     store.dispatch({ type: "LOGOUT" });
   });
 
-  it("should render prepopulated Edit workout form given that user is authenticated", () => {
+  it("should render the prepopulated Edit workout form properly", () => {
     render(
       <Provider store={store}>
         <EditWorkout />
@@ -56,7 +56,7 @@ describe("<EditWorkout/>", () => {
     expect(closeForm).toBeInTheDocument();
   });
 
-  it("should focus input fields in the right order", async () => {
+  it("should focus input fields in the correct order", async () => {
     user.setup();
     render(
       <Provider store={store}>
@@ -83,7 +83,7 @@ describe("<EditWorkout/>", () => {
     expect(submit).toHaveFocus();
   });
 
-  it("should update input value when user types", async () => {
+  it("should update the input value as the user types", async () => {
     user.setup();
     render(
       <Provider store={store}>
@@ -106,7 +106,7 @@ describe("<EditWorkout/>", () => {
     expect(loadInput).toHaveValue(22);
   });
 
-  it("should respond with error message if authentication token expired and user attempts to submit", async () => {
+  it("should render an error message if the user is not authorized to edit workouts", async () => {
     user.setup();
     render(
       <Provider store={store}>
@@ -132,7 +132,7 @@ describe("<EditWorkout/>", () => {
     expect(error).toHaveAttribute("class", "error flashMessage");
   });
 
-  it("should signal input error when user attempts to submit form with too long title", async () => {
+  it("should render an input error if the user tries to update a workout with a too long title", async () => {
     user.setup();
     render(
       <Provider store={store}>
@@ -155,7 +155,7 @@ describe("<EditWorkout/>", () => {
     expect(error).toHaveAttribute("class", "error flashMessage");
   });
 
-  it("should signal input error when user attempts to submit form with title containing non-alphabetic characters", async () => {
+  it("should render an input error when the user tries to update a workout with a title that contains non-alphabetic characters", async () => {
     user.setup();
     render(
       <Provider store={store}>
@@ -175,7 +175,7 @@ describe("<EditWorkout/>", () => {
     expect(error).toHaveAttribute("class", "error flashMessage");
   });
 
-  it("should signal input error when user attempts to submit form with too large reps number", async () => {
+  it("should render an input error when the user tries to update a workout with a too large reps number", async () => {
     user.setup();
     render(
       <Provider store={store}>
@@ -195,7 +195,7 @@ describe("<EditWorkout/>", () => {
     expect(error).toHaveAttribute("class", "error flashMessage");
   });
 
-  it("should signal input error when user attempts to submit form with too large load number", async () => {
+  it("should render an input error when the user tries to update a workout with a too large load number", async () => {
     user.setup();
     render(
       <Provider store={store}>
@@ -215,7 +215,7 @@ describe("<EditWorkout/>", () => {
     expect(error).toHaveAttribute("class", "error flashMessage");
   });
 
-  it("should submit updated input fields given that input is valid", async () => {
+  it("should render a success message if the workout was updated successfully", async () => {
     user.setup();
     render(
       <Provider store={store}>

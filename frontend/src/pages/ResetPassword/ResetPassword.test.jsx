@@ -11,7 +11,7 @@ import store from "../../redux/store";
 
 describe("<ResetPassword />", () => {
   const url = import.meta.env.VITE_API || "localhost:6060";
-  it("should render reset password form", () => {
+  it("should render the ResetPassword component properly", () => {
     render(
       <Provider store={store}>
         <ResetPassword />
@@ -25,7 +25,7 @@ describe("<ResetPassword />", () => {
     expect(saveBtn).toBeInTheDocument();
   });
 
-  it("should focus form elements in the right order", async () => {
+  it("should focus the form elements in the correct order", async () => {
     user.setup();
     render(
       <Provider store={store}>
@@ -43,7 +43,7 @@ describe("<ResetPassword />", () => {
     expect(saveBtn).toHaveFocus();
   });
 
-  it("should update input value as the user types", async () => {
+  it("should update the input value as the user types", async () => {
     user.setup();
     render(
       <Provider store={store}>
@@ -58,7 +58,7 @@ describe("<ResetPassword />", () => {
     expect(confirmPasswordInput).toHaveValue("def");
   });
 
-  it("should render error message if passwords are not matching", async () => {
+  it("should render an error message if the passwords are not matching", async () => {
     user.setup();
     render(
       <Provider store={store}>
@@ -85,7 +85,7 @@ describe("<ResetPassword />", () => {
     expect(error.textContent).toMatch(/passwords must match/i);
   });
 
-  it("should render error message if the new password is not strong enough", async () => {
+  it("should render an error message if the password is not strong enough", async () => {
     user.setup();
     render(
       <Provider store={store}>
@@ -112,7 +112,7 @@ describe("<ResetPassword />", () => {
     expect(error.textContent).toMatch(/password not strong enough/i);
   });
 
-  it("should render error message if password reset token is not valid", async () => {
+  it("should render an error message if the password reset token is not valid", async () => {
     server.use(
       http.patch(`${url}/api/reset-password/*`, () => {
         return new HttpResponse.json(
@@ -149,7 +149,7 @@ describe("<ResetPassword />", () => {
     expect(error.textContent).toMatch(/invalid token/i);
   });
 
-  it("should render success message and 'log in' link if password was reset successfully", async () => {
+  it("should render a success message and a 'log in' link if the password was reset successfully", async () => {
     user.setup();
     render(
       <Provider store={store}>

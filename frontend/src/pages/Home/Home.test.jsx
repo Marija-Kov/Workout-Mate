@@ -59,7 +59,7 @@ describe("<Home />", () => {
     expect(WorkoutsPlaceholder).toHaveBeenCalled();
   });
 
-  it("should render Home page correctly given that user has not posted yet", async () => {
+  it("should render Home page correctly if the user has not posted yet", async () => {
     render(
       <Provider store={store}>
         <Home />
@@ -80,7 +80,7 @@ describe("<Home />", () => {
     expect(addWorkoutBtn).toHaveClass("no--workouts--yet");
   });
 
-  it("should render Home page correctly given that user has posted workouts", async () => {
+  it("should render Home page correctly if the user has posted workouts", async () => {
     genSampleWorkouts();
     render(
       <Provider store={store}>
@@ -97,7 +97,7 @@ describe("<Home />", () => {
     expect(workouts).toBeInTheDocument();
   });
 
-  it("should render 'no workouts found by query' given that no workouts were found by query", async () => {
+  it("should render 'no workouts found by query' if no workouts were found by query", async () => {
     render(
       <Provider store={store}>
         <Home />

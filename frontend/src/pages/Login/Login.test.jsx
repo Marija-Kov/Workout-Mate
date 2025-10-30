@@ -15,7 +15,7 @@ afterAll(() => {
 
 describe("<Login />", () => {
   const url = import.meta.env.VITE_API || "localhost:6060";
-  it("should render login form", () => {
+  it("should render the Login component properly", () => {
     render(
       <Provider store={store}>
         <Login />
@@ -31,7 +31,7 @@ describe("<Login />", () => {
     expect(loginBtn).toBeInTheDocument();
   });
 
-  it("should focus form elements in right order", async () => {
+  it("should focus the form elements in the correct order", async () => {
     user.setup();
     render(
       <Provider store={store}>
@@ -52,7 +52,7 @@ describe("<Login />", () => {
     expect(loginBtn).toHaveFocus();
   });
 
-  it("should render input value as user types", async () => {
+  it("should update the input value as the user types", async () => {
     user.setup();
     render(
       <Provider store={store}>
@@ -67,7 +67,7 @@ describe("<Login />", () => {
     expect(passwordInp).toHaveValue("abc");
   });
 
-  it("should render forgot password form when user clicks on 'forgot password'", async () => {
+  it("should render a forgot password form when the user clicks on 'forgot password'", async () => {
     user.setup();
     render(
       <Provider store={store}>
@@ -82,7 +82,7 @@ describe("<Login />", () => {
     await user.click(close);
   });
 
-  it("should render error message given that an input value is missing", async () => {
+  it("should render an error message if an input value is missing", async () => {
     user.setup();
     render(
       <Provider store={store}>
@@ -98,7 +98,7 @@ describe("<Login />", () => {
     expect(error).toHaveAttribute("class", "error flashMessage");
   });
 
-  it("should render error message given that email is invalid", async () => {
+  it("should render an error message if the email input value is invalid", async () => {
     user.setup();
     render(
       <Provider store={store}>
@@ -118,7 +118,7 @@ describe("<Login />", () => {
     expect(error).toHaveAttribute("class", "error flashMessage");
   });
 
-  it("should render error element given that email is not registered", async () => {
+  it("should render an error message if the email is not registered", async () => {
     // TODO: runtime interception not working
     server.use(
       http.post(`${import.meta.env.VITE_API}/api/users/login`, () => {
@@ -149,7 +149,7 @@ describe("<Login />", () => {
     expect(error).toHaveAttribute("class", "error flashMessage");
   });
 
-  it("should render error message given that password is wrong", async () => {
+  it("should render an error message if the password is wrong", async () => {
     // TODO: runtime interception not working
     server.use(
       http.post(`${url}/api/users/login`, () => {
@@ -180,7 +180,7 @@ describe("<Login />", () => {
     expect(error).toHaveAttribute("class", "error flashMessage");
   });
 
-  it("should render Home page on a successful login", async () => {
+  it("should render the Home page component if the login was successful", async () => {
     user.setup();
     const mockLocalStorage = {};
     const storageUser = {

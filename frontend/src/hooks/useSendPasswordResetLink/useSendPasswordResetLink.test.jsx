@@ -18,7 +18,7 @@ describe("useSendPasswordResetLink()", () => {
     expect(typeof result.current.sendPasswordResetLink).toBe("function");
   });
 
-  it("should set error given that the input is invalid", async () => {
+  it("should set error if the input is invalid", async () => {
     server.use(
       http.post(`${url}/api/reset-password`, () => {
         return new HttpResponse.json(
@@ -38,7 +38,7 @@ describe("useSendPasswordResetLink()", () => {
     );
   });
 
-  it("should set success message given that the input is valid", async () => {
+  it("should set success message if the input is valid", async () => {
     const { result } = renderHook(useSendPasswordResetLink, { wrapper });
     await result.current.sendPasswordResetLink("valid@e.mail");
     let state = store.getState();

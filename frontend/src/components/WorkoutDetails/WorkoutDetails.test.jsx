@@ -15,7 +15,7 @@ describe("<WorkoutDetails />", () => {
     updatedAt: "2023-04-13T17:27:28.820+00:00",
   };
 
-  it("should render WorkoutDetails component properly", () => {
+  it("should render the WorkoutDetails component properly", () => {
     render(
       <Provider store={store}>
         <WorkoutDetails
@@ -43,7 +43,7 @@ describe("<WorkoutDetails />", () => {
     expect(deleteWorkoutBtn).toBeInTheDocument();
   });
 
-  it("should focus elements in right order", async () => {
+  it("should focus the elements in the correct order", async () => {
     user.setup();
     render(
       <Provider store={store}>

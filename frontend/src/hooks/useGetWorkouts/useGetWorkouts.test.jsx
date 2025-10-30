@@ -23,7 +23,7 @@ describe("useGetWorkouts()", () => {
     expect(typeof result.current.getWorkouts).toBe("function");
   });
 
-  it("should set error if user is not authorized", async () => {
+  it("should set error if the user is not authorized", async () => {
     store.dispatch({ type: "LOGOUT" });
     const { result } = renderHook(useGetWorkouts, { wrapper });
     await result.current.getWorkouts("pu", 0);
@@ -32,7 +32,7 @@ describe("useGetWorkouts()", () => {
     expect(state.flashMessages.error).toMatch(/not authorized/i);
   });
 
-  it("should set error if something goes wrong on the server side", async () => {
+  it("should set server error", async () => {
     // TODO: runtime interception not working
     server.use(
       http.get(`${url}/api/workouts/*`, () => {
@@ -61,7 +61,7 @@ describe("useGetWorkouts()", () => {
     expect(state.flashMessages.error).toMatch(/something went wrong/i);
   });
 
-  it("should return search results given that user is authorized", async () => {
+  it("should return search results if the user is authorized", async () => {
     // TODO: all mock items used in one test should come from one source
     const mockWorkouts = [
       {
