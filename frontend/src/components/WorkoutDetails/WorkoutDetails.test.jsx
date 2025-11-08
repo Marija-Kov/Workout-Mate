@@ -4,10 +4,8 @@ import WorkoutDetails from "./WorkoutDetails";
 import { Provider } from "react-redux";
 import store from "../../redux/store";
 
-let mockWorkout;
-
-beforeAll(() => {
-  mockWorkout = {
+describe("<WorkoutDetails />", () => {
+  const mockWorkout = {
     id: "workoutId",
     title: "bench press",
     muscle_group: "chest",
@@ -16,14 +14,8 @@ beforeAll(() => {
     createdAt: "2023-04-10T13:01:15.208+00:00",
     updatedAt: "2023-04-13T17:27:28.820+00:00",
   };
-});
 
-afterAll(() => {
-  mockWorkout = null;
-});
-
-describe("<WorkoutDetails />", () => {
-  it("should render WorkoutDetails component properly", () => {
+  it("should render the WorkoutDetails component properly", () => {
     render(
       <Provider store={store}>
         <WorkoutDetails
@@ -51,7 +43,7 @@ describe("<WorkoutDetails />", () => {
     expect(deleteWorkoutBtn).toBeInTheDocument();
   });
 
-  it("should focus elements in right order", async () => {
+  it("should focus the elements in the correct order", async () => {
     user.setup();
     render(
       <Provider store={store}>

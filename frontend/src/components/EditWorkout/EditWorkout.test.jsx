@@ -1,47 +1,33 @@
-import React from "react";
 import EditWorkout from "./EditWorkout";
 import App from "../../mocks/App";
 import user from "@testing-library/user-event";
 import { render, screen } from "@testing-library/react";
-import { http, HttpResponse } from "msw";
-import { server } from "../../mocks/server";
 import { Provider } from "react-redux";
 import store from "../../redux/store";
 
-let dispatch;
-let mockPrepopulatedForm;
-
-beforeAll(() => {
-  dispatch = store.dispatch;
-  mockPrepopulatedForm = {
+describe("<EditWorkout/>", () => {
+  const mockPrepopulatedForm = {
     id: "mockId",
     prevTitle: "deadlifts",
     prevMuscleGroup: "glute",
     prevLoad: 40,
     prevReps: 10,
   };
-});
 
-beforeEach(() => {
-  dispatch({ type: "LOGIN", payload: {} });
-  dispatch({
-    type: "TOGGLE_MOUNT_EDIT_WORKOUT_FORM",
-    payload: mockPrepopulatedForm,
+  beforeEach(() => {
+    store.dispatch({ type: "LOGIN", payload: {} });
+    store.dispatch({
+      type: "TOGGLE_MOUNT_EDIT_WORKOUT_FORM",
+      payload: mockPrepopulatedForm,
+    });
   });
-});
 
-afterEach(() => {
-  dispatch({ type: "RESET_COMPONENTS_STATE" });
-  dispatch({ type: "LOGOUT" });
-});
+  afterEach(() => {
+    store.dispatch({ type: "RESET_COMPONENTS_STATE" });
+    store.dispatch({ type: "LOGOUT" });
+  });
 
-afterAll(() => {
-  dispatch = null;
-  mockPrepopulatedForm = null;
-});
-
-describe("<EditWorkout/>", () => {
-  it("should render prepopulated Edit workout form given that user is authenticated", () => {
+  it("should render the prepopulated Edit workout form properly", () => {
     render(
       <Provider store={store}>
         <EditWorkout />
@@ -70,7 +56,7 @@ describe("<EditWorkout/>", () => {
     expect(closeForm).toBeInTheDocument();
   });
 
-  it("should focus input fields in the right order", async () => {
+  it("should focus input fields in the correct order", async () => {
     user.setup();
     render(
       <Provider store={store}>
@@ -97,7 +83,7 @@ describe("<EditWorkout/>", () => {
     expect(submit).toHaveFocus();
   });
 
-  it("should update input value when user types", async () => {
+  it("should update the input value as the user types", async () => {
     user.setup();
     render(
       <Provider store={store}>
@@ -120,15 +106,7 @@ describe("<EditWorkout/>", () => {
     expect(loadInput).toHaveValue(22);
   });
 
-  it("should respond with error message if authentication token expired and user attempts to submit", async () => {
-    server.use(
-      http.patch(`${import.meta.env.VITE_API}/api/workouts/*`, () => {
-        return new HttpResponse.json(
-          { error: "Not authorized" },
-          { status: 401 }
-        );
-      })
-    );
+  it("should render an error message if the user is not authorized to edit workouts", async () => {
     user.setup();
     render(
       <Provider store={store}>
@@ -146,7 +124,7 @@ describe("<EditWorkout/>", () => {
     await user.type(repsInput, "30");
     await user.clear(loadInput);
     await user.type(loadInput, "15");
-    await dispatch({ type: "LOGOUT" });
+    await store.dispatch({ type: "LOGOUT" });
     await user.click(submit);
     const error = await screen.findByRole("alert");
     expect(error).toBeInTheDocument();
@@ -154,17 +132,7 @@ describe("<EditWorkout/>", () => {
     expect(error).toHaveAttribute("class", "error flashMessage");
   });
 
-  it("should signal input error when user attempts to submit form with too long title", async () => {
-    server.use(
-      http.patch(`${import.meta.env.VITE_API}/api/workouts/*`, () => {
-        return new HttpResponse.json(
-          {
-            error: "Too long title - max 30 characters",
-          },
-          { status: 400 }
-        );
-      })
-    );
+  it("should render an input error if the user tries to update a workout with a too long title", async () => {
     user.setup();
     render(
       <Provider store={store}>
@@ -187,17 +155,7 @@ describe("<EditWorkout/>", () => {
     expect(error).toHaveAttribute("class", "error flashMessage");
   });
 
-  it("should signal input error when user attempts to submit form with title containing non-alphabetic characters", async () => {
-    server.use(
-      http.patch(`${import.meta.env.VITE_API}/api/workouts/*`, () => {
-        return new HttpResponse.json(
-          {
-            error: "Title may contain only letters",
-          },
-          { status: 400 }
-        );
-      })
-    );
+  it("should render an input error when the user tries to update a workout with a title that contains non-alphabetic characters", async () => {
     user.setup();
     render(
       <Provider store={store}>
@@ -217,17 +175,7 @@ describe("<EditWorkout/>", () => {
     expect(error).toHaveAttribute("class", "error flashMessage");
   });
 
-  it("should signal input error when user attempts to submit form with too large reps number", async () => {
-    server.use(
-      http.patch(`${import.meta.env.VITE_API}/api/workouts/*`, () => {
-        return new HttpResponse.json(
-          {
-            error: "Reps value too large",
-          },
-          { status: 400 }
-        );
-      })
-    );
+  it("should render an input error when the user tries to update a workout with a too large reps number", async () => {
     user.setup();
     render(
       <Provider store={store}>
@@ -247,17 +195,7 @@ describe("<EditWorkout/>", () => {
     expect(error).toHaveAttribute("class", "error flashMessage");
   });
 
-  it("should signal input error when user attempts to submit form with too large load number", async () => {
-    server.use(
-      http.patch(`${import.meta.env.VITE_API}/api/workouts/*`, () => {
-        return new HttpResponse.json(
-          {
-            error: "Load value too large",
-          },
-          { status: 400 }
-        );
-      })
-    );
+  it("should render an input error when the user tries to update a workout with a too large load number", async () => {
     user.setup();
     render(
       <Provider store={store}>
@@ -277,20 +215,7 @@ describe("<EditWorkout/>", () => {
     expect(error).toHaveAttribute("class", "error flashMessage");
   });
 
-  it("should submit updated input fields given that input is valid", async () => {
-    // This is handled in handlers.js!
-    // server.use(
-    //   http.patch(
-    //     `${import.meta.env.VITE_API}/api/workouts/*`,
-    //     () => {
-    //       return new HttpResponse(null, { status: 200 }).json({
-    //         title: "deadlifts",
-    //         reps: 30,
-    //         load: 15,
-    //       })
-    //     }
-    //   )
-    // );
+  it("should render a success message if the workout was updated successfully", async () => {
     user.setup();
     render(
       <Provider store={store}>
@@ -298,7 +223,7 @@ describe("<EditWorkout/>", () => {
         <EditWorkout />
       </Provider>
     );
-    await dispatch({
+    await store.dispatch({
       type: "SET_WORKOUTS",
       payload: {
         chunk: [
@@ -316,10 +241,6 @@ describe("<EditWorkout/>", () => {
     await user.clear(loadInput);
     await user.type(loadInput, "15");
     await user.click(submit);
-    await dispatch({
-      type: "SUCCESS",
-      payload: "Successfully updated workout",
-    });
     const success = await screen.findByRole("alert");
     expect(success).toBeInTheDocument();
     expect(success.textContent).toMatch(/successfully updated workout/i);

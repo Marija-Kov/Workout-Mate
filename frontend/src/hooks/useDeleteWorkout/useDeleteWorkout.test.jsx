@@ -6,59 +6,51 @@ import { Provider } from "react-redux";
 import store from "../../redux/store";
 import { genSampleWorkouts } from "../../utils/test/genSampleWorkouts";
 
-let wrapper;
-let dispatch;
-let mockUser;
-let sample;
-let mockWorkouts;
-let url;
-
-beforeAll(() => {
-  wrapper = ({ children }) => {
+describe("useDeleteWorkout()", () => {
+  const wrapper = ({ children }) => {
     return <Provider store={store}>{children}</Provider>;
   };
-  dispatch = store.dispatch;
-  mockUser = {
+
+  const mockUser = {
     username: undefined,
     profileImg: undefined,
   };
-  url = import.meta.env.VITE_API || "http://localhost:6060";
-});
 
-beforeEach(() => {
-  dispatch({ type: "LOGIN", payload: mockUser });
-  sample = genSampleWorkouts();
-  mockWorkouts = sample.searchResults;
-});
+  const url = import.meta.env.VITE_API || "http://localhost:6060";
 
-afterEach(() => {
-  dispatch({ type: "GO_TO_PAGE_NUMBER", payload: 0 });
-  dispatch({ type: "SET_ROUTINE_BALANCE", payload: [] });
-  dispatch({ type: "RESET_WORKOUTS_STATE" });
-  dispatch({ type: "LOGOUT" });
-});
+  const sample = genSampleWorkouts();
 
-afterAll(() => {
-  wrapper = null;
-  dispatch = null;
-  mockUser = null;
-  sample = null;
-  mockWorkouts = null;
-  url = null;
-});
+  beforeEach(() => {
+    store.dispatch({ type: "LOGIN", payload: mockUser });
+  });
 
-describe("useDeleteWorkout()", () => {
+  afterEach(() => {
+    store.dispatch({ type: "GO_TO_PAGE_NUMBER", payload: 0 });
+    store.dispatch({ type: "RESET_WORKOUTS_STATE" });
+    store.dispatch({ type: "LOGOUT" });
+  });
+
   it("should return deleteWorkout function", () => {
     const { result } = renderHook(useDeleteWorkout, { wrapper });
     expect(result.current.deleteWorkout).toBeTruthy();
     expect(typeof result.current.deleteWorkout).toBe("function");
   });
 
-  it("should delete workout given that user was authorized and workout id valid", async () => {
+  it("should delete workout if the user was authorized and workout id valid", async () => {
+    store.dispatch({
+      type: "SET_WORKOUTS",
+      payload: {
+        foundCount: sample.foundCount,
+        allMuscleGroups: sample.allMuscleGroups,
+        chunk: sample.searchResults.slice(0, 3),
+        limit: 3,
+        noneFound: false,
+      },
+    });
     let state = store.getState();
     const prevCount = state.workouts.foundCount;
     const { result } = renderHook(useDeleteWorkout, { wrapper });
-    await result.current.deleteWorkout("w2");
+    await result.current.deleteWorkout(state.workouts.chunk[0]._id); // must be an _id from the current chunk
     state = store.getState();
     expect(state.workouts.foundCount).toBe(prevCount - 1);
     expect(state.flashMessages.success).toBeTruthy();
@@ -67,62 +59,30 @@ describe("useDeleteWorkout()", () => {
     );
   });
 
-  it("should update page state properly when all workouts from the current page have been deleted given that current page is not the first page", async () => {
-    dispatch({
+  it("should set error if the user isn't authorized to delete a workout", async () => {
+    store.dispatch({
       type: "SET_WORKOUTS",
       payload: {
         foundCount: sample.foundCount,
         allMuscleGroups: sample.allMuscleGroups,
-        chunk: mockWorkouts.slice(3, 4),
+        chunk: sample.searchResults.slice(0, 3),
         limit: 3,
         noneFound: false,
       },
     });
-    let state = store.getState();
-    const { result } = renderHook(useDeleteWorkout, { wrapper });
-    // TODO: Fails here because action.payload is always the
-    // json.workout from the initial happy path handler
-    await result.current.deleteWorkout(state.workouts.chunk[0]._id);
-    state = store.getState();
-    expect(state.page).toBe(0);
-  });
-
-  it("should update page state properly when all workouts from the current page have been deleted given that current page is the first page", async () => {
-    dispatch({
-      type: "SET_WORKOUTS",
-      payload: {
-        foundCount: sample.foundCount,
-        allMuscleGroups: sample.allMuscleGroups,
-        chunk: mockWorkouts.slice(0, 1),
-        limit: 3,
-        noneFound: false,
-      },
-    });
-    let state = store.getState();
-    const { result } = renderHook(useDeleteWorkout, { wrapper });
-    // TODO: Fails here because action.payload is always the
-    // json.workout from the initial happy path handler
-    await result.current.deleteWorkout(state.workouts.chunk[0]._id);
-    state = store.getState();
-    expect(state.workouts.chunk.length).toBe(3);
-    expect(state.page).toBe(1);
-  });
-
-  it("should set error given that user wasn't authorized", async () => {
     let state = store.getState();
     const prevCount = state.workouts.foundCount;
-    expect(state.workouts.chunk[1]._id).toBe(mockWorkouts[1]._id);
-    dispatch({ type: "LOGIN", payload: null });
+    store.dispatch({ type: "LOGIN", payload: null });
     const { result } = renderHook(useDeleteWorkout, { wrapper });
-    await result.current.deleteWorkout("w0");
+    await result.current.deleteWorkout(state.workouts.chunk[0]._id);
     state = store.getState();
     expect(state.workouts.foundCount).toBe(prevCount);
-    expect(state.workouts.chunk[1]._id).toBe(mockWorkouts[1]._id);
     expect(state.flashMessages.error).toBeTruthy();
     expect(state.flashMessages.error).toMatch(/not authorized/i);
   });
 
-  it("should set error given that workout id was invalid", async () => {
+  it("should set error if the workout id is invalid", async () => {
+    // TODO: runtime interception not working
     server.use(
       http.delete(`${url}/api/workouts/*"`, () => {
         return HttpResponse.json(
@@ -141,5 +101,79 @@ describe("useDeleteWorkout()", () => {
     expect(state.workouts.foundCount).toBe(prevCount);
     expect(state.flashMessages.error).toBeTruthy();
     expect(state.flashMessages.error).toMatch(/invalid workout id/i);
+  });
+
+  it("should trigger page state update to the previous page once the last workout from the current page is deleted if the current page is not the first page", async () => {
+    store.dispatch({
+      type: "SET_WORKOUTS",
+      payload: {
+        foundCount: sample.foundCount,
+        allMuscleGroups: sample.allMuscleGroups,
+        chunk: sample.searchResults.slice(0, 1), // make sure that it has the same workout _id as the mock response used for this test
+        limit: 3,
+        noneFound: false,
+      },
+    });
+    store.dispatch({ type: "GO_TO_PAGE_NUMBER", payload: 2 });
+    let state = store.getState();
+    expect(state.page).toBe(2); // confirm that it's not on the first page
+    const { result } = renderHook(useDeleteWorkout, { wrapper });
+    await result.current.deleteWorkout(state.workouts.chunk[0]._id);
+    state = store.getState();
+    expect(state.page).toBe(1); // confirm that it flipped to the previous page
+  });
+
+  it("should trigger page state update to page 2 then back to page 1 when the last workout on page 1 has been deleted", async () => {
+    vi.useFakeTimers();
+    store.dispatch({
+      type: "SET_WORKOUTS",
+      payload: {
+        foundCount: sample.foundCount,
+        allMuscleGroups: sample.allMuscleGroups,
+        chunk: sample.searchResults.slice(0, 1),
+        limit: 3,
+        noneFound: false,
+      },
+    });
+    store.dispatch({ type: "GO_TO_PAGE_NUMBER", payload: 1 });
+    let state = store.getState();
+    expect(state.page).toBe(1);
+    const { result } = renderHook(useDeleteWorkout, { wrapper });
+    await result.current.deleteWorkout(state.workouts.chunk[0]._id);
+    state = store.getState();
+    expect(state.page).toBe(2);
+    vi.runAllTimers();
+    state = store.getState();
+    expect(state.page).toBe(1);
+  });
+
+  it("should trigger routine balance state update upon workout deletion", async () => {
+    store.dispatch({
+      type: "SET_WORKOUTS",
+      payload: {
+        foundCount: sample.foundCount,
+        allMuscleGroups: sample.allMuscleGroups,
+        chunk: sample.searchResults.slice(0, 3),
+        limit: 3,
+        noneFound: false,
+      },
+    });
+    store.dispatch({
+      type: "SET_ROUTINE_BALANCE",
+      payload: sample.allMuscleGroups,
+    });
+    let state = store.getState();
+    const observedMuscleGroup = state.workouts.chunk[0].muscle_group; // the muscle group of the workout that we're going to delete
+    const prevPercentage = state.routineBalance[observedMuscleGroup];
+    const { result } = renderHook(useDeleteWorkout, { wrapper });
+    await result.current.deleteWorkout(state.workouts.chunk[0]._id);
+    state = store.getState(); // request state to get updated value of state.workouts.allMuscleGroups
+    store.dispatch({
+      type: "SET_ROUTINE_BALANCE",
+      payload: state.workouts.allMuscleGroups,
+    }); // Chart.jsx runs this
+    state = store.getState(); // request state to get updated value of state.routineBalance
+    const currPercentage = state.routineBalance[observedMuscleGroup];
+    expect(Math.abs(currPercentage - prevPercentage)).not.toBe(0);
   });
 });

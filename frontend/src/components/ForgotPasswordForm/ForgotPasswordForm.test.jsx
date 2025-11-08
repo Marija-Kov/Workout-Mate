@@ -2,13 +2,11 @@ import ForgotPasswordForm from "./ForgotPasswordForm";
 import App from "../../mocks/App";
 import user from "@testing-library/user-event";
 import { render, screen } from "@testing-library/react";
-import { http, HttpResponse } from "msw";
-import { server } from "../../mocks/server";
 import { Provider } from "react-redux";
 import store from "../../redux/store";
 
 describe("<ForgotPasswordForm />", () => {
-  it("should render ForgotPasswordForm component properly", () => {
+  it("should render the ForgotPasswordForm component properly", () => {
     render(
       <Provider store={store}>
         <ForgotPasswordForm />
@@ -22,7 +20,7 @@ describe("<ForgotPasswordForm />", () => {
     expect(closeBtn).toBeInTheDocument();
   });
 
-  it("should focus form elements in the right order", async () => {
+  it("should focus the form elements in the correct order", async () => {
     user.setup();
     render(
       <Provider store={store}>
@@ -40,7 +38,7 @@ describe("<ForgotPasswordForm />", () => {
     expect(submitBtn).toHaveFocus();
   });
 
-  it("should update input value when user types", async () => {
+  it("should update the input value as the user types", async () => {
     user.setup();
     render(
       <Provider store={store}>
@@ -52,17 +50,7 @@ describe("<ForgotPasswordForm />", () => {
     expect(inputField).toHaveValue("keech");
   });
 
-  it("should render error message if user attempts to submit invalid input", async () => {
-    server.use(
-      http.post("/api/reset-password", () => {
-        return new HttpResponse.json(
-          {
-            error: "Please enter valid email address",
-          },
-          { status: 400 }
-        );
-      })
-    );
+  it("should render an error message if the user attempts to submit invalid input", async () => {
     user.setup();
     render(
       <Provider store={store}>
@@ -80,7 +68,7 @@ describe("<ForgotPasswordForm />", () => {
     expect(error.textContent).toMatch(/please enter valid email address/i);
   });
 
-  it("should render success message if user submits valid email", async () => {
+  it("should render a success message if the user submits a valid email address", async () => {
     user.setup();
     render(
       <Provider store={store}>

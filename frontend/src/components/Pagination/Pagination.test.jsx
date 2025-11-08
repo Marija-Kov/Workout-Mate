@@ -5,33 +5,29 @@ import { genSampleWorkouts } from "../../utils/test/genSampleWorkouts";
 import store from "../../redux/store";
 import { Provider } from "react-redux";
 
-let dispatch;
-let mockUser;
-
-beforeAll(() => {
-  dispatch = store.dispatch;
-  mockUser = {
+describe("<Pagination />", () => {
+  const mockUser = {
     id: "userid",
     email: "keech@mail.yu",
     username: undefined,
     profileImg: undefined,
   };
-  dispatch({ type: "LOGIN", payload: mockUser });
-  genSampleWorkouts();
-});
-afterEach(() => dispatch({ type: "RESET_PAGE_STATE" }));
-afterAll(() => {
-  dispatch({
-    type: "RESET_WORKOUTS_STATE",
-    payload: "All workouts deleted successfully",
-  });
-  dispatch({ type: "LOGOUT" });
-  dispatch = null;
-  mockUser = null;
-});
 
-describe("<Pagination />", () => {
-  it("should render Pagination component correctly in its initial state given that 6+ workouts exist in the database", () => {
+  beforeAll(() => {
+    store.dispatch({ type: "LOGIN", payload: mockUser });
+    genSampleWorkouts();
+  });
+
+  afterEach(() => store.dispatch({ type: "RESET_PAGE_STATE" }));
+
+  afterAll(() => {
+    store.dispatch({
+      type: "RESET_WORKOUTS_STATE",
+      payload: "All workouts deleted successfully",
+    });
+    store.dispatch({ type: "LOGOUT" });
+  });
+  it("should render the Pagination component properly in its initial state if 6+ workouts exist in the database", () => {
     render(
       <Provider store={store}>
         <Pagination />
@@ -55,7 +51,7 @@ describe("<Pagination />", () => {
     expect(numButtons.length).toBe(Math.ceil(foundCount / limit));
   });
 
-  it("should focus elements in the correct order", async () => {
+  it("should focus the elements in the correct order", async () => {
     user.setup();
     render(
       <Provider store={store}>

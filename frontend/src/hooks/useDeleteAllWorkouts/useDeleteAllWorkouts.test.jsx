@@ -5,40 +5,27 @@ import useDeleteAllWorkouts from "./useDeleteAllWorkouts";
 import { Provider } from "react-redux";
 import store from "../../redux/store";
 
-let wrapper;
-let dispatch;
-let mockUser;
-let url;
-
-beforeAll(() => {
-  wrapper = ({ children }) => {
+describe("useDeleteAllWorkouts()", () => {
+  const wrapper = ({ children }) => {
     return <Provider store={store}>{children}</Provider>;
   };
-  dispatch = store.dispatch;
-  mockUser = {
+
+  const mockUser = {
     username: undefined,
     profileImg: undefined,
   };
-  url = import.meta.env.VITE_API || "http://localhost:6060";
-});
 
-afterAll(() => {
-  wrapper = null;
-  dispatch = null;
-  mockUser = null;
-  url = null;
-});
+  const url = import.meta.env.VITE_API || "http://localhost:6060";
 
-describe("useDeleteAllWorkouts()", () => {
   it("should return deleteAllWorkouts function", () => {
     const { result } = renderHook(useDeleteAllWorkouts, { wrapper });
     expect(result.current.deleteAllWorkouts).toBeTruthy();
     expect(typeof result.current.deleteAllWorkouts).toBe("function");
   });
 
-  it("should delete all workouts given that user is authorized", async () => {
-    dispatch({ type: "LOGIN", payload: mockUser });
-    dispatch({
+  it("should delete all workouts if the user is authorized", async () => {
+    store.dispatch({ type: "LOGIN", payload: mockUser });
+    store.dispatch({
       type: "SET_WORKOUTS",
       payload: {
         foundCount: 2,
@@ -59,9 +46,9 @@ describe("useDeleteAllWorkouts()", () => {
     );
   });
 
-  it("should set error given that user isn't authorized", async () => {
-    dispatch({ type: "LOGIN", payload: mockUser });
-    dispatch({
+  it("should set error if the user isn't authorized to delete all workouts", async () => {
+    store.dispatch({ type: "LOGIN", payload: mockUser });
+    store.dispatch({
       type: "SET_WORKOUTS",
       payload: {
         foundCount: 2,
@@ -72,7 +59,7 @@ describe("useDeleteAllWorkouts()", () => {
     });
     let state = store.getState();
     expect(state.workouts.foundCount).not.toBe(0);
-    dispatch({ type: "LOGIN", payload: null });
+    store.dispatch({ type: "LOGIN", payload: null });
     const { result } = renderHook(useDeleteAllWorkouts, { wrapper });
     await result.current.deleteAllWorkouts();
     state = store.getState();
@@ -91,8 +78,8 @@ describe("useDeleteAllWorkouts()", () => {
         );
       })
     );
-    dispatch({ type: "LOGIN", payload: mockUser });
-    dispatch({
+    store.dispatch({ type: "LOGIN", payload: mockUser });
+    store.dispatch({
       type: "SET_WORKOUTS",
       payload: {
         foundCount: 2,

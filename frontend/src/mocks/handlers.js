@@ -37,8 +37,7 @@ export const handlers = [
     return HttpResponse.json(
       {
         user: {
-          username: "keech.rr_",
-          profileImg: "profileImgString",
+          profileImg: "newMockProfileImage",
         },
         success: "Profile updated",
       },
@@ -56,7 +55,7 @@ export const handlers = [
     );
   }),
 
-  http.delete(`${url}/api/users/*`, () => {
+  http.delete(`${url}/api/users`, () => {
     return HttpResponse.json(
       {
         success: "Account deleted successfully",
@@ -97,9 +96,10 @@ export const handlers = [
     return HttpResponse.json(
       {
         workout: {
-          _id: "w2",
-          title: "situps",
-          muscle_group: "ab",
+          _id: "w7", // in every test, this must be an id from the chunk
+          // the data below is irrelevant for the outcome of the tests as they are
+          title: "lunges",
+          muscle_group: "leg",
           reps: 84,
           load: 42,
           user_id: "userid",

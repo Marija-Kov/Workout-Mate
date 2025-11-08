@@ -5,38 +5,25 @@ import useDeleteUser from "./useDeleteUser";
 import { Provider } from "react-redux";
 import store from "../../redux/store";
 
-let wrapper;
-let mockUser;
-let dispatch;
-let url;
-
-beforeAll(() => {
-  wrapper = ({ children }) => {
+describe("useDeleteUser()", () => {
+  const wrapper = ({ children }) => {
     return <Provider store={store}>{children}</Provider>;
   };
-  dispatch = store.dispatch;
-  mockUser = {
+
+  const mockUser = {
     username: undefined,
     profileImg: undefined,
   };
-  url = import.meta.env.VITE_API || "http://localhost:6060";
-});
 
-afterAll(() => {
-  wrapper = null;
-  mockUser = null;
-  dispatch = null;
-  url = null;
-});
+  const url = import.meta.env.VITE_API || "http://localhost:6060";
 
-describe("useDeleteUser()", () => {
   it("should return deleteUser function", () => {
     const { result } = renderHook(useDeleteUser, { wrapper });
     expect(result.current.deleteUser).toBeTruthy();
     expect(typeof result.current.deleteUser).toBe("function");
   });
 
-  it("should set error given that user isn't authorized", async () => {
+  it("should set error if the user isn't authorized to delete the account", async () => {
     // TODO: runtime interception not working
     server.use(
       http.delete(`${url}/api/users/*`, () => {
@@ -55,9 +42,9 @@ describe("useDeleteUser()", () => {
     expect(state.flashMessages.error).toMatch(/not authorized/i);
   });
 
-  it("should delete user successfully given that the user is authorized", async () => {
+  it("should delete user successfully if the user is authorized", async () => {
     const { result } = renderHook(useDeleteUser, { wrapper });
-    dispatch({ type: "LOGIN", payload: mockUser });
+    store.dispatch({ type: "LOGIN", payload: mockUser });
     await result.current.deleteUser(mockUser.id);
     let state = store.getState();
     expect(state.flashMessages.success).toBeTruthy();

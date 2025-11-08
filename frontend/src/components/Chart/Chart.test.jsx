@@ -1,38 +1,24 @@
-import React from "react";
-import { describe, it, expect, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import Chart from "./Chart";
 import { Provider } from "react-redux";
 import store from "../../redux/store";
 import { genSampleWorkouts } from "../../utils/test/genSampleWorkouts";
 
-vi.mock("react-chartjs-2");
-
-let dispatch;
-let sampleWorkouts;
-
-beforeAll(() => {
-  dispatch = store.dispatch;
-  sampleWorkouts = genSampleWorkouts();
-});
-
-afterAll(() => {
-  dispatch = null;
-  sampleWorkouts = null;
-});
-
 describe("<Chart />", () => {
-  it("should render Chart component properly", async () => {
+  vi.mock("react-chartjs-2");
+  let sampleWorkouts = genSampleWorkouts();
+
+  it("should render the Chart component properly", async () => {
     render(
       <Provider store={store}>
         <Chart />
       </Provider>
     );
-    dispatch({
+    store.dispatch({
       type: "SET_ROUTINE_BALANCE",
       payload: sampleWorkouts.allMuscleGroups,
     });
-    dispatch({ type: "SET_WORKOUTS", payload: sampleWorkouts });
+    store.dispatch({ type: "SET_WORKOUTS", payload: sampleWorkouts });
     const doughnut = await screen.findByText(/routine balance/i);
     const legend = await screen.findByLabelText("muscle groups");
     const chestMuscleGroupWorkouts =
@@ -64,8 +50,8 @@ describe("<Chart />", () => {
     expect(abMuscleGroupWorkouts).toBeInTheDocument();
     expect(calfMuscleGroupWorkouts).toBeInTheDocument();
     expect(forearmAndGripMuscleGroupWorkouts).toBeInTheDocument();
-    dispatch({ type: "SET_ROUTINE_BALANCE", payload: [] });
-    dispatch({ type: "RESET_WORKOUTS_STATE" });
+    store.dispatch({ type: "SET_ROUTINE_BALANCE", payload: [] });
+    store.dispatch({ type: "RESET_WORKOUTS_STATE" });
   });
 
   it("should render Chart Placeholder", async () => {
@@ -74,9 +60,9 @@ describe("<Chart />", () => {
         <Chart />
       </Provider>
     );
-    dispatch({ type: "SET_CHART_LOADER" });
+    store.dispatch({ type: "SET_CHART_LOADER" });
     const placeholder = await screen.findByLabelText("chart placeholder");
     expect(placeholder).toBeInTheDocument();
-    dispatch({ type: "UNSET_CHART_LOADER" });
+    store.dispatch({ type: "UNSET_CHART_LOADER" });
   });
 });

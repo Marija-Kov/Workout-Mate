@@ -1,4 +1,3 @@
-import { describe, it, expect, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import user from "@testing-library/user-event";
 import { genSampleWorkouts } from "../../utils/test/genSampleWorkouts";
@@ -16,35 +15,35 @@ import {
 import { Provider } from "react-redux";
 import store from "../../redux/store";
 
-vi.mock("../../components/ChartPlaceholder");
-vi.mock("../../components/Chart");
-vi.mock("../../components/WorkoutDetails");
-vi.mock("../../components/WorkoutsPlaceholder");
-vi.mock("../../components/Pagination");
-vi.mock("../../components/WorkoutForm");
-vi.mock("../../components/EditWorkout");
-vi.mock("../../components/Search", () => {
-  return {
-    default: vi.mock(),
-  };
-});
-vi.mock("../../hooks/useGetWorkouts", () => ({
-  useGetWorkouts: () => {
-    return {
-      getWorkouts: vi.mock(),
-    };
-  },
-}));
-
-afterEach(() => {
-  store.dispatch({ type: "RESET_WORKOUTS_STATE" });
-});
-
-afterAll(() => {
-  vi.clearAllMocks();
-});
-
 describe("<Home />", () => {
+  vi.mock("../../components/ChartPlaceholder");
+  vi.mock("../../components/Chart");
+  vi.mock("../../components/WorkoutDetails");
+  vi.mock("../../components/WorkoutsPlaceholder");
+  vi.mock("../../components/Pagination");
+  vi.mock("../../components/WorkoutForm");
+  vi.mock("../../components/EditWorkout");
+  vi.mock("../../components/Search", () => {
+    return {
+      default: vi.mock(),
+    };
+  });
+  vi.mock("../../hooks/useGetWorkouts", () => ({
+    useGetWorkouts: () => {
+      return {
+        getWorkouts: vi.mock(),
+      };
+    },
+  }));
+
+  afterEach(() => {
+    store.dispatch({ type: "RESET_WORKOUTS_STATE" });
+  });
+
+  afterAll(() => {
+    vi.clearAllMocks();
+  });
+
   it("should render placeholders for workouts and chart", async () => {
     render(
       <Provider store={store}>
@@ -60,7 +59,7 @@ describe("<Home />", () => {
     expect(WorkoutsPlaceholder).toHaveBeenCalled();
   });
 
-  it("should render Home page correctly given that user has not posted yet", async () => {
+  it("should render Home page correctly if the user has not posted yet", async () => {
     render(
       <Provider store={store}>
         <Home />
@@ -81,7 +80,7 @@ describe("<Home />", () => {
     expect(addWorkoutBtn).toHaveClass("no--workouts--yet");
   });
 
-  it("should render Home page correctly given that user has posted workouts", async () => {
+  it("should render Home page correctly if the user has posted workouts", async () => {
     genSampleWorkouts();
     render(
       <Provider store={store}>
@@ -98,7 +97,7 @@ describe("<Home />", () => {
     expect(workouts).toBeInTheDocument();
   });
 
-  it("should render 'no workouts found by query' given that no workouts were found by query", async () => {
+  it("should render 'no workouts found by query' if no workouts were found by query", async () => {
     render(
       <Provider store={store}>
         <Home />

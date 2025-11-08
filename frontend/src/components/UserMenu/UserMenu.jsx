@@ -1,4 +1,3 @@
-import React from "react";
 import { useLogout } from "../../hooks";
 import { useDispatch } from "react-redux";
 

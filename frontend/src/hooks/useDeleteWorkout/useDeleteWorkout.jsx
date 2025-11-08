@@ -7,7 +7,7 @@ const useDeleteWorkout = () => {
   const user = useSelector((state) => state.user);
   const workouts = useSelector((state) => state.workouts);
   const page = useSelector((state) => state.page);
-  const { chunk, allMuscleGroups, foundCount } = workouts;
+  const { chunk, foundCount } = workouts;
   const url = import.meta.env.VITE_API || "http://localhost:6060";
 
   const deleteWorkout = async (id) => {
@@ -42,10 +42,6 @@ const useDeleteWorkout = () => {
           });
         }
       }
-      return dispatch({
-        type: "SET_ROUTINE_BALANCE",
-        payload: allMuscleGroups,
-      });
     }
     if (!response.ok) {
       return flashMessage("ERROR", json.error);

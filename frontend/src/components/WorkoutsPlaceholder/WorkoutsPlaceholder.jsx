@@ -1,5 +1,3 @@
-import React from "react";
-
 const WorkoutsPlaceholder = () => {
   return (
     <div aria-label="loading workouts" className="workouts--placeholder">

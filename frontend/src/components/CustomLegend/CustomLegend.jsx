@@ -1,5 +1,3 @@
-import React from "react";
-
 const CustomLegend = ({ labels, colors, percentage }) => {
   return (
     <ul className="custom--legend" aria-label="muscle groups">

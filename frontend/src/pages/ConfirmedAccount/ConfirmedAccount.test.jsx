@@ -1,86 +1,45 @@
-import { describe, it, expect, vi } from "vitest";
-import { http, HttpResponse } from "msw";
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import ConfirmedAccount from "./ConfirmedAccount";
 import { BrowserRouter } from "react-router-dom";
 import App from "../../mocks/App";
-import { server } from "../../mocks/server";
 import { Provider } from "react-redux";
 import store from "../../redux/store";
 
-let dispatch = store.dispatch;
-
-vi.mock("../../hooks/useGetTokenFromUrl", () => ({
-  useGetTokenFromUrl: () => {},
-}));
-
-vi.mock("../../hooks/useConfirmAccount", () => ({
-  useConfirmAccount: () => {
-    return {
-      confirmAccount: () => {},
-    };
-  },
-}));
-
-afterAll(() => {
-  dispatch = null;
-  vi.resetAllMocks();
-});
-
 describe("<ConfirmedAccount />", () => {
-  it("should render success message given that confirmation was successful", async () => {
+  it("should render a success message if the account confirmation was successful", async () => {
     render(
       <Provider store={store}>
-        <BrowserRouter
-          future={{
-            v7_relativeSplatPath: true,
-            v7_startTransition: true,
-          }}
-        >
-          <App />
-          <ConfirmedAccount />
+        <BrowserRouter>
+          <App>
+            <ConfirmedAccount />
+          </App>
         </BrowserRouter>
       </Provider>
     );
-    dispatch({
-      type: "SUCCESS",
-      payload: "Account confirmed",
-    });
+    const accountConfirmed = screen.getByTestId("account-confirmed");
+    expect(accountConfirmed).toBeInTheDocument();
     const success = await screen.findByRole("alert");
     expect(success).toBeInTheDocument();
     expect(success).toHaveAttribute("class", "success flashMessage");
     expect(success.textContent).toMatch(/account confirmed/i);
   });
 
-  it("should render error message given that confirmation token wasn't found or is expired", async () => {
-    server.use(
-      http.get("http://localhost:6060/api/users/confirmaccount/*", () => {
-        return HttpResponse.json(
-          {
-            error: "Confirmation token not found",
-          },
-          { status: 404 }
-        );
-      })
-    );
+  it("should render an error message if the confirmation token is invalid", async () => {
     render(
       <Provider store={store}>
-        <BrowserRouter
-          future={{
-            v7_relativeSplatPath: true,
-            v7_startTransition: true,
-          }}
-        >
-          <App />
-          <ConfirmedAccount />
+        <BrowserRouter>
+          <App>
+            <ConfirmedAccount />
+          </App>
         </BrowserRouter>
       </Provider>
     );
-    dispatch({ type: "ERROR", payload: "Not found" });
+    // TODO: it changes the state, but it's not reflected in the UI!
+    store.dispatch({ type: "ERROR", payload: "Invalid token" });
     const error = await screen.findByRole("alert");
     expect(error).toBeInTheDocument();
     expect(error).toHaveAttribute("class", "error flashMessage");
-    expect(error.textContent).toMatch(/not found/i);
+    expect(error.textContent).toMatch(/invalid token/i);
   });
 });

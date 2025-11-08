@@ -46,12 +46,7 @@ const App = () => {
 
   return (
     <div className="App">
-      <BrowserRouter
-        future={{
-          v7_relativeSplatPath: true,
-          v7_startTransition: true,
-        }}
-      >
+      <BrowserRouter>
         <Navbar />
         <div className="pages">
           {isSpunDownServerAlertMounted && (

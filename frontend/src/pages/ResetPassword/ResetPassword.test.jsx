@@ -10,7 +10,8 @@ import { Provider } from "react-redux";
 import store from "../../redux/store";
 
 describe("<ResetPassword />", () => {
-  it("should render reset password form", () => {
+  const url = import.meta.env.VITE_API || "localhost:6060";
+  it("should render the ResetPassword component properly", () => {
     render(
       <Provider store={store}>
         <ResetPassword />
@@ -24,7 +25,7 @@ describe("<ResetPassword />", () => {
     expect(saveBtn).toBeInTheDocument();
   });
 
-  it("should focus form elements in the right order", async () => {
+  it("should focus the form elements in the correct order", async () => {
     user.setup();
     render(
       <Provider store={store}>
@@ -42,7 +43,7 @@ describe("<ResetPassword />", () => {
     expect(saveBtn).toHaveFocus();
   });
 
-  it("should update input value as the user types", async () => {
+  it("should update the input value as the user types", async () => {
     user.setup();
     render(
       <Provider store={store}>
@@ -57,26 +58,11 @@ describe("<ResetPassword />", () => {
     expect(confirmPasswordInput).toHaveValue("def");
   });
 
-  it("should render error element given that passwords are not matching", async () => {
-    server.use(
-      http.patch(`${import.meta.env.VITE_API}/api/reset-password/*`, () => {
-        return new HttpResponse.json(
-          {
-            error: "Passwords must match",
-          },
-          { status: 422 }
-        );
-      })
-    );
+  it("should render an error message if the passwords are not matching", async () => {
     user.setup();
     render(
       <Provider store={store}>
-        <BrowserRouter
-          future={{
-            v7_relativeSplatPath: true,
-            v7_startTransition: true,
-          }}
-        >
+        <BrowserRouter>
           <App />
           <ResetPassword />
         </BrowserRouter>
@@ -94,26 +80,11 @@ describe("<ResetPassword />", () => {
     expect(error.textContent).toMatch(/passwords must match/i);
   });
 
-  it("should render error element given that new password is not strong enough", async () => {
-    server.use(
-      http.patch(`${import.meta.env.VITE_API}/api/reset-password/*`, () => {
-        return new HttpResponse.json(
-          {
-            error: "Password not strong enough",
-          },
-          { status: 422 }
-        );
-      })
-    );
+  it("should render an error message if the password is not strong enough", async () => {
     user.setup();
     render(
       <Provider store={store}>
-        <BrowserRouter
-          future={{
-            v7_relativeSplatPath: true,
-            v7_startTransition: true,
-          }}
-        >
+        <BrowserRouter>
           <App />
           <ResetPassword />
         </BrowserRouter>
@@ -131,12 +102,12 @@ describe("<ResetPassword />", () => {
     expect(error.textContent).toMatch(/password not strong enough/i);
   });
 
-  it("should render error element given that password reset token has expired", async () => {
+  it("should render an error message if the password reset token is not valid", async () => {
     server.use(
-      http.patch(`${import.meta.env.VITE_API}/api/reset-password/*`, () => {
+      http.patch(`${url}/api/reset-password/*`, () => {
         return new HttpResponse.json(
           {
-            error: "Reset password token not found",
+            error: "Invalid token",
           },
           { status: 404 }
         );
@@ -145,12 +116,7 @@ describe("<ResetPassword />", () => {
     user.setup();
     render(
       <Provider store={store}>
-        <BrowserRouter
-          future={{
-            v7_relativeSplatPath: true,
-            v7_startTransition: true,
-          }}
-        >
+        <BrowserRouter>
           <App />
           <ResetPassword />
         </BrowserRouter>
@@ -165,19 +131,14 @@ describe("<ResetPassword />", () => {
     const error = await screen.findByRole("alert");
     await expect(error).toBeInTheDocument();
     expect(error).toHaveAttribute("class", "error flashMessage");
-    expect(error.textContent).toMatch(/reset password token not found/i);
+    expect(error.textContent).toMatch(/invalid token/i);
   });
 
-  it("should render success element and render 'log in' link if password was reset successfully", async () => {
+  it("should render a success message and a 'log in' link if the password was reset successfully", async () => {
     user.setup();
     render(
       <Provider store={store}>
-        <BrowserRouter
-          future={{
-            v7_relativeSplatPath: true,
-            v7_startTransition: true,
-          }}
-        >
+        <BrowserRouter>
           <App />
           <ResetPassword />
         </BrowserRouter>

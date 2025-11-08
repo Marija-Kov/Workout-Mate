@@ -1,6 +1,7 @@
+import path from "node:path";
 import fs from "node:fs";
 
-const location = "./largeImgFile.txt";
+const location = path.join(__dirname, "largeImg.jpg");
 
 export function writeLargeFile() {
   let fileHandle;

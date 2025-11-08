@@ -5,29 +5,20 @@ import useSendPasswordResetLink from "./useSendPasswordResetLink";
 import { Provider } from "react-redux";
 import store from "../../redux/store";
 
-let wrapper;
-let url;
-
-beforeAll(() => {
-  wrapper = ({ children }) => {
+describe("useSendPasswordResetLink()", () => {
+  const wrapper = ({ children }) => {
     return <Provider store={store}>{children}</Provider>;
   };
-  url = import.meta.env.VITE_API || "http://localhost:6060";
-});
 
-afterAll(() => {
-  wrapper = null;
-  url = null;
-});
+  const url = import.meta.env.VITE_API || "http://localhost:6060";
 
-describe("useSendPasswordResetLink()", () => {
   it("should return sendPasswordResetLink function", () => {
     const { result } = renderHook(useSendPasswordResetLink, { wrapper });
     expect(result.current.sendPasswordResetLink).toBeTruthy();
     expect(typeof result.current.sendPasswordResetLink).toBe("function");
   });
 
-  it("should set error given that the input is invalid", async () => {
+  it("should set error if the input is invalid", async () => {
     server.use(
       http.post(`${url}/api/reset-password`, () => {
         return new HttpResponse.json(
@@ -47,7 +38,7 @@ describe("useSendPasswordResetLink()", () => {
     );
   });
 
-  it("should set success message given that the input is valid", async () => {
+  it("should set success message if the input is valid", async () => {
     const { result } = renderHook(useSendPasswordResetLink, { wrapper });
     await result.current.sendPasswordResetLink("valid@e.mail");
     let state = store.getState();
