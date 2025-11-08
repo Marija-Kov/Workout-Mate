@@ -23,7 +23,7 @@ const ConfirmedAccount = () => {
   }, [confirmAccount, logout, token]);
 
   return (
-    <div className="confirmed--container">
+    <div className="confirmed--container" data-testid="account-confirmed">
       {redirect && <Navigate to="/login" />}
     </div>
   );

@@ -7,30 +7,6 @@ import { Provider } from "react-redux";
 import store from "../../redux/store";
 
 describe("<ConfirmedAccount />", () => {
-  vi.mock("../../hooks/useGetTokenFromUrl", () => ({
-    defaultl: () => {},
-  }));
-
-  vi.mock("../../hooks/useConfirmAccount", () => ({
-    default: () => {
-      return {
-        confirmAccount: () => {},
-      };
-    },
-  }));
-
-  vi.mock("../../hooks/useLogout", () => ({
-    default: () => {
-      return {
-        logout: () => {},
-      };
-    },
-  }));
-
-  afterAll(() => {
-    vi.resetAllMocks();
-  });
-
   it("should render a success message if the account confirmation was successful", async () => {
     render(
       <Provider store={store}>
@@ -40,15 +16,14 @@ describe("<ConfirmedAccount />", () => {
             v7_startTransition: true,
           }}
         >
-          <App />
-          <ConfirmedAccount />
+          <App>
+            <ConfirmedAccount />
+          </App>
         </BrowserRouter>
       </Provider>
     );
-    store.dispatch({
-      type: "SUCCESS",
-      payload: "Account confirmed",
-    });
+    const accountConfirmed = screen.getByTestId("account-confirmed");
+    expect(accountConfirmed).toBeInTheDocument();
     const success = await screen.findByRole("alert");
     expect(success).toBeInTheDocument();
     expect(success).toHaveAttribute("class", "success flashMessage");
@@ -64,13 +39,16 @@ describe("<ConfirmedAccount />", () => {
             v7_startTransition: true,
           }}
         >
-          <App />
-          <ConfirmedAccount />
+          <App>
+            <ConfirmedAccount />
+          </App>
         </BrowserRouter>
       </Provider>
     );
+    // TODO: it changes the state, but it's not reflected in the UI!
     store.dispatch({ type: "ERROR", payload: "Invalid token" });
     const error = await screen.findByRole("alert");
+    screen.debug();
     expect(error).toBeInTheDocument();
     expect(error).toHaveAttribute("class", "error flashMessage");
     expect(error.textContent).toMatch(/invalid token/i);
