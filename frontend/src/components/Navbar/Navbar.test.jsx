@@ -21,12 +21,7 @@ describe("<Navbar />", () => {
   it("should render the navbar correctly when the user is not logged in", () => {
     render(
       <Provider store={store}>
-        <BrowserRouter
-          future={{
-            v7_relativeSplatPath: true,
-            v7_startTransition: true,
-          }}
-        >
+        <BrowserRouter>
           <Navbar />
         </BrowserRouter>
       </Provider>
@@ -43,12 +38,7 @@ describe("<Navbar />", () => {
     user.setup();
     render(
       <Provider store={store}>
-        <BrowserRouter
-          future={{
-            v7_relativeSplatPath: true,
-            v7_startTransition: true,
-          }}
-        >
+        <BrowserRouter>
           <Navbar />
         </BrowserRouter>
       </Provider>
@@ -70,12 +60,7 @@ describe("<Navbar />", () => {
     store.dispatch({ type: "LOGIN", payload: mockUser });
     render(
       <Provider store={store}>
-        <BrowserRouter
-          future={{
-            v7_relativeSplatPath: true,
-            v7_startTransition: true,
-          }}
-        >
+        <BrowserRouter>
           <Navbar />
         </BrowserRouter>
       </Provider>
@@ -93,12 +78,7 @@ describe("<Navbar />", () => {
     store.dispatch({ type: "LOGIN", payload: mockUser });
     render(
       <Provider store={store}>
-        <BrowserRouter
-          future={{
-            v7_relativeSplatPath: true,
-            v7_startTransition: true,
-          }}
-        >
+        <BrowserRouter>
           <Navbar />
         </BrowserRouter>
       </Provider>
@@ -117,12 +97,7 @@ describe("<Navbar />", () => {
     store.dispatch({ type: "LOGIN", payload: mockUser });
     render(
       <Provider store={store}>
-        <BrowserRouter
-          future={{
-            v7_relativeSplatPath: true,
-            v7_startTransition: true,
-          }}
-        >
+        <BrowserRouter>
           <Navbar />
         </BrowserRouter>
       </Provider>

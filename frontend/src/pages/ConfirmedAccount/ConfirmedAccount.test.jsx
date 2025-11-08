@@ -10,12 +10,7 @@ describe("<ConfirmedAccount />", () => {
   it("should render a success message if the account confirmation was successful", async () => {
     render(
       <Provider store={store}>
-        <BrowserRouter
-          future={{
-            v7_relativeSplatPath: true,
-            v7_startTransition: true,
-          }}
-        >
+        <BrowserRouter>
           <App>
             <ConfirmedAccount />
           </App>
@@ -33,12 +28,7 @@ describe("<ConfirmedAccount />", () => {
   it("should render an error message if the confirmation token is invalid", async () => {
     render(
       <Provider store={store}>
-        <BrowserRouter
-          future={{
-            v7_relativeSplatPath: true,
-            v7_startTransition: true,
-          }}
-        >
+        <BrowserRouter>
           <App>
             <ConfirmedAccount />
           </App>
@@ -48,7 +38,6 @@ describe("<ConfirmedAccount />", () => {
     // TODO: it changes the state, but it's not reflected in the UI!
     store.dispatch({ type: "ERROR", payload: "Invalid token" });
     const error = await screen.findByRole("alert");
-    screen.debug();
     expect(error).toBeInTheDocument();
     expect(error).toHaveAttribute("class", "error flashMessage");
     expect(error.textContent).toMatch(/invalid token/i);
