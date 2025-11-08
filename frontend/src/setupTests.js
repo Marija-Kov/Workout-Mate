@@ -11,10 +11,9 @@ const actWarnings = [];
 
 beforeAll(() => {
   server.listen({ onUnhandledRequest: "error" });
-  // Suppress "Warning: An update to ComponentName inside a test was not wrapped in act(...)."
-  // because we don't need act():
+  // suppress act warnings
   console.error = (...args) => {
-    if (/Warning.*not wrapped in act/.test(args[0])) {
+    if (/should be wrapped into act/.test(args[0])) {
       actWarnings.push(args[0]);
       return;
     }
