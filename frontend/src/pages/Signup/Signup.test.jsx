@@ -9,7 +9,7 @@ import { Provider } from "react-redux";
 import store from "../../redux/store";
 
 describe("<Signup />", () => {
-  const url = import.meta.env.VITE_API || "localhost:6060";
+  const url = import.meta.env.VITE_API || "http://localhost:6060";
 
   it("should render signup form", () => {
     render(

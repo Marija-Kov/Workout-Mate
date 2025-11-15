@@ -14,7 +14,8 @@ afterAll(() => {
 });
 
 describe("<Login />", () => {
-  const url = import.meta.env.VITE_API || "localhost:6060";
+  const url = import.meta.env.VITE_API || "http://localhost:6060";
+
   it("should render the Login component properly", () => {
     render(
       <Provider store={store}>
