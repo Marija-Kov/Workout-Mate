@@ -18,6 +18,7 @@ class WorkoutRepository {
       await mongoose.connect(process.env.MONGO_URI);
     } catch (error) {
       if (retryCount > 0) {
+        console.error(error);
         console.error(
           `MongoDB connection failed. Retrying in ${Number(process.env.RETRY_DELAY_MS) || retryDelayMs / 1000} seconds...`
         );
