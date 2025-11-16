@@ -1,6 +1,6 @@
 import { renderHook } from "@testing-library/react";
 import { http, HttpResponse } from "msw";
-import { server } from "../../mocks/server";
+import { server } from "../../test/mocks/server";
 import useSendPasswordResetLink from "./useSendPasswordResetLink";
 import { Provider } from "react-redux";
 import store from "../../redux/store";

@@ -1,6 +1,6 @@
 import { renderHook } from "@testing-library/react";
 import { http, HttpResponse } from "msw";
-import { server } from "../../mocks/server";
+import { server } from "../../test/mocks/server";
 import useDeleteWorkout from "./useDeleteWorkout";
 import { Provider } from "react-redux";
 import store from "../../redux/store";
@@ -82,9 +82,8 @@ describe("useDeleteWorkout()", () => {
   });
 
   it("should set error if the workout id is invalid", async () => {
-    // TODO: runtime interception not working
     server.use(
-      http.delete(`${url}/api/workouts/*"`, () => {
+      http.delete(`${url}/api/workouts/*`, () => {
         return HttpResponse.json(
           {
             error: "Invalid workout id",

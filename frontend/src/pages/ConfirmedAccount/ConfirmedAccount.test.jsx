@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import ConfirmedAccount from "./ConfirmedAccount";
 import { BrowserRouter } from "react-router-dom";
-import App from "../../mocks/App";
+import App from "../../test/mocks/App";
 import { Provider } from "react-redux";
 import store from "../../redux/store";
 

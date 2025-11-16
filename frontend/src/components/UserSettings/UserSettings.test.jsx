@@ -1,8 +1,8 @@
 import UserSettings from "./UserSettings";
-import App from "../../mocks/App";
+import App from "../../test/mocks/App";
 import user from "@testing-library/user-event";
 import { http, HttpResponse } from "msw";
-import { server } from "../../mocks/server";
+import { server } from "../../test/mocks/server";
 import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import store from "../../redux/store";
@@ -216,7 +216,6 @@ describe("<UserSettings/>", () => {
   });
 
   it("should render server error message", async () => {
-    // TODO: runtime interception not working
     server.use(
       http.patch(`${import.meta.env.VITE_API}/api/users`, () => {
         return new HttpResponse.json(
@@ -234,10 +233,10 @@ describe("<UserSettings/>", () => {
         <UserSettings />
       </Provider>
     );
-    // const newUsername = screen.getByTestId("username");
-    // await user.type(newUsername, "daredev");
-    // const upload = screen.getByText("Upload");
-    // await user.click(upload);
+    const newUsername = screen.getByTestId("username");
+    await user.type(newUsername, "daredev");
+    const upload = screen.getByText("Upload");
+    await user.click(upload);
     const error = await screen.findByRole("alert");
     expect(error).toBeInTheDocument();
     expect(error.textContent).toMatch(/something went wrong/i);

@@ -1,6 +1,6 @@
 import { renderHook } from "@testing-library/react";
 import { http, HttpResponse } from "msw";
-import { server } from "../../mocks/server";
+import { server } from "../../test/mocks/server";
 import useDeleteAllWorkouts from "./useDeleteAllWorkouts";
 import { Provider } from "react-redux";
 import store from "../../redux/store";
@@ -69,7 +69,6 @@ describe("useDeleteAllWorkouts()", () => {
   });
 
   it("should set error if deletion was not successful", async () => {
-    // TODO: runtime interception not working
     server.use(
       http.delete(`${url}/api/workouts/`, () => {
         return HttpResponse.json(

@@ -1,6 +1,4 @@
 import { renderHook } from "@testing-library/react";
-import { http, HttpResponse } from "msw";
-import { server } from "../../mocks/server";
 import useDeleteUser from "./useDeleteUser";
 import { Provider } from "react-redux";
 import store from "../../redux/store";
@@ -15,8 +13,6 @@ describe("useDeleteUser()", () => {
     profileImg: undefined,
   };
 
-  const url = import.meta.env.VITE_API || "http://localhost:6060";
-
   it("should return deleteUser function", () => {
     const { result } = renderHook(useDeleteUser, { wrapper });
     expect(result.current.deleteUser).toBeTruthy();
@@ -24,17 +20,6 @@ describe("useDeleteUser()", () => {
   });
 
   it("should set error if the user isn't authorized to delete the account", async () => {
-    // TODO: runtime interception not working
-    server.use(
-      http.delete(`${url}/api/users/*`, () => {
-        return HttpResponse.json(
-          {
-            error: "Not authorized",
-          },
-          { status: 401 }
-        );
-      })
-    );
     const { result } = renderHook(useDeleteUser, { wrapper });
     await result.current.deleteUser(mockUser.id);
     let state = store.getState();

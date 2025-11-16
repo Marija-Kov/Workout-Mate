@@ -2,9 +2,9 @@ import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import user from "@testing-library/user-event";
 import Signup from "./Signup";
-import App from "../../mocks/App";
+import App from "../../test/mocks/App";
 import { http, HttpResponse } from "msw";
-import { server } from "../../mocks/server";
+import { server } from "../../test/mocks/server";
 import { Provider } from "react-redux";
 import store from "../../redux/store";
 
@@ -111,7 +111,6 @@ describe("<Signup />", () => {
   });
 
   it("should render an error message if email is already in use", async () => {
-    // TODO: runtime interception not working
     server.use(
       http.post(`${url}/api/users/signup`, () => {
         return new HttpResponse.json(

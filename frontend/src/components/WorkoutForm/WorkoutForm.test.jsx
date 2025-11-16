@@ -1,5 +1,5 @@
 import WorkoutForm from "./WorkoutForm";
-import App from "../../mocks/App";
+import App from "../../test/mocks/App";
 import user from "@testing-library/user-event";
 import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";

@@ -1,6 +1,6 @@
 import { renderHook } from "@testing-library/react";
 import { http, HttpResponse } from "msw";
-import { server } from "../../mocks/server";
+import { server } from "../../test/mocks/server";
 import useGetWorkouts from "./useGetWorkouts";
 import { Provider } from "react-redux";
 import store from "../../redux/store";
@@ -33,7 +33,6 @@ describe("useGetWorkouts()", () => {
   });
 
   it("should set server error", async () => {
-    // TODO: runtime interception not working
     server.use(
       http.get(`${url}/api/workouts/*`, () => {
         return HttpResponse.json(

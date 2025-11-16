@@ -2,9 +2,9 @@ import { render, screen } from "@testing-library/react";
 import user from "@testing-library/user-event";
 import "@testing-library/jest-dom";
 import Login from "./Login";
-import App from "../../mocks/App";
+import App from "../../test/mocks/App";
 import { http, HttpResponse } from "msw";
-import { server } from "../../mocks/server";
+import { server } from "../../test/mocks/server";
 import { Provider } from "react-redux";
 import store from "../../redux/store";
 
@@ -120,7 +120,6 @@ describe("<Login />", () => {
   });
 
   it("should render an error message if the email is not registered", async () => {
-    // TODO: runtime interception not working
     server.use(
       http.post(`${import.meta.env.VITE_API}/api/users/login`, () => {
         return new HttpResponse.json(
@@ -151,7 +150,6 @@ describe("<Login />", () => {
   });
 
   it("should render an error message if the password is wrong", async () => {
-    // TODO: runtime interception not working
     server.use(
       http.post(`${url}/api/users/login`, () => {
         return HttpResponse.json(
