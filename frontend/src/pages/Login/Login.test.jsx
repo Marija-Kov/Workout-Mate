@@ -122,7 +122,7 @@ describe("<Login />", () => {
   it("should render an error message if the email is not registered", async () => {
     server.use(
       http.post(`${import.meta.env.VITE_API}/api/users/login`, () => {
-        return new HttpResponse.json(
+        return HttpResponse.json(
           {
             error: "That email does not exist in our database",
           },

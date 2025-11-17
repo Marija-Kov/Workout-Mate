@@ -106,7 +106,7 @@ describe("<ResetPassword />", () => {
   it("should render an error message if the password reset token is not valid", async () => {
     server.use(
       http.patch(`${url}/api/reset-password/*`, () => {
-        return new HttpResponse.json(
+        return HttpResponse.json(
           {
             error: "Invalid token",
           },

@@ -113,7 +113,7 @@ describe("<Signup />", () => {
   it("should render an error message if email is already in use", async () => {
     server.use(
       http.post(`${url}/api/users/signup`, () => {
-        return new HttpResponse.json(
+        return HttpResponse.json(
           {
             error: "Email already in use",
           },
