@@ -213,12 +213,15 @@ describe("<UserSettings/>", () => {
     const deleteAccountDialogue =
       await screen.findByText(/this is irreversible/i);
     expect(deleteAccountDialogue).toBeInTheDocument();
+    const changedMyMind = await screen.findByText(/changed my mind/i);
+    await user.click(changedMyMind);
+    expect(deleteAccountDialogue).not.toBeInTheDocument();
   });
 
   it("should render server error message", async () => {
     server.use(
       http.patch(`${import.meta.env.VITE_API}/api/users`, () => {
-        return new HttpResponse.json(
+        return HttpResponse.json(
           {
             error: "Something went wrong",
           },
