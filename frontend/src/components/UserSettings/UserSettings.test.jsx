@@ -218,6 +218,47 @@ describe("<UserSettings/>", () => {
     expect(deleteAccountDialogue).not.toBeInTheDocument();
   });
 
+  it("should render an error message if the user isn't authorized to delete the account", async () => {
+    user.setup();
+    render(
+      <Provider store={store}>
+        <App />
+        <UserSettings />
+      </Provider>
+    );
+    const deleteAccount = screen.getByText(/delete account/i);
+    await user.click(deleteAccount);
+    const deletePermanently = await screen.findByText(
+      /delete my account permanently/i
+    );
+    store.dispatch({ type: "LOGIN", payload: null });
+    await user.click(deletePermanently);
+    const error = await screen.findByRole("alert");
+    expect(error).toBeInTheDocument();
+    expect(error.textContent).toMatch(/not authorized/i);
+    expect(error).toHaveAttribute("class", "error flashMessage");
+  });
+
+  it("should render a success message if the account was deleted successfully", async () => {
+    user.setup();
+    render(
+      <Provider store={store}>
+        <App />
+        <UserSettings />
+      </Provider>
+    );
+    const deleteAccount = screen.getByText(/delete account/i);
+    await user.click(deleteAccount);
+    const deletePermanently = await screen.findByText(
+      /delete my account permanently/i
+    );
+    await user.click(deletePermanently);
+    const success = await screen.findByRole("alert");
+    expect(success).toBeInTheDocument();
+    expect(success.textContent).toMatch(/success/i);
+    expect(success).toHaveAttribute("class", "success flashMessage");
+  });
+
   it("should render server error message", async () => {
     server.use(
       http.patch(`${import.meta.env.VITE_API}/api/users`, () => {
