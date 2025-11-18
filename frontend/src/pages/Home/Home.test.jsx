@@ -1,46 +1,31 @@
 import { render, screen } from "@testing-library/react";
 import user from "@testing-library/user-event";
-import { genSampleWorkouts } from "../../utils/test/genSampleWorkouts";
-import Home from "../pages";
-import {
-  Search,
-  Chart,
-  ChartPlaceholder,
-  Pagination,
-  WorkoutDetails,
-  WorkoutForm,
-  EditWorkout,
-  WorkoutsPlaceholder,
-} from "../../components";
+import { http, HttpResponse } from "msw";
+import { server } from "../../test/mocks/server";
+import Home from "./Home";
 import { Provider } from "react-redux";
 import store from "../../redux/store";
 
 describe("<Home />", () => {
-  vi.mock("../../components/ChartPlaceholder");
-  vi.mock("../../components/Chart");
-  vi.mock("../../components/WorkoutDetails");
-  vi.mock("../../components/WorkoutsPlaceholder");
-  vi.mock("../../components/Pagination");
-  vi.mock("../../components/WorkoutForm");
-  vi.mock("../../components/EditWorkout");
-  vi.mock("../../components/Search", () => {
-    return {
-      default: vi.mock(),
-    };
+  const url = import.meta.env.VITE_API || "http://localhost:6060";
+
+  beforeAll(() => {
+    vi.mock("react-chartjs-2");
+    store.dispatch({
+      type: "LOGIN",
+      payload: { username: "user", profileImg: "profileImg" },
+    });
   });
-  vi.mock("../../hooks/useGetWorkouts", () => ({
-    useGetWorkouts: () => {
-      return {
-        getWorkouts: vi.mock(),
-      };
-    },
-  }));
+
+  beforeEach(() => {});
 
   afterEach(() => {
     store.dispatch({ type: "RESET_WORKOUTS_STATE" });
+    store.dispatch({ type: "RESET_COMPONENTS_STATE" });
   });
 
   afterAll(() => {
+    store.dispatch({ type: "LOGOUT" });
     vi.clearAllMocks();
   });
 
@@ -50,105 +35,102 @@ describe("<Home />", () => {
         <Home />
       </Provider>
     );
-    store.dispatch({ type: "SET_WORKOUTS_LOADER" });
-    store.dispatch({ type: "SET_CHART_LOADER" });
-    const state = store.getState();
-    expect(state.loader.workouts).toBeTruthy();
-    expect(state.loader.chart).toBeTruthy();
-    expect(ChartPlaceholder).toHaveBeenCalled();
-    expect(WorkoutsPlaceholder).toHaveBeenCalled();
+    const workoutsPlaceholder = screen.getByLabelText("loading workouts");
+    const chartPlaceholder = screen.getByLabelText("chart placeholder");
+    expect(workoutsPlaceholder).toBeInTheDocument();
+    expect(chartPlaceholder).toBeInTheDocument();
+    expect(workoutsPlaceholder).toHaveClass("workouts--placeholder");
+    expect(chartPlaceholder).toHaveClass("chart--placeholder");
   });
 
   it("should render Home page correctly if the user has not posted yet", async () => {
+    server.use(
+      http.get(`${url}/api/workouts/*`, () => {
+        return HttpResponse.json(
+          {
+            chunk: [],
+            allMuscleGroups: [],
+            foundCount: 0,
+            limit: 3,
+            noneFound: true,
+          },
+          { status: 200 }
+        );
+      })
+    );
     render(
       <Provider store={store}>
         <Home />
       </Provider>
     );
-    store.dispatch({
-      type: "SET_WORKOUTS",
-      payload: {
-        foundCount: 0,
-        limit: 3,
-        allMuscleGroups: [],
-        chunk: [],
-        noneFound: false,
-      },
-    });
     const addWorkoutBtn = await screen.findByText(/buff it up/i);
     expect(addWorkoutBtn).toBeInTheDocument();
     expect(addWorkoutBtn).toHaveClass("no--workouts--yet");
   });
 
   it("should render Home page correctly if the user has posted workouts", async () => {
-    genSampleWorkouts();
     render(
       <Provider store={store}>
         <Home />
       </Provider>
     );
+    const workouts = await screen.findAllByTestId("workout-details");
+    const chart = await screen.findByText(/routine balance/i);
+    const searchBar = await screen.findByTestId("search-form");
     const addWorkoutBtn = await screen.findByText(/buff it up/i);
-    const workouts = await screen.findByLabelText("workouts");
-    expect(Search).toHaveBeenCalled();
-    expect(Pagination).toHaveBeenCalled();
-    expect(WorkoutDetails).toHaveBeenCalled();
-    expect(Chart).toHaveBeenCalled();
+    expect(workouts.length).toBeTruthy();
+    expect(chart).toBeInTheDocument();
+    expect(searchBar).toBeInTheDocument();
     expect(addWorkoutBtn).toBeInTheDocument();
-    expect(workouts).toBeInTheDocument();
+    expect(addWorkoutBtn).toHaveClass("add--workout");
   });
 
   it("should render 'no workouts found by query' if no workouts were found by query", async () => {
+    server.use(
+      http.get(`${url}/api/workouts/*`, () => {
+        return HttpResponse.json({
+          chunk: [],
+          allMuscleGroups: ["leg", "ab"],
+          foundCount: 0,
+          limit: 3,
+          noneFound: "no workouts found by query",
+        });
+      })
+    );
     render(
       <Provider store={store}>
         <Home />
       </Provider>
     );
-    store.dispatch({
-      type: "SET_WORKOUTS",
-      payload: {
-        foundCount: 0,
-        limit: 3,
-        allMuscleGroups: ["leg", "ab"],
-        chunk: [],
-        noneFound: "no workouts found by query",
-      },
-    });
-    const noWorkoutsMessage = await screen.findByText(
-      /no workouts found by query/i
-    );
+    const noWorkoutsMessage = await screen.findByTestId("no-workouts");
     expect(noWorkoutsMessage).toBeInTheDocument();
     expect(noWorkoutsMessage).toHaveClass("no--workouts--found");
   });
 
-  it("should render WorkoutForm component when user clicks on 'Buff it up' button", async () => {
+  it("should render WorkoutForm component when the user clicks on 'Buff it up' button", async () => {
     user.setup();
     render(
       <Provider store={store}>
         <Home />
       </Provider>
     );
-    store.dispatch({
-      type: "SET_WORKOUTS",
-      payload: {
-        foundCount: 0,
-        limit: 3,
-        allMuscleGroups: [],
-        chunk: [],
-        noneFound: false,
-      },
-    });
     const addWorkoutBtn = await screen.findByText(/buff it up/i);
     await user.click(addWorkoutBtn);
-    expect(WorkoutForm).toHaveBeenCalled();
+    const workoutForm = await screen.findByText(/new workout/i);
+    expect(workoutForm).toBeInTheDocument();
   });
 
-  it("should render EditWorkout", async () => {
+  it("should render EditWorkout when the user clicks on 'edit' button on a workout card", async () => {
+    user.setup();
     render(
       <Provider store={store}>
         <Home />
       </Provider>
     );
-    store.dispatch({ type: "TOGGLE_MOUNT_EDIT_WORKOUT_FORM" });
-    expect(EditWorkout).toHaveBeenCalled();
+    const workoutsEditButtons = await screen.findAllByText("edit");
+    expect(workoutsEditButtons.length).toBeTruthy();
+    await user.click(workoutsEditButtons[0]);
+    const editWorkoutForm = await screen.findByTestId("edit-workout-form");
+    expect(editWorkoutForm).toBeInTheDocument();
   });
 });

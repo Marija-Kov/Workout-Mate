@@ -45,7 +45,7 @@ const EditWorkout = () => {
   };
   return (
     <div className="form--container--edit--workout--form">
-      <form data-testid="edit" className="edit--form">
+      <form data-testid="edit-workout-form" className="edit--form">
         <button
           className="close material-symbols-outlined"
           onClick={() => {

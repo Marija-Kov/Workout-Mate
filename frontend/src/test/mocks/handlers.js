@@ -133,6 +133,7 @@ export const handlers = [
             reps: "44",
             load: "21",
             user_id: "userid",
+            createdAt: "2023-04-10T13:01:15.208+00:00",
           },
           {
             id: "mockId2",
@@ -141,6 +142,7 @@ export const handlers = [
             reps: "44",
             load: "21",
             user_id: "userid",
+            createdAt: "2023-04-10T13:01:15.208+00:00",
           },
         ],
         allMuscleGroups: ["leg", "chest"],

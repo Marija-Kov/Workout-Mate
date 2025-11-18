@@ -16,7 +16,7 @@ const WorkoutDetails = ({
   const { deleteWorkout } = useDeleteWorkout();
   const date = formatDistanceToNow(new Date(createdAt), { addSuffix: true });
   return (
-    <div className="workout-details">
+    <div className="workout-details" data-testid="workout-details">
       <h4>{title}</h4>
       <p>
         <strong>reps:</strong> {reps}
