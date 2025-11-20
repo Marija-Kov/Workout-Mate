@@ -15,15 +15,23 @@ const signup = async (email, password) => {
       /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
     )
   ) {
-    ApiError.badInput("Please enter valid email address");
+    ApiError.badInput("Invalid email address");
   }
   if (!validator.isStrongPassword(password)) {
-    ApiError.badInput("Password not strong enough");
+    ApiError.badInput(
+      "Password not strong enough. Must contain upper and lowercase letters, numbers and symbols."
+    );
   }
+
   const exists = await User.findByEmail(email);
   if (exists) {
-    ApiError.badInput("Email already in use");
+    // if the account is pending, regenerate confirmation token and send confirmation email
+    // or send a confirmation link with the existing confirmation token?
+
+    // if the account is active, send an email informing that it already exists
+    ApiError.badInput("Email already in use"); // opens up vulnerability
   }
+
   const salt = await bcrypt.genSalt(10);
   const hash = await bcrypt.hash(password, salt);
   const user = await User.create(email, hash);
@@ -62,13 +70,11 @@ const signup = async (email, password) => {
 
 const verify_user = async (token) => {
   if (!token) {
-    ApiError.notFound("Account confirmation token not found");
+    ApiError.notFound("Invalid token");
   }
   const user = await User.findConfirmationToken(token);
   if (!user) {
-    ApiError.notFound(
-      "Couldn't find confirmation token - might have already been confirmed"
-    );
+    ApiError.notFound("Invalid token");
   }
   await User.activate(user._id);
   return { user };
@@ -83,18 +89,15 @@ const login = async (email, password) => {
       /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
     )
   ) {
-    ApiError.badInput("Please enter valid email address");
+    ApiError.badInput("Invalid email address");
   }
   const user = await User.findByEmail(email);
-  if (!user) {
-    ApiError.badInput("That email does not exist in our database");
-  }
-  if (user.account_status === "pending") {
-    ApiError.badInput("You must verify your email before you log in");
-  }
-  const match = await bcrypt.compare(password, user.password);
-  if (!match) {
-    ApiError.badInput("Wrong password");
+  if (
+    !user ||
+    user.account_status === "pending" ||
+    !(await bcrypt.compare(password, user.password))
+  ) {
+    ApiError.badInput("Invalid credentials");
   }
   const { _id, username, profileImg } = user;
   const token = jwt.sign({ _id }, process.env.SECRET);

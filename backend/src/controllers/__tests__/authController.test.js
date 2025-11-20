@@ -22,10 +22,7 @@ describe("authController", () => {
       const res = await agent.post("/api/users/signup").send(user);
       expect(res.status).toBe(422);
       expect(res.body.id).toBeFalsy();
-      expect(res.body).toHaveProperty(
-        "error",
-        "Please enter valid email address"
-      );
+      expect(res.body).toHaveProperty("error", "Invalid email address");
     });
 
     it("should respond with error on attempt to sign up with a weak password", async () => {
@@ -33,7 +30,10 @@ describe("authController", () => {
       const res = await agent.post("/api/users/signup").send(user);
       expect(res.status).toBe(422);
       expect(res.body.id).toBeFalsy();
-      expect(res.body).toHaveProperty("error", "Password not strong enough");
+      expect(res.body).toHaveProperty(
+        "error",
+        "Password not strong enough. Must contain upper and lowercase letters, numbers and symbols."
+      );
     });
 
     it("should respond with error on attempt to sign up with an email that already exists in the database", async () => {
@@ -95,10 +95,7 @@ describe("authController", () => {
         "/api/users/confirmaccount/forgedOrExpiredToken"
       );
       expect(res.status).toBe(404);
-      expect(res.body).toHaveProperty(
-        "error",
-        "Couldn't find confirmation token - might have already been confirmed"
-      );
+      expect(res.body).toHaveProperty("error", "Invalid token");
     });
 
     it("should respond with success message if the confirmation token was valid", async () => {
@@ -130,7 +127,7 @@ describe("authController", () => {
       };
       const res = await agent.post("/api/users/login").send(user);
       expect(res.status).toBe(422);
-      expect(res.body).toHaveProperty("error", "Wrong password");
+      expect(res.body).toHaveProperty("error", "Invalid credentials");
     });
 
     it("should respond with error if the email is not registered in the database", async () => {
@@ -140,10 +137,7 @@ describe("authController", () => {
       };
       const res = await agent.post("/api/users/login").send(user);
       expect(res.status).toBe(422);
-      expect(res.body).toHaveProperty(
-        "error",
-        "That email does not exist in our database"
-      );
+      expect(res.body).toHaveProperty("error", "Invalid credentials");
     });
 
     it("should respond with error if the user has been registered but not confirmed", async () => {
@@ -155,10 +149,7 @@ describe("authController", () => {
       await agent.post("/api/users/signup").send(user);
       const res = await agent.post("/api/users/login").send(user);
       expect(res.status).toBe(422);
-      expect(res.body).toHaveProperty(
-        "error",
-        "You must verify your email before you log in"
-      );
+      expect(res.body).toHaveProperty("error", "Invalid credentials");
     });
 
     it("should respond with a login token if the user has been registered, confirmed and credentials are correct", async () => {
