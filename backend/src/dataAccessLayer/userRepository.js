@@ -106,6 +106,33 @@ class UserRepository {
     }
   }
 
+  async deleteConfirmationToken(user_id) {
+    const sql = `
+    DELETE FROM account_confirmation WHERE user_id = $1;
+    `;
+    try {
+      if (process.env.NODE_ENV === "test") {
+        return new Promise((resolve, reject) => {
+          this.db.get(sql, [user_id], (err, row) => {
+            if (err) {
+              reject(err);
+            } else if (!row) {
+              resolve(null);
+            } else {
+              resolve(row);
+            }
+          });
+        });
+      } else {
+        const client = await this.connect();
+        await client.query(sql, [user_id]);
+        return client.release();
+      }
+    } catch (error) {
+      console.error("User.deleteConfirmationToken:", error);
+    }
+  }
+
   async findConfirmationToken(token) {
     const sql = `
     SELECT user_id as _id, token FROM account_confirmation WHERE token = $1;

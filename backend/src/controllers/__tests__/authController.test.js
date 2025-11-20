@@ -36,13 +36,15 @@ describe("authController", () => {
       );
     });
 
-    it("should respond with error on attempt to sign up with an email that already exists in the database", async () => {
+    it("should respond as if a new account was created on attempt to sign up with an email that happens to already exist in the database", async () => {
       const user = { email: "a@b.c", password: "abcABC123!" };
       await mockUser("confirmed", agent);
       const res = await agent.post("/api/users/signup").send(user);
-      expect(res.status).toBe(422);
-      expect(res.body.id).toBeFalsy();
-      expect(res.body).toHaveProperty("error", "Email already in use");
+      expect(res.status).toBe(201);
+      expect(res.body.id).toBeTruthy();
+      expect(res.body.token).toBeTruthy();
+      expect(res.body.success).toBeTruthy();
+      expect(res.body.success).toMatch(/pending confirmation/i);
     });
 
     it("should respond with the user id and account confirmation token and success message given that email is valid and password strong enough", async () => {

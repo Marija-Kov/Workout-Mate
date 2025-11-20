@@ -5,6 +5,7 @@ const bcrypt = require("bcrypt");
 const validator = require("validator");
 const sendEmail = require("../middleware/sendEmail");
 const { ApiError } = require("../error/error");
+const clientUrl = process.env.CLIENT_URL || "localhost:5173";
 
 const signup = async (email, password) => {
   if (!email || !password) {
@@ -22,49 +23,74 @@ const signup = async (email, password) => {
       "Password not strong enough. Must contain upper and lowercase letters, numbers and symbols."
     );
   }
+  let id = null;
+  let confirmationToken = null;
+  let user = await User.findByEmail(email);
 
-  const exists = await User.findByEmail(email);
-  if (exists) {
-    // if the account is pending, regenerate confirmation token and send confirmation email
-    // or send a confirmation link with the existing confirmation token?
+  if (user) {
+    if (user.account_status === "pending") {
+      id = user._id;
+      confirmationToken = jwt.sign({ id }, process.env.SECRET);
+      await User.deleteConfirmationToken(id);
+      await User.saveConfirmationToken(id, confirmationToken);
+      const accountVerificationLink = `${clientUrl}/confirmaccount/?accountConfirmationToken=${confirmationToken}`;
 
-    // if the account is active, send an email informing that it already exists
-    ApiError.badInput("Email already in use"); // opens up vulnerability
+      if (process.env.NODE_ENV !== "test") {
+        sendEmail(
+          user.email,
+          "Verify your account",
+          {
+            link: accountVerificationLink,
+          },
+          "../templates/verifySignup.handlebars"
+        );
+      }
+    } else if (user.account_status === "active") {
+      id = user._id;
+      confirmationToken = "dummyToken";
+      if (process.env.NODE_ENV !== "test") {
+        sendEmail(
+          user.email,
+          "Your WorkoutMate account",
+          {
+            link: `${clientUrl}/login`,
+          },
+          "../templates/accountAlreadyExists.handlebars"
+        );
+      }
+    }
+  } else {
+    const salt = await bcrypt.genSalt(10);
+    const hash = await bcrypt.hash(password, salt);
+    user = await User.create(email, hash);
+    id = user._id;
+    confirmationToken = jwt.sign({ id }, process.env.SECRET);
+    await User.saveConfirmationToken(id, confirmationToken);
+    const registeredUsers = await User.findAll();
+    const limit = Number(process.env.MAX_USERS) || 10;
+    /*
+     The following block will trigger the deletion of the oldest registered user
+     if the set limit is exceeded. This is done to avoid having to manually clear
+     the database as the intention behind the app isn't to retain users at this time.
+    */
+    if (registeredUsers.length >= limit) {
+      const id = registeredUsers[0]._id;
+      await User.delete(id);
+      await Workout.deleteAll(id);
+    }
+    const accountVerificationLink = `${clientUrl}/confirmaccount/?accountConfirmationToken=${confirmationToken}`;
+    if (process.env.NODE_ENV !== "test") {
+      sendEmail(
+        user.email,
+        "Verify your account",
+        {
+          link: accountVerificationLink,
+        },
+        "../templates/verifySignup.handlebars"
+      );
+    }
   }
 
-  const salt = await bcrypt.genSalt(10);
-  const hash = await bcrypt.hash(password, salt);
-  const user = await User.create(email, hash);
-  const id = user._id;
-  const confirmationToken = jwt.sign({ id }, process.env.SECRET);
-  await User.saveConfirmationToken(id, confirmationToken);
-  const registeredUsers = await User.findAll();
-  const limit = Number(process.env.MAX_USERS) || 10;
-  /*
-   The following block will trigger the deletion of the oldest registered user
-   if the set limit is exceeded. This is done to avoid having to manually clear
-   the database as the intention behind the app isn't to retain users at this time.
-  */
-  if (registeredUsers.length >= limit) {
-    const id = registeredUsers[0]._id;
-    await User.delete(id);
-    await Workout.deleteAll(id);
-  }
-  const clientUrl = process.env.CLIENT_URL || "localhost:5173";
-  const accountVerificationLink = `${clientUrl}/confirmaccount/?accountConfirmationToken=${confirmationToken}`;
-  /*
-   When testing routes, we don't need to send emails:
-  */
-  if (process.env.NODE_ENV !== "test") {
-    sendEmail(
-      user.email,
-      "Verify your account",
-      {
-        link: accountVerificationLink,
-      },
-      "../templates/verifySignup.handlebars"
-    );
-  }
   return { id, confirmationToken };
 };
 
