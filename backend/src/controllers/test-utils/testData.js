@@ -4,28 +4,43 @@
 async function mockUser(
   status,
   agent,
-  user = {
+  credentials = {
     email: "a@b.c",
     password: "abcABC123!",
   }
 ) {
-  const userPending = (await agent.post("/api/users/signup").send(user)).body;
+  const userPending = (await agent.post("/api/users/signup").send(credentials))
+    .body;
   if (status === "pending") return userPending;
 
-  const userConfirmed = (
-    await agent.get(`/api/users/confirmaccount/${userPending.token}`)
-  ).body;
+  const userConfirmed = await mockConfirm(agent, userPending.token);
   if (status === "confirmed") return userConfirmed;
 
-  const resLoggedIn = await agent.post("/api/users/login").send(user);
-  const userLoggedIn = { ...resLoggedIn.body, token: getToken(resLoggedIn) };
+  const userLoggedIn = await mockLogin(agent, credentials);
   if (status === "logged-in") return userLoggedIn;
 
-  const userHasWorkouts = await addWorkouts(userLoggedIn, agent);
+  const userHasWorkouts = await mockHasWorkouts(agent, userLoggedIn.token);
   if (status === "has-workouts") return userHasWorkouts;
 }
 
-async function addWorkouts(userLoggedIn, agent) {
+async function mockConfirm(agent, token) {
+  return (await agent.get(`/api/users/confirmaccount/${token}`)).body;
+}
+
+async function mockLogin(agent, credentials) {
+  if (
+    !credentials ||
+    (credentials && !credentials.email) ||
+    (credentials && !credentials.password)
+  ) {
+    console.error("testData.js > mockLogin: missing credentials");
+    return;
+  }
+  const response = await agent.post("/api/users/login").send(credentials);
+  return { status: response.status, token: getToken(response) };
+}
+
+async function mockHasWorkouts(agent, token) {
   const sampleWorkouts = [
     { title: "Bench Press", muscle_group: "chest", reps: 20, load: 20 },
     { title: "Pushups", muscle_group: "chest", reps: 30, load: 0 },
@@ -39,14 +54,14 @@ async function addWorkouts(userLoggedIn, agent) {
       await agent
         .post("/api/workouts/")
         .send(sampleWorkouts[i])
-        .set("Cookie", `token=${userLoggedIn.token}`)
+        .set("Cookie", `token=${token}`)
     ).body;
     workouts.unshift(workout);
   }
-  return { userLoggedIn, workouts };
+  return { workouts };
 }
 
-async function maxOutWorkouts(user, agent) {
+async function maxOutWorkouts(agent, token) {
   /*
    Since we need to max the workouts out to test whether the oldest workout 
    will be deleted, we want the setup where the number of workouts is just below
@@ -63,7 +78,7 @@ async function maxOutWorkouts(user, agent) {
     await agent
       .post("/api/workouts/")
       .send(sampleWorkout)
-      .set("Cookie", `token=${user.token}`);
+      .set("Cookie", `token=${token}`);
   }
 }
 
@@ -87,6 +102,9 @@ function getToken(res) {
 
 module.exports = {
   mockUser,
+  mockLogin,
+  mockConfirm,
+  mockHasWorkouts,
   maxOutWorkouts,
   ISO8601ToMilliseconds,
   getToken,
