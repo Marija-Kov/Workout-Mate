@@ -15,12 +15,10 @@ const forgotPassword = async (email) => {
   }
   const user = await User.findByEmail(email);
   if (!user) {
-    ApiError.notFound("That email does not exist in our database");
+    ApiError.notFound("Cannot send request");
   }
   if (user.account_status === "pending") {
-    ApiError.notAuthorized(
-      "The account with that email address has not yet been confirmed"
-    );
+    ApiError.notFound("Cannot send request");
   }
   const resetToken = crypto.randomBytes(32).toString("hex");
   const { _id } = user;

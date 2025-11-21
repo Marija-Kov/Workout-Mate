@@ -11,19 +11,13 @@ describe("passwordResetController", () => {
     it("should respond with error if the user is not registered", async () => {
       const res = await mockPasswordResetResponse_POST("not-registered");
       expect(res.status).toBe(404);
-      expect(res.body).toHaveProperty(
-        "error",
-        "That email does not exist in our database"
-      );
+      expect(res.body).toHaveProperty("error", "Cannot send request");
     });
 
     it("should respond with error if the user is not confirmed", async () => {
       const res = await mockPasswordResetResponse_POST("registered");
-      expect(res.status).toBe(401);
-      expect(res.body).toHaveProperty(
-        "error",
-        "The account with that email address has not yet been confirmed"
-      );
+      expect(res.status).toBe(404);
+      expect(res.body).toHaveProperty("error", "Cannot send request");
     });
 
     it("should respond with 'reset link sent' message if the user is confirmed", async () => {
