@@ -1,4 +1,4 @@
-import { Suspense, lazy, useRef } from "react";
+import { Suspense, lazy, useEffect, useRef } from "react";
 import { useLogin } from "../../hooks";
 import { useSelector, useDispatch } from "react-redux";
 
@@ -17,6 +17,13 @@ const Login = () => {
   const email = useRef();
   const password = useRef();
   const { login } = useLogin();
+
+  useEffect(() => {
+    if (process.env.NODE_ENV !== "test") {
+      email.current.value = "guest@wm.app";
+      password.current.value = "abcABC123!";
+    }
+  }, [email, password]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
