@@ -1,5 +1,7 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
+import { http, HttpResponse } from "msw";
+import { server } from "../../test/mocks/server";
 import ConfirmedAccount from "./ConfirmedAccount";
 import { BrowserRouter } from "react-router-dom";
 import App from "../../test/mocks/App";
@@ -26,6 +28,16 @@ describe("<ConfirmedAccount />", () => {
   });
 
   it("should render an error message if the confirmation token is invalid", async () => {
+    server.use(
+      http.get(`${import.meta.env.VITE_API}/api/users/confirmaccount/*`, () => {
+        return HttpResponse.json(
+          {
+            error: "Invalid token",
+          },
+          { status: 422 }
+        );
+      })
+    );
     render(
       <Provider store={store}>
         <BrowserRouter>
@@ -35,11 +47,15 @@ describe("<ConfirmedAccount />", () => {
         </BrowserRouter>
       </Provider>
     );
-    // TODO: it changes the state, but it's not reflected in the UI!
-    store.dispatch({ type: "ERROR", payload: "Invalid token" });
-    const error = await screen.findByRole("alert");
-    expect(error).toBeInTheDocument();
-    expect(error).toHaveAttribute("class", "error flashMessage");
-    expect(error.textContent).toMatch(/invalid token/i);
+    await waitFor(async () =>
+      expect(await screen.findByRole("alert")).toBeInTheDocument()
+    );
+    expect(await screen.findByRole("alert")).toHaveAttribute(
+      "class",
+      "error flashMessage"
+    );
+    expect((await screen.findByRole("alert")).textContent).toMatch(
+      /invalid token/i
+    );
   });
 });
