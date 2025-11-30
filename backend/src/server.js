@@ -7,13 +7,13 @@ const userRoutes = require("./routes/users");
 const passwordResetRoutes = require("./routes/resetPassword");
 const { errorHandler } = require("./error/error");
 const cookieParser = require("cookie-parser");
-const { prototype } = require("nodemailer/lib/dkim");
 
 const app = express();
+app.set("trust proxy", 2);
 app.use(cookieParser());
 app.use(
   cors({
-    origin: process.env.ORIGIN || "http://localhost:3000",
+    origin: process.env.ORIGIN || "http://localhost:5173",
     credentials: true,
   })
 );
@@ -27,7 +27,11 @@ if (process.env.NODE_ENV !== "test") {
   app.use("/api/reset-password", rateLimiters.api_reset_password);
   app.use("/api/workouts", rateLimiters.api_workouts);
 }
- 
+
+app.get("/ip", (request, response) => {
+  response.send(request.ip);
+});
+
 app.use("/api/workouts", workoutRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/reset-password", passwordResetRoutes);
@@ -40,7 +44,7 @@ if (process.env.NODE_ENV !== "test") {
       console.log(`listening on port ${port}`);
     });
   } catch (error) {
-    console.log(`ERROR: ${error}`)
+    console.log(`ERROR: ${error}`);
   }
 }
 

@@ -2,8 +2,8 @@ const { Pool } = require("pg");
 require("dotenv").config();
 
 /**
- * Starts a Postgres server and provides methods to access 
- * and manipulate user data. It contains everything it needs to work 
+ * Starts a Postgres server and provides methods to access
+ * and manipulate user data. It contains everything it needs to work
  * in both test and non-test environment.
  */
 class UserRepository {
@@ -20,7 +20,6 @@ class UserRepository {
       this.hasPoolEnded = false;
       this.connect();
     }
-
   }
 
   async connect(retryCount = Number(process.env.MAX_RETRIES) || 10) {
@@ -29,8 +28,13 @@ class UserRepository {
       return await this.pool.connect();
     } catch (error) {
       if (retryCount > 0) {
-        console.error(`PostgreSQL database connection failed. Retrying in ${process.env.RETRY_DELAY_MS || retryDelayMs / 1000} seconds...`);
-        setTimeout(() => this.connect(retryCount - 1), Number(process.env.RETRY_DELAY_MS) || retryDelayMs);
+        console.error(
+          `PostgreSQL database connection failed. Retrying in ${process.env.RETRY_DELAY_MS || retryDelayMs / 1000} seconds...`
+        );
+        setTimeout(
+          () => this.connect(retryCount - 1),
+          Number(process.env.RETRY_DELAY_MS) || retryDelayMs
+        );
       } else {
         console.error("Could not connect to the PostgreSQL database:", error);
         if (this.pool && !this.hasPoolEnded) {
@@ -99,6 +103,33 @@ class UserRepository {
       }
     } catch (error) {
       console.error("User.saveConfirmationToken:", error);
+    }
+  }
+
+  async deleteConfirmationToken(user_id) {
+    const sql = `
+    DELETE FROM account_confirmation WHERE user_id = $1;
+    `;
+    try {
+      if (process.env.NODE_ENV === "test") {
+        return new Promise((resolve, reject) => {
+          this.db.get(sql, [user_id], (err, row) => {
+            if (err) {
+              reject(err);
+            } else if (!row) {
+              resolve(null);
+            } else {
+              resolve(row);
+            }
+          });
+        });
+      } else {
+        const client = await this.connect();
+        await client.query(sql, [user_id]);
+        return client.release();
+      }
+    } catch (error) {
+      console.error("User.deleteConfirmationToken:", error);
     }
   }
 
@@ -373,7 +404,8 @@ class UserRepository {
   }
 
   async delete(id) {
-    const sql = "DELETE FROM wm_users WHERE _id = $1 AND email != 'guest@wm.app';";
+    const sql =
+      "DELETE FROM wm_users WHERE _id = $1 AND email != 'guest@wm.app';";
     try {
       if (process.env.NODE_ENV === "test") {
         return new Promise((resolve, reject) => {

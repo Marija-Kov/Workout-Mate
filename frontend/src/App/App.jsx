@@ -1,0 +1,129 @@
+import { lazy, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { Navbar } from "../components";
+import { Login } from "../pages";
+import { useGetUrl } from "../hooks";
+
+const Home = lazy(() =>
+  import("../pages").then((module) => ({ default: module.Home }))
+);
+const Signup = lazy(() =>
+  import("../pages").then((module) => ({ default: module.Signup }))
+);
+const About = lazy(() =>
+  import("../pages").then((module) => ({ default: module.About }))
+);
+const ResetPassword = lazy(() =>
+  import("../pages").then((module) => ({ default: module.ResetPassword }))
+);
+const ConfirmedAccount = lazy(() =>
+  import("../pages").then((module) => ({ default: module.ConfirmedAccount }))
+);
+const NotFound = lazy(() =>
+  import("../pages").then((module) => ({ default: module.NotFound }))
+);
+
+const App = () => {
+  const user = useSelector((state) => state.user);
+  const { isSpunDownServerAlertMounted, isCookieAlertMounted } = useSelector(
+    (state) => state.toggleMountComponents
+  );
+  const { success, error } = useSelector((state) => state.flashMessages);
+  const dispatch = useDispatch();
+  const url = useGetUrl();
+
+  useEffect(() => {
+    const service = import.meta.env.VITE_WEB_SERVICE || "localhost";
+    if (!url.includes(service)) {
+      return;
+    }
+    if (!localStorage.getItem("spunDownServerAlert")) {
+      dispatch({ type: "TOGGLE_MOUNT_SPUN_DOWN_SERVER_ALERT" });
+    }
+    return;
+  }, [dispatch, url]);
+
+  return (
+    <div className="App">
+      <BrowserRouter>
+        <Navbar />
+        <div className="pages">
+          {isSpunDownServerAlertMounted && (
+            <div className="spun--down--server--alert">
+              <p>
+                This app uses a free web service that spins down after a period
+                of inactivity. If you have not been here in a while, your
+                initial request may take a minute. Thank you for your patience!
+              </p>
+              <button
+                onClick={() => {
+                  localStorage.setItem(
+                    "spunDownServerAlert",
+                    "The user has been alerted about web service limitations"
+                  );
+                  dispatch({ type: "RESET_COMPONENTS_STATE" });
+                  dispatch({ type: "TOGGLE_MOUNT_COOKIE_ALERT" });
+                }}
+              >
+                Got it, close this
+              </button>
+            </div>
+          )}
+          {isCookieAlertMounted && (
+            <div className="cookie--alert">
+              <p>
+                We use 1 cookie to keep you logged in for a while. That&apos;s
+                all!
+              </p>
+              <button
+                onClick={() => {
+                  localStorage.setItem(
+                    "cookieAlert",
+                    "The user has been alerted about cookie usage"
+                  );
+                  dispatch({ type: "RESET_COMPONENTS_STATE" });
+                }}
+              >
+                Got it
+              </button>
+            </div>
+          )}
+          {error && (
+            <div role="alert" className="error flashMessage">
+              <p>{error}</p>
+            </div>
+          )}
+          {success && (
+            <div role="alert" className="success flashMessage">
+              <p>{success}</p>
+            </div>
+          )}
+          <Routes>
+            <Route
+              path="/"
+              element={!user ? <Navigate to="login" /> : <Home />}
+            />
+            <Route
+              path="login"
+              element={user ? <Navigate to="/" /> : <Login />}
+            />
+            <Route
+              path="signup"
+              element={user ? <Navigate to="/" /> : <Signup />}
+            />
+            <Route
+              path="about"
+              element={user ? <Navigate to="/" /> : <About />}
+            />
+            <Route path="reset-password" element={<ResetPassword />} />
+            <Route path="confirmaccount" element={<ConfirmedAccount />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </div>
+      </BrowserRouter>
+    </div>
+  );
+};
+
+export default App;

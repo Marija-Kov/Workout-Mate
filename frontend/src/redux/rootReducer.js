@@ -16,7 +16,7 @@ const rootReducer = combineReducers({
   toggleMountComponents: toggleMountComponentsReducer,
   routineBalance: routineBalanceReducer,
   flashMessages: flashMessagesReducer,
-  loader: loaderReducer
+  loader: loaderReducer,
 });
 
 export default rootReducer;

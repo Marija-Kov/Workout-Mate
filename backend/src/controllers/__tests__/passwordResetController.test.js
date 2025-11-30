@@ -11,19 +11,13 @@ describe("passwordResetController", () => {
     it("should respond with error if the user is not registered", async () => {
       const res = await mockPasswordResetResponse_POST("not-registered");
       expect(res.status).toBe(404);
-      expect(res.body).toHaveProperty(
-        "error",
-        "That email does not exist in our database"
-      );
+      expect(res.body).toHaveProperty("error", "Cannot send request");
     });
 
     it("should respond with error if the user is not confirmed", async () => {
       const res = await mockPasswordResetResponse_POST("registered");
-      expect(res.status).toBe(401);
-      expect(res.body).toHaveProperty(
-        "error",
-        "The account with that email address has not yet been confirmed"
-      );
+      expect(res.status).toBe(404);
+      expect(res.body).toHaveProperty("error", "Cannot send request");
     });
 
     it("should respond with 'reset link sent' message if the user is confirmed", async () => {
@@ -92,24 +86,23 @@ async function mockPasswordResetResponse_POST(status, a = agent) {
   const password = "5tr0ng+P@ssw0rd";
   if (status === "registered") {
     await a.post("/api/users/signup").send({ email, password });
-    return await a.post(`/api/reset-password`).send({ email });
+    return await a.post("/api/reset-password").send({ email });
   }
   if (status === "confirmed") {
-    const user = (
-      await a.post("/api/users/signup").send({ email, password })
-      ).body;
-      await a.get(`/api/users/confirmaccount/${user.token}`);
-      const res = await a.post(`/api/reset-password`).send({ email });
-      return res;
+    const user = (await a.post("/api/users/signup").send({ email, password }))
+      .body;
+    await a.get(`/api/users/confirmaccount/${user.token}`);
+    const res = await a.post("/api/reset-password").send({ email });
+    return res;
   }
-  return await a.post(`/api/reset-password`).send({ email });
+  return await a.post("/api/reset-password").send({ email });
 }
 
 async function mockPasswordResetResponse_PATCH(test) {
   const email = "a@b.c";
   if (test === "invalid-token") {
     await mockPasswordResetResponse_POST("confirmed");
-    const resetToken = (await agent.post(`/api/reset-password`).send({ email }))
+    const resetToken = (await agent.post("/api/reset-password").send({ email }))
       .body.resetToken;
     await agent.patch(`/api/reset-password/${resetToken}`).send({
       password: "abcABC123!@#",
@@ -123,7 +116,7 @@ async function mockPasswordResetResponse_PATCH(test) {
 
   if (test === "passwords-not-matching") {
     await mockPasswordResetResponse_POST("confirmed");
-    const resetToken = (await agent.post(`/api/reset-password`).send({ email }))
+    const resetToken = (await agent.post("/api/reset-password").send({ email }))
       .body.resetToken;
     return await agent.patch(`/api/reset-password/${resetToken}`).send({
       password: "abcABC123!@#",
@@ -133,7 +126,7 @@ async function mockPasswordResetResponse_PATCH(test) {
 
   if (test === "password-weak") {
     await mockPasswordResetResponse_POST("confirmed");
-    const resetToken = (await agent.post(`/api/reset-password`).send({ email }))
+    const resetToken = (await agent.post("/api/reset-password").send({ email }))
       .body.resetToken;
     return await agent.patch(`/api/reset-password/${resetToken}`).send({
       password: "abcABC",
@@ -143,7 +136,7 @@ async function mockPasswordResetResponse_PATCH(test) {
 
   if (test === "reset-success") {
     await mockPasswordResetResponse_POST("confirmed");
-    const resetToken = (await agent.post(`/api/reset-password`).send({ email }))
+    const resetToken = (await agent.post("/api/reset-password").send({ email }))
       .body.resetToken;
     return await agent.patch(`/api/reset-password/${resetToken}`).send({
       password: "abcABC123!",

@@ -22,7 +22,7 @@
   transition: 0.2s;
 }
 
-.dots-left, 
+.dots-left,
 .dots-right {
   color: vars.$primary;
 }
@@ -68,9 +68,7 @@
 }
 
 @media screen and (max-width: 450px) {
-
   .page--btn--container {
     margin-bottom: 20px;
   }
-  
 }

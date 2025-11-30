@@ -32,6 +32,7 @@ function errorHandler(err, req, res, next) {
     res.status(err.statusCode).json({ error: err.message });
     return;
   }
+  console.error(err);
   res.status(500).json({ error: "Something went wrong" });
 }
 /* eslint-enable no-unused-vars */

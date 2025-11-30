@@ -21,9 +21,11 @@ Workout Mate lets you be the athlete you want to be.</i>
 5. [Author](#author)
 
 ---
+
 <br>
 
 ## App Features (User's perspective walkthrough)<a name = "features"></a>
+
 <p> 
 As a user, you can create an account on Workout Mate from the Signup page with a valid email address and a strong password. You will then be sent an email with a link to confirm your account. Clicking on the link, you will be redirected to the page that will inform you that your account has been confirmed successfully and you can go to the Login page and use your credentials to access your account. If you enter wrong credentials, you will be alerted so. 
 <br><br>
@@ -75,45 +77,52 @@ You can download your data from Workout Mate database as a JSON file by clicking
 ## Local Usage <a name = "localUsage"></a>
 
 1. Clone the repo;
-2. Create and populate ```.env``` file;
+2. Create and populate `.env` file;
 3. Run this script on your postgres database:
+
 ```
  CREATE TABLE wm_users (
-    _id INT8 PRIMARY KEY, 
-    created_at TIMESTAMPTZ DEFAULT (now()), 
-    email TEXT, 
-    password TEXT, 
-    username TEXT, 
+    _id INT8 PRIMARY KEY,
+    created_at TIMESTAMPTZ DEFAULT (now()),
+    email TEXT,
+    password TEXT,
+    username TEXT,
     profile_image TEXT,
     account_status TEXT DEFAULT ('pending')
 );
 CREATE TABLE account_confirmation (
-    id INT8 PRIMARY KEY, 
+    id INT8 PRIMARY KEY,
     user_id INT8,
     token TEXT,
     expires TIMESTAMPTZ DEFAULT (now() + '1 day'::interval)
 );
 CREATE TABLE password_reset (
-    id INT8 PRIMARY KEY, 
+    id INT8 PRIMARY KEY,
     user_id INT8,
     token TEXT,
     expires TIMESTAMPTZ DEFAULT (now() + '1 day'::interval)
 );
 ```
+
 4. While in root directory, copy-paste and run:
 
 ```
 cd backend && npm install && npm run dev && cd ../frontend && npm install && npm start
 ```
+
 ### Test command
-```npm run test``` 
+
+`npm run test`
 to run backend and frontend tests in corresponding directories.
 
 ### Backend build command
+
 In the backend directory, run:
+
 ```
 npm run build
 ```
+
 <br>
 
 ## Tools and Dependencies <a name = "tools"></a>
@@ -159,7 +168,9 @@ npm run build
 <br>
 
 ## Environment variables <a name = "environment-variables"></a>
+
 If you want to run the app in your local environment, you'll need to create a .env file in each of the second-level directories and provide values for the variables below.<br>
+
 ### Backend .env
 
 #--- Mandatory variables ---#
@@ -181,7 +192,7 @@ EMAIL_PASSWORD= <br>
 PORT= <br>
 CLIENT_URL= <br>
 ORIGIN= <br>
-AUTH_TOKEN_EXPIRES_IN_MS=  # in milliseconds<br>
+AUTH_TOKEN_EXPIRES_IN_MS= # in milliseconds<br>
 
 #--- Database limits: <br>
 MAX_USERS= <br>
@@ -202,6 +213,7 @@ MAX_RETRIES= <br>
 RETRY_DELAY_MS= <br>
 
 ### Frontend .env
+
 #--- Defaults provided ---#
 REACT_APP_API= <br>
 REACT_APP_WEB_SERVICE=localhost <br>
@@ -210,14 +222,4 @@ REACT_APP_WEB_SERVICE=localhost <br>
 
 ## Author <a name = "author"></a>
 
-[@marija-kov](https://github.com/Marija-Kov) 
-
-
-
-
-
-
-
-
-
- 
+[@marija-kov](https://github.com/Marija-Kov)

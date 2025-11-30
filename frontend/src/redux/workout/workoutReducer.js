@@ -1,17 +1,16 @@
 import * as a from "./workoutActionTypes";
 
 const init = {
-  total: 0, // total number of workouts that match a search query
-  limit: 3,
-  allUserWorkoutsMuscleGroups: [],
-  workoutsChunk: [],
-  pageSpread: [1],
-  noWorkoutsByQuery: false,
+  foundCount: 0, // total number of workouts or the number of workouts found upon a search query
+  limit: 3, // this is a placeholder, the value is received from the server
+  allMuscleGroups: [],
+  chunk: [],
+  noneFound: false,
 };
 
 export const workoutReducer = (state = init, action) => {
   switch (action.type) {
-    case a.SET_WORKOUTS:
+    case a.SET_WORKOUTS: {
       /*
        When pages are flipped and when search query is typed, routine balance stays the same
        which can be proven by comparing strings of joined muscle groups of prev and next state.
@@ -20,36 +19,35 @@ export const workoutReducer = (state = init, action) => {
        from rerendering, we would have to violate the immutability principle.
       */
 
-      const nextMuscleGroupsString =
-        action.payload.allUserWorkoutsMuscleGroups.join("");
-      const prevMuscleGroupsString = state.allUserWorkoutsMuscleGroups.join("");
+      const nextMuscleGroupsString = action.payload.allMuscleGroups.join("");
+      const prevMuscleGroupsString = state.allMuscleGroups.join("");
 
       return nextMuscleGroupsString === prevMuscleGroupsString
         ? {
             ...state,
-            noWorkoutsByQuery: action.payload.noWorkoutsByQuery,
-            workoutsChunk: action.payload.workoutsChunk,
-            pageSpread: action.payload.pageSpread,
-            total: action.payload.total,
+            noneFound: action.payload.noneFound,
+            chunk: action.payload.chunk,
+            foundCount: action.payload.foundCount,
           }
         : action.payload;
-    case a.CREATE_WORKOUT:
-      const newTotalCreate = ++state.total;
+    }
+    case a.CREATE_WORKOUT: {
       return {
         ...state,
-        workoutsChunk: [action.payload, ...state.workoutsChunk],
-        allUserWorkoutsMuscleGroups: [
+        foundCount: ++state.foundCount,
+        chunk: [action.payload, ...state.chunk],
+        allMuscleGroups: [
           action.payload.muscle_group,
-          ...state.allUserWorkoutsMuscleGroups,
+          ...state.allMuscleGroups,
         ],
-        pageSpread: pageSpreadHelper(newTotalCreate, state.limit),
       };
-    case a.UPDATE_WORKOUT:
+    }
+    case a.UPDATE_WORKOUT: {
       /*
        By finding the index of the updated workout in the chunk,
        we can preserve the order of the workouts in the UI after update.
       */
-      const indexInChunkOfUpdatedWorkout = state.workoutsChunk
+      const indexInChunkOfUpdatedWorkout = state.chunk
         .map((w) => w._id)
         .indexOf(action.payload._id);
 
@@ -59,16 +57,16 @@ export const workoutReducer = (state = init, action) => {
        Skipping this rewriting when muscle group is the same before and after
        workout update will prevent routine balance state update as well.
       */
-      const prevMuscleGroupOfUpdatedWorkout = state.workoutsChunk.find(
+      const prevMuscleGroupOfUpdatedWorkout = state.chunk.find(
         (e) => e._id === action.payload._id
       ).muscle_group;
 
       let newMuscleGroups;
       if (action.payload.muscle_group !== prevMuscleGroupOfUpdatedWorkout) {
-        const prevMuscleGroupIndex = state.allUserWorkoutsMuscleGroups.indexOf(
+        const prevMuscleGroupIndex = state.allMuscleGroups.indexOf(
           prevMuscleGroupOfUpdatedWorkout
         );
-        newMuscleGroups = state.allUserWorkoutsMuscleGroups.with(
+        newMuscleGroups = state.allMuscleGroups.with(
           prevMuscleGroupIndex,
           action.payload.muscle_group
         );
@@ -76,48 +74,38 @@ export const workoutReducer = (state = init, action) => {
       return action.payload.muscle_group !== prevMuscleGroupOfUpdatedWorkout
         ? {
             ...state,
-            allUserWorkoutsMuscleGroups: newMuscleGroups,
-            workoutsChunk: state.workoutsChunk.with(
+            allMuscleGroups: newMuscleGroups,
+            chunk: state.chunk.with(
               indexInChunkOfUpdatedWorkout,
               action.payload
             ),
           }
         : {
             ...state,
-            workoutsChunk: state.workoutsChunk.with(
+            chunk: state.chunk.with(
               indexInChunkOfUpdatedWorkout,
               action.payload
             ),
           };
-    case a.DELETE_WORKOUT:
-      const newTotalDelete = --state.total;
-      const newWorkoutsChunk = state.workoutsChunk.filter(
-        (e) => e._id !== action.payload._id
-      );
-      const prevMuscleGroupIndex = state.allUserWorkoutsMuscleGroups.indexOf(
-        state.workoutsChunk.find((e) => e._id === action.payload._id)
-          .muscle_group
+    }
+    case a.DELETE_WORKOUT: {
+      const newChunk = state.chunk.filter((e) => e._id !== action.payload._id);
+      const prevMuscleGroupIndex = state.allMuscleGroups.indexOf(
+        state.chunk.find((e) => e._id === action.payload._id).muscle_group
       );
       return {
         ...state,
-        total: newTotalDelete,
-        allUserWorkoutsMuscleGroups:
-          state.allUserWorkoutsMuscleGroups.toSpliced(prevMuscleGroupIndex, 1),
-        workoutsChunk: newWorkoutsChunk,
-        pageSpread: pageSpreadHelper(newTotalDelete, state.limit),
+        foundCount: --state.foundCount,
+        allMuscleGroups: state.allMuscleGroups.toSpliced(
+          prevMuscleGroupIndex,
+          1
+        ),
+        chunk: newChunk,
       };
+    }
     case a.RESET_WORKOUTS_STATE:
       return init;
     default:
       return state;
   }
-};
-
-const pageSpreadHelper = (t, l) => {
-  const pagesNum = Math.ceil(t / l);
-  let spread = [];
-  for (let i = 1; i <= pagesNum; ++i) {
-    spread.push(i);
-  }
-  return spread;
 };

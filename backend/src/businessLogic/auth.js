@@ -5,6 +5,7 @@ const bcrypt = require("bcrypt");
 const validator = require("validator");
 const sendEmail = require("../middleware/sendEmail");
 const { ApiError } = require("../error/error");
+const clientUrl = process.env.CLIENT_URL || "localhost:5173";
 
 const signup = async (email, password) => {
   if (!email || !password) {
@@ -15,60 +16,91 @@ const signup = async (email, password) => {
       /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
     )
   ) {
-    ApiError.badInput("Please enter valid email address");
+    ApiError.badInput("Invalid email address");
   }
   if (!validator.isStrongPassword(password)) {
-    ApiError.badInput("Password not strong enough");
-  }
-  const exists = await User.findByEmail(email);
-  if (exists) {
-    ApiError.badInput("Email already in use");
-  }
-  const salt = await bcrypt.genSalt(10);
-  const hash = await bcrypt.hash(password, salt);
-  const user = await User.create(email, hash);
-  const id = user._id;
-  const confirmationToken = jwt.sign({ id }, process.env.SECRET);
-  await User.saveConfirmationToken(id, confirmationToken);
-  const registeredUsers = await User.findAll();
-  const limit = Number(process.env.MAX_USERS) || 10;
-  /*
-   The following block will trigger the deletion of the oldest registered user
-   if the set limit is exceeded. This is done to avoid having to manually clear
-   the database as the intention behind the app isn't to retain users at this time.
-  */
-  if (registeredUsers.length >= limit) {
-    const id = registeredUsers[0]._id;
-    await User.delete(id);
-    await Workout.deleteAll(id);
-  }
-  const clientUrl = process.env.CLIENT_URL || "localhost:3000";
-  const accountVerificationLink = `${clientUrl}/confirmaccount/?accountConfirmationToken=${confirmationToken}`;
-  /*
-   When testing routes, we don't need to send emails:
-  */
-  if (process.env.NODE_ENV !== "test") {
-    sendEmail(
-      user.email,
-      "Verify your account",
-      {
-        link: accountVerificationLink,
-      },
-      "../templates/verifySignup.handlebars"
+    ApiError.badInput(
+      "Password not strong enough. Must contain upper and lowercase letters, numbers and symbols."
     );
   }
+  let id = null;
+  let confirmationToken = null;
+  let user = await User.findByEmail(email);
+
+  if (user) {
+    if (user.account_status === "pending") {
+      id = user._id;
+      confirmationToken = jwt.sign({ id }, process.env.SECRET);
+      await User.deleteConfirmationToken(id);
+      await User.saveConfirmationToken(id, confirmationToken);
+      const accountVerificationLink = `${clientUrl}/confirmaccount/?accountConfirmationToken=${confirmationToken}`;
+
+      if (process.env.NODE_ENV !== "test") {
+        sendEmail(
+          user.email,
+          "Verify your account",
+          {
+            link: accountVerificationLink,
+          },
+          "../templates/verifySignup.handlebars"
+        );
+      }
+    } else if (user.account_status === "active") {
+      id = user._id;
+      confirmationToken = "dummyToken";
+      if (process.env.NODE_ENV !== "test") {
+        sendEmail(
+          user.email,
+          "Your WorkoutMate account",
+          {
+            link: `${clientUrl}/login`,
+          },
+          "../templates/accountAlreadyExists.handlebars"
+        );
+      }
+    }
+  } else {
+    const salt = await bcrypt.genSalt(10);
+    const hash = await bcrypt.hash(password, salt);
+    user = await User.create(email, hash);
+    id = user._id;
+    confirmationToken = jwt.sign({ id }, process.env.SECRET);
+    await User.saveConfirmationToken(id, confirmationToken);
+    const registeredUsers = await User.findAll();
+    const limit = Number(process.env.MAX_USERS) || 10;
+    /*
+     The following block will trigger the deletion of the oldest registered user
+     if the set limit is exceeded. This is done to avoid having to manually clear
+     the database as the intention behind the app isn't to retain users at this time.
+    */
+    if (registeredUsers.length >= limit) {
+      const id = registeredUsers[0]._id;
+      await User.delete(id);
+      await Workout.deleteAll(id);
+    }
+    const accountVerificationLink = `${clientUrl}/confirmaccount/?accountConfirmationToken=${confirmationToken}`;
+    if (process.env.NODE_ENV !== "test") {
+      sendEmail(
+        user.email,
+        "Verify your account",
+        {
+          link: accountVerificationLink,
+        },
+        "../templates/verifySignup.handlebars"
+      );
+    }
+  }
+
   return { id, confirmationToken };
 };
 
 const verify_user = async (token) => {
   if (!token) {
-    ApiError.notFound("Account confirmation token not found");
+    ApiError.notFound("Invalid token");
   }
   const user = await User.findConfirmationToken(token);
   if (!user) {
-    ApiError.notFound(
-      "Couldn't find confirmation token - might have already been confirmed"
-    );
+    ApiError.notFound("Invalid token");
   }
   await User.activate(user._id);
   return { user };
@@ -83,18 +115,15 @@ const login = async (email, password) => {
       /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
     )
   ) {
-    ApiError.badInput("Please enter valid email address");
+    ApiError.badInput("Invalid email address");
   }
   const user = await User.findByEmail(email);
-  if (!user) {
-    ApiError.badInput("That email does not exist in our database");
-  }
-  if (user.account_status === "pending") {
-    ApiError.badInput("You must verify your email before you log in");
-  }
-  const match = await bcrypt.compare(password, user.password);
-  if (!match) {
-    ApiError.badInput("Wrong password");
+  if (
+    !user ||
+    user.account_status === "pending" ||
+    !(await bcrypt.compare(password, user.password))
+  ) {
+    ApiError.badInput("Invalid credentials");
   }
   const { _id, username, profileImg } = user;
   const token = jwt.sign({ _id }, process.env.SECRET);
@@ -143,7 +172,7 @@ const deleteUser = async (id) => {
 
 const downloadUserData = async (id) => {
   const user = await User.findById(id);
-  const workouts = await Workout.getAll(id);
+  const workouts = await Workout.get(id);
   return { user, workouts };
 };
 
